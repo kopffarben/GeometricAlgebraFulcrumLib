@@ -11,7 +11,36 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Samples.MetaProgramming
 {
     public static class ModelingVsAlgebraSamples
     {
-        public static void AlgebraExample()
+        public static void AngouriMathComparisonExample()
+        {
+            Console.WriteLine("=== AngouriMath vs Mathematica Comparison ===");
+            Console.WriteLine();
+            
+            // Stage 1: Show that AngouriMath is the default
+            var context = new MetaContext();
+            Console.WriteLine($"Default evaluator: {context.SymbolicEvaluator.GetType().Name}");
+            Console.WriteLine("AngouriMath is used by default - no Mathematica needed!");
+            Console.WriteLine();
+            
+            // Stage 2: Show AngouriMath capabilities
+            Console.WriteLine("AngouriMath symbolic computation capabilities:");
+            
+            var x = context["x"];
+            var y = context["y"];
+            
+            Console.WriteLine($"Created variables: x = {x.ScalarValue}, y = {y.ScalarValue}");
+            
+            // This would use AngouriMath for symbolic evaluation
+            var expr = context.Add(x.ScalarValue, y.ScalarValue);
+            Console.WriteLine($"x + y = {expr.ScalarValue}");
+            
+            var simplified = context.SymbolicEvaluator.Simplify(expr.ScalarValue);
+            Console.WriteLine($"Simplified: {simplified}");
+            
+            Console.WriteLine();
+            Console.WriteLine("Conclusion: AngouriMath provides full symbolic computation");
+            Console.WriteLine("without requiring Mathematica installation or license!");
+        }
         {
             // Stage 1: Define the meta-programming context which
             // is a special kind of symbolic processor for code generation

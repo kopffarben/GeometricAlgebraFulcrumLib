@@ -76,7 +76,7 @@ public sealed class AngouriMathIntoMetaExpressionConverter :
             Entity.Arcsinf => Context.MetaExpressionProcessor.ArcSin(arg).ScalarValue,
             Entity.Arctanf => Context.MetaExpressionProcessor.ArcTan(arg).ScalarValue,
 
-            _ => throw new InvalidOperationException()
+            _ => throw new InvalidOperationException($"Unary operation {expr.GetType().Name} not supported")
         };
     }
 
@@ -93,9 +93,8 @@ public sealed class AngouriMathIntoMetaExpressionConverter :
             Entity.Divf => Context.MetaExpressionProcessor.Divide(arg1, arg2).ScalarValue,
             Entity.Powf => Context.MetaExpressionProcessor.Power(arg1, arg2).ScalarValue,
             Entity.Logf => Context.MetaExpressionProcessor.Log(arg1, arg2).ScalarValue,
-            //SymbolicFunctionNames.Negative => -argumentsList[0],
 
-            _ => throw new InvalidOperationException()
+            _ => throw new InvalidOperationException($"Binary operation {expr.GetType().Name} not supported")
         };
     }
 }

@@ -110,6 +110,11 @@ public sealed class AngouriMathFromMetaExpressionConverter :
             MetaExpressionFunctionNames.Sinh => MathS.Hyperbolic.Sinh(argumentsList[0]),
             MetaExpressionFunctionNames.Tanh => MathS.Hyperbolic.Tanh(argumentsList[0]),
 
+            MetaExpressionFunctionNames.ArcTan2 => throw new NotImplementedException("ArcTan2 not directly supported, use ArcTan instead"),
+            MetaExpressionFunctionNames.Sign => MathS.Signum(argumentsList[0]),
+            MetaExpressionFunctionNames.UnitStep => (1 + MathS.Signum(argumentsList[0])) / 2,
+            MetaExpressionFunctionNames.VectorToRadians => throw new NotImplementedException("VectorToRadians not supported in AngouriMath"),
+
             _ => throw new InvalidOperationException()
         };
     }
