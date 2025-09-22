@@ -903,7 +903,7 @@ public sealed partial class XGaUniformMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivectorComposer<T> SubtractTerm(IndexSet basisBlade, IScalar<T> scalar)
+    public new XGaUniformMultivectorComposer<T> SubtractTerm(IndexSet basisBlade, IScalar<T> scalar)
     {
         return SubtractTerm(basisBlade, scalar.ScalarValue);
     }
