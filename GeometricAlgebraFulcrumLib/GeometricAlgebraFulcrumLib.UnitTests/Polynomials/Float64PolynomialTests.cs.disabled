@@ -1,0 +1,266 @@
+using System;
+using System.Linq;
+using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64;
+using NUnit.Framework;
+
+namespace GeometricAlgebraFulcrumLib.UnitTests.Polynomials;
+
+/// <summary>
+/// Comprehensive tests for Float64 polynomial operations
+/// </summary>
+[TestFixture]
+public class Float64PolynomialTests
+{
+    private const double Tolerance = 1e-12;
+
+    [Test]
+    public void Float64Polynomial_Creation_ShouldHandleVariousInputs()
+    {
+        // Test creation from coefficients
+        var coefficients = new double[] { 1.0, 2.0, 3.0 }; // 1 + 2x + 3x²
+        var poly = Float64Polynomial.Create(coefficients);
+        
+        Assert.That(poly.Degree, Is.EqualTo(2));
+        Assert.That(poly.GetCoefficient(0), Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(poly.GetCoefficient(1), Is.EqualTo(2.0).Within(Tolerance));
+        Assert.That(poly.GetCoefficient(2), Is.EqualTo(3.0).Within(Tolerance));
+
+        // Test zero polynomial
+        var zero = Float64Polynomial.CreateZero();
+        Assert.That(zero.IsZero, Is.True);
+        Assert.That(zero.Degree, Is.EqualTo(-1));
+
+        // Test constant polynomial
+        var constant = Float64Polynomial.CreateConstant(5.0);
+        Assert.That(constant.Degree, Is.EqualTo(0));
+        Assert.That(constant.GetCoefficient(0), Is.EqualTo(5.0).Within(Tolerance));
+
+        // Test monomial (single term)
+        var monomial = Float64Polynomial.CreateMonomial(3, 2.0); // 2x³
+        Assert.That(monomial.Degree, Is.EqualTo(3));
+        Assert.That(monomial.GetCoefficient(3), Is.EqualTo(2.0).Within(Tolerance));
+        Assert.That(monomial.GetCoefficient(0), Is.EqualTo(0.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void Float64Polynomial_Evaluation_ShouldBeCorrect()
+    {
+        // Test polynomial: 1 + 2x + 3x²
+        var poly = Float64Polynomial.Create(1.0, 2.0, 3.0);
+
+        // Evaluate at x = 0
+        Assert.That(poly.GetValue(0.0), Is.EqualTo(1.0).Within(Tolerance));
+
+        // Evaluate at x = 1: 1 + 2(1) + 3(1)² = 6
+        Assert.That(poly.GetValue(1.0), Is.EqualTo(6.0).Within(Tolerance));
+
+        // Evaluate at x = 2: 1 + 2(2) + 3(4) = 1 + 4 + 12 = 17
+        Assert.That(poly.GetValue(2.0), Is.EqualTo(17.0).Within(Tolerance));
+
+        // Evaluate at negative value
+        Assert.That(poly.GetValue(-1.0), Is.EqualTo(2.0).Within(Tolerance)); // 1 - 2 + 3 = 2
+    }
+
+    [Test]
+    public void Float64Polynomial_Addition_ShouldBeCorrect()
+    {
+        var poly1 = Float64Polynomial.Create(1.0, 2.0, 3.0); // 1 + 2x + 3x²
+        var poly2 = Float64Polynomial.Create(4.0, 5.0);      // 4 + 5x
+
+        var sum = poly1 + poly2;
+
+        // Expected: 5 + 7x + 3x²
+        Assert.That(sum.Degree, Is.EqualTo(2));
+        Assert.That(sum.GetCoefficient(0), Is.EqualTo(5.0).Within(Tolerance));
+        Assert.That(sum.GetCoefficient(1), Is.EqualTo(7.0).Within(Tolerance));
+        Assert.That(sum.GetCoefficient(2), Is.EqualTo(3.0).Within(Tolerance));
+
+        // Test addition with zero polynomial
+        var zero = Float64Polynomial.CreateZero();
+        var sumWithZero = poly1 + zero;
+        Assert.That(sumWithZero.IsNearEqual(poly1), Is.True);
+    }
+
+    [Test]
+    public void Float64Polynomial_Subtraction_ShouldBeCorrect()
+    {
+        var poly1 = Float64Polynomial.Create(5.0, 7.0, 3.0); // 5 + 7x + 3x²
+        var poly2 = Float64Polynomial.Create(1.0, 2.0, 3.0); // 1 + 2x + 3x²
+
+        var diff = poly1 - poly2;
+
+        // Expected: 4 + 5x
+        Assert.That(diff.Degree, Is.EqualTo(1));
+        Assert.That(diff.GetCoefficient(0), Is.EqualTo(4.0).Within(Tolerance));
+        Assert.That(diff.GetCoefficient(1), Is.EqualTo(5.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void Float64Polynomial_Multiplication_ShouldBeCorrect()
+    {
+        var poly1 = Float64Polynomial.Create(1.0, 1.0); // 1 + x
+        var poly2 = Float64Polynomial.Create(1.0, 1.0); // 1 + x
+
+        var product = poly1 * poly2;
+
+        // Expected: (1 + x)(1 + x) = 1 + 2x + x²
+        Assert.That(product.Degree, Is.EqualTo(2));
+        Assert.That(product.GetCoefficient(0), Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(product.GetCoefficient(1), Is.EqualTo(2.0).Within(Tolerance));
+        Assert.That(product.GetCoefficient(2), Is.EqualTo(1.0).Within(Tolerance));
+
+        // Test multiplication by scalar
+        var scalar = 3.0;
+        var scaledPoly = poly1 * scalar;
+        Assert.That(scaledPoly.GetCoefficient(0), Is.EqualTo(3.0).Within(Tolerance));
+        Assert.That(scaledPoly.GetCoefficient(1), Is.EqualTo(3.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void Float64Polynomial_Derivative_ShouldBeCorrect()
+    {
+        // Test polynomial: 1 + 2x + 3x² + 4x³
+        var poly = Float64Polynomial.Create(1.0, 2.0, 3.0, 4.0);
+
+        var derivative = poly.GetDerivative();
+
+        // Expected derivative: 2 + 6x + 12x²
+        Assert.That(derivative.Degree, Is.EqualTo(2));
+        Assert.That(derivative.GetCoefficient(0), Is.EqualTo(2.0).Within(Tolerance));
+        Assert.That(derivative.GetCoefficient(1), Is.EqualTo(6.0).Within(Tolerance));
+        Assert.That(derivative.GetCoefficient(2), Is.EqualTo(12.0).Within(Tolerance));
+
+        // Test derivative of constant
+        var constant = Float64Polynomial.CreateConstant(5.0);
+        var constDerivative = constant.GetDerivative();
+        Assert.That(constDerivative.IsZero, Is.True);
+
+        // Test second derivative
+        var secondDerivative = derivative.GetDerivative();
+        Assert.That(secondDerivative.GetCoefficient(0), Is.EqualTo(6.0).Within(Tolerance));
+        Assert.That(secondDerivative.GetCoefficient(1), Is.EqualTo(24.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void Float64Polynomial_Integration_ShouldBeCorrect()
+    {
+        // Test polynomial: 2 + 6x + 12x²
+        var poly = Float64Polynomial.Create(2.0, 6.0, 12.0);
+
+        var integral = poly.GetIntegral();
+
+        // Expected integral: 2x + 3x² + 4x³ (constant of integration = 0)
+        Assert.That(integral.Degree, Is.EqualTo(3));
+        Assert.That(integral.GetCoefficient(0), Is.EqualTo(0.0).Within(Tolerance)); // Constant term
+        Assert.That(integral.GetCoefficient(1), Is.EqualTo(2.0).Within(Tolerance));
+        Assert.That(integral.GetCoefficient(2), Is.EqualTo(3.0).Within(Tolerance));
+        Assert.That(integral.GetCoefficient(3), Is.EqualTo(4.0).Within(Tolerance));
+
+        // Test integral with constant of integration
+        var integralWithConstant = poly.GetIntegral(5.0);
+        Assert.That(integralWithConstant.GetCoefficient(0), Is.EqualTo(5.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void Float64Polynomial_RootFinding_ShouldWorkForSimpleCases()
+    {
+        // Test linear polynomial: 2x - 4 = 0, root at x = 2
+        var linear = Float64Polynomial.Create(-4.0, 2.0);
+        var linearRoots = linear.GetRealRoots().ToArray();
+        Assert.That(linearRoots.Length, Is.EqualTo(1));
+        Assert.That(linearRoots[0], Is.EqualTo(2.0).Within(Tolerance));
+
+        // Test quadratic polynomial: x² - 5x + 6 = 0, roots at x = 2, 3
+        var quadratic = Float64Polynomial.Create(6.0, -5.0, 1.0);
+        var quadRoots = quadratic.GetRealRoots().OrderBy(r => r).ToArray();
+        Assert.That(quadRoots.Length, Is.EqualTo(2));
+        Assert.That(quadRoots[0], Is.EqualTo(2.0).Within(Tolerance));
+        Assert.That(quadRoots[1], Is.EqualTo(3.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void Float64Polynomial_Division_ShouldBeCorrect()
+    {
+        // Test polynomial division: (x² + 3x + 2) ÷ (x + 1)
+        var dividend = Float64Polynomial.Create(2.0, 3.0, 1.0); // 2 + 3x + x²
+        var divisor = Float64Polynomial.Create(1.0, 1.0);       // 1 + x
+
+        var (quotient, remainder) = dividend.DivRem(divisor);
+
+        // Expected: quotient = x + 2, remainder = 0
+        Assert.That(quotient.Degree, Is.EqualTo(1));
+        Assert.That(quotient.GetCoefficient(0), Is.EqualTo(2.0).Within(Tolerance));
+        Assert.That(quotient.GetCoefficient(1), Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(remainder.IsZero, Is.True);
+
+        // Verify: dividend = quotient * divisor + remainder
+        var verification = quotient * divisor + remainder;
+        Assert.That(verification.IsNearEqual(dividend), Is.True);
+    }
+
+    [Test]
+    public void Float64Polynomial_Composition_ShouldBeCorrect()
+    {
+        // Test polynomial composition: f(g(x)) where f(x) = x² and g(x) = x + 1
+        var f = Float64Polynomial.Create(0.0, 0.0, 1.0); // x²
+        var g = Float64Polynomial.Create(1.0, 1.0);       // x + 1
+
+        var composition = f.Compose(g);
+
+        // Expected: (x + 1)² = 1 + 2x + x²
+        Assert.That(composition.Degree, Is.EqualTo(2));
+        Assert.That(composition.GetCoefficient(0), Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(composition.GetCoefficient(1), Is.EqualTo(2.0).Within(Tolerance));
+        Assert.That(composition.GetCoefficient(2), Is.EqualTo(1.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void Float64Polynomial_SpecialPolynomials_ShouldWorkCorrectly()
+    {
+        // Test Chebyshev polynomials (if implemented)
+        // Test Legendre polynomials (if implemented)
+        // Test Hermite polynomials (if implemented)
+        
+        // For now, test basic polynomial properties
+        var poly = Float64Polynomial.Create(1.0, -1.0, 1.0); // 1 - x + x²
+
+        // Test even/odd detection
+        var evenPoly = Float64Polynomial.Create(1.0, 0.0, 1.0); // 1 + x²
+        var oddPoly = Float64Polynomial.Create(0.0, 1.0, 0.0, 1.0); // x + x³
+
+        Assert.That(evenPoly.IsEven(), Is.True);
+        Assert.That(oddPoly.IsOdd(), Is.True);
+        Assert.That(poly.IsEven(), Is.False);
+        Assert.That(poly.IsOdd(), Is.False);
+    }
+
+    [Test]
+    public void Float64Polynomial_Equality_ShouldWorkCorrectly()
+    {
+        var poly1 = Float64Polynomial.Create(1.0, 2.0, 3.0);
+        var poly2 = Float64Polynomial.Create(1.0, 2.0, 3.0);
+        var poly3 = Float64Polynomial.Create(1.0, 2.0, 4.0);
+
+        Assert.That(poly1.Equals(poly2), Is.True);
+        Assert.That(poly1.Equals(poly3), Is.False);
+        Assert.That(poly1.IsNearEqual(poly2), Is.True);
+        Assert.That(poly1.IsNearEqual(poly3), Is.False);
+
+        // Test near equality with tolerance
+        var poly4 = Float64Polynomial.Create(1.0, 2.0, 3.0 + 1e-13);
+        Assert.That(poly1.IsNearEqual(poly4, 1e-12), Is.True);
+    }
+
+    [Test]
+    public void Float64Polynomial_StringRepresentation_ShouldBeReadable()
+    {
+        var poly = Float64Polynomial.Create(1.0, -2.0, 3.0); // 1 - 2x + 3x²
+        var str = poly.ToString();
+        
+        Assert.That(str, Is.Not.Null.And.Not.Empty);
+        // The exact format may vary, but it should contain the coefficients
+        Assert.That(str, Contains.Substring("1"));
+        Assert.That(str, Contains.Substring("2"));
+        Assert.That(str, Contains.Substring("3"));
+    }
+}

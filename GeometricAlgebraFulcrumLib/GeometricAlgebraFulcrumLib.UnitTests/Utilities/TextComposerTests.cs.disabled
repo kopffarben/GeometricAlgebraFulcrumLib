@@ -1,0 +1,269 @@
+using System;
+using System.Linq;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Parametric;
+using NUnit.Framework;
+
+namespace GeometricAlgebraFulcrumLib.UnitTests.Utilities;
+
+/// <summary>
+/// Comprehensive tests for text composition utilities
+/// </summary>
+[TestFixture]
+public class TextComposerTests
+{
+    [TestFixture]
+    public class LinearTextComposerTests
+    {
+        [Test]
+        public void LinearTextComposer_Creation_ShouldWorkCorrectly()
+        {
+            var composer = new LinearTextComposer();
+            Assert.That(composer.Length, Is.EqualTo(0));
+            Assert.That(composer.IsEmpty, Is.True);
+            Assert.That(composer.ToString(), Is.EqualTo(string.Empty));
+        }
+
+        [Test]
+        public void LinearTextComposer_AppendText_ShouldWorkCorrectly()
+        {
+            var composer = new LinearTextComposer();
+            
+            composer.Append("Hello");
+            Assert.That(composer.ToString(), Is.EqualTo("Hello"));
+            Assert.That(composer.Length, Is.EqualTo(5));
+            Assert.That(composer.IsEmpty, Is.False);
+
+            composer.Append(" World");
+            Assert.That(composer.ToString(), Is.EqualTo("Hello World"));
+        }
+
+        [Test]
+        public void LinearTextComposer_AppendLine_ShouldWorkCorrectly()
+        {
+            var composer = new LinearTextComposer();
+            
+            composer.AppendLine("First line");
+            composer.AppendLine("Second line");
+            
+            var result = composer.ToString();
+            var lines = result.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            
+            Assert.That(lines.Length, Is.GreaterThanOrEqualTo(2));
+            Assert.That(lines[0], Is.EqualTo("First line"));
+            Assert.That(lines[1], Is.EqualTo("Second line"));
+        }
+
+        [Test]
+        public void LinearTextComposer_AppendAtNewLine_ShouldWorkCorrectly()
+        {
+            var composer = new LinearTextComposer();
+            
+            composer.Append("Start");
+            composer.AppendAtNewLine("New line");
+            
+            var result = composer.ToString();
+            Assert.That(result, Contains.Substring("Start"));
+            Assert.That(result, Contains.Substring("New line"));
+            Assert.That(result, Contains.Substring(Environment.NewLine));
+        }
+
+        [Test]
+        public void LinearTextComposer_AppendLineAtNewLine_ShouldWorkCorrectly()
+        {
+            var composer = new LinearTextComposer();
+            
+            composer.Append("Start");
+            composer.AppendLineAtNewLine("New line");
+            composer.Append("After");
+            
+            var result = composer.ToString();
+            var lines = result.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            
+            Assert.That(lines.Any(l => l.Contains("Start")), Is.True);
+            Assert.That(lines.Any(l => l.Contains("New line")), Is.True);
+            Assert.That(lines.Any(l => l.Contains("After")), Is.True);
+        }
+
+        [Test]
+        public void LinearTextComposer_AppendEmptyLines_ShouldWorkCorrectly()
+        {
+            var composer = new LinearTextComposer();
+            
+            composer.AppendLine("First");
+            composer.AppendEmptyLines(2);
+            composer.AppendLine("Last");
+            
+            var result = composer.ToString();
+            var lines = result.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            
+            // Should have at least 4 lines: "First", "", "", "Last"
+            Assert.That(lines.Length, Is.GreaterThanOrEqualTo(4));
+            Assert.That(lines[0], Is.EqualTo("First"));
+            Assert.That(lines[lines.Length - 2], Is.EqualTo("Last")); // -2 because of trailing newline
+        }
+
+        [Test]
+        public void LinearTextComposer_Clear_ShouldWorkCorrectly()
+        {
+            var composer = new LinearTextComposer();
+            
+            composer.Append("Some text");
+            Assert.That(composer.IsEmpty, Is.False);
+            
+            composer.Clear();
+            Assert.That(composer.IsEmpty, Is.True);
+            Assert.That(composer.Length, Is.EqualTo(0));
+            Assert.That(composer.ToString(), Is.EqualTo(string.Empty));
+        }
+
+        [Test]
+        public void LinearTextComposer_Indentation_ShouldWorkCorrectly()
+        {
+            var composer = new LinearTextComposer();
+            
+            composer.IncreaseIndentation();
+            composer.AppendAtNewLine("Indented");
+            composer.DecreaseIndentation();
+            composer.AppendAtNewLine("Not indented");
+            
+            var result = composer.ToString();
+            var lines = result.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            
+            // First line should be indented
+            Assert.That(lines[0], Does.StartWith("    ")); // Assuming default indentation is 4 spaces
+            // Second line should not be indented
+            Assert.That(lines[1], Does.Not.StartWith("    "));
+        }
+
+        [Test]
+        public void LinearTextComposer_StopWatch_ShouldWorkCorrectly()
+        {
+            var composer = new LinearTextComposer();
+            
+            composer.AddStopWatchHeader();
+            var initialLength = composer.Length;
+            
+            System.Threading.Thread.Sleep(10); // Small delay
+            
+            composer.AddStopWatchLogLine("Test operation");
+            
+            var result = composer.ToString();
+            Assert.That(result.Length, Is.GreaterThan(initialLength));
+            Assert.That(result, Contains.Substring("Test operation"));
+        }
+    }
+
+    [TestFixture] 
+    public class ParametricTextComposerTests
+    {
+        [Test]
+        public void ParametricTextComposer_Creation_ShouldWorkCorrectly()
+        {
+            var template = "Hello {name}, you are {age} years old.";
+            var composer = new ParametricTextComposer("#", "#", template);
+            
+            Assert.That(composer.Template, Is.EqualTo(template));
+        }
+
+        [Test]
+        public void ParametricTextComposer_SetParameters_ShouldWorkCorrectly()
+        {
+            var template = "Hello {name}, you are {age} years old.";
+            var composer = new ParametricTextComposer("{", "}", template);
+            
+            composer.SetParameter("name", "John");
+            composer.SetParameter("age", "25");
+            
+            var result = composer.GenerateText();
+            Assert.That(result, Is.EqualTo("Hello John, you are 25 years old."));
+        }
+
+        [Test]
+        public void ParametricTextComposer_MultipleParameterSets_ShouldWorkCorrectly()
+        {
+            var template = "Name: {name}, Age: {age}";
+            var composer = new ParametricTextComposer("{", "}", template);
+            
+            composer.SetParameter("name", "Alice");
+            composer.SetParameter("age", "30");
+            var result1 = composer.GenerateText();
+            
+            composer.SetParameter("name", "Bob");
+            composer.SetParameter("age", "25");
+            var result2 = composer.GenerateText();
+            
+            Assert.That(result1, Is.EqualTo("Name: Alice, Age: 30"));
+            Assert.That(result2, Is.EqualTo("Name: Bob, Age: 25"));
+        }
+
+        [Test]
+        public void ParametricTextComposer_ClearParameters_ShouldWorkCorrectly()
+        {
+            var template = "Hello {name}";
+            var composer = new ParametricTextComposer("{", "}", template);
+            
+            composer.SetParameter("name", "John");
+            Assert.That(composer.HasParameter("name"), Is.True);
+            
+            composer.ClearParameters();
+            Assert.That(composer.HasParameter("name"), Is.False);
+        }
+
+        [Test]
+        public void ParametricTextComposer_UnsetParameters_ShouldRemainUnchanged()
+        {
+            var template = "Hello {name}, your score is {score}";
+            var composer = new ParametricTextComposer("{", "}", template);
+            
+            composer.SetParameter("name", "John");
+            // Don't set 'score' parameter
+            
+            var result = composer.GenerateText();
+            Assert.That(result, Is.EqualTo("Hello John, your score is {score}"));
+        }
+
+        [Test]
+        public void ParametricTextComposer_CustomDelimiters_ShouldWorkCorrectly()
+        {
+            var template = "Hello <name>, you are <age> years old.";
+            var composer = new ParametricTextComposer("<", ">", template);
+            
+            composer.SetParameter("name", "Alice");
+            composer.SetParameter("age", "28");
+            
+            var result = composer.GenerateText();
+            Assert.That(result, Is.EqualTo("Hello Alice, you are 28 years old."));
+        }
+
+        [Test]
+        public void ParametricTextComposer_NestedParameters_ShouldWorkCorrectly()
+        {
+            var template = "The value of {outer{inner}param} is important.";
+            var composer = new ParametricTextComposer("{", "}", template);
+            
+            composer.SetParameter("inner", "Middle");
+            composer.SetParameter("outerMiddleparam", "42");
+            
+            // This tests complex parameter resolution
+            var result = composer.GenerateText();
+            // The exact behavior depends on implementation, but it should handle nested cases
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public void ParametricTextComposer_EscapedDelimiters_ShouldWorkCorrectly()
+        {
+            // Test behavior with escaped delimiters (if supported)
+            var template = "Use \\{this\\} as literal and {this} as parameter.";
+            var composer = new ParametricTextComposer("{", "}", template);
+            
+            composer.SetParameter("this", "REPLACED");
+            
+            var result = composer.GenerateText();
+            // Behavior depends on implementation - either escaped or not
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Contains.Substring("REPLACED"));
+        }
+    }
+}

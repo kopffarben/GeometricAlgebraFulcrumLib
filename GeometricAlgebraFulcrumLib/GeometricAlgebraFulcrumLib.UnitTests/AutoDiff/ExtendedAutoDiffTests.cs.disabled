@@ -1,0 +1,330 @@
+using System;
+using System.Linq;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.AutoDiff;
+using NUnit.Framework;
+
+namespace GeometricAlgebraFulcrumLib.UnitTests.AutoDiff;
+
+/// <summary>
+/// Extended comprehensive tests for automatic differentiation functionality
+/// </summary>
+[TestFixture]
+public class ExtendedAutoDiffTests
+{
+    private const double Tolerance = 1e-12;
+
+    [Test]
+    public void AutoDiff_BasicOperations_ShouldComputeCorrectDerivatives()
+    {
+        // Test f(x) = x^2, f'(x) = 2x
+        var x = DifferentialFunction.CreateVariable(0);
+        var f = x * x;
+        var derivative = f.GetDerivative(0);
+        
+        // Test at x = 3: f'(3) = 6
+        var result = derivative.GetValue(3.0);
+        Assert.That(result, Is.EqualTo(6.0).Within(Tolerance));
+
+        // Test f(x) = x^3, f'(x) = 3x^2
+        var f2 = x * x * x;
+        var derivative2 = f2.GetDerivative(0);
+        
+        // Test at x = 2: f'(2) = 12
+        var result2 = derivative2.GetValue(2.0);
+        Assert.That(result2, Is.EqualTo(12.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_ChainRule_ShouldWorkCorrectly()
+    {
+        // Test f(x) = sin(x^2), f'(x) = cos(x^2) * 2x
+        var x = DifferentialFunction.CreateVariable(0);
+        var inner = x * x;
+        var f = DifferentialFunction.Sin(inner);
+        var derivative = f.GetDerivative(0);
+        
+        // Test at x = 1: f'(1) = cos(1) * 2 * 1 = 2*cos(1)
+        var result = derivative.GetValue(1.0);
+        var expected = 2.0 * Math.Cos(1.0);
+        Assert.That(result, Is.EqualTo(expected).Within(Tolerance));
+
+        // Test f(x) = exp(sin(x)), f'(x) = exp(sin(x)) * cos(x)
+        var f2 = DifferentialFunction.Exp(DifferentialFunction.Sin(x));
+        var derivative2 = f2.GetDerivative(0);
+        
+        // Test at x = 0: f'(0) = exp(sin(0)) * cos(0) = exp(0) * 1 = 1
+        var result2 = derivative2.GetValue(0.0);
+        Assert.That(result2, Is.EqualTo(1.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_ProductRule_ShouldWorkCorrectly()
+    {
+        // Test f(x) = x * sin(x), f'(x) = sin(x) + x * cos(x)
+        var x = DifferentialFunction.CreateVariable(0);
+        var f = x * DifferentialFunction.Sin(x);
+        var derivative = f.GetDerivative(0);
+        
+        // Test at x = π/2: f'(π/2) = sin(π/2) + (π/2) * cos(π/2) = 1 + 0 = 1
+        var testValue = Math.PI / 2;
+        var result = derivative.GetValue(testValue);
+        var expected = Math.Sin(testValue) + testValue * Math.Cos(testValue);
+        Assert.That(result, Is.EqualTo(expected).Within(Tolerance));
+
+        // Test f(x) = x^2 * exp(x), f'(x) = 2x * exp(x) + x^2 * exp(x) = exp(x) * (2x + x^2)
+        var f2 = (x * x) * DifferentialFunction.Exp(x);
+        var derivative2 = f2.GetDerivative(0);
+        
+        // Test at x = 1: f'(1) = exp(1) * (2 + 1) = 3 * e
+        var result2 = derivative2.GetValue(1.0);
+        var expected2 = 3.0 * Math.E;
+        Assert.That(result2, Is.EqualTo(expected2).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_QuotientRule_ShouldWorkCorrectly()
+    {
+        // Test f(x) = x / (x + 1), f'(x) = 1 / (x + 1)^2
+        var x = DifferentialFunction.CreateVariable(0);
+        var f = x / (x + DifferentialFunction.CreateConstant(1.0));
+        var derivative = f.GetDerivative(0);
+        
+        // Test at x = 2: f'(2) = 1 / (2 + 1)^2 = 1/9
+        var result = derivative.GetValue(2.0);
+        var expected = 1.0 / 9.0;
+        Assert.That(result, Is.EqualTo(expected).Within(Tolerance));
+
+        // Test f(x) = sin(x) / x, f'(x) = (x * cos(x) - sin(x)) / x^2
+        var f2 = DifferentialFunction.Sin(x) / x;
+        var derivative2 = f2.GetDerivative(0);
+        
+        // Test at x = π: f'(π) = (π * cos(π) - sin(π)) / π^2 = -π / π^2 = -1/π
+        var testValue2 = Math.PI;
+        var result2 = derivative2.GetValue(testValue2);
+        var expected2 = -1.0 / Math.PI;
+        Assert.That(result2, Is.EqualTo(expected2).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_TrigonometricFunctions_ShouldHaveCorrectDerivatives()
+    {
+        var x = DifferentialFunction.CreateVariable(0);
+
+        // Test sin(x), derivative should be cos(x)
+        var sinX = DifferentialFunction.Sin(x);
+        var sinDerivative = sinX.GetDerivative(0);
+        var testValue = Math.PI / 4;
+        var sinResult = sinDerivative.GetValue(testValue);
+        Assert.That(sinResult, Is.EqualTo(Math.Cos(testValue)).Within(Tolerance));
+
+        // Test cos(x), derivative should be -sin(x)
+        var cosX = DifferentialFunction.Cos(x);
+        var cosDerivative = cosX.GetDerivative(0);
+        var cosResult = cosDerivative.GetValue(testValue);
+        Assert.That(cosResult, Is.EqualTo(-Math.Sin(testValue)).Within(Tolerance));
+
+        // Test tan(x), derivative should be sec^2(x) = 1/cos^2(x)
+        var tanX = DifferentialFunction.Tan(x);
+        var tanDerivative = tanX.GetDerivative(0);
+        var tanResult = tanDerivative.GetValue(testValue);
+        var expectedTan = 1.0 / (Math.Cos(testValue) * Math.Cos(testValue));
+        Assert.That(tanResult, Is.EqualTo(expectedTan).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_ExponentialAndLogarithmic_ShouldHaveCorrectDerivatives()
+    {
+        var x = DifferentialFunction.CreateVariable(0);
+
+        // Test exp(x), derivative should be exp(x)
+        var expX = DifferentialFunction.Exp(x);
+        var expDerivative = expX.GetDerivative(0);
+        var testValue = 2.0;
+        var expResult = expDerivative.GetValue(testValue);
+        Assert.That(expResult, Is.EqualTo(Math.Exp(testValue)).Within(Tolerance));
+
+        // Test log(x), derivative should be 1/x
+        var logX = DifferentialFunction.Log(x);
+        var logDerivative = logX.GetDerivative(0);
+        var logResult = logDerivative.GetValue(testValue);
+        Assert.That(logResult, Is.EqualTo(1.0 / testValue).Within(Tolerance));
+
+        // Test x^n where n is constant, derivative should be n * x^(n-1)
+        var power = 3.0;
+        var powerX = DifferentialFunction.Pow(x, DifferentialFunction.CreateConstant(power));
+        var powerDerivative = powerX.GetDerivative(0);
+        var powerResult = powerDerivative.GetValue(testValue);
+        var expectedPower = power * Math.Pow(testValue, power - 1);
+        Assert.That(powerResult, Is.EqualTo(expectedPower).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_MultipleVariables_ShouldComputePartialDerivatives()
+    {
+        // Test f(x,y) = x^2 + y^2, ∂f/∂x = 2x, ∂f/∂y = 2y
+        var x = DifferentialFunction.CreateVariable(0);
+        var y = DifferentialFunction.CreateVariable(1);
+        var f = x * x + y * y;
+
+        var partialX = f.GetDerivative(0);
+        var partialY = f.GetDerivative(1);
+
+        var testX = 3.0;
+        var testY = 4.0;
+        var values = new[] { testX, testY };
+
+        var resultX = partialX.GetValue(values);
+        var resultY = partialY.GetValue(values);
+
+        Assert.That(resultX, Is.EqualTo(2 * testX).Within(Tolerance));
+        Assert.That(resultY, Is.EqualTo(2 * testY).Within(Tolerance));
+
+        // Test f(x,y) = x * y, ∂f/∂x = y, ∂f/∂y = x
+        var f2 = x * y;
+        var partial2X = f2.GetDerivative(0);
+        var partial2Y = f2.GetDerivative(1);
+
+        var result2X = partial2X.GetValue(values);
+        var result2Y = partial2Y.GetValue(values);
+
+        Assert.That(result2X, Is.EqualTo(testY).Within(Tolerance));
+        Assert.That(result2Y, Is.EqualTo(testX).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_HigherOrderDerivatives_ShouldBeCorrect()
+    {
+        // Test f(x) = x^4, f'(x) = 4x^3, f''(x) = 12x^2
+        var x = DifferentialFunction.CreateVariable(0);
+        var f = x * x * x * x;
+
+        var firstDerivative = f.GetDerivative(0);
+        var secondDerivative = firstDerivative.GetDerivative(0);
+
+        var testValue = 2.0;
+        
+        var firstResult = firstDerivative.GetValue(testValue);
+        var secondResult = secondDerivative.GetValue(testValue);
+
+        var expectedFirst = 4 * Math.Pow(testValue, 3);
+        var expectedSecond = 12 * Math.Pow(testValue, 2);
+
+        Assert.That(firstResult, Is.EqualTo(expectedFirst).Within(Tolerance));
+        Assert.That(secondResult, Is.EqualTo(expectedSecond).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_CompositeFunction_ShouldHandleComplexExpressions()
+    {
+        // Test f(x) = exp(sin(x^2 + 1))
+        var x = DifferentialFunction.CreateVariable(0);
+        var inner = x * x + DifferentialFunction.CreateConstant(1.0);
+        var sinInner = DifferentialFunction.Sin(inner);
+        var f = DifferentialFunction.Exp(sinInner);
+
+        var derivative = f.GetDerivative(0);
+
+        // f'(x) = exp(sin(x^2 + 1)) * cos(x^2 + 1) * 2x
+        var testValue = 1.0;
+        var result = derivative.GetValue(testValue);
+
+        var innerValue = testValue * testValue + 1.0;
+        var expected = Math.Exp(Math.Sin(innerValue)) * Math.Cos(innerValue) * 2 * testValue;
+
+        Assert.That(result, Is.EqualTo(expected).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_Constants_ShouldHaveZeroDerivatives()
+    {
+        var constant = DifferentialFunction.CreateConstant(42.0);
+        var derivative = constant.GetDerivative(0);
+
+        var result = derivative.GetValue(1.0);
+        Assert.That(result, Is.EqualTo(0.0).Within(Tolerance));
+
+        // Test constant in composite expression
+        var x = DifferentialFunction.CreateVariable(0);
+        var f = constant + x * x;
+        var fDerivative = f.GetDerivative(0);
+
+        var testValue = 3.0;
+        var fResult = fDerivative.GetValue(testValue);
+        Assert.That(fResult, Is.EqualTo(2 * testValue).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_LinearCombinations_ShouldSatisfyLinearity()
+    {
+        var x = DifferentialFunction.CreateVariable(0);
+        var f = x * x;
+        var g = DifferentialFunction.Sin(x);
+
+        var a = 3.0;
+        var b = 5.0;
+
+        // Test (af + bg)' = af' + bg'
+        var combination = DifferentialFunction.CreateConstant(a) * f + 
+                         DifferentialFunction.CreateConstant(b) * g;
+        var combinationDerivative = combination.GetDerivative(0);
+
+        var fDerivative = f.GetDerivative(0);
+        var gDerivative = g.GetDerivative(0);
+
+        var testValue = Math.PI / 6;
+        
+        var combinationResult = combinationDerivative.GetValue(testValue);
+        var expectedResult = a * fDerivative.GetValue(testValue) + 
+                           b * gDerivative.GetValue(testValue);
+
+        Assert.That(combinationResult, Is.EqualTo(expectedResult).Within(Tolerance));
+    }
+
+    [Test]
+    public void AutoDiff_EdgeCases_ShouldBeHandledGracefully()
+    {
+        var x = DifferentialFunction.CreateVariable(0);
+
+        // Test division by very small number (should not cause overflow)
+        var smallConstant = DifferentialFunction.CreateConstant(1e-10);
+        var f = x / smallConstant;
+        var derivative = f.GetDerivative(0);
+
+        var result = derivative.GetValue(1.0);
+        Assert.That(result, Is.EqualTo(1e10).Within(1e6)); // Allow for some numerical error
+
+        // Test very large exponents (within reasonable bounds)
+        var largeExp = DifferentialFunction.Exp(x);
+        var largeExpDerivative = largeExp.GetDerivative(0);
+
+        // Test at x = 5 (exp(5) is large but manageable)
+        var largeResult = largeExpDerivative.GetValue(5.0);
+        Assert.That(largeResult, Is.EqualTo(Math.Exp(5.0)).Within(1e-8));
+    }
+
+    [Test]
+    public void AutoDiff_NumericalStability_ShouldBeRobust()
+    {
+        // Test numerical stability with various operations
+        var x = DifferentialFunction.CreateVariable(0);
+        
+        // Test functions that might cause numerical issues
+        var functions = new[]
+        {
+            x * x + DifferentialFunction.CreateConstant(1e-15),
+            DifferentialFunction.Log(x + DifferentialFunction.CreateConstant(1.0)),
+            DifferentialFunction.Sqrt(x * x + DifferentialFunction.CreateConstant(1e-12))
+        };
+
+        foreach (var f in functions)
+        {
+            var derivative = f.GetDerivative(0);
+            var testValue = 1.0;
+            
+            // Should not throw and should produce finite result
+            var result = derivative.GetValue(testValue);
+            Assert.That(double.IsFinite(result), Is.True);
+            Assert.That(double.IsNaN(result), Is.False);
+        }
+    }
+}

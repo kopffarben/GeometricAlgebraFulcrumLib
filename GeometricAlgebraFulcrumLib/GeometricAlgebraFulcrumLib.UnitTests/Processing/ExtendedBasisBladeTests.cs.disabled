@@ -1,0 +1,295 @@
+using System;
+using System.Diagnostics;
+using System.Numerics;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using NUnit.Framework;
+
+namespace GeometricAlgebraFulcrumLib.UnitTests.Processing;
+
+/// <summary>
+/// Extended comprehensive tests for basis blade operations
+/// </summary>
+[TestFixture]
+public class ExtendedBasisBladeTests
+{
+    private const double Tolerance = 1e-12;
+    
+    public int VSpaceDimensions => 8;
+    public ulong GaSpaceDimensions => 1UL << VSpaceDimensions;
+    
+    public XGaFloat64Processor BasisSet { get; }
+        = XGaFloat64Processor.Create(4, 4);
+
+    [Test]
+    public void ExtendedBasisBlade_GradeOperations_ShouldBeConsistent()
+    {
+        for (var id = 0UL; id < Math.Min(GaSpaceDimensions, 1000UL); id++)
+        {
+            var indexSet = id.ToUInt64IndexSet();
+            var grade = indexSet.BasisBladeIdToGrade();
+            var (extractedGrade, index) = indexSet.BasisBladeIdToGradeIndex();
+            
+            // Grade should be consistent between methods
+            Assert.That(grade, Is.EqualTo(extractedGrade));
+            
+            // Grade should equal population count
+            Assert.That(grade, Is.EqualTo(BitOperations.PopCount(id)));
+            
+            // Grade should be within valid range
+            Assert.That(grade, Is.LessThanOrEqualTo(VSpaceDimensions));
+            
+            // Index should be within valid range for this grade
+            var maxIndex = VSpaceDimensions.KVectorSpaceDimensions((int)grade);
+            Assert.That(index, Is.LessThan(maxIndex));
+        }
+    }
+
+    [Test]
+    public void ExtendedBasisBlade_InvolutionConsistency_ShouldBeCorrect()
+    {
+        for (var id = 0UL; id < Math.Min(GaSpaceDimensions, 500UL); id++)
+        {
+            var indexSet = id.ToUInt64IndexSet();
+            var grade = indexSet.BasisBladeIdToGrade();
+
+            // Test grade involution sign consistency
+            var gradeInvolutionSign1 = indexSet.GradeInvolutionSignOfBasisBladeId();
+            var gradeInvolutionSign2 = grade.GradeInvolutionSignOfGrade();
+            Assert.That(gradeInvolutionSign1, Is.EqualTo(gradeInvolutionSign2));
+
+            // Test reverse sign consistency
+            var reverseSign1 = indexSet.ReverseSignOfBasisBladeId();
+            var reverseSign2 = grade.ReverseSignOfGrade();
+            Assert.That(reverseSign1, Is.EqualTo(reverseSign2));
+
+            // Test Clifford conjugate sign consistency
+            var cliffordSign1 = indexSet.CliffordConjugateSignOfBasisBladeId();
+            var cliffordSign2 = grade.CliffordConjugateSignOfGrade();
+            Assert.That(cliffordSign1, Is.EqualTo(cliffordSign2));
+
+            // Test boolean versions match sign versions
+            Assert.That(indexSet.GradeInvolutionIsNegativeOfBasisBladeId(), 
+                       Is.EqualTo(gradeInvolutionSign1.IsNegative));
+            Assert.That(indexSet.ReverseIsNegativeOfBasisBladeId(), 
+                       Is.EqualTo(reverseSign1.IsNegative));
+            Assert.That(indexSet.CliffordConjugateIsNegativeOfBasisBladeId(), 
+                       Is.EqualTo(cliffordSign1.IsNegative));
+        }
+    }
+
+    [Test]
+    public void ExtendedBasisBlade_GeometricProductSigns_ShouldBeCorrect()
+    {
+        for (var id1 = 0UL; id1 < Math.Min(GaSpaceDimensions, 100UL); id1++)
+        {
+            for (var id2 = 0UL; id2 < Math.Min(GaSpaceDimensions, 100UL); id2++)
+            {
+                var is1 = (IndexSet)id1;
+                var is2 = (IndexSet)id2;
+
+                // Test GP sign
+                var gpSign = BasisSet.GpSign(is1, is2);
+                var egpSign = BasisSet.EGpSign(is1, is2);
+
+                // Signs should be consistent
+                Assert.That(gpSign.IsPositive || gpSign.IsNegative || gpSign.IsZero, Is.True);
+                Assert.That(egpSign.IsPositive || egpSign.IsNegative || egpSign.IsZero, Is.True);
+
+                // Test commutative properties where applicable
+                var gpSignReverse = BasisSet.GpSign(is2, is1);
+                var resultId = is1.SymmetricDifference(is2);
+                var resultGrade = resultId.BasisBladeIdToGrade();
+
+                // For same arguments, GP should be consistent with metric
+                if (id1 == id2)
+                {
+                    var gpSquaredSign = BasisSet.GpSquaredSign(is1);
+                    Assert.That(gpSign, Is.EqualTo(gpSquaredSign));
+                }
+            }
+        }
+    }
+
+    [Test]
+    public void ExtendedBasisBlade_OuterProductProperties_ShouldBeCorrect()
+    {
+        for (var id1 = 0UL; id1 < Math.Min(GaSpaceDimensions, 50UL); id1++)
+        {
+            for (var id2 = 0UL; id2 < Math.Min(GaSpaceDimensions, 50UL); id2++)
+            {
+                var is1 = (IndexSet)id1;
+                var is2 = (IndexSet)id2;
+                var grade1 = is1.BasisBladeIdToGrade();
+                var grade2 = is2.BasisBladeIdToGrade();
+
+                // Outer product should be zero if blades share common factors
+                var intersection = is1.Intersect(is2);
+                var hasCommonFactors = !intersection.IsEmptySet;
+
+                if (hasCommonFactors)
+                {
+                    // If they share common factors, outer product should be zero
+                    // This is tested implicitly in geometric product when result would be zero
+                    continue;
+                }
+
+                // Test antisymmetry: A ∧ B = (-1)^(grade(A)*grade(B)) B ∧ A
+                var expectedSign = IntegerSign.Negative.Power((int)(grade1 * grade2));
+                var gpSign12 = BasisSet.GpSign(is1, is2);
+                var gpSign21 = BasisSet.GpSign(is2, is1);
+
+                if (!gpSign12.IsZero && !gpSign21.IsZero)
+                {
+                    Assert.That(gpSign12 * expectedSign, Is.EqualTo(gpSign21));
+                }
+            }
+        }
+    }
+
+    [Test]
+    public void ExtendedBasisBlade_MetricProperties_ShouldBeCorrect()
+    {
+        // Test that the processor maintains metric consistency
+        var processor1 = XGaFloat64Processor.Euclidean;
+        var processor2 = XGaFloat64Processor.Create(4, 0);
+
+        for (uint i = 0; i < Math.Min(VSpaceDimensions, 6); i++)
+        {
+            var basisVector = IndexSet.CreateFromSingleIndex(i);
+
+            // In Euclidean space, basis vectors should square to +1
+            var euclideanSign = processor1.GpSquaredSign(basisVector);
+            Assert.That(euclideanSign.IsPositive, Is.True);
+
+            // Test various metrics
+            var posDefSign = processor2.GpSquaredSign(basisVector);
+            // The sign depends on the specific metric configuration
+            Assert.That(posDefSign.IsPositive || posDefSign.IsNegative, Is.True);
+        }
+    }
+
+    [Test]
+    public void ExtendedBasisBlade_DualityOperations_ShouldBeCorrect()
+    {
+        var processor = XGaFloat64Processor.Create(4); // 4D space
+
+        for (var id = 0UL; id < Math.Min(1UL << 4, 16UL); id++)
+        {
+            var indexSet = (IndexSet)id;
+            var grade = indexSet.BasisBladeIdToGrade();
+            var dualGrade = 4 - (int)grade; // In 4D space
+
+            // Test that dual relationships are consistent
+            Assert.That(dualGrade, Is.GreaterThanOrEqualTo(0));
+            Assert.That(dualGrade, Is.LessThanOrEqualTo(4));
+
+            // Test complement operations
+            var complementSet = indexSet.Complement(4);
+            var complementGrade = complementSet.BasisBladeIdToGrade();
+            Assert.That(complementGrade, Is.EqualTo(dualGrade));
+
+            // Test double complement returns original
+            var doubleComplement = complementSet.Complement(4);
+            Assert.That(doubleComplement, Is.EqualTo(indexSet));
+        }
+    }
+
+    [Test]
+    public void ExtendedBasisBlade_CombinatoricsProperties_ShouldBeCorrect()
+    {
+        // Test that basis blade counting is correct
+        var totalBlades = 0UL;
+
+        for (var grade = 0; grade <= VSpaceDimensions; grade++)
+        {
+            var gradeBlades = VSpaceDimensions.KVectorSpaceDimensions(grade);
+            totalBlades += (ulong)gradeBlades;
+
+            // Test binomial coefficient property
+            var binomialCoeff = VSpaceDimensions.GetBinomialCoefficient(grade);
+            Assert.That(gradeBlades, Is.EqualTo(binomialCoeff));
+
+            // Test symmetry: C(n,k) = C(n,n-k)
+            var symmetricGrade = VSpaceDimensions - grade;
+            var symmetricBlades = VSpaceDimensions.KVectorSpaceDimensions(symmetricGrade);
+            Assert.That(gradeBlades, Is.EqualTo(symmetricBlades));
+        }
+
+        // Total number of blades should be 2^n
+        Assert.That(totalBlades, Is.EqualTo(GaSpaceDimensions));
+    }
+
+    [Test]
+    public void ExtendedBasisBlade_IndexSetOperations_ShouldBeCorrect()
+    {
+        for (var id1 = 0UL; id1 < Math.Min(GaSpaceDimensions, 100UL); id1++)
+        {
+            for (var id2 = 0UL; id2 < Math.Min(GaSpaceDimensions, 100UL); id2++)
+            {
+                var is1 = (IndexSet)id1;
+                var is2 = (IndexSet)id2;
+
+                // Test union and intersection properties
+                var union = is1.Union(is2);
+                var intersection = is1.Intersect(is2);
+                var difference = is1.Difference(is2);
+                var symDiff = is1.SymmetricDifference(is2);
+
+                // Union should contain all elements from both sets
+                Assert.That(union.Contains(is1), Is.True);
+                Assert.That(union.Contains(is2), Is.True);
+
+                // Intersection should be contained in both sets
+                Assert.That(is1.Contains(intersection), Is.True);
+                Assert.That(is2.Contains(intersection), Is.True);
+
+                // Test De Morgan's laws and set identities
+                var unionComplement = union.Complement(VSpaceDimensions);
+                var intersectionOfComplements = is1.Complement(VSpaceDimensions)
+                    .Intersect(is2.Complement(VSpaceDimensions));
+                
+                // De Morgan: (A ∪ B)' = A' ∩ B'
+                Assert.That(unionComplement, Is.EqualTo(intersectionOfComplements));
+
+                // Test symmetric difference properties
+                Assert.That(symDiff.IsEqualTo(is1.Union(is2).Difference(intersection)), Is.True);
+                Assert.That(symDiff.IsEqualTo(is1.Difference(is2).Union(is2.Difference(is1))), Is.True);
+            }
+        }
+    }
+
+    [Test]
+    public void ExtendedBasisBlade_PerformanceBaseline_ShouldBeReasonable()
+    {
+        // Performance test to ensure operations are reasonably fast
+        var stopwatch = Stopwatch.StartNew();
+        var iterations = 10000;
+
+        for (var i = 0; i < iterations; i++)
+        {
+            var id = (ulong)(i % Math.Min(GaSpaceDimensions, 256));
+            var indexSet = id.ToUInt64IndexSet();
+            
+            // Perform typical operations
+            var grade = indexSet.BasisBladeIdToGrade();
+            var (g, idx) = indexSet.BasisBladeIdToGradeIndex();
+            var reverseSign = indexSet.ReverseSignOfBasisBladeId();
+            var gradeInvSign = indexSet.GradeInvolutionSignOfBasisBladeId();
+            
+            // Ensure compiler doesn't optimize away
+            Assert.That(grade, Is.GreaterThanOrEqualTo(0));
+        }
+
+        stopwatch.Stop();
+        
+        // Should complete within reasonable time (adjust threshold as needed)
+        Assert.That(stopwatch.ElapsedMilliseconds, Is.LessThan(5000), 
+                   $"Performance test took {stopwatch.ElapsedMilliseconds}ms for {iterations} iterations");
+        
+        TestContext.WriteLine($"Processed {iterations} operations in {stopwatch.ElapsedMilliseconds}ms");
+    }
+}

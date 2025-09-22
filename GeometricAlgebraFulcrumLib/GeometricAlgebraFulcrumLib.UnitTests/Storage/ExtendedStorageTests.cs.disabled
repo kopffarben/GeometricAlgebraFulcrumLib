@@ -1,0 +1,437 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
+using NUnit.Framework;
+
+namespace GeometricAlgebraFulcrumLib.UnitTests.Storage;
+
+/// <summary>
+/// Extended comprehensive tests for storage and data structure functionality
+/// </summary>
+[TestFixture]
+public class ExtendedStorageTests
+{
+    private const double Tolerance = 1e-12;
+
+    [TestFixture]
+    public class IndexSetTests
+    {
+        [Test]
+        public void IndexSet_Creation_ShouldHandleVariousInputs()
+        {
+            // Test empty index set
+            var empty = IndexSet.Create();
+            Assert.That(empty.IsEmptySet, Is.True);
+            Assert.That(empty.Count, Is.EqualTo(0));
+
+            // Test single index
+            var single = IndexSet.CreateFromSingleIndex(5);
+            Assert.That(single.Count, Is.EqualTo(1));
+            Assert.That(single.Contains(5), Is.True);
+            Assert.That(single.Contains(4), Is.False);
+
+            // Test multiple indices
+            var multiple = IndexSet.Create(1, 3, 5, 7);
+            Assert.That(multiple.Count, Is.EqualTo(4));
+            Assert.That(multiple.Contains(1), Is.True);
+            Assert.That(multiple.Contains(3), Is.True);
+            Assert.That(multiple.Contains(5), Is.True);
+            Assert.That(multiple.Contains(7), Is.True);
+            Assert.That(multiple.Contains(2), Is.False);
+        }
+
+        [Test]
+        public void IndexSet_SetOperations_ShouldWorkCorrectly()
+        {
+            var set1 = IndexSet.Create(1, 3, 5);
+            var set2 = IndexSet.Create(3, 5, 7);
+
+            // Test union
+            var union = set1.Union(set2);
+            Assert.That(union.Count, Is.EqualTo(4));
+            Assert.That(union.Contains(1), Is.True);
+            Assert.That(union.Contains(3), Is.True);
+            Assert.That(union.Contains(5), Is.True);
+            Assert.That(union.Contains(7), Is.True);
+
+            // Test intersection
+            var intersection = set1.Intersect(set2);
+            Assert.That(intersection.Count, Is.EqualTo(2));
+            Assert.That(intersection.Contains(3), Is.True);
+            Assert.That(intersection.Contains(5), Is.True);
+            Assert.That(intersection.Contains(1), Is.False);
+            Assert.That(intersection.Contains(7), Is.False);
+
+            // Test difference
+            var difference = set1.Difference(set2);
+            Assert.That(difference.Count, Is.EqualTo(1));
+            Assert.That(difference.Contains(1), Is.True);
+            Assert.That(difference.Contains(3), Is.False);
+
+            // Test symmetric difference
+            var symDiff = set1.SymmetricDifference(set2);
+            Assert.That(symDiff.Count, Is.EqualTo(2));
+            Assert.That(symDiff.Contains(1), Is.True);
+            Assert.That(symDiff.Contains(7), Is.True);
+            Assert.That(symDiff.Contains(3), Is.False);
+            Assert.That(symDiff.Contains(5), Is.False);
+        }
+
+        [Test]
+        public void IndexSet_Complement_ShouldWorkCorrectly()
+        {
+            var set = IndexSet.Create(1, 3, 5);
+            var complement = set.Complement(8);
+
+            Assert.That(complement.Contains(0), Is.True);
+            Assert.That(complement.Contains(1), Is.False);
+            Assert.That(complement.Contains(2), Is.True);
+            Assert.That(complement.Contains(3), Is.False);
+            Assert.That(complement.Contains(4), Is.True);
+            Assert.That(complement.Contains(5), Is.False);
+            Assert.That(complement.Contains(6), Is.True);
+            Assert.That(complement.Contains(7), Is.True);
+
+            // Test double complement
+            var doubleComplement = complement.Complement(8);
+            Assert.That(doubleComplement, Is.EqualTo(set));
+        }
+
+        [Test]
+        public void IndexSet_SubsetOperations_ShouldWorkCorrectly()
+        {
+            var set1 = IndexSet.Create(1, 3, 5);
+            var set2 = IndexSet.Create(1, 3);
+            var set3 = IndexSet.Create(1, 3, 5, 7);
+
+            // Test subset
+            Assert.That(set2.IsSubsetOf(set1), Is.True);
+            Assert.That(set1.IsSubsetOf(set2), Is.False);
+            Assert.That(set1.IsSubsetOf(set3), Is.True);
+
+            // Test superset
+            Assert.That(set1.IsSupersetOf(set2), Is.True);
+            Assert.That(set2.IsSupersetOf(set1), Is.False);
+            Assert.That(set3.IsSupersetOf(set1), Is.True);
+
+            // Test proper subset
+            Assert.That(set2.IsProperSubsetOf(set1), Is.True);
+            Assert.That(set1.IsProperSubsetOf(set1), Is.False);
+        }
+
+        [Test]
+        public void IndexSet_Enumeration_ShouldWorkCorrectly()
+        {
+            var set = IndexSet.Create(7, 3, 1, 5);
+            var indices = set.ToArray();
+
+            // Should be sorted
+            Assert.That(indices, Is.Ordered);
+            Assert.That(indices, Is.EqualTo(new[] { 1, 3, 5, 7 }));
+
+            // Test enumeration consistency
+            var count = 0;
+            foreach (var index in set)
+            {
+                Assert.That(set.Contains(index), Is.True);
+                count++;
+            }
+            Assert.That(count, Is.EqualTo(set.Count));
+        }
+
+        [Test]
+        public void IndexSet_BinaryRepresentation_ShouldBeCorrect()
+        {
+            // Test conversion to/from binary representation
+            var set = IndexSet.Create(0, 2, 4);
+            var binaryValue = set.ToUInt64();
+            
+            // Binary: 10101 (bits 0, 2, 4 set)
+            var expectedBinary = 0b10101UL;
+            Assert.That(binaryValue, Is.EqualTo(expectedBinary));
+
+            // Test conversion back
+            var reconstructed = binaryValue.ToUInt64IndexSet();
+            Assert.That(reconstructed, Is.EqualTo(set));
+        }
+
+        [Test]
+        public void IndexSet_Equality_ShouldWorkCorrectly()
+        {
+            var set1 = IndexSet.Create(1, 3, 5);
+            var set2 = IndexSet.Create(5, 1, 3); // Different order
+            var set3 = IndexSet.Create(1, 3, 7);
+
+            Assert.That(set1.Equals(set2), Is.True);
+            Assert.That(set1.Equals(set3), Is.False);
+            Assert.That(set1 == set2, Is.True);
+            Assert.That(set1 != set3, Is.True);
+
+            // Test hash code consistency
+            Assert.That(set1.GetHashCode(), Is.EqualTo(set2.GetHashCode()));
+        }
+
+        [Test]
+        public void IndexSet_EdgeCases_ShouldBeHandledCorrectly()
+        {
+            // Test with maximum index values
+            var largeSet = IndexSet.Create(62, 63);
+            Assert.That(largeSet.Count, Is.EqualTo(2));
+            Assert.That(largeSet.Contains(62), Is.True);
+            Assert.That(largeSet.Contains(63), Is.True);
+
+            // Test empty set operations
+            var empty1 = IndexSet.Create();
+            var empty2 = IndexSet.Create();
+            var nonEmpty = IndexSet.Create(1, 2, 3);
+
+            Assert.That(empty1.Union(empty2), Is.EqualTo(empty1));
+            Assert.That(empty1.Intersect(nonEmpty), Is.EqualTo(empty1));
+            Assert.That(nonEmpty.Union(empty1), Is.EqualTo(nonEmpty));
+
+            // Test single element operations
+            var single = IndexSet.CreateFromSingleIndex(5);
+            Assert.That(single.Union(single), Is.EqualTo(single));
+            Assert.That(single.Intersect(single), Is.EqualTo(single));
+            Assert.That(single.Difference(single).IsEmptySet, Is.True);
+        }
+    }
+
+    [TestFixture]
+    public class DictionaryStorageTests
+    {
+        [Test]
+        public void Dictionary_BasicOperations_ShouldWorkCorrectly()
+        {
+            var dict = new Dictionary<int, double>();
+
+            // Test adding and retrieving values
+            dict[1] = 1.5;
+            dict[3] = 2.7;
+            dict[5] = -0.8;
+
+            Assert.That(dict[1], Is.EqualTo(1.5).Within(Tolerance));
+            Assert.That(dict[3], Is.EqualTo(2.7).Within(Tolerance));
+            Assert.That(dict[5], Is.EqualTo(-0.8).Within(Tolerance));
+
+            Assert.That(dict.Count, Is.EqualTo(3));
+            Assert.That(dict.ContainsKey(1), Is.True);
+            Assert.That(dict.ContainsKey(2), Is.False);
+        }
+
+        [Test]
+        public void Dictionary_Iteration_ShouldWorkCorrectly()
+        {
+            var dict = new Dictionary<string, int>
+            {
+                ["first"] = 1,
+                ["second"] = 2,
+                ["third"] = 3
+            };
+
+            var keys = dict.Keys.ToList();
+            var values = dict.Values.ToList();
+
+            Assert.That(keys.Count, Is.EqualTo(3));
+            Assert.That(values.Count, Is.EqualTo(3));
+            Assert.That(keys, Contains.Item("first"));
+            Assert.That(keys, Contains.Item("second"));
+            Assert.That(keys, Contains.Item("third"));
+
+            var sum = 0;
+            foreach (var kvp in dict)
+            {
+                sum += kvp.Value;
+            }
+            Assert.That(sum, Is.EqualTo(6));
+        }
+
+        [Test]
+        public void Dictionary_RemovalOperations_ShouldWorkCorrectly()
+        {
+            var dict = new Dictionary<int, string>
+            {
+                [1] = "one",
+                [2] = "two",
+                [3] = "three"
+            };
+
+            // Test removal
+            var removed = dict.Remove(2);
+            Assert.That(removed, Is.True);
+            Assert.That(dict.Count, Is.EqualTo(2));
+            Assert.That(dict.ContainsKey(2), Is.False);
+
+            // Test removal of non-existent key
+            var notRemoved = dict.Remove(5);
+            Assert.That(notRemoved, Is.False);
+            Assert.That(dict.Count, Is.EqualTo(2));
+
+            // Test clear
+            dict.Clear();
+            Assert.That(dict.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Dictionary_TryGetValue_ShouldWorkCorrectly()
+        {
+            var dict = new Dictionary<int, double>
+            {
+                [1] = 1.5,
+                [3] = 2.7
+            };
+
+            // Test successful retrieval
+            var success1 = dict.TryGetValue(1, out var value1);
+            Assert.That(success1, Is.True);
+            Assert.That(value1, Is.EqualTo(1.5).Within(Tolerance));
+
+            // Test failed retrieval
+            var success2 = dict.TryGetValue(2, out var value2);
+            Assert.That(success2, Is.False);
+            Assert.That(value2, Is.EqualTo(default(double)));
+        }
+
+        [Test]
+        public void Dictionary_CustomKeyTypes_ShouldWorkCorrectly()
+        {
+            // Test with IndexSet as key
+            var dict = new Dictionary<IndexSet, string>();
+            var key1 = IndexSet.Create(1, 3, 5);
+            var key2 = IndexSet.Create(2, 4, 6);
+
+            dict[key1] = "odd";
+            dict[key2] = "even";
+
+            Assert.That(dict[key1], Is.EqualTo("odd"));
+            Assert.That(dict[key2], Is.EqualTo("even"));
+
+            // Test with equivalent but different instance
+            var key1Copy = IndexSet.Create(1, 3, 5);
+            Assert.That(dict[key1Copy], Is.EqualTo("odd"));
+        }
+    }
+
+    [TestFixture]
+    public class CollectionTests
+    {
+        [Test]
+        public void List_Operations_ShouldMaintainOrder()
+        {
+            var list = new List<double> { 1.1, 2.2, 3.3 };
+
+            // Test insertion
+            list.Insert(1, 1.5);
+            Assert.That(list, Is.EqualTo(new[] { 1.1, 1.5, 2.2, 3.3 }));
+
+            // Test removal
+            list.Remove(2.2);
+            Assert.That(list, Is.EqualTo(new[] { 1.1, 1.5, 3.3 }));
+
+            // Test index access
+            list[1] = 1.8;
+            Assert.That(list[1], Is.EqualTo(1.8).Within(Tolerance));
+        }
+
+        [Test]
+        public void HashSet_Operations_ShouldPreventDuplicates()
+        {
+            var set = new HashSet<int> { 1, 2, 3 };
+
+            // Test duplicate prevention
+            var added = set.Add(2);
+            Assert.That(added, Is.False);
+            Assert.That(set.Count, Is.EqualTo(3));
+
+            // Test new element addition
+            var addedNew = set.Add(4);
+            Assert.That(addedNew, Is.True);
+            Assert.That(set.Count, Is.EqualTo(4));
+
+            // Test set operations
+            var other = new HashSet<int> { 3, 4, 5 };
+            set.UnionWith(other);
+            Assert.That(set, Is.EquivalentTo(new[] { 1, 2, 3, 4, 5 }));
+        }
+
+        [Test]
+        public void SortedDictionary_ShouldMaintainOrder()
+        {
+            var sortedDict = new SortedDictionary<int, string>
+            {
+                [5] = "five",
+                [1] = "one",
+                [3] = "three"
+            };
+
+            var keys = sortedDict.Keys.ToArray();
+            Assert.That(keys, Is.EqualTo(new[] { 1, 3, 5 }));
+
+            // Test range operations
+            var firstKey = sortedDict.Keys.First();
+            var lastKey = sortedDict.Keys.Last();
+            Assert.That(firstKey, Is.EqualTo(1));
+            Assert.That(lastKey, Is.EqualTo(5));
+        }
+    }
+
+    [TestFixture]
+    public class PerformanceTests
+    {
+        [Test]
+        public void IndexSet_LargeOperations_ShouldBeReasonablyFast()
+        {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+            // Create large index sets
+            var set1 = IndexSet.Create(Enumerable.Range(0, 1000).Where(i => i % 2 == 0).ToArray());
+            var set2 = IndexSet.Create(Enumerable.Range(0, 1000).Where(i => i % 3 == 0).ToArray());
+
+            // Perform operations
+            var union = set1.Union(set2);
+            var intersection = set1.Intersect(set2);
+            var difference = set1.Difference(set2);
+
+            stopwatch.Stop();
+
+            // Should complete within reasonable time
+            Assert.That(stopwatch.ElapsedMilliseconds, Is.LessThan(1000));
+            
+            // Verify correctness
+            Assert.That(union.Count, Is.GreaterThan(Math.Max(set1.Count, set2.Count)));
+            Assert.That(intersection.Count, Is.LessThan(Math.Min(set1.Count, set2.Count)));
+            
+            TestContext.WriteLine($"Large index set operations completed in {stopwatch.ElapsedMilliseconds}ms");
+        }
+
+        [Test]
+        public void Dictionary_LargeOperations_ShouldScaleWell()
+        {
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            var dict = new Dictionary<int, double>();
+
+            // Insert many elements
+            for (int i = 0; i < 10000; i++)
+            {
+                dict[i] = i * 1.5;
+            }
+
+            // Perform lookups
+            var sum = 0.0;
+            for (int i = 0; i < 10000; i += 10)
+            {
+                sum += dict[i];
+            }
+
+            stopwatch.Stop();
+
+            Assert.That(stopwatch.ElapsedMilliseconds, Is.LessThan(100));
+            Assert.That(dict.Count, Is.EqualTo(10000));
+            Assert.That(sum, Is.GreaterThan(0));
+            
+            TestContext.WriteLine($"Dictionary operations on 10K elements completed in {stopwatch.ElapsedMilliseconds}ms");
+        }
+    }
+}

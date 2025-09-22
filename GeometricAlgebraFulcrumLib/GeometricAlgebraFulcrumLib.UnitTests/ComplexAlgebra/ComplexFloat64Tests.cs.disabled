@@ -1,0 +1,321 @@
+using System;
+using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
+using NUnit.Framework;
+
+namespace GeometricAlgebraFulcrumLib.UnitTests.ComplexAlgebra;
+
+/// <summary>
+/// Comprehensive tests for complex number operations
+/// </summary>
+[TestFixture]
+public class ComplexFloat64Tests
+{
+    private const double Tolerance = 1e-12;
+
+    [Test]
+    public void ComplexFloat64_Creation_ShouldHandleVariousInputs()
+    {
+        // Test creation from real and imaginary parts
+        var c1 = ComplexFloat64.Create(3.0, 4.0);
+        Assert.That(c1.Real, Is.EqualTo(3.0).Within(Tolerance));
+        Assert.That(c1.Imaginary, Is.EqualTo(4.0).Within(Tolerance));
+
+        // Test creation from real only
+        var c2 = ComplexFloat64.Create(5.0);
+        Assert.That(c2.Real, Is.EqualTo(5.0).Within(Tolerance));
+        Assert.That(c2.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+        Assert.That(c2.IsReal(), Is.True);
+
+        // Test creation of imaginary unit
+        var i = ComplexFloat64.CreateImaginaryUnit();
+        Assert.That(i.Real, Is.EqualTo(0.0).Within(Tolerance));
+        Assert.That(i.Imaginary, Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(i.IsImaginary(), Is.True);
+
+        // Test zero
+        var zero = ComplexFloat64.Zero;
+        Assert.That(zero.Real, Is.EqualTo(0.0).Within(Tolerance));
+        Assert.That(zero.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+        Assert.That(zero.IsZero(), Is.True);
+
+        // Test one
+        var one = ComplexFloat64.One;
+        Assert.That(one.Real, Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(one.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+        Assert.That(one.IsOne(), Is.True);
+    }
+
+    [Test]
+    public void ComplexFloat64_ArithmeticOperations_ShouldBeCorrect()
+    {
+        var c1 = ComplexFloat64.Create(2.0, 3.0);
+        var c2 = ComplexFloat64.Create(1.0, -1.0);
+
+        // Addition: (2 + 3i) + (1 - i) = 3 + 2i
+        var sum = c1 + c2;
+        Assert.That(sum.Real, Is.EqualTo(3.0).Within(Tolerance));
+        Assert.That(sum.Imaginary, Is.EqualTo(2.0).Within(Tolerance));
+
+        // Subtraction: (2 + 3i) - (1 - i) = 1 + 4i
+        var diff = c1 - c2;
+        Assert.That(diff.Real, Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(diff.Imaginary, Is.EqualTo(4.0).Within(Tolerance));
+
+        // Multiplication: (2 + 3i)(1 - i) = 2 - 2i + 3i - 3i² = 2 + i + 3 = 5 + i
+        var product = c1 * c2;
+        Assert.That(product.Real, Is.EqualTo(5.0).Within(Tolerance));
+        Assert.That(product.Imaginary, Is.EqualTo(1.0).Within(Tolerance));
+
+        // Division: (2 + 3i) / (1 - i) = (2 + 3i)(1 + i) / (1 - i)(1 + i) = (2 + 2i + 3i + 3i²) / 2 = (-1 + 5i) / 2
+        var quotient = c1 / c2;
+        Assert.That(quotient.Real, Is.EqualTo(-0.5).Within(Tolerance));
+        Assert.That(quotient.Imaginary, Is.EqualTo(2.5).Within(Tolerance));
+
+        // Negation
+        var negated = -c1;
+        Assert.That(negated.Real, Is.EqualTo(-2.0).Within(Tolerance));
+        Assert.That(negated.Imaginary, Is.EqualTo(-3.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void ComplexFloat64_Conjugate_ShouldBeCorrect()
+    {
+        var c = ComplexFloat64.Create(3.0, 4.0);
+        var conjugate = c.Conjugate();
+
+        Assert.That(conjugate.Real, Is.EqualTo(3.0).Within(Tolerance));
+        Assert.That(conjugate.Imaginary, Is.EqualTo(-4.0).Within(Tolerance));
+
+        // Test that z * conjugate(z) = |z|²
+        var product = c * conjugate;
+        var magnitudeSquared = c.MagnitudeSquared();
+        Assert.That(product.Real, Is.EqualTo(magnitudeSquared).Within(Tolerance));
+        Assert.That(product.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void ComplexFloat64_Magnitude_ShouldBeCorrect()
+    {
+        var c = ComplexFloat64.Create(3.0, 4.0);
+        
+        // Magnitude should be 5 (3-4-5 triangle)
+        Assert.That(c.Magnitude(), Is.EqualTo(5.0).Within(Tolerance));
+        Assert.That(c.MagnitudeSquared(), Is.EqualTo(25.0).Within(Tolerance));
+
+        // Test unit complex number
+        var unit = c / c.Magnitude();
+        Assert.That(unit.Magnitude(), Is.EqualTo(1.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void ComplexFloat64_Argument_ShouldBeCorrect()
+    {
+        // Test argument for complex number in first quadrant
+        var c1 = ComplexFloat64.Create(1.0, 1.0);
+        Assert.That(c1.Argument(), Is.EqualTo(Math.PI / 4).Within(Tolerance));
+
+        // Test argument for imaginary unit
+        var i = ComplexFloat64.CreateImaginaryUnit();
+        Assert.That(i.Argument(), Is.EqualTo(Math.PI / 2).Within(Tolerance));
+
+        // Test argument for negative real number
+        var negReal = ComplexFloat64.Create(-1.0, 0.0);
+        Assert.That(Math.Abs(negReal.Argument()), Is.EqualTo(Math.PI).Within(Tolerance));
+
+        // Test argument for zero (should be 0 or undefined)
+        var zero = ComplexFloat64.Zero;
+        var zeroArg = zero.Argument();
+        Assert.That(zeroArg, Is.EqualTo(0.0).Within(Tolerance).Or.NaN);
+    }
+
+    [Test]
+    public void ComplexFloat64_PolarForm_ShouldBeCorrect()
+    {
+        var c = ComplexFloat64.Create(3.0, 4.0);
+        var magnitude = c.Magnitude();
+        var argument = c.Argument();
+
+        // Create complex number from polar form
+        var fromPolar = ComplexFloat64.CreateFromPolarForm(magnitude, argument);
+        
+        Assert.That(fromPolar.Real, Is.EqualTo(c.Real).Within(Tolerance));
+        Assert.That(fromPolar.Imaginary, Is.EqualTo(c.Imaginary).Within(Tolerance));
+
+        // Test Euler's formula: e^(iθ) = cos(θ) + i*sin(θ)
+        var theta = Math.PI / 3;
+        var euler = ComplexFloat64.CreateFromPolarForm(1.0, theta);
+        Assert.That(euler.Real, Is.EqualTo(Math.Cos(theta)).Within(Tolerance));
+        Assert.That(euler.Imaginary, Is.EqualTo(Math.Sin(theta)).Within(Tolerance));
+    }
+
+    [Test]
+    public void ComplexFloat64_Power_ShouldBeCorrect()
+    {
+        var c = ComplexFloat64.Create(1.0, 1.0);
+        
+        // Test integer powers
+        var c2 = c.Power(2);
+        // (1 + i)² = 1 + 2i + i² = 1 + 2i - 1 = 2i
+        Assert.That(c2.Real, Is.EqualTo(0.0).Within(Tolerance));
+        Assert.That(c2.Imaginary, Is.EqualTo(2.0).Within(Tolerance));
+
+        var c4 = c.Power(4);
+        // (1 + i)⁴ = ((1 + i)²)² = (2i)² = 4i² = -4
+        Assert.That(c4.Real, Is.EqualTo(-4.0).Within(Tolerance));
+        Assert.That(c4.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+
+        // Test power of zero
+        var c0 = c.Power(0);
+        Assert.That(c0.IsOne(), Is.True);
+
+        // Test power of imaginary unit
+        var i = ComplexFloat64.CreateImaginaryUnit();
+        var i2 = i.Power(2);
+        Assert.That(i2.Real, Is.EqualTo(-1.0).Within(Tolerance));
+        Assert.That(i2.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void ComplexFloat64_SquareRoot_ShouldBeCorrect()
+    {
+        // Test square root of positive real number
+        var real = ComplexFloat64.Create(4.0, 0.0);
+        var sqrtReal = real.Sqrt();
+        Assert.That(sqrtReal.Real, Is.EqualTo(2.0).Within(Tolerance));
+        Assert.That(sqrtReal.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+
+        // Test square root of negative real number
+        var negReal = ComplexFloat64.Create(-4.0, 0.0);
+        var sqrtNegReal = negReal.Sqrt();
+        Assert.That(sqrtNegReal.Real, Is.EqualTo(0.0).Within(Tolerance));
+        Assert.That(sqrtNegReal.Imaginary, Is.EqualTo(2.0).Within(Tolerance));
+
+        // Test square root of imaginary unit
+        var i = ComplexFloat64.CreateImaginaryUnit();
+        var sqrtI = i.Sqrt();
+        // √i = (1 + i)/√2
+        var expected = ComplexFloat64.Create(1.0 / Math.Sqrt(2), 1.0 / Math.Sqrt(2));
+        Assert.That(sqrtI.Real, Is.EqualTo(expected.Real).Within(Tolerance));
+        Assert.That(sqrtI.Imaginary, Is.EqualTo(expected.Imaginary).Within(Tolerance));
+
+        // Verify that (√z)² = z
+        var c = ComplexFloat64.Create(3.0, 4.0);
+        var sqrt = c.Sqrt();
+        var squared = sqrt.Power(2);
+        Assert.That(squared.Real, Is.EqualTo(c.Real).Within(Tolerance));
+        Assert.That(squared.Imaginary, Is.EqualTo(c.Imaginary).Within(Tolerance));
+    }
+
+    [Test]
+    public void ComplexFloat64_ExponentialAndLogarithm_ShouldBeCorrect()
+    {
+        var c = ComplexFloat64.Create(1.0, Math.PI);
+        
+        // Test exponential
+        var exp = c.Exp();
+        // e^(1 + πi) = e^1 * e^(πi) = e * (cos(π) + i*sin(π)) = e * (-1 + 0i) = -e
+        Assert.That(exp.Real, Is.EqualTo(-Math.E).Within(Tolerance));
+        Assert.That(exp.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+
+        // Test natural logarithm
+        var posReal = ComplexFloat64.Create(Math.E, 0.0);
+        var log = posReal.Log();
+        Assert.That(log.Real, Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(log.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+
+        // Test that exp(log(z)) = z for positive real numbers
+        var c2 = ComplexFloat64.Create(5.0, 0.0);
+        var logC2 = c2.Log();
+        var expLogC2 = logC2.Exp();
+        Assert.That(expLogC2.Real, Is.EqualTo(c2.Real).Within(Tolerance));
+        Assert.That(expLogC2.Imaginary, Is.EqualTo(c2.Imaginary).Within(Tolerance));
+    }
+
+    [Test]
+    public void ComplexFloat64_TrigonometricFunctions_ShouldBeCorrect()
+    {
+        var c = ComplexFloat64.Create(0.0, 1.0); // i
+
+        // Test sin(i) = i * sinh(1)
+        var sinI = c.Sin();
+        var expectedSinI = ComplexFloat64.Create(0.0, Math.Sinh(1.0));
+        Assert.That(sinI.Real, Is.EqualTo(expectedSinI.Real).Within(Tolerance));
+        Assert.That(sinI.Imaginary, Is.EqualTo(expectedSinI.Imaginary).Within(Tolerance));
+
+        // Test cos(i) = cosh(1)
+        var cosI = c.Cos();
+        var expectedCosI = ComplexFloat64.Create(Math.Cosh(1.0), 0.0);
+        Assert.That(cosI.Real, Is.EqualTo(expectedCosI.Real).Within(Tolerance));
+        Assert.That(cosI.Imaginary, Is.EqualTo(expectedCosI.Imaginary).Within(Tolerance));
+
+        // Test fundamental identity: sin²(z) + cos²(z) = 1
+        var real = ComplexFloat64.Create(Math.PI / 4, 0.0);
+        var sinZ = real.Sin();
+        var cosZ = real.Cos();
+        var identity = sinZ * sinZ + cosZ * cosZ;
+        Assert.That(identity.Real, Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(identity.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void ComplexFloat64_HyperbolicFunctions_ShouldBeCorrect()
+    {
+        var c = ComplexFloat64.Create(1.0, 0.0);
+
+        // Test sinh(1) and cosh(1)
+        var sinh = c.Sinh();
+        var cosh = c.Cosh();
+        
+        Assert.That(sinh.Real, Is.EqualTo(Math.Sinh(1.0)).Within(Tolerance));
+        Assert.That(sinh.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+        Assert.That(cosh.Real, Is.EqualTo(Math.Cosh(1.0)).Within(Tolerance));
+        Assert.That(cosh.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+
+        // Test fundamental identity: cosh²(z) - sinh²(z) = 1
+        var identity = cosh * cosh - sinh * sinh;
+        Assert.That(identity.Real, Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(identity.Imaginary, Is.EqualTo(0.0).Within(Tolerance));
+
+        // Test tanh
+        var tanh = c.Tanh();
+        var expectedTanh = sinh / cosh;
+        Assert.That(tanh.Real, Is.EqualTo(expectedTanh.Real).Within(Tolerance));
+        Assert.That(tanh.Imaginary, Is.EqualTo(expectedTanh.Imaginary).Within(Tolerance));
+    }
+
+    [Test]
+    public void ComplexFloat64_Equality_ShouldWorkCorrectly()
+    {
+        var c1 = ComplexFloat64.Create(1.0, 2.0);
+        var c2 = ComplexFloat64.Create(1.0, 2.0);
+        var c3 = ComplexFloat64.Create(1.0, 3.0);
+
+        Assert.That(c1.Equals(c2), Is.True);
+        Assert.That(c1.Equals(c3), Is.False);
+        Assert.That(c1 == c2, Is.True);
+        Assert.That(c1 != c3, Is.True);
+
+        // Test near equality
+        var c4 = ComplexFloat64.Create(1.0 + 1e-13, 2.0 + 1e-13);
+        Assert.That(c1.IsNearEqual(c4, 1e-12), Is.True);
+    }
+
+    [Test]
+    public void ComplexFloat64_StringRepresentation_ShouldBeReadable()
+    {
+        var c1 = ComplexFloat64.Create(3.0, 4.0);
+        var str1 = c1.ToString();
+        Assert.That(str1, Is.Not.Null.And.Not.Empty);
+        Assert.That(str1, Contains.Substring("3"));
+        Assert.That(str1, Contains.Substring("4"));
+
+        var c2 = ComplexFloat64.Create(0.0, -1.0);
+        var str2 = c2.ToString();
+        Assert.That(str2, Is.Not.Null.And.Not.Empty);
+        Assert.That(str2, Contains.Substring("-1") | Contains.Substring("1"));
+
+        var real = ComplexFloat64.Create(5.0, 0.0);
+        var realStr = real.ToString();
+        Assert.That(realStr, Contains.Substring("5"));
+    }
+}

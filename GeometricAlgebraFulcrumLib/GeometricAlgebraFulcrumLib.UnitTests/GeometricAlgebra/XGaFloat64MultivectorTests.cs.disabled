@@ -1,0 +1,299 @@
+using System;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using NUnit.Framework;
+
+namespace GeometricAlgebraFulcrumLib.UnitTests.GeometricAlgebra;
+
+/// <summary>
+/// Comprehensive tests for XGaFloat64Multivector operations
+/// </summary>
+[TestFixture]
+public class XGaFloat64MultivectorTests
+{
+    private const double Tolerance = 1e-12;
+    private XGaFloat64Processor _processor;
+
+    [SetUp]
+    public void Setup()
+    {
+        _processor = XGaFloat64Processor.Euclidean;
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_ScalarCreation_ShouldWorkCorrectly()
+    {
+        // Test scalar creation
+        var scalar = _processor.Scalar(5.0);
+        Assert.That(scalar.IsScalar(), Is.True);
+        Assert.That(scalar.Scalar(), Is.EqualTo(5.0).Within(Tolerance));
+
+        // Test zero scalar
+        var zero = _processor.ScalarZero;
+        Assert.That(zero.IsZero, Is.True);
+        Assert.That(zero.Scalar(), Is.EqualTo(0.0).Within(Tolerance));
+
+        // Test one scalar
+        var one = _processor.ScalarOne;
+        Assert.That(one.Scalar(), Is.EqualTo(1.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_VectorCreation_ShouldWorkCorrectly()
+    {
+        // Test single basis vector
+        var e1 = _processor.VectorTerm(0, 1.0);
+        Assert.That(e1.IsVector(), Is.True);
+        Assert.That(e1[0], Is.EqualTo(1.0).Within(Tolerance));
+
+        // Test vector with multiple components
+        var vector = _processor.Vector(1.0, 2.0, 3.0);
+        Assert.That(vector.IsVector(), Is.True);
+        Assert.That(vector[0], Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(vector[1], Is.EqualTo(2.0).Within(Tolerance));
+        Assert.That(vector[2], Is.EqualTo(3.0).Within(Tolerance));
+
+        // Test zero vector
+        var zeroVector = _processor.VectorZero;
+        Assert.That(zeroVector.IsZero, Is.True);
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_BivectorCreation_ShouldWorkCorrectly()
+    {
+        // Test bivector creation
+        var bivector = _processor.BivectorTerm(0, 1, 1.0);
+        Assert.That(bivector.IsBivector(), Is.True);
+        
+        // Test bivector from two vectors
+        var v1 = _processor.Vector(1.0, 0.0, 0.0);
+        var v2 = _processor.Vector(0.0, 1.0, 0.0);
+        var wedgeProduct = v1.Op(v2);
+        Assert.That(wedgeProduct.IsBivector(), Is.True);
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_Addition_ShouldWorkCorrectly()
+    {
+        var mv1 = _processor.Scalar(2.0) + _processor.Vector(1.0, 0.0);
+        var mv2 = _processor.Scalar(3.0) + _processor.Vector(0.0, 1.0);
+
+        var sum = mv1 + mv2;
+        
+        Assert.That(sum.Scalar(), Is.EqualTo(5.0).Within(Tolerance));
+        Assert.That(sum[0], Is.EqualTo(1.0).Within(Tolerance));
+        Assert.That(sum[1], Is.EqualTo(1.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_GeometricProduct_ShouldWorkCorrectly()
+    {
+        var v1 = _processor.Vector(1.0, 0.0, 0.0);
+        var v2 = _processor.Vector(0.0, 1.0, 0.0);
+
+        // Geometric product of orthogonal vectors should be their outer product
+        var gp = v1.Gp(v2);
+        var op = v1.Op(v2);
+        
+        Assert.That(gp.IsNearEqual(op), Is.True);
+        Assert.That(gp.IsBivector(), Is.True);
+
+        // Geometric product of parallel vectors should give scalar
+        var v3 = _processor.Vector(2.0, 0.0, 0.0);
+        var gpParallel = v1.Gp(v3);
+        Assert.That(gpParallel.Scalar(), Is.EqualTo(2.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_OuterProduct_ShouldWorkCorrectly()
+    {
+        var v1 = _processor.Vector(1.0, 0.0, 0.0);
+        var v2 = _processor.Vector(0.0, 1.0, 0.0);
+        var v3 = _processor.Vector(0.0, 0.0, 1.0);
+
+        // Outer product of two vectors should give bivector
+        var op12 = v1.Op(v2);
+        Assert.That(op12.IsBivector(), Is.True);
+
+        // Outer product of three vectors should give trivector
+        var op123 = v1.Op(v2).Op(v3);
+        Assert.That(op123.IsTrivector(), Is.True);
+
+        // Outer product should be anti-commutative
+        var op21 = v2.Op(v1);
+        Assert.That(op12.IsNearEqual(-op21), Is.True);
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_InnerProduct_ShouldWorkCorrectly()
+    {
+        var v1 = _processor.Vector(1.0, 0.0, 0.0);
+        var v2 = _processor.Vector(0.0, 1.0, 0.0);
+        var v3 = _processor.Vector(1.0, 0.0, 0.0);
+
+        // Inner product of orthogonal vectors should be zero
+        var ip12 = v1.Lcp(v2);
+        Assert.That(ip12.IsZero, Is.True);
+
+        // Inner product of parallel vectors should be scalar
+        var ip13 = v1.Lcp(v3);
+        Assert.That(ip13.Scalar(), Is.EqualTo(1.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_Reverse_ShouldWorkCorrectly()
+    {
+        var v = _processor.Vector(1.0, 2.0, 3.0);
+        var vReverse = v.Reverse();
+        
+        // Reverse of vector should be the vector itself
+        Assert.That(v.IsNearEqual(vReverse), Is.True);
+
+        // Create bivector and test reverse
+        var bivector = _processor.BivectorTerm(0, 1, 1.0);
+        var bivectorReverse = bivector.Reverse();
+        
+        // Reverse of bivector should be its negative
+        Assert.That(bivector.IsNearEqual(-bivectorReverse), Is.True);
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_GradeInvolution_ShouldWorkCorrectly()
+    {
+        var scalar = _processor.Scalar(5.0);
+        var vector = _processor.Vector(1.0, 2.0, 3.0);
+        var bivector = _processor.BivectorTerm(0, 1, 1.0);
+
+        // Grade involution should not change scalars
+        Assert.That(scalar.IsNearEqual(scalar.GradeInvolution()), Is.True);
+
+        // Grade involution should negate vectors
+        Assert.That(vector.IsNearEqual(-vector.GradeInvolution()), Is.True);
+
+        // Grade involution should not change bivectors
+        Assert.That(bivector.IsNearEqual(bivector.GradeInvolution()), Is.True);
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_CliffordConjugate_ShouldWorkCorrectly()
+    {
+        var scalar = _processor.Scalar(5.0);
+        var vector = _processor.Vector(1.0, 2.0, 3.0);
+        var bivector = _processor.BivectorTerm(0, 1, 1.0);
+
+        // Clifford conjugate should not change scalars
+        Assert.That(scalar.IsNearEqual(scalar.CliffordConjugate()), Is.True);
+
+        // Clifford conjugate should negate vectors
+        Assert.That(vector.IsNearEqual(-vector.CliffordConjugate()), Is.True);
+
+        // Clifford conjugate should negate bivectors
+        Assert.That(bivector.IsNearEqual(-bivector.CliffordConjugate()), Is.True);
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_Norm_ShouldWorkCorrectly()
+    {
+        var v = _processor.Vector(3.0, 4.0, 0.0);
+        
+        // Test Euclidean norm (should be 5.0 for 3-4-5 triangle)
+        var norm = v.Norm();
+        Assert.That(norm.ScalarValue, Is.EqualTo(5.0).Within(Tolerance));
+
+        var normSquared = v.NormSquared();
+        Assert.That(normSquared.ScalarValue, Is.EqualTo(25.0).Within(Tolerance));
+
+        // Test unit vector
+        var unitVector = v.UnDual();
+        var normalizedVector = v / norm;
+        Assert.That(normalizedVector.Norm().ScalarValue, Is.EqualTo(1.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_Inverse_ShouldWorkCorrectly()
+    {
+        var scalar = _processor.Scalar(4.0);
+        var scalarInverse = scalar.Inverse();
+        
+        // Test scalar inverse
+        Assert.That(scalarInverse.Scalar(), Is.EqualTo(0.25).Within(Tolerance));
+        
+        // Test that scalar * inverse = 1
+        var product = scalar.Gp(scalarInverse);
+        Assert.That(product.Scalar(), Is.EqualTo(1.0).Within(Tolerance));
+
+        // Test vector inverse (in Euclidean space)
+        var v = _processor.Vector(2.0, 0.0, 0.0);
+        var vInverse = v.Inverse();
+        var vProduct = v.Gp(vInverse);
+        Assert.That(vProduct.Scalar(), Is.EqualTo(1.0).Within(Tolerance));
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_Duality_ShouldWorkCorrectly()
+    {
+        // Test in 3D space
+        _processor = XGaFloat64Processor.Create(3);
+        
+        var vector = _processor.Vector(1.0, 0.0, 0.0);
+        var dual = vector.Dual();
+        
+        // Dual of a vector in 3D should be a bivector
+        Assert.That(dual.IsBivector(), Is.True);
+        
+        // Double dual should give back original (up to sign)
+        var doubleDual = dual.Dual();
+        Assert.That(vector.IsNearEqual(doubleDual) || vector.IsNearEqual(-doubleDual), Is.True);
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_IsValidProperties_ShouldWorkCorrectly()
+    {
+        var scalar = _processor.Scalar(5.0);
+        var vector = _processor.Vector(1.0, 2.0, 3.0);
+        var bivector = _processor.BivectorTerm(0, 1, 1.0);
+        var mixed = scalar + vector;
+
+        // Test grade checking
+        Assert.That(scalar.IsScalar(), Is.True);
+        Assert.That(scalar.IsVector(), Is.False);
+        Assert.That(scalar.IsBivector(), Is.False);
+
+        Assert.That(vector.IsScalar(), Is.False);
+        Assert.That(vector.IsVector(), Is.True);
+        Assert.That(vector.IsBivector(), Is.False);
+
+        Assert.That(bivector.IsScalar(), Is.False);
+        Assert.That(bivector.IsVector(), Is.False);
+        Assert.That(bivector.IsBivector(), Is.True);
+
+        // Mixed grade should not be pure grade
+        Assert.That(mixed.IsScalar(), Is.False);
+        Assert.That(mixed.IsVector(), Is.False);
+        Assert.That(mixed.IsBivector(), Is.False);
+    }
+
+    [Test]
+    public void XGaFloat64Multivector_CommutatorAndAnticommutator_ShouldWorkCorrectly()
+    {
+        var v1 = _processor.Vector(1.0, 0.0, 0.0);
+        var v2 = _processor.Vector(0.0, 1.0, 0.0);
+
+        // Commutator [A,B] = AB - BA
+        var commutator = v1.Commutator(v2);
+        var expected = v1.Gp(v2) - v2.Gp(v1);
+        Assert.That(commutator.IsNearEqual(expected), Is.True);
+
+        // For orthogonal vectors, commutator should be 2 * outer product
+        var outerProduct = v1.Op(v2);
+        Assert.That(commutator.IsNearEqual(2.0 * outerProduct), Is.True);
+
+        // Anticommutator {A,B} = AB + BA
+        var anticommutator = v1.Anticommutator(v2);
+        var expectedAnti = v1.Gp(v2) + v2.Gp(v1);
+        Assert.That(anticommutator.IsNearEqual(expectedAnti), Is.True);
+
+        // For orthogonal vectors, anticommutator should be zero
+        Assert.That(anticommutator.IsZero, Is.True);
+    }
+}
