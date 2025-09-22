@@ -9,9 +9,17 @@ using GeometricAlgebraFulcrumLib.Optimization.GeneticProgramming.Cartesian.Mutat
 
 namespace GeometricAlgebraFulcrumLib.Optimization.Samples
 {
+    /// <summary>
+    /// Cartesian Genetic Programming (CGP) samples demonstrating various evolutionary algorithms
+    /// for function approximation and symbolic regression.
+    /// </summary>
     public static class CGpSamples
     {
-        public static void Example1()
+        /// <summary>
+        /// Demonstrates basic Cartesian Genetic Programming setup with function evolution
+        /// using a variety of mathematical functions for symbolic regression.
+        /// </summary>
+        public static void BasicSymbolicRegressionExample()
         {
             var functionSet = new CGpFunctionSet();
 
@@ -36,14 +44,16 @@ namespace GeometricAlgebraFulcrumLib.Optimization.Samples
                 NodeInputWeightRange = 0,
                 ParametricNodeInputWeightRatio = 0,
                 TargetCost = 0.03,
-                UpdateFrequency = 100,
-                //CostFunction = CGpRegressionCostFunction.Abs
+                UpdateFrequency = 100
             };
 
+            Console.WriteLine("CGP Grid Structure Analysis:");
+            Console.WriteLine("============================");
+            
             var recurrentConnectionsAllowed = true;
             for (var j = 0; j < parameters.GridColumns; j++)
             {
-                Console.WriteLine($"Column {j}");
+                Console.WriteLine($"Column {j}:");
 
                 for (var i = 0; i < parameters.GridRows; i++)
                 {

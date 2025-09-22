@@ -137,28 +137,29 @@ namespace GeometricAlgebraFulcrumLib.Optimization.Samples
             image.SaveAsPNG(@"D:\SvmModel.png");
         }
 
-        public static void Sample1()
+        /// <summary>
+        /// Demonstrates SVM classification using the Wine dataset with cross-validation
+        /// and model evaluation including confusion matrix visualization.
+        /// </summary>
+        public static void WineDatasetClassificationExample()
         {
             const string mainPath =
                 @"D:\Projects\Study\Machine Learning\Support Vector Machines\Implementation\Datasets";
 
             // Set print function for accessing output logs
-            // Please do not call this function more than a couple of times since it may cause memory leak !
             SvmUtils.SetPrintStringFunction(PrintFunction);
 
-            // Load the datasets: In this example I use the same datasets for training and testing which is not recommended
+            // Load the datasets: In this example we use the same datasets for training and testing 
+            // which is not recommended in practice - use separate test sets
             var trainingSet = SvmDataSet.LoadFromFile(Path.Combine(mainPath, "wine.txt"));
             var testSet = SvmDataSet.LoadFromFile(Path.Combine(mainPath, "wine.txt"));
 
-            // Normalize the datasets if you want: L2 Norm => x / ||x||
+            // Normalize the datasets using unit cube normalization
             var (translationValues, scalingFactors) =
                 trainingSet.GetUnitCubeNormalizationFactors();
 
             trainingSet = trainingSet.GetCopyUnitCube(translationValues, scalingFactors);
             testSet = testSet.GetCopyUnitCube(translationValues, scalingFactors);
-
-            //trainingSet = trainingSet.GetCopyNormalized(SvmNormType.L2);
-            //testSet = testSet.GetCopyNormalized(SvmNormType.L2);
 
             // Select the parameter set
             var parameter = new SvmParameters
@@ -211,33 +212,32 @@ namespace GeometricAlgebraFulcrumLib.Optimization.Samples
             }
         }
 
-        public static void Sample2()
+        /// <summary>
+        /// Demonstrates SVM classification using synthetic data with detailed per-class
+        /// accuracy analysis and cross-validation statistics.
+        /// </summary>
+        public static void SyntheticDataClassificationExample()
         {
             const string mainPath =
                 @"D:\Projects\Study\Machine Learning\Support Vector Machines\Implementation\Datasets";
 
             // Set print function for accessing output logs
-            // Please do not call this function more than a couple of times since it may cause memory leak !
             SvmUtils.SetPrintStringFunction(PrintFunction);
 
-            // Load the datasets: In this example I use the same datasets for training and testing which is not recommended
+            // Generate synthetic datasets
             var trainingSet = GetDataSet2(1000);
             var testSet = GetDataSet2(1000);
 
-            // Normalize the datasets if you want: L2 Norm => x / ||x||
+            // Normalize the datasets using unit cube normalization
             var (translationValues, scalingFactors) =
                 trainingSet.GetUnitCubeNormalizationFactors();
 
             trainingSet = trainingSet.GetCopyUnitCube(translationValues, scalingFactors);
             testSet = testSet.GetCopyUnitCube(translationValues, scalingFactors);
 
-            var (minCorner, maxCorner) =
-                trainingSet.GetRange();
+            var (minCorner, maxCorner) = trainingSet.GetRange();
 
-            //trainingSet = trainingSet.GetCopyNormalized(SvmNormType.L2);
-            //testSet = testSet.GetCopyNormalized(SvmNormType.L2);
-
-            // Select the parameter set
+            // Configure SVM parameters
             var parameter = new SvmParameters
             {
                 Type = SvmTaskType.CSvc,
@@ -246,7 +246,7 @@ namespace GeometricAlgebraFulcrumLib.Optimization.Samples
                 Gamma = 1
             };
 
-            //Do cross validation to check this parameter set is correct for the dataset or not
+            // Perform cross validation to evaluate parameter set
             const int nFold = 5;
             trainingSet.CrossValidation(parameter, nFold, out var crossValidationResults);
 
@@ -308,15 +308,16 @@ namespace GeometricAlgebraFulcrumLib.Optimization.Samples
                 Console.WriteLine();
             }
 
-            return;
-
+            /// <summary>
+            /// Generates a synthetic linear classification dataset
+            /// </summary>
             SvmDataSet GetDataSet1(int sampleCount)
             {
                 const double a = 3;
                 const double b = 2;
                 const double c = 10;
 
-                var rand = new Random();
+                var rand = new Random(42); // Fixed seed for reproducibility
                 var dataSet = new SvmDataSet();
 
                 for (var i = 0; i < sampleCount; i++)
@@ -338,20 +339,19 @@ namespace GeometricAlgebraFulcrumLib.Optimization.Samples
                 return dataSet;
             }
 
+            /// <summary>
+            /// Generates a synthetic circular classification dataset
+            /// </summary>
             SvmDataSet GetDataSet2(int sampleCount)
             {
-                var rand = new Random();
+                var rand = new Random(42); // Fixed seed for reproducibility
                 var dataSet = new SvmDataSet();
 
                 for (var i = 0; i < sampleCount; i++)
                 {
-                    var tolerance = 0;// rand.NextDouble() * 8 - 4;
-
+                    var tolerance = 0;
                     var x = rand.NextDouble() * 100 - 50;
                     var y = rand.NextDouble() * 100 - 50;
-                    //var z = rand.NextDouble() * 100 - 50;
-                    //var feature = new double[] {x, y, z};
-                    //var classValue = Math.Sqrt(x * x + y * y + z * z) - 35 < tolerance ? 1d : 2d;
 
                     var feature = new double[] { x, y };
                     var classValue = Math.Sqrt(x * x + y * y) - 35 < tolerance ? 1d : 2d;
@@ -363,7 +363,11 @@ namespace GeometricAlgebraFulcrumLib.Optimization.Samples
             }
         }
 
-        public static void Sample3()
+        /// <summary>
+        /// Demonstrates Cartesian Genetic Programming (CGP) for function approximation
+        /// using a regression dataset.
+        /// </summary>
+        public static void CartesianGeneticProgrammingExample()
         {
             var functionSet = new CGpFunctionSet();
 
@@ -397,21 +401,8 @@ namespace GeometricAlgebraFulcrumLib.Optimization.Samples
                 RecurrentConnectionProbability = 0,
                 TargetCost = 0.001,
                 UpdateFrequency = 100,
-                //CostFunction = CGpRegressionCostFunction.Rms,
                 MutationType = CGpMutation.ProbabilisticActiveNodes
             };
-
-            //const int sampleCount = 101;
-            //var inputValues = 0.0001d.GetLinearRange(5 * Math.PI, sampleCount, false).ToArray();
-            //var outputValues = inputValues.Select(t => Math.Sin(t) / t).ToArray();
-
-            //var dataSet = CGpStoredDataSet.Create(1, 1);
-
-            //for (var i = 0; i < sampleCount; i++)
-            //    dataSet.AddSample(
-            //        new[] { inputValues[i] },
-            //        new[] { outputValues[i] }
-            //    );
 
             var dataSet = CGpRegressionDataSetStored.CreateFromFile(
                 @"D:\Projects\Study\Genetic Programming\DataSets\sin2saw.data"

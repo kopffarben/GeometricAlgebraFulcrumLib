@@ -6,8 +6,16 @@ using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Samples.Mathematica;
 
-public static class Sample1
+/// <summary>
+/// Demonstrates basic symbolic geometric algebra operations using Wolfram Mathematica
+/// including vector operations, multivector products, and LaTeX/text output generation.
+/// </summary>
+public static class SymbolicGeometricAlgebraSample
 {
+    /// <summary>
+    /// Demonstrates symbolic geometric algebra operations with Mathematica integration
+    /// showing vector creation, operations, and output formatting.
+    /// </summary>
     public static void Execute()
     {
         // This is a pre-defined scalar processor for symbolic

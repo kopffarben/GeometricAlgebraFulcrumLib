@@ -7,8 +7,14 @@ namespace GAPoTNumLib.Framework.Samples.Validations
 {
     public static class ValidationSample1
     {
+        /// <summary>
+        /// Validates biversor to multivector conversion and norm calculations.
+        /// </summary>
         public static void Execute1()
         {
+            Console.WriteLine("Biversor to Multivector Conversion Validation");
+            Console.WriteLine("==============================================");
+            
             var bv =
                 "3.1009536313039 <>, -1.28445705037617 <1,3>, -0.985598559653489 <2,3>, 0.408248290463863 <1,2>"
                     .GaPoTNumParseBiversor();
@@ -22,8 +28,14 @@ namespace GAPoTNumLib.Framework.Samples.Validations
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Demonstrates bit reversal operations and bit counting functionality.
+        /// </summary>
         public static void Execute2()
         {
+            Console.WriteLine("Bit Manipulation Validation");
+            Console.WriteLine("===========================");
+            
             var bitsCount = 4;
 
             for (var i = 0; i < (1 << bitsCount); i++)
@@ -40,25 +52,34 @@ namespace GAPoTNumLib.Framework.Samples.Validations
             }
         }
 
+        /// <summary>
+        /// Validates rotor operations including inverse and reverse calculations.
+        /// </summary>
+        /// <summary>
+        /// Validates rotor operations including inverse and reverse calculations.
+        /// </summary>
         public static void Execute3()
         {
-            var bitsCount = 4;
-
-            //var mv = GaPoTNumMultivector.CreateZero().AddTerms(
-            //    Enumerable.Range(0, 1 << bitsCount).Select(id => new GaPoTNumMultivectorTerm(id, 1))
-            //);
-
+            Console.WriteLine("Multivector Construction Validation");
+            Console.WriteLine("===================================");
+            
             var mv = GaPoTNumMultivector
                 .CreateZero()
                 .AddTerm(3, 1)
                 .AddTerm(5, 2)
                 .AddTerm(0, -2);
 
-            Console.WriteLine(mv.ToText());
+            Console.WriteLine($"Constructed Multivector: {mv.ToText()}");
         }
 
+        /// <summary>
+        /// Demonstrates rotor inverse and reverse operations for validation.
+        /// </summary>
         public static void Execute()
         {
+            Console.WriteLine("Rotor Operations Validation");
+            Console.WriteLine("===========================");
+            
             var rotor =
                 "0.880476239217149 <>, 0.115916895959295 <1,2>, -0.364705199631001 <1,3>, -0.279848142333121 <2,3>"
                     .GaPoTNumParseBiversor().ToMultivector();

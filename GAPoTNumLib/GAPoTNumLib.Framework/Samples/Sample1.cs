@@ -4,8 +4,16 @@ using GAPoTNumLib.GAPoT;
 
 namespace GAPoTNumLib.Framework.Samples
 {
-    public static class Sample1
+    /// <summary>
+    /// Demonstrates power system calculations using GAPoT (Geometric Algebra Power Theory)
+    /// including voltage, current, power, and impedance calculations.
+    /// </summary>
+    public static class PowerSystemCalculationsSample
     {
+        /// <summary>
+        /// Demonstrates basic power system calculations using GAPoT framework
+        /// showing voltage, current, power (M = U * I), and impedance (Z = U * I^-1) relationships.
+        /// </summary>
         public static void Execute()
         {
             CultureInfo.CurrentCulture = new CultureInfo("en-US");
