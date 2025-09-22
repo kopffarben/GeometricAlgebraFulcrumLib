@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Optimization\GeometricAlgebraFulcrumLib.Optimization.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Structures\GeometricAlgebraFulcrumLib.Utilities.Structures.csproj" />
+  </ItemGroup>
+
+</Project>

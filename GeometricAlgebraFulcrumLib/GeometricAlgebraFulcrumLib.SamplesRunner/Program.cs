@@ -1,10 +1,9 @@
+using System;
 using System.Reflection;
 using GeometricAlgebraFulcrumLib.Optimization.Samples;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Samples.IndexSets;
-using GAPoTNumLib.Framework.Samples;
-using GAPoTNumLib.Framework.Samples.Validations;
 
-namespace GeometricAlgebraFulcrumLib;
+namespace GeometricAlgebraFulcrumLib.SamplesRunner;
 
 /// <summary>
 /// Centralized runner for all GeometricAlgebraFulcrumLib samples.
@@ -62,8 +61,8 @@ public static class SamplesRunner
         // Run data structure samples  
         RunDataStructureSamples();
         
-        // Run GAPoT samples
-        RunGAPoTSamples();
+        // GAPoT samples are currently unavailable due to .NET Framework compatibility
+        Console.WriteLine("GAPoT Framework samples are currently unavailable (framework compatibility issue)");
         
         Console.WriteLine("All samples completed successfully!");
     }
@@ -119,7 +118,9 @@ public static class SamplesRunner
                     RunDataStructureSamples();
                     break;
                 case 3:
-                    RunGAPoTSamples();
+                    Console.WriteLine("GAPoT Framework samples are currently unavailable due to .NET Framework compatibility issues.");
+                    Console.WriteLine("The GAPoTNumLib.Framework project targets .NET Framework 4.7.2 which cannot be directly");
+                    Console.WriteLine("referenced from this .NET 8.0 console application.");
                     break;
                 case 4:
                     Console.WriteLine("Geometric Algebra samples would be run here (not implemented in this demo)");
@@ -209,27 +210,6 @@ public static class SamplesRunner
         Console.WriteLine("\n5. IndexSet Ordering:");
         Console.WriteLine("---------------------");
         BasicSamples.OrderingExample();
-    }
-    
-    private static void RunGAPoTSamples()
-    {
-        Console.WriteLine("Running GAPoT Framework Samples...");
-        Console.WriteLine("==================================");
-        
-        Console.WriteLine("\n1. Power System Calculations:");
-        Console.WriteLine("------------------------------");
-        PowerSystemCalculationsSample.Execute();
-        
-        Console.WriteLine("\n2. Multivector Operations:");
-        Console.WriteLine("---------------------------");
-        MultivectorOperationsSample.Execute();
-        
-        Console.WriteLine("\n3. Validation Examples:");
-        Console.WriteLine("------------------------");
-        ValidationSample1.Execute1();
-        ValidationSample1.Execute2();
-        ValidationSample1.Execute3();
-        ValidationSample1.Execute();
     }
     
     /// <summary>
