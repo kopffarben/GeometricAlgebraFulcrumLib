@@ -4,8 +4,16 @@ using GAPoTNumLib.GAPoT;
 
 namespace GAPoTNumLib.Framework.Samples
 {
-    public static class Sample2
+    /// <summary>
+    /// Demonstrates multivector operations and display formatting in GAPoT
+    /// including LaTeX output, text display, and basic operations.
+    /// </summary>
+    public static class MultivectorOperationsSample
     {
+        /// <summary>
+        /// Demonstrates multivector display formats, operations, and computations
+        /// including LaTeX formatting, inverse operations, and geometric products.
+        /// </summary>
         public static void Execute()
         {
             CultureInfo.CurrentCulture = new CultureInfo("en-US");

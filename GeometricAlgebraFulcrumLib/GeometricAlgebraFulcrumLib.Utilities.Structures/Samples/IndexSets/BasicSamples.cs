@@ -29,23 +29,32 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Samples.IndexSets
         }
 
 
+        /// <summary>
+        /// Demonstrates different ways to create IndexSet instances including units, pairs, triplets, and dense sets.
+        /// </summary>
         public static void CreationExample()
         {
-            Console.WriteLine(IndexSet.CreateUnit(3));
-            Console.WriteLine(IndexSet.CreateUnit(65));
-            Console.WriteLine(IndexSet.CreatePair(3, 29));
-            Console.WriteLine(IndexSet.CreatePair(9, 98));
-            Console.WriteLine(IndexSet.CreateTriplet(3, 5, 18));
-            Console.WriteLine(IndexSet.CreateTriplet(13, 22, 70));
-            Console.WriteLine(IndexSet.CreateDense(13, 5));
-            Console.WriteLine(IndexSet.CreateDense(58, 5));
+            Console.WriteLine("IndexSet Creation Examples:");
+            Console.WriteLine("===========================");
+            Console.WriteLine($"Unit(3): {IndexSet.CreateUnit(3)}");
+            Console.WriteLine($"Unit(65): {IndexSet.CreateUnit(65)}");
+            Console.WriteLine($"Pair(3, 29): {IndexSet.CreatePair(3, 29)}");
+            Console.WriteLine($"Pair(9, 98): {IndexSet.CreatePair(9, 98)}");
+            Console.WriteLine($"Triplet(3, 5, 18): {IndexSet.CreateTriplet(3, 5, 18)}");
+            Console.WriteLine($"Triplet(13, 22, 70): {IndexSet.CreateTriplet(13, 22, 70)}");
+            Console.WriteLine($"Dense(13, 5): {IndexSet.CreateDense(13, 5)}");
+            Console.WriteLine($"Dense(58, 5): {IndexSet.CreateDense(58, 5)}");
         }
 
+        /// <summary>
+        /// Demonstrates how to iterate through an IndexSet using spans.
+        /// </summary>
         public static void IteratorExample1()
         {
             var indexSet = IndexSet.Create(3, 4, 7, 8, 9, 12, 22, 33, 63);
 
-            Console.WriteLine(indexSet.ToString());
+            Console.WriteLine($"IndexSet: {indexSet.ToString()}");
+            Console.WriteLine("Iteration using span:");
 
             var span = indexSet.AsSpan();
             var count = span.Length;
@@ -53,30 +62,33 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Samples.IndexSets
 
             while (index < count)
             {
-                Console.WriteLine($"[{index:D2}]: {span[index]},");
-
+                Console.WriteLine($"[{index:D2}]: {span[index]}");
                 index++;
             }
 
             Console.WriteLine();
         }
         
+        /// <summary>
+        /// Demonstrates performance comparison between different IndexSet configurations.
+        /// </summary>
         public static void IteratorExample2()
         {
-            //var indexSet = IndexSet.Create(3, 4, 7, 8, 9, 12, 22, 33, 63);
             var indexSet1 = IndexSet.CreateDense(0, 64);
             var indexSet2 = IndexSet.CreateDense(58, 64);
 
-            Console.WriteLine(indexSet1.ToString());
-            Console.WriteLine(indexSet2.ToString());
+            Console.WriteLine("Performance Comparison:");
+            Console.WriteLine("=======================");
+            Console.WriteLine($"Dense(0, 64): {indexSet1.ToString()}");
+            Console.WriteLine($"Dense(58, 64): {indexSet2.ToString()}");
             Console.WriteLine();
 
-            Console.WriteLine(Sum(indexSet1));
-            Console.WriteLine(Sum(indexSet2));
+            Console.WriteLine($"Sum of indices (0, 64): {Sum(indexSet1)}");
+            Console.WriteLine($"Sum of indices (58, 64): {Sum(indexSet2)}");
             Console.WriteLine();
 
-            Console.WriteLine(GetTime(() => Sum(indexSet1), 10000000).ToString());
-            Console.WriteLine(GetTime(() => Sum(indexSet2), 10000000).ToString());
+            Console.WriteLine($"Time for 10M iterations (0, 64): {GetTime(() => Sum(indexSet1), 10000000)}");
+            Console.WriteLine($"Time for 10M iterations (58, 64): {GetTime(() => Sum(indexSet2), 10000000)}");
             Console.WriteLine();
             
             return;
