@@ -3,6 +3,8 @@ using AngouriMath;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Evaluators;
+using GeometricAlgebraFulcrumLib.Utilities.Structures;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Processors;
 
@@ -541,12 +543,15 @@ public sealed class ScalarProcessorOfAngouriMathEntity
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Entity MetaExpressionToScalar(IMetaExpression expression)
     {
-        throw new NotImplementedException();
+        // Use the proper converter to transform MetaExpression to AngouriMath Entity
+        return expression.AcceptVisitor(AngouriMathFromMetaExpressionConverter.Instance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IMetaExpression ScalarToMetaExpression(MetaContext context, Entity scalar)
     {
-        throw new NotImplementedException();
+        // Use the proper converter to transform AngouriMath Entity to MetaExpression
+        var converter = new AngouriMathIntoMetaExpressionConverter(context);
+        return scalar.AcceptVisitor(converter);
     }
 }

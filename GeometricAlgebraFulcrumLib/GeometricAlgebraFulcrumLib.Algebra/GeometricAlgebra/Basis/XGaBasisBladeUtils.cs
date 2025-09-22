@@ -66,7 +66,7 @@ public static class XGaBasisBladeUtils
                 var indicesStr = inputText.Substring(indicesStart, i - indicesStart).Trim();
                 if (!string.IsNullOrEmpty(indicesStr))
                 {
-                    var parts = indicesStr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var parts = indicesStr.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
                     indexArray = new int[parts.Length];
                     for (var j = 0; j < parts.Length; j++)
                         indexArray[j] = int.Parse(parts[j]);
