@@ -352,6 +352,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Samples.IndexSets
             Console.WriteLine();
         }
         
+        /// <summary>
+        /// Demonstrates the TryRemove operation on IndexSet instances,
+        /// showing which indices can be successfully removed.
+        /// </summary>
         public static void TryRemoveExample()
         {
             const int offset = 34;
@@ -360,7 +364,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Samples.IndexSets
                 3, 4, 7, 8, 9, 12, 22, 23, 30
             ).ShiftIndices(offset);
 
-            Console.WriteLine("Original array: " + indexSet);
+            Console.WriteLine("IndexSet Remove Operations:");
+            Console.WriteLine("===========================");
+            Console.WriteLine($"Original IndexSet: {indexSet}");
             Console.WriteLine();
 
             for (var i = 0; i <= 32; i++)
@@ -372,15 +378,21 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Samples.IndexSets
                     ? $"Not Removed: {result}" 
                     : $"    Removed: {result}";
                 
-                Console.WriteLine($"Try remove {index:D2}: {resultText}" );
+                Console.WriteLine($"Try remove {index:D2}: {resultText}");
             }
 
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Demonstrates the natural ordering of IndexSet instances when sorted.
+        /// </summary>
         public static void OrderingExample()
         {
-            var random = new System.Random(10);
+            Console.WriteLine("IndexSet Ordering Example:");
+            Console.WriteLine("==========================");
+            
+            var random = new System.Random(42); // Fixed seed for reproducibility
 
             var indexSetList = 
                 10.GetRange().Select(_ =>

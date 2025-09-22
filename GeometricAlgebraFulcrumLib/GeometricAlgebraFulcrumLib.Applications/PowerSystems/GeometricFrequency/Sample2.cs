@@ -10,7 +10,11 @@ using OxyPlot.Series;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems.GeometricFrequency;
 
-public static class Sample2
+/// <summary>
+/// Demonstrates geometric frequency analysis for power systems using geometric algebra
+/// including 3D vector signal processing and frequency domain analysis.
+/// </summary>
+public static class GeometricFrequencyAnalysisSample
 {
     // This is a pre-defined scalar processor for numeric scalars
     public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
