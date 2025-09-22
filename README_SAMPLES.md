@@ -2,7 +2,35 @@
 
 This document provides an overview of the organized sample code structure within the GeometricAlgebraFulcrumLib repository.
 
-## Overview
+## Quick Start
+
+### Interactive Samples Runner
+Run the centralized samples runner for an interactive menu:
+```csharp
+SamplesRunner.RunInteractively();
+```
+
+### Run All Samples
+Execute all samples automatically:
+```csharp
+SamplesRunner.RunAllSamples();
+```
+
+### Command Line Usage
+```bash
+dotnet run                    # Interactive mode
+dotnet run -- --all         # Run all samples
+```
+
+## Features
+
+### 🎯 Centralized Sample Runner
+- **Interactive Menu**: Browse and run samples by category
+- **Batch Execution**: Run all samples with a single command
+- **Error Handling**: Graceful handling of missing dependencies
+- **Progress Tracking**: Clear output and progress indication
+
+### 📁 Organized Structure
 
 The samples have been reorganized and cleaned up to provide clear, well-documented examples of the library's capabilities. Each sample includes proper XML documentation and follows consistent naming conventions.
 
@@ -100,6 +128,33 @@ When adding new samples:
 ## Next Steps
 
 - [ ] Add more unit tests for sample methods
-- [ ] Create interactive examples for key algorithms
+- [ ] Create interactive examples for key algorithms  
 - [ ] Add performance benchmarks for all major operations
 - [ ] Create visual examples using the graphics capabilities
+- [ ] Extend the SamplesRunner with more sample categories
+- [ ] Add sample execution timing and performance metrics
+- [ ] Create automated sample testing in CI/CD pipeline
+
+## Samples Runner
+
+The `SamplesRunner` class provides a centralized way to discover and execute all samples:
+
+### Categories Available:
+1. **Optimization Samples** - ML algorithms, gradient descent, SVM
+2. **Data Structure Samples** - IndexSet operations and performance tests  
+3. **GAPoT Framework Samples** - Power system calculations and validations
+4. **Geometric Algebra Samples** - Vector operations and transformations
+5. **Symbolic Mathematics** - Mathematica integration examples
+6. **Power Systems Applications** - Real-world power system analysis
+7. **Performance Benchmarks** - Algorithm comparison and profiling
+
+### Usage Examples:
+```csharp
+// Run specific category
+SamplesRunner.RunOptimizationSamples();
+SamplesRunner.RunDataStructureSamples();
+SamplesRunner.RunGAPoTSamples();
+
+// Interactive selection
+SamplesRunner.RunInteractively();
+```
