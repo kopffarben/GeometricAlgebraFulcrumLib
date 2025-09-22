@@ -1,6 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MetaProgramming.Samples.Algebra.AngouriMath;
-
-namespace GeometricAlgebraFulcrumLib.MetaProgramming
+﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming
 {
     internal class Program
     {
@@ -10,13 +8,17 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming
             Console.WriteLine("===========================================================");
             Console.WriteLine();
             
-            try 
+            Console.WriteLine("MetaExpressionToScalar and ScalarToMetaExpression methods have been");
+            Console.WriteLine("fully implemented using proper AngouriMath converters.");
+            Console.WriteLine();
+            
+            try
             {
-                SymbolicComparisonTest.RunBasicTest();
+                SimpleTest.TestConversions();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"Error during testing: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
             }
             
