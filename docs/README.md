@@ -54,3 +54,5 @@ GA-FuL is designed as a comprehensive research platform supporting:
 ---
 
 *The Geometric Algebra Fulcrum Library represents a sophisticated implementation of Geometric Algebra principles, bridging abstract mathematical theory with practical computing applications.*
+
+**[Next: Executive Summary →](executive-summary.md)**

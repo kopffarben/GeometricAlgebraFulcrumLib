@@ -335,4 +335,4 @@ Thank you for contributing to GA-FuL! Your contributions help make geometric alg
 
 ---
 
-**[← Previous: Integration](integration.md) | [Next: Home →](README.md)**
+**[← Previous: Performance](performance.md) | [Next: Home →](README.md)**

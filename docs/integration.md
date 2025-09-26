@@ -309,4 +309,4 @@ var results = gpuProcessor.ComputeGeometricProductParallel(vectors1, vectors2);
 
 ---
 
-**[← Previous: Applications](applications.md) | [Next: API Reference →](api-reference.md)**
+**[← Previous: Applications](applications.md) | [Next: Performance →](performance.md)**

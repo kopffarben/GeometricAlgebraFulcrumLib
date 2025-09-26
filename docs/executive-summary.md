@@ -88,4 +88,4 @@ Extensive documentation, tested examples, and integration with popular developme
 
 ---
 
-**[Next: Architecture Overview →](architecture.md)**
+**[← Previous: Home](README.md) | [Next: Architecture Overview →](architecture.md)**

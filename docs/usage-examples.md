@@ -577,4 +577,4 @@ Open in web browser to view animated GA concepts
 
 ---
 
-**[← Previous: Layer 4 - MetaProgramming](layer4-metaprogramming.md) | [Next: Applications →](applications.md)**
+**[← Previous: Layer 4 - MetaProgramming](layer4-metaprogramming.md) | [Next: API Reference →](api-reference.md)**

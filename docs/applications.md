@@ -91,4 +91,4 @@ This document showcases real-world applications of GA-FuL across different domai
 
 ---
 
-**[← Previous: Usage Examples](usage-examples.md) | [Next: Integration →](integration.md)**
+**[← Previous: API Reference](api-reference.md) | [Next: Integration →](integration.md)**

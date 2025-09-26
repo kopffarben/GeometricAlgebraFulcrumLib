@@ -399,4 +399,4 @@ public static string ToHexString(this Color color);
 
 ---
 
-**[← Previous: Usage Examples](usage-examples.md) | [Next: Contributing →](contributing.md)**
+**[← Previous: Usage Examples](usage-examples.md) | [Next: Applications →](applications.md)**

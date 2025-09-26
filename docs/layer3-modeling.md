@@ -1150,3 +1150,7 @@ Layer 3 (Modeling) transforms the mathematical foundations of GA into practical 
 The modeling layer demonstrates GA-FuL's versatility, supporting everything from basic 3D transformations to advanced applications like ray tracing, robotics kinematics, and signal processing, all unified under the elegant mathematical framework of Geometric Algebra.
 
 The modeling layer effectively bridges the gap between abstract mathematical GA operations and practical geometric applications, providing developers with powerful tools for 3D modeling, computer graphics, robotics, and scientific computing while maintaining the mathematical rigor of the underlying algebra system.
+
+---
+
+**[← Previous: Layer 2 - Algebra](layer2-algebra.md) | [Next: Layer 4 - MetaProgramming →](layer4-metaprogramming.md)**

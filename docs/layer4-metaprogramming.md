@@ -1358,3 +1358,7 @@ The MetaProgramming layer implements several optimization strategies:
 - **Scientific Computing**: MATLAB/Python/R for research applications
 
 The MetaProgramming layer represents the culmination of the GA-FuL architecture, enabling automatic generation of optimized, specialized implementations from high-level geometric algebra expressions across multiple programming languages and platforms.
+
+---
+
+**[← Previous: Layer 3 - Modeling](layer3-modeling.md) | [Next: Usage Examples →](usage-examples.md)**

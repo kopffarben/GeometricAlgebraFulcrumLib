@@ -637,3 +637,7 @@ dependencyGraph.AddDependency(result, operand2);
 ```
 
 This comprehensive algebra layer provides the mathematical foundation for all higher-level GA operations, supporting multiple scalar types, different geometric spaces, and efficient computational patterns while maintaining mathematical rigor and extensibility.
+
+---
+
+**[← Previous: Layer 1 - Utilities](layer1-utilities.md) | [Next: Layer 3 - Modeling →](layer3-modeling.md)**

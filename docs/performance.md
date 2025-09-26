@@ -68,3 +68,7 @@ GA-FuL is designed for high-performance geometric algebra computations across di
 - Consider memory alignment for SIMD operations
 
 The GA-FuL library provides extensive optimization opportunities from algorithmic improvements to hardware-specific acceleration, enabling high-performance geometric algebra computations across a wide range of applications and scales.
+
+---
+
+**[← Previous: Integration](integration.md) | [Next: Contributing →](contributing.md)**
