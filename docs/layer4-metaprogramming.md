@@ -274,6 +274,7 @@ public static class ProcessorConfigurationExtensions
 Multi-language code generation with optimization:
 
 #### Language Servers
+{% raw %}
 ```csharp
 public abstract class LanguageCodeServer : ILanguageServer
 {
@@ -378,6 +379,7 @@ public class JavaScriptCodeServer : LanguageCodeServer
     }
 }
 ```
+{% endraw %}
 
 #### Code Composer System
 ```csharp
