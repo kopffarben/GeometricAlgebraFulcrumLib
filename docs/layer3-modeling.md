@@ -339,7 +339,7 @@ public class RobotManipulator6DOF
     public RobotManipulator6DOF()
     {
         _processor = XGaProcessor<double>.CreateEuclidean(
-            Float64ScalarProcessor.Instance, 3);
+            Float64ScalarProcessor.Instance);
             
         // Define 6 revolute joints
         _joints = new GaRobotJoint[6]
@@ -549,7 +549,7 @@ public class GaRayTracer
     public GaRayTracer()
     {
         var processor = XGaProcessor<double>.CreateConformal(
-            Float64ScalarProcessor.Instance, 3);
+            Float64ScalarProcessor.Instance);
         _cgaProcessor = new CGaProcessor<double>(processor);
         
         _objects = new List<GaRenderObject>();
@@ -825,7 +825,7 @@ public class QuaternionSignalProcessor
     public QuaternionSignalProcessor(int sampleRate = 1000)
     {
         _processor = XGaProcessor<double>.CreateEuclidean(
-            Float64ScalarProcessor.Instance, 3);
+            Float64ScalarProcessor.Instance);
         _sampleRate = sampleRate;
     }
     

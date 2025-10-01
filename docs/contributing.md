@@ -142,7 +142,7 @@ public void CreateVector_ValidCoordinates_ReturnsCorrectVector()
     var processor = XGaProcessor<double>.CreateEuclidean(ScalarProcessorOfFloat64.Instance);
     
     // Act
-    var vector = processor.CreateVector(1, 2, 3);
+    var vector = processor.Vector(1, 2, 3);
     
     // Assert
     Assert.AreEqual(1.0, vector[0]);
@@ -154,8 +154,8 @@ public void CreateVector_ValidCoordinates_ReturnsCorrectVector()
 public void GeometricProduct_OrthogonalVectors_ReturnsExpectedBivector()
 {
     var processor = XGaProcessor<double>.CreateEuclidean(ScalarProcessorOfFloat64.Instance);
-    var e1 = processor.CreateVector(1, 0, 0);
-    var e2 = processor.CreateVector(0, 1, 0);
+    var e1 = processor.Vector(1, 0, 0);
+    var e2 = processor.Vector(0, 1, 0);
     
     var result = e1.Gp(e2);
     
@@ -186,8 +186,8 @@ public void GeometricProduct_OrthogonalVectors_ReturnsExpectedBivector()
 /// <returns>A bivector representing the oriented area</returns>
 /// <example>
 /// <code>
-/// var e1 = processor.CreateVector(1, 0, 0);
-/// var e2 = processor.CreateVector(0, 1, 0);
+/// var e1 = processor.Vector(1, 0, 0);
+/// var e2 = processor.Vector(0, 1, 0);
 /// var bivector = e1.Op(e2); // Results in e12 basis bivector
 /// </code>
 /// </example>
