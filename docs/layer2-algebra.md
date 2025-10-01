@@ -384,8 +384,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 // Create a 3D Euclidean GA processor
 var processor = XGaProcessor<double>.CreateEuclidean(
-    Float64ScalarProcessor.Instance,
-    3
+    Float64ScalarProcessor.Instance
 );
 
 // Create vectors
@@ -433,8 +432,7 @@ using GeometricAlgebraFulcrumLib.Modeling.GeometricAlgebra.Conformal.Generic;
 
 // Create 5D conformal GA processor (3D + 2 extra dimensions)
 var processor = XGaProcessor<double>.CreateConformal(
-    Float64ScalarProcessor.Instance,
-    3
+    Float64ScalarProcessor.Instance
 );
 
 var cgaProcessor = new CGaProcessor<double>(processor);
@@ -489,8 +487,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 
 // Create 3D Euclidean processor
 var processor = XGaProcessor<double>.CreateEuclidean(
-    Float64ScalarProcessor.Instance, 
-    3
+    Float64ScalarProcessor.Instance
 );
 
 // Create bivector representing rotation plane (xy-plane)
@@ -548,7 +545,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 // Float64 operations
 var float64Processor = XGaProcessor<double>.CreateEuclidean(
-    Float64ScalarProcessor.Instance, 2);
+    Float64ScalarProcessor.Instance);
 
 var v1_f64 = float64Processor.Vector(1.5, 2.7);
 var v2_f64 = float64Processor.Vector(0.8, -1.2);
@@ -561,7 +558,7 @@ Console.WriteLine($"v1 * v2 = {result_f64}");
 
 // Rational exact arithmetic
 var rationalProcessor = XGaProcessor<Rational>.CreateEuclidean(
-    RationalScalarProcessor.Instance, 2);
+    RationalScalarProcessor.Instance);
 
 var v1_rat = rationalProcessor.Vector(new Rational(3, 2), new Rational(5, 3));  // 3/2, 5/3
 var v2_rat = rationalProcessor.Vector(new Rational(2, 3), new Rational(-4, 5));  // 2/3, -4/5
@@ -574,7 +571,7 @@ Console.WriteLine($"v1 * v2 = {result_rat}");
 
 // Symbolic operations (requires AngouriMath or Mathematica)
 var symbolicProcessor = XGaProcessor<Expr>.CreateEuclidean(
-    SymbolicScalarProcessor.Instance, 2);
+    SymbolicScalarProcessor.Instance);
 
 var a = symbolicProcessor.ScalarProcessor.ScalarFromText("a");
 var b = symbolicProcessor.ScalarProcessor.ScalarFromText("b");
