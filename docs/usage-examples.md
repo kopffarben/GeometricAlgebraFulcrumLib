@@ -27,8 +27,8 @@ namespace GAExamples
             var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
             // 3. Create vectors
-            var v1 = processor.CreateVector(1, 2, 3);
-            var v2 = processor.CreateVector(4, 5, 6);
+            var v1 = processor.Vector(1, 2, 3);
+            var v2 = processor.Vector(4, 5, 6);
 
             Console.WriteLine("=== Basic Geometric Algebra Operations ===");
             Console.WriteLine($"v1 = {v1}");
@@ -56,9 +56,9 @@ namespace GAExamples
             Console.WriteLine($"Angle between v1 and v2 = {angle * 180 / Math.PI:F1}°");
 
             // 6. Test orthogonal vectors
-            var e1 = processor.CreateVector(1, 0, 0);
-            var e2 = processor.CreateVector(0, 1, 0);
-            var e3 = processor.CreateVector(0, 0, 1);
+            var e1 = processor.Vector(1, 0, 0);
+            var e2 = processor.Vector(0, 1, 0);
+            var e3 = processor.Vector(0, 0, 1);
 
             Console.WriteLine("\n=== Orthogonal Basis Vectors ===");
             Console.WriteLine($"e1 ∧ e2 = {e1.Op(e2)}");
@@ -76,22 +76,22 @@ namespace GAExamples
 **Expected Output:**
 ```
 === Basic Geometric Algebra Operations ===
-v1 = <1, 2, 3>
-v2 = <4, 5, 6>
+v1 = '1'<0> + '2'<1> + '3'<2>
+v2 = '4'<0> + '5'<1> + '6'<2>
 
-v1 ∧ v2 (outer product) = -3<1,2> + 6<1,3> + -3<2,3>
-v1 * v2 (geometric product) = 32 + -3<1,2> + 6<1,3> + -3<2,3>
-v1 · v2 (scalar product) = 32.0
+v1 ∧ v2 (outer product) = '-3'<0, 1> + '-6'<0, 2> + '-3'<1, 2>
+v1 * v2 (geometric product) = '32'<> + '-3'<0, 1> + '-6'<0, 2> + '-3'<1, 2>
+v1 · v2 (scalar product) = '32'<>
 
 |v1| = 3.742
 |v2| = 8.775
 Angle between v1 and v2 = 12.9°
 
 === Orthogonal Basis Vectors ===
-e1 ∧ e2 = 1<1,2>
-e2 ∧ e3 = 1<2,3>
-e3 ∧ e1 = 1<3,1>
-e1 ∧ e2 ∧ e3 (unit volume) = 1<1,2,3>
+e1 ∧ e2 = '1'<0, 1>
+e2 ∧ e3 = '1'<1, 2>
+e3 ∧ e1 = '-1'<0, 2>
+e1 ∧ e2 ∧ e3 (unit volume) = '1'<0, 1, 2>
 ```
 
 </details>
@@ -106,35 +106,26 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 // Demonstrate different scalar processor types
 var float64Processor = ScalarProcessorOfFloat64.Instance;
-var complexProcessor = ScalarProcessorOfComplex.Instance;
 var rationalProcessor = ScalarProcessorOfERational.Instance;
 
-// Float64 operations
+// Float64 operations - use operator overloading
 var a = float64Processor.ScalarFromNumber(3.14159);
 var b = float64Processor.ScalarFromNumber(2.71828);
-var result1 = a.Add(b).Multiply(float64Processor.ScalarFromNumber(2));
+var result1 = (a + b) * 2;
 
 Console.WriteLine($"Float64: (π + e) * 2 = {result1.ScalarValue:F5}");
 
-// Complex operations
-var complex1 = complexProcessor.ScalarFromNumbers(3, 4);  // 3 + 4i
-var complex2 = complexProcessor.ScalarFromNumbers(1, -2); // 1 - 2i
-var complexResult = complex1.Multiply(complex2);
+// Rational arithmetic (exact) - use ScalarFromRational and operator overloading
+var rational1 = rationalProcessor.ScalarFromRational(1, 3);  // 1/3
+var rational2 = rationalProcessor.ScalarFromRational(2, 5);  // 2/5
+var rationalSum = rational1 + rational2;
 
-Console.WriteLine($"Complex: (3+4i) * (1-2i) = {complexResult}");
-
-// Rational arithmetic (exact)
-var rational1 = rationalProcessor.ScalarFromFraction(1, 3);  // 1/3
-var rational2 = rationalProcessor.ScalarFromFraction(2, 5);  // 2/5
-var rationalSum = rational1.Add(rational2);
-
-Console.WriteLine($"Rational: 1/3 + 2/5 = {rationalSum}");
+Console.WriteLine($"Rational: 1/3 + 2/5 = {rationalSum.ScalarValue}");
 ```
 
 **Expected Output:**
 ```
-Float64: (π + e) * 2 = 11.71975
-Complex: (3+4i) * (1-2i) = 11 + 2i
+Float64: (π + e) * 2 = 11.71974
 Rational: 1/3 + 2/5 = 11/15
 ```
 
