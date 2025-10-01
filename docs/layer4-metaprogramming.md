@@ -188,7 +188,7 @@ public static class MetaContextProcessorFactory
         int dimensions)
     {
         var scalarProcessor = context.CreateMetaExpressionScalarProcessor();
-        return XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor, dimensions);
+        return XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
     }
     
     // Projective GA processor for projective geometry

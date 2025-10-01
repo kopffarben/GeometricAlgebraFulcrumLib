@@ -22,7 +22,7 @@ public class GAUnityBridge : MonoBehaviour
     // Convert Unity Vector3 to GA Vector
     public XGaVector<float> ToGAVector(Vector3 unityVector)
     {
-        return gaProcessor.CreateVector(unityVector.x, unityVector.y, unityVector.z);
+        return gaProcessor.Vector(unityVector.x, unityVector.y, unityVector.z);
     }
     
     // Convert GA Vector to Unity Vector3
@@ -171,7 +171,7 @@ var gaProcessor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
     
     private void ComputeGA()
     {
-        var vector = gaProcessor.CreateVector(vectorX, vectorY, vectorZ);
+        var vector = gaProcessor.Vector(vectorX, vectorY, vectorZ);
         var norm = vector.Norm();
         result = $"Vector: {vector}, Magnitude: {norm.ScalarValue:F3}";
     }
@@ -194,8 +194,8 @@ public class GeometricAlgebraController : ControllerBase
     [HttpPost("multiply")]
     public IActionResult MultiplyVectors([FromBody] VectorMultiplyRequest request)
     {
-        var v1 = _gaProcessor.CreateVector(request.Vector1.X, request.Vector1.Y, request.Vector1.Z);
-        var v2 = _gaProcessor.CreateVector(request.Vector2.X, request.Vector2.Y, request.Vector2.Z);
+        var v1 = _gaProcessor.Vector(request.Vector1.X, request.Vector1.Y, request.Vector1.Z);
+        var v2 = _gaProcessor.Vector(request.Vector2.X, request.Vector2.Y, request.Vector2.Z);
         
         var result = v1.Gp(v2);
         
@@ -283,8 +283,8 @@ public class GAPerformanceBenchmark
     [Benchmark]
     public XGaMultivector<double> GeometricProduct()
     {
-        var v1 = processor.CreateVector(1, 2, 3);
-        var v2 = processor.CreateVector(4, 5, 6);
+        var v1 = processor.Vector(1, 2, 3);
+        var v2 = processor.Vector(4, 5, 6);
         return v1.Gp(v2);
     }
 }
