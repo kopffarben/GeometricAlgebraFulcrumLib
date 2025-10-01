@@ -46,8 +46,8 @@ public abstract class XGaProcessor<T>
     public static XGaConformalProcessor<T> CreateConformal(IScalarProcessor<T> scalarProcessor);
     
     // Vector Creation
-    public XGaVector<T> CreateVector(params T[] coordinates);
-    public XGaVector<T> CreateParameterVector(params string[] coordinateNames);
+    public XGaVector<T> Vector(params T[] coordinates);
+    public XGaVector<T> Vector(params string[] coordinateNames);
     
     // Multivector Creation
     public XGaComposer<T> CreateComposer();
@@ -111,8 +111,8 @@ public static class ScalarProcessorOfComplex
     public static ScalarProcessorOfComplex Instance { get; }
     
     // Complex Number Creation
-    public Complex ScalarFromNumbers(double real, double imaginary);
-    public Complex ScalarFromPolar(double magnitude, double phase);
+    public Scalar<Complex> ScalarFromNumber(double value);
+    public Scalar<Complex> ScalarFromRational(long numerator, long denominator);
 }
 ```
 
