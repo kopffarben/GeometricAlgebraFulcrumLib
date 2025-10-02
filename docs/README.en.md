@@ -156,13 +156,13 @@ A simple example:
 var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 
 // Create a CGA space
-var cga = CGaGeometricSpace5D<double>.Create(scalarProcessor);
+var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Encode points as CGA null vectors
-var point1 = cga.EncodeIpnsRound.Point(3.5, 4.3, 2.6);
-var point2 = cga.EncodeIpnsRound.Point(-2.1, 3.4, 5.0);
+var point1 = cga.Encode.IpnsRound.Point(3.5, 4.3, 2.6);
+var point2 = cga.Encode.IpnsRound.Point(-2.1, 3.4, 5.0);
 
-// Perform GA operations
+// Perform GA operations (simplified example)
 var result = point1.Op(point2);
 ```
 

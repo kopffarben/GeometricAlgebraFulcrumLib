@@ -89,11 +89,20 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars;
 var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 
 // 2. Create GA processor (3D Euclidean GA)
-var processor = XGaProcessor<double>.Create(scalarProcessor);
+var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // 3. Create vectors
-var v1 = processor.CreateVector(1, 0, 0);  // x-axis
-var v2 = processor.CreateVector(0, 1, 0);  // y-axis
+var composer = processor.CreateComposer();
+composer.SetVectorTerm(0, 1);
+composer.SetVectorTerm(1, 0);
+composer.SetVectorTerm(2, 0);
+var v1 = composer.GetVector();  // x-axis
+
+composer = processor.CreateComposer();
+composer.SetVectorTerm(0, 0);
+composer.SetVectorTerm(1, 1);
+composer.SetVectorTerm(2, 0);
+var v2 = composer.GetVector();  // y-axis
 
 // 4. Geometric product
 var gp = v1.Gp(v2);  // = xy bivector
@@ -151,13 +160,13 @@ var sp6 = ScalarProcessorOfMathematica.Instance;
 ```csharp
 // With rational numbers
 var scalarProc = ScalarProcessorOfRational.Instance;
-var processor = XGaProcessor<Rational>.Create(scalarProc);
+var processor = XGaProcessor<Rational>.CreateEuclidean(scalarProc);
 
-var v = processor.CreateVector(
-    new Rational(1, 2),  // 1/2
-    new Rational(1, 3),  // 1/3
-    new Rational(1, 4)   // 1/4
-);
+var composer = processor.CreateComposer();
+composer.SetVectorTerm(0, new Rational(1, 2));  // 1/2
+composer.SetVectorTerm(1, new Rational(1, 3));  // 1/3
+composer.SetVectorTerm(2, new Rational(1, 4));  // 1/4
+var v = composer.GetVector();
 ```
 
 ---
@@ -190,10 +199,10 @@ var projective = XGaProjectiveSpace<T>.Create(scalarProcessor, dimension);
 // r: Number  0 squares
 
 // 3D Euclidean: (3, 0, 0)
-var ga3d = XGaProcessor<double>.Create(scalarProcessor, 3, 0, 0);
+var ga3d = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // Spacetime (Minkowski): (3, 1, 0)
-var spacetime = XGaProcessor<double>.Create(scalarProcessor, 3, 1, 0);
+var spacetime = XGaProcessor<double>.Create(scalarProcessor, 1, 0); // Minkowski spacetime (3,1)
 
 // 5D Conformal: (4, 1, 0)
 var cga5d = XGaProcessor<double>.Create(scalarProcessor, 4, 1, 0);
@@ -212,17 +221,21 @@ var cga5d = XGaProcessor<double>.Create(scalarProcessor, 4, 1, 0);
 var scalar = processor.CreateScalar(5.0);
 
 // Vectors (Grade 1)
-var vector = processor.CreateVector(1, 2, 3);
+var composer = processor.CreateComposer();
+composer.SetVectorTerm(0, 1);
+composer.SetVectorTerm(1, 2);
+composer.SetVectorTerm(2, 3);
+var vector = composer.GetVector();
 
 // Bivectors (Grade 2)
-var bivector = processor.CreateBivector(
-    xy: 1,  // e_1 ∧ e_2
-    xz: 2,  // e_1 ∧ e_3
-    yz: 3   // e_2 ∧ e_3
-);
+composer = processor.CreateComposer();
+composer.SetBivectorTerm(0, 1, 1.0); // xy
+composer.SetBivectorTerm(0, 2, 2.0); // xz
+composer.SetBivectorTerm(1, 2, 3.0); // yz
+var bivector = composer.GetBivector();
 
 // General multivectors
-var composer = processor.CreateComposer();
+composer = processor.CreateComposer();
 composer.SetTerm(0, 1.0);           // Scalar part
 composer.SetTerm(1, 2.0);           // e_1
 composer.SetTerm(2, 3.0);           // e_2
@@ -237,8 +250,17 @@ var mv = composer.GetMultivector();
 **Basic Products:**
 
 ```csharp
-var v1 = processor.CreateVector(1, 0, 0);
-var v2 = processor.CreateVector(0, 1, 0);
+var composer = processor.CreateComposer();
+composer.SetVectorTerm(0, 1);
+composer.SetVectorTerm(1, 0);
+composer.SetVectorTerm(2, 0);
+var v1 = composer.GetVector();
+
+composer = processor.CreateComposer();
+composer.SetVectorTerm(0, 0);
+composer.SetVectorTerm(1, 1);
+composer.SetVectorTerm(2, 0);
+var v2 = composer.GetVector();
 
 // Geometric product
 var gp = v1.Gp(v2);
@@ -318,18 +340,18 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa;
 
 // Setup
 var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var cga = CGaGeometricSpace5D<double>.Create(scalarProcessor);
+var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Define points
-var p1 = cga.EncodeIpnsRound.Point(0, 0, 0);
-var p2 = cga.EncodeIpnsRound.Point(1, 0, 0);
-var p3 = cga.EncodeIpnsRound.Point(0, 1, 0);
+var p1 = cga.Encode.IpnsRound.Point(0, 0, 0);
+var p2 = cga.Encode.IpnsRound.Point(1, 0, 0);
+var p3 = cga.Encode.IpnsRound.Point(0, 1, 0);
 
 // Plane through three points
 var plane = p1.Op(p2).Op(p3);
 
 // Define sphere
-var sphere = cga.EncodeIpnsRound.Sphere(
+var sphere = cga.Encode.IpnsRound.Sphere(
     centerX: 1,
     centerY: 1,
     centerZ: 1,
@@ -365,7 +387,11 @@ var y = scalarProcessor.CreateSymbol("y");
 var z = scalarProcessor.CreateSymbol("z");
 
 // Vector with symbolic components
-var v = processor.CreateVector(x, y, z);
+var composer = processor.CreateComposer();
+composer.SetVectorTerm(0, x);
+composer.SetVectorTerm(1, y);
+composer.SetVectorTerm(2, z);
+var v = composer.GetVector();
 
 // Computation
 var normSquared = v.NormSquared();
@@ -392,10 +418,20 @@ var z = context.CreateParameter("z");
 
 // 3. GA computations
 var scalarProcessor = context.ScalarProcessor;
-var processor = XGaProcessor<IMetaExpression>.Create(scalarProcessor);
+var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
 
-var v1 = processor.CreateVector(x, y, z);
-var v2 = processor.CreateVector(1, 0, 0);
+var composer = processor.CreateComposer();
+composer.SetVectorTerm(0, x);
+composer.SetVectorTerm(1, y);
+composer.SetVectorTerm(2, z);
+var v1 = composer.GetVector();
+
+composer = processor.CreateComposer();
+composer.SetVectorTerm(0, 1);
+composer.SetVectorTerm(1, 0);
+composer.SetVectorTerm(2, 0);
+var v2 = composer.GetVector();
+
 var result = v1.Gp(v2);
 
 // 4. Define output
@@ -436,23 +472,27 @@ public static void ComputeGeometricProduct(
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 
 var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var processor = XGaProcessor<double>.Create(scalarProcessor);
+var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // Rotation bivector (rotation plane)
-var B = processor.CreateBivector(
-    xy: 1,  // Rotation in xy-plane
-    xz: 0,
-    yz: 0
-);
+var composer = processor.CreateComposer();
+composer.SetBivectorTerm(0, 1, 1.0); // xy
+composer.SetBivectorTerm(0, 2, 0.0); // xz
+composer.SetBivectorTerm(1, 2, 0.0); // yz
+var B = composer.GetBivector();
 
 // Angle
 var angle = Math.PI / 4;  // 45°
 
-// Rotor
+// Create rotor using exponential
 var rotor = (-angle / 2 * B).Exp();
 
 // Vector to rotate
-var v = processor.CreateVector(1, 0, 0);
+composer = processor.CreateComposer();
+composer.SetVectorTerm(0, 1);
+composer.SetVectorTerm(1, 0);
+composer.SetVectorTerm(2, 0);
+var v = composer.GetVector();
 
 // Rotation: v' = R v R^†
 var rotated = rotor.Gp(v).Gp(rotor.Reverse());

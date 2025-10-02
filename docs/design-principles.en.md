@@ -52,9 +52,9 @@ These principles emerged from experience with the predecessor system [GMac](http
 **Example:**
 ```csharp
 // The same code works with all scalar types
-var processor = XGaProcessor<T>.Create(scalarProcessor);
-var v1 = processor.CreateVector(a, b, c);
-var v2 = processor.CreateVector(x, y, z);
+var processor = XGaProcessor<T>.CreateEuclidean(scalarProcessor);
+var v1 = processor.Vector(a, b, c);
+var v2 = processor.Vector(x, y, z);
 var result = v1.Gp(v2); // Geometric Product
 
 // T can be: double, float, decimal, BigDecimal, Expr, etc.
@@ -110,10 +110,12 @@ var result = v1.Gp(v2); // Geometric Product
 **Example:**
 ```csharp
 // 100D-GA, sparse multivector with 10 components
-var mv = processor.CreateMultivector();
-mv.SetTerm(indexSet1, scalar1);
-mv.SetTerm(indexSet2, scalar2);
+var composer = processor.CreateMultivectorComposer();
+composer.SetTerm(indexSet1, scalar1);
+composer.SetTerm(indexSet2, scalar2);
 // ... 10 terms total
+
+var mv = composer.GetMultivector();
 
 // Memory: ~10 scalars + 10 index-sets
 // Full multivector would require 2^100 scalars!
@@ -162,8 +164,8 @@ var context = new MetaContext();
 var x = context.CreateParameter("x");
 var y = context.CreateParameter("y");
 
-var v1 = processor.CreateVector(x, y, 0);
-var v2 = processor.CreateVector(1, 1, 1);
+var v1 = processor.Vector(x, y, 0);
+var v2 = processor.Vector(1, 1, 1);
 var result = v1.Gp(v2);
 
 // 2. Optimize
@@ -297,7 +299,7 @@ multivector.GradeInvolution() // Grade Involution
 **4. Builder Pattern:**
 ```csharp
 // Fluent API for construction
-var mv = processor.CreateComposer()
+var mv = processor.CreateMultivectorComposer()
     .SetTerm(index1, scalar1)
     .SetTerm(index2, scalar2)
     .AddTerm(index3, scalar3)
@@ -442,7 +444,7 @@ var scalar = kVector[indexSet];   // Dictionary access
 
 ```csharp
 // 1. Composer for construction (Mutable during build)
-var composer = processor.CreateComposer();
+var composer = processor.CreateMultivectorComposer();
 composer.SetTerm(index1, scalar1);
 composer.SetTerm(index2, scalar2);
 composer.AddTerm(index3, scalar3);
@@ -644,7 +646,7 @@ static class XGaMultivectorExtensions {
         this XGaMultivector<T> mv1,
         XGaMultivector<T> mv2
     ) {
-        var composer = mv1.Processor.CreateComposer();
+        var composer = mv1.Processor.CreateMultivectorComposer();
 
         // Geometric product logic
         foreach (var (id1, scalar1) in mv1.Terms)
@@ -682,11 +684,11 @@ public class MyCustomScalarProcessor : INumericScalarProcessor<MyScalar> {
 
 // 2. Use it with GA-FuL (DOP-4: Schema compatibility)
 var scalarProcessor = new MyCustomScalarProcessor();
-var processor = XGaProcessor<MyScalar>.Create(scalarProcessor);
+var processor = XGaProcessor<MyScalar>.CreateEuclidean(scalarProcessor);
 
 // 3. All GA operations work automatically!
-var v1 = processor.CreateVector(a, b, c);
-var v2 = processor.CreateVector(x, y, z);
+var v1 = processor.Vector(a, b, c);
+var v2 = processor.Vector(x, y, z);
 var result = v1.Gp(v2);
 ```
 
@@ -724,7 +726,7 @@ public static class MyCustomOperations {
         XGaMultivector<T> mv2
     ) {
         // DOP-2: Work with generic data structures
-        var composer = mv1.Processor.CreateComposer();
+        var composer = mv1.Processor.CreateMultivectorComposer();
 
         foreach (var (id1, s1) in mv1.Terms)
         foreach (var (id2, s2) in mv2.Terms) {

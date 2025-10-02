@@ -150,10 +150,9 @@ bool lt = a < b;         // true
 **Konstruktion:**
 
 ```csharp
-// Mit spezifischer Metrik (p, q, r)
+// Mit spezifischer Metrik (q, r) - p wird automatisch berechnet
 var processor = XGaProcessor<double>.Create(
     scalarProcessor,
-    positiveCount: 3,  // p: Anzahl +1 Quadrate
     negativeCount: 0,  // q: Anzahl -1 Quadrate
     zeroCount: 0       // r: Anzahl  0 Quadrate
 );
@@ -183,18 +182,22 @@ public class XGaProcessor<T>
 // Skalare
 XGaScalar<T> CreateScalar(T value);
 
-// Vektoren
-XGaVector<T> CreateVector(params T[] components);
+// Vektoren (über Composer)
+var vector = processor.CreateComposer()
+    .SetVectorTerm(0, x)
+    .SetVectorTerm(1, y)
+    .SetVectorTerm(2, z)
+    .GetVector();
+
+// Basis-Vektoren
 XGaVector<T> CreateBasisVector(int index);
 
-// Bivektoren
-XGaBivector<T> CreateBivector(Dictionary<(int, int), T> components);
-
-// k-Vektoren
-XGaKVector<T> CreateKVector(int grade, Dictionary<IIndexSet, T> components);
-
-// Multivektoren
-XGaMultivector<T> CreateMultivector(Dictionary<IIndexSet, T> components);
+// Bivektoren (über Composer)
+var bivector = processor.CreateBivectorComposer()
+    .SetBivectorTerm(0, 1, xy)
+    .SetBivectorTerm(0, 2, xz)
+    .SetBivectorTerm(1, 2, yz)
+    .GetBivector();
 
 // Composer
 XGaMultivectorComposer<T> CreateComposer();
@@ -457,7 +460,10 @@ public interface IIndexSet
 **Konstruktion:**
 
 ```csharp
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
+// Für Float64 (empfohlen)
+var cga = CGaFloat64GeometricSpace5D.Instance;
+
+// Für generische Typen
 var cga = CGaGeometricSpace5D<T>.Create(scalarProcessor);
 ```
 
@@ -465,15 +471,19 @@ var cga = CGaGeometricSpace5D<T>.Create(scalarProcessor);
 
 ```csharp
 // IPNS Round Objects (Inner Product Null Space)
-var point = cga.EncodeIpnsRound.Point(x, y, z);
-var sphere = cga.EncodeIpnsRound.Sphere(cx, cy, cz, radius);
-var pointPair = cga.EncodeIpnsRound.PointPair(p1, p2);
-var circle = cga.EncodeIpnsRound.Circle(center, radius, bivector);
+var point = cga.Encode.IpnsRound.Point(x, y, z);
+var sphere = cga.Encode.IpnsRound.RealSphere(radius, cx, cy, cz);
+var pointPair = cga.Encode.IpnsRound.PointPair(p1, p2);
+var circle = cga.Encode.IpnsRound.Circle(center, radius, bivector);
 
 // OPNS Flat Objects (Outer Product Null Space)
-var line = cga.EncodeOpnsFlat.Line(point, direction);
-var plane = cga.EncodeOpnsFlat.Plane(point, bivector);
-var flatPoint = cga.EncodeOpnsFlat.Point(x, y, z);
+var line = cga.Encode.OpnsFlat.Line(point, direction);
+var plane = cga.Encode.OpnsFlat.Plane(point, bivector);
+var flatPoint = cga.Encode.OpnsFlat.Point(x, y, z);
+
+// IPNS Flat Objects
+var ipnsLine = cga.Encode.IpnsFlat.Line(point, direction);
+var ipnsPlane = cga.Encode.IpnsFlat.Plane(point, normal);
 ```
 
 **Decoding:**
@@ -560,8 +570,12 @@ var pi = context.CreateConstant("pi", Math.PI);
 
 // 4. Berechnungen
 var scalarProcessor = context.ScalarProcessor;
-var processor = XGaProcessor<IMetaExpression>.Create(scalarProcessor);
-var v = processor.CreateVector(x, y, 0);
+var processor = XGaProcessor<IMetaExpression>.Create(scalarProcessor, 0, 0);
+var v = processor.CreateComposer()
+    .SetVectorTerm(0, x)
+    .SetVectorTerm(1, y)
+    .SetVectorTerm(2, 0)
+    .GetVector();
 var result = v.NormSquared();
 
 // 5. Output definieren

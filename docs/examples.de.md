@@ -30,8 +30,8 @@ var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.Create(scalarProcessor, 3, 0, 0);
 
 // Definiere zwei Vektoren
-var v1 = processor.CreateVector(1, 0, 0);  // x-Achse
-var v2 = processor.CreateVector(0, 1, 0);  // y-Achse
+var v1 = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();  // x-Achse
+var v2 = processor.CreateComposer().SetVectorTerm(1, 1.0).GetVector();  // y-Achse
 
 // Geometrisches Produkt: v1 * v2 = v1·v2 + v1∧v2
 var gp = v1.Gp(v2);
@@ -49,7 +49,7 @@ Console.WriteLine($"Skalarprodukt: {dot}");
 // Ausgabe: 0 (orthogonal)
 
 // Nicht-orthogonale Vektoren
-var v3 = processor.CreateVector(1, 1, 0);
+var v3 = processor.CreateComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).GetVector();
 var dot2 = v1.Sp(v3);
 Console.WriteLine($"Skalarprodukt v1·v3: {dot2}");
 // Ausgabe: 1
@@ -65,8 +65,8 @@ Das Kreuzprodukt in 3D kann durch GA elegant ausgedrückt werden:
 var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
-var a = processor.CreateVector(1, 0, 0);
-var b = processor.CreateVector(0, 1, 0);
+var a = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();
+var b = processor.CreateComposer().SetVectorTerm(1, 1.0).GetVector();
 
 // Kreuzprodukt: a × b = -(a ∧ b) * I^{-1}
 // wobei I das Pseudoskalar ist
@@ -78,7 +78,7 @@ var cross = bivector.Dual();   // Dualisierung
 Console.WriteLine($"Kreuzprodukt a × b: {cross}");
 // Ausgabe: '1'<3> (z-Vektor)
 
-// Methode 2: Direkt
+// Methode 2: Direkt (Hinweis: Cross() ist eine Utility-Erweiterungsmethode)
 var cross2 = a.Cross(b);
 Console.WriteLine($"Kreuzprodukt (direkt): {cross2}");
 ```
@@ -104,10 +104,10 @@ var B = processor.CreateBivector(
 var angle = Math.PI / 2;  // 90°
 
 // Erstelle Rotor: R = exp(-θ/2 B)
-var rotor = processor.CreateRotor(B, angle);
+var rotor = (B.Times(-angle / 2.0)).Exp();
 
 // Vektor zum Rotieren
-var v = processor.CreateVector(1, 0, 0);
+var v = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();
 
 // Rotation: v' = R v R†
 var vRotated = rotor.OmMap(v);
@@ -127,12 +127,12 @@ Console.WriteLine($"Rotiert (90° in xy): {vRotated}");
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa;
 
 var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var cga = CGaGeometricSpace5D<double>.Create(scalarProcessor);
+var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Kodiere 3D-Punkte in 5D-CGA
-var p1 = cga.EncodeIpnsRound.Point(0, 0, 0);
-var p2 = cga.EncodeIpnsRound.Point(1, 0, 0);
-var p3 = cga.EncodeIpnsRound.Point(0, 1, 0);
+var p1 = cga.Encode.IpnsRound.Point(0, 0, 0);
+var p2 = cga.Encode.IpnsRound.Point(1, 0, 0);
+var p3 = cga.Encode.IpnsRound.Point(0, 1, 0);
 
 // Ebene durch drei Punkte: π = p1 ∧ p2 ∧ p3
 var plane = p1.Op(p2).Op(p3);
@@ -140,9 +140,9 @@ var plane = p1.Op(p2).Op(p3);
 Console.WriteLine($"Ebene durch drei Punkte: {plane}");
 
 // Kodiere eine Linie
-var linePoint = cga.EncodeIpnsRound.Point(0, 0, 0);
-var lineDirection = scalarProcessor.CreateVector3D(1, 1, 1);
-var line = cga.EncodeOpnsFlat.Line(linePoint, lineDirection);
+var linePoint = cga.Encode.IpnsRound.Point(0, 0, 0);
+var lineDirection = scalarProcessor.CreateLinVector3D(1, 1, 1);
+var line = cga.Encode.OpnsFlat.Line(linePoint, lineDirection);
 
 Console.WriteLine($"Linie: {line}");
 
@@ -158,10 +158,10 @@ Console.WriteLine($"Schnittpunkt: {intersection}");
 
 ```csharp
 var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var cga = CGaGeometricSpace5D<double>.Create(scalarProcessor);
+var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Definiere Kugel
-var sphere = cga.EncodeIpnsRound.Sphere(
+var sphere = cga.Encode.IpnsRound.Sphere(
     centerX: 0,
     centerY: 0,
     centerZ: 0,
@@ -169,16 +169,16 @@ var sphere = cga.EncodeIpnsRound.Sphere(
 );
 
 // Definiere Ebene (z = 0)
-var p1 = cga.EncodeIpnsRound.Point(-1, -1, 0);
-var p2 = cga.EncodeIpnsRound.Point(1, -1, 0);
-var p3 = cga.EncodeIpnsRound.Point(0, 1, 0);
+var p1 = cga.Encode.IpnsRound.Point(-1, -1, 0);
+var p2 = cga.Encode.IpnsRound.Point(1, -1, 0);
+var p3 = cga.Encode.IpnsRound.Point(0, 1, 0);
 var plane = p1.Op(p2).Op(p3);
 
 // Schneide Kugel mit Ebene → Kreis
 var circle = sphere.Op(plane);
 
-// Dekodiere Kreis
-var circleData = circle.Decode.OpnsRound.Element();
+// Dekodiere Kreis (verwende entsprechende Decode-Methode)
+var circleData = circle.DecodeOpnsRound.Element();
 
 Console.WriteLine($"Kreis-Zentrum: {circleData.CenterToVector3D()}");
 Console.WriteLine($"Kreis-Radius: {circleData.RealRadius}");
@@ -198,13 +198,13 @@ Console.WriteLine($"Kreis-Normal: {circleData.NormalDirectionToVector3D()}");
 using System;
 
 var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var cga = CGaGeometricSpace5D<double>.Create(scalarProcessor);
+var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Definiere einen Punkt
-var point = cga.EncodeIpnsRound.Point(1, 0, 0);
+var point = cga.Encode.IpnsRound.Point(1, 0, 0);
 
 // Translation
-var translationVector = scalarProcessor.CreateVector3D(1, 2, 3);
+var translationVector = scalarProcessor.CreateLinVector3D(1, 2, 3);
 var translator = cga.CreateTranslator(translationVector);
 var translatedPoint = translator.OmMap(point);
 
@@ -213,8 +213,9 @@ Console.WriteLine($"Transliert: {translatedPoint.DecodeIpnsRound.Point()}");
 
 // Rotation
 var angle = Math.PI / 4;  // 45°
-var bivector = processor.CreateBivector(xy: 1, xz: 0, yz: 0);
-var rotator = cga.CreateRotor(bivector, angle);
+var euclideanProcessor = cga.EuclideanProcessor;
+var bivector = euclideanProcessor.CreateBivector(xy: 1, xz: 0, yz: 0);
+var rotator = cga.CreateRotor(bivector.Times(-angle / 2.0).Exp());
 var rotatedPoint = rotator.OmMap(point);
 
 Console.WriteLine($"Rotiert: {rotatedPoint.DecodeIpnsRound.Point()}");
@@ -246,7 +247,7 @@ var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // Rotationsachse (muss normalisiert sein)
-var axis = processor.CreateVector(1, 1, 1).Normalize();
+var axis = processor.CreateComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).SetVectorTerm(2, 1.0).GetVector().Normalize();
 
 // Rotationswinkel
 var angle = Math.PI / 3;  // 60°
@@ -261,7 +262,7 @@ var rotor = processor.CreateScalar(Math.Cos(halfAngle))
     .Add(axis.Dual().Times(-Math.Sin(halfAngle)));
 
 // Vektor zum Rotieren
-var v = processor.CreateVector(1, 0, 0);
+var v = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();
 
 // Rotation: v' = R v R†
 var vRotated = rotor.Gp(v).Gp(rotor.Reverse());
@@ -279,10 +280,10 @@ var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // Normale der Spiegelebene (z.B. xy-Ebene, Normale = z-Achse)
-var normal = processor.CreateVector(0, 0, 1);
+var normal = processor.CreateComposer().SetVectorTerm(2, 1.0).GetVector();
 
 // Vektor zum Spiegeln
-var v = processor.CreateVector(1, 1, 1);
+var v = processor.CreateComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).SetVectorTerm(2, 1.0).GetVector();
 
 // Spiegelung: v' = -n v n / (n·n)
 var reflected = normal.Gp(v).Gp(normal).Negative().DivideByNorm();
@@ -313,7 +314,7 @@ var y = scalarProcessor.CreateSymbol("y");
 var z = scalarProcessor.CreateSymbol("z");
 
 // Vektor mit symbolischen Komponenten
-var v = processor.CreateVector(x, y, z);
+var v = processor.CreateComposer().SetVectorTerm(0, x).SetVectorTerm(1, y).SetVectorTerm(2, z).GetVector();
 
 // Berechne Norm^2
 var normSq = v.NormSquared();
@@ -343,17 +344,17 @@ var scalarProcessor = ScalarProcessorOfMathematica.Instance;
 var processor = XGaProcessor<Expr>.Create(scalarProcessor);
 
 // Definiere symbolische Vektoren
-var a = processor.CreateVector(
-    scalarProcessor.CreateSymbol("a1"),
-    scalarProcessor.CreateSymbol("a2"),
-    scalarProcessor.CreateSymbol("a3")
-);
+var a = processor.CreateComposer()
+    .SetVectorTerm(0, scalarProcessor.CreateSymbol("a1"))
+    .SetVectorTerm(1, scalarProcessor.CreateSymbol("a2"))
+    .SetVectorTerm(2, scalarProcessor.CreateSymbol("a3"))
+    .GetVector();
 
-var b = processor.CreateVector(
-    scalarProcessor.CreateSymbol("b1"),
-    scalarProcessor.CreateSymbol("b2"),
-    scalarProcessor.CreateSymbol("b3")
-);
+var b = processor.CreateComposer()
+    .SetVectorTerm(0, scalarProcessor.CreateSymbol("b1"))
+    .SetVectorTerm(1, scalarProcessor.CreateSymbol("b2"))
+    .SetVectorTerm(2, scalarProcessor.CreateSymbol("b3"))
+    .GetVector();
 
 // Berechne (a + b) · (a + b)
 var sum = a.Add(b);
@@ -391,8 +392,8 @@ var y3 = context.CreateParameter("y3");
 // 3. GA-Berechnungen
 var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
 
-var v1 = processor.CreateVector(x1, x2, x3);
-var v2 = processor.CreateVector(y1, y2, y3);
+var v1 = processor.CreateComposer().SetVectorTerm(0, x1).SetVectorTerm(1, x2).SetVectorTerm(2, x3).GetVector();
+var v2 = processor.CreateComposer().SetVectorTerm(0, y1).SetVectorTerm(1, y2).SetVectorTerm(2, y3).GetVector();
 
 // Kreuzprodukt
 var cross = v1.Cross(v2);
@@ -453,7 +454,7 @@ var y = context.CreateParameter("y");
 
 // Berechnung
 var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
-var v = processor.CreateVector(x, y, 0);
+var v = processor.CreateComposer().SetVectorTerm(0, x).SetVectorTerm(1, y).GetVector();
 var normSq = v.NormSquared();
 
 // Output
@@ -555,8 +556,8 @@ var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // Linie definiert durch zwei Punkte
-var p1 = processor.CreateVector(0, 0, 0);
-var p2 = processor.CreateVector(1, 1, 0);
+var p1 = processor.CreateComposer().GetVector(); // Origin
+var p2 = processor.CreateComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).GetVector();
 
 // Plücker-Koordinaten: L = p1 ∧ p2
 var lineDirection = p2.Subtract(p1);
@@ -583,10 +584,10 @@ var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // Zwei Rotoren definieren
 var B1 = processor.CreateBivector(xy: 1, xz: 0, yz: 0).Normalize();
-var rotor1 = processor.CreateRotor(B1, 0);  // Identity
+var rotor1 = processor.CreateScalar(1.0);  // Identity
 
 var B2 = processor.CreateBivector(xy: 1, xz: 0, yz: 0).Normalize();
-var rotor2 = processor.CreateRotor(B2, Math.PI / 2);  // 90°
+var rotor2 = (B2.Times(-Math.PI / 4.0)).Exp();  // 90°
 
 // Interpolation (SLERP in GA)
 var t = 0.5;  // 50% zwischen rotor1 und rotor2
@@ -595,7 +596,7 @@ var logRotor = rotor2.Gp(rotor1.Reverse()).Log();
 var interpolated = (logRotor.Times(t)).Exp().Gp(rotor1);
 
 // Wende interpolierten Rotor an
-var v = processor.CreateVector(1, 0, 0);
+var v = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();
 var result = interpolated.OmMap(v);
 
 Console.WriteLine($"Interpoliert (t=0.5): {result}");
@@ -610,13 +611,13 @@ Console.WriteLine($"Interpoliert (t=0.5): {result}");
 using System;
 
 var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var cga = CGaGeometricSpace5D<double>.Create(scalarProcessor);
+var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Punkt in 3D
-var point = cga.EncodeIpnsRound.Point(1, 0, 0);
+var point = cga.Encode.IpnsRound.Point(1, 0, 0);
 
 // Inversionskugel (Ursprung, Radius 1)
-var sphere = cga.EncodeIpnsRound.Sphere(0, 0, 0, 1);
+var sphere = cga.Encode.IpnsRound.Sphere(0, 0, 0, 1);
 
 // Inversion am Punkt
 // p' = sphere * p * sphere / |sphere|^2

@@ -263,13 +263,13 @@ Modellierung von 3D-Geometrie in 5D-CGA-Raum
 
 **Beispiel:**
 ```csharp
-var cga = CGaGeometricSpace5D<double>.Create(scalarProcessor);
+var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Kodiere einen Punkt
-var point = cga.EncodeIpnsRound.Point(x, y, z);
+var point = cga.Encode.IpnsRound.Point(x, y, z);
 
 // Kodiere eine Sphäre
-var sphere = cga.EncodeIpnsRound.Sphere(centerX, centerY, centerZ, radius);
+var sphere = cga.Encode.IpnsRound.Sphere(centerX, centerY, centerZ, radius);
 
 // Schneide zwei Objekte
 var intersection = sphere.Op(plane);
@@ -413,23 +413,37 @@ Der MCO führt folgende Optimierungen durch:
 ```csharp
 // 1. MCO erstellen
 var context = new MetaContext();
+var scalarProcessor = context.ScalarProcessor;
 
-// 2. Input-Parameter
+// 2. Prozessor erstellen
+var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+
+// 3. Input-Parameter
 var x = context.CreateParameter("x");
 var y = context.CreateParameter("y");
 
-// 3. GA-Operationen
-var multivector1 = processor.CreateVector(x, y, 0);
-var multivector2 = processor.CreateVector(1, 1, 1);
+// 4. GA-Operationen (composer pattern)
+var multivector1 = processor.CreateComposer()
+    .SetVectorTerm(0, x)
+    .SetVectorTerm(1, y)
+    .SetVectorTerm(2, 0)
+    .GetMultivector();
+
+var multivector2 = processor.CreateComposer()
+    .SetVectorTerm(0, 1)
+    .SetVectorTerm(1, 1)
+    .SetVectorTerm(2, 1)
+    .GetMultivector();
+
 var result = multivector1.Gp(multivector2);
 
-// 4. Output definieren
+// 5. Output definieren
 context.SetOutput("result", result);
 
-// 5. Optimieren
+// 6. Optimieren
 context.Optimize();
 
-// 6. Code generieren
+// 7. Code generieren
 var codeComposer = new CSharpCodeComposer();
 var code = codeComposer.Generate(context);
 ```
