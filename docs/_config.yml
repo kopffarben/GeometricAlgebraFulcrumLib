@@ -1,0 +1,80 @@
+# GitHub Pages Configuration for GA-FuL Documentation
+
+# Site settings
+title: GA-FuL Documentation
+description: Geometric Algebra Fulcrum Library - A unified generic C# library for geometric algebra computations
+author: Ahmad H. Eid
+email: ga.computing.eg@gmail.com
+
+# Build settings
+markdown: kramdown
+theme: jekyll-theme-cayman
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:name
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+# Exclude from processing
+exclude:
+  - README.adoc
+  - Gemfile
+  - Gemfile.lock
+
+# GitHub Pages specific settings
+baseurl: "/GeometricAlgebraFulcrumLib"
+url: "https://ga-explorer.github.io"
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Language settings
+languages:
+  - en
+  - de
+
+default_lang: en
+
+# Navigation menu
+navigation:
+  en:
+    - title: "Home"
+      url: "/README.en.html"
+    - title: "Getting Started"
+      url: "/getting-started.en.html"
+    - title: "Examples"
+      url: "/examples.en.html"
+    - title: "Architecture"
+      url: "/architecture.en.html"
+    - title: "Design Principles"
+      url: "/design-principles.en.html"
+    - title: "API Reference"
+      url: "/api-reference.en.html"
+    - title: "Project Structure"
+      url: "/project-structure.en.html"
+  de:
+    - title: "Startseite"
+      url: "/README.de.html"
+    - title: "Erste Schritte"
+      url: "/getting-started.de.html"
+    - title: "Beispiele"
+      url: "/examples.de.html"
+    - title: "Architektur"
+      url: "/architecture.de.html"
+    - title: "Design-Prinzipien"
+      url: "/design-principles.de.html"
+    - title: "API-Referenz"
+      url: "/api-reference.de.html"
+    - title: "Projektstruktur"
+      url: "/project-structure.de.html"

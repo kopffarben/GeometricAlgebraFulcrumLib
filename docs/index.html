@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GA-FuL Documentation</title>
+    <meta name="description" content="Geometric Algebra Fulcrum Library - A unified generic C# library for geometric algebra computations">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 3rem 2rem;
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .lang-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            min-width: 200px;
+            background: white;
+        }
+
+        .lang-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .lang-flag {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .lang-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .lang-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .info {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 4px;
+        }
+
+        .info h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .info li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .language-selector {
+                flex-direction: column;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📐 GA-FuL Documentation</h1>
+            <p>Geometric Algebra Fulcrum Library</p>
+        </div>
+
+        <div class="content">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #667eea;">Choose Your Language / Wählen Sie Ihre Sprache</h2>
+
+            <div class="language-selector">
+                <a href="README.en.html" class="lang-btn">
+                    <div class="lang-flag">🇬🇧</div>
+                    <div class="lang-name">English</div>
+                    <div class="lang-desc">Documentation in English</div>
+                </a>
+
+                <a href="README.de.html" class="lang-btn">
+                    <div class="lang-flag">🇩🇪</div>
+                    <div class="lang-name">Deutsch</div>
+                    <div class="lang-desc">Dokumentation auf Deutsch</div>
+                </a>
+            </div>
+
+            <div class="info">
+                <h3>About GA-FuL</h3>
+                <ul>
+                    <li>Unified generic C# library for geometric algebra computations</li>
+                    <li>Support for multiple scalar types (floating point, rational, symbolic)</li>
+                    <li>Memory-efficient sparse multivectors</li>
+                    <li>Metaprogramming and code generation capabilities</li>
+                    <li>Comprehensive documentation in English and German</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Author:</strong> Ahmad H. Eid | <strong>Email:</strong> <a href="mailto:ga.computing.eg@gmail.com">ga.computing.eg@gmail.com</a></p>
+            <p style="margin-top: 0.5rem;">
+                <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib" target="_blank">GitHub Repository</a> |
+                <a href="https://www.mdpi.com/2227-7390/12/14/2272" target="_blank">Research Paper</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

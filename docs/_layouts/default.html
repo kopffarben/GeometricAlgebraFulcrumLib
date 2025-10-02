@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: 'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/documentation.css' | relative_url }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="{{ '/' | relative_url }}">
+                    <span class="nav-icon">📐</span>
+                    <span class="nav-title">GA-FuL</span>
+                </a>
+            </div>
+
+            <!-- Desktop Menu -->
+            <ul class="nav-menu" id="navMenu">
+                {% assign current_lang = page.lang | default: 'en' %}
+                {% assign nav_items = site.navigation[current_lang] %}
+
+                {% for item in nav_items %}
+                <li class="nav-item">
+                    <a href="{{ item.url | relative_url }}"
+                       class="nav-link {% if page.url contains item.url %}active{% endif %}">
+                        {{ item.title }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <!-- Language Switcher -->
+            <div class="lang-switcher">
+                {% if page.lang == 'de' or page.url contains '.de.html' %}
+                    <a href="{{ page.url | replace: '.de.html', '.en.html' | relative_url }}"
+                       class="lang-btn" title="Switch to English">
+                        <span class="flag">🇬🇧</span>
+                        <span class="lang-text">EN</span>
+                    </a>
+                {% else %}
+                    <a href="{{ page.url | replace: '.en.html', '.de.html' | relative_url }}"
+                       class="lang-btn" title="Wechsel zu Deutsch">
+                        <span class="flag">🇩🇪</span>
+                        <span class="lang-text">DE</span>
+                    </a>
+                {% endif %}
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Breadcrumb -->
+            {% if page.title %}
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <a href="{{ '/' | relative_url }}">Home</a>
+                <span class="separator">›</span>
+                <span class="current">{{ page.title }}</span>
+            </nav>
+            {% endif %}
+
+            <!-- Content -->
+            <article class="content">
+                {{ content }}
+            </article>
+
+            <!-- Footer Navigation -->
+            <nav class="page-nav">
+                {% if page.prev_page %}
+                <a href="{{ page.prev_page.url | relative_url }}" class="page-nav-link prev">
+                    <span class="arrow">←</span>
+                    <span class="text">{{ page.prev_page.title }}</span>
+                </a>
+                {% endif %}
+
+                {% if page.next_page %}
+                <a href="{{ page.next_page.url | relative_url }}" class="page-nav-link next">
+                    <span class="text">{{ page.next_page.title }}</span>
+                    <span class="arrow">→</span>
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>GA-FuL</h3>
+                    <p>Geometric Algebra Fulcrum Library</p>
+                    <p class="small">A unified generic C# library for geometric algebra computations</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Links</h3>
+                    <ul>
+                        <li><a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib" target="_blank">GitHub</a></li>
+                        <li><a href="https://www.mdpi.com/2227-7390/12/14/2272" target="_blank">Research Paper</a></li>
+                        <li><a href="https://github.com/ga-explorer/GMac" target="_blank">GMac (Predecessor)</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><strong>Author:</strong> Ahmad H. Eid</p>
+                    <p><a href="mailto:ga.computing.eg@gmail.com">ga.computing.eg@gmail.com</a></p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; {{ 'now' | date: "%Y" }} Ahmad H. Eid. Licensed under the terms specified in the LICENSE file.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ '/assets/js/navigation.js' | relative_url }}"></script>
+</body>
+</html>
