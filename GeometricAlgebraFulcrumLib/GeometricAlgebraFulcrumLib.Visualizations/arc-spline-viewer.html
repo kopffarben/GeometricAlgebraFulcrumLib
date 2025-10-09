@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc-Spline Viewer - Babylon.js</title>
+    <style>
+        html, body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            max-width: 300px;
+        }
+        #info h3 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        .stat {
+            margin: 5px 0;
+        }
+        .label {
+            color: #aaa;
+        }
+        .value {
+            color: #fff;
+            font-weight: bold;
+        }
+        .c1-ok {
+            color: #4CAF50;
+        }
+        .c1-bad {
+            color: #f44336;
+        }
+    </style>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <div id="info">
+        <h3>🎨 Arc-Spline Viewer</h3>
+        <div class="stat">
+            <span class="label">Segments:</span>
+            <span class="value" id="segmentCount">-</span>
+        </div>
+        <div class="stat">
+            <span class="label">Total Length:</span>
+            <span class="value" id="totalLength">-</span>
+        </div>
+        <div class="stat">
+            <span class="label">C¹-Continuity:</span>
+            <span class="value" id="continuity">-</span>
+        </div>
+        <div style="margin-top: 10px; font-size: 12px; color: #888;">
+            Mouse: Orbit | Wheel: Zoom
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("renderCanvas");
+        const engine = new BABYLON.Engine(canvas, true);
+
+        let splineData = null;
+
+        const createScene = () => {
+            const scene = new BABYLON.Scene(engine);
+            scene.clearColor = new BABYLON.Color4(0.1, 0.1, 0.15, 1.0);
+
+            // Camera
+            const camera = new BABYLON.ArcRotateCamera(
+                "camera",
+                -Math.PI / 2,
+                Math.PI / 3,
+                10,
+                BABYLON.Vector3.Zero(),
+                scene
+            );
+            camera.attachControl(canvas, true);
+            camera.wheelPrecision = 50;
+            camera.lowerRadiusLimit = 1;
+            camera.upperRadiusLimit = 50;
+
+            // Lights
+            const light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+            light1.intensity = 0.7;
+
+            const light2 = new BABYLON.PointLight("light2", new BABYLON.Vector3(5, 5, 5), scene);
+            light2.intensity = 0.5;
+
+            // Grid
+            const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 20, height: 20 }, scene);
+            const gridMaterial = new BABYLON.GridMaterial("gridMaterial", scene);
+            gridMaterial.gridRatio = 0.5;
+            gridMaterial.majorUnitFrequency = 2;
+            gridMaterial.minorUnitVisibility = 0.3;
+            gridMaterial.opacity = 0.8;
+            ground.material = gridMaterial;
+            ground.position.y = -0.01;
+
+            // Coordinate axes
+            const axisSize = 2;
+            const axisX = BABYLON.MeshBuilder.CreateLines("axisX", {
+                points: [BABYLON.Vector3.Zero(), new BABYLON.Vector3(axisSize, 0, 0)]
+            }, scene);
+            axisX.color = new BABYLON.Color3(1, 0, 0);
+
+            const axisY = BABYLON.MeshBuilder.CreateLines("axisY", {
+                points: [BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, axisSize, 0)]
+            }, scene);
+            axisY.color = new BABYLON.Color3(0, 1, 0);
+
+            const axisZ = BABYLON.MeshBuilder.CreateLines("axisZ", {
+                points: [BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 0, axisSize)]
+            }, scene);
+            axisZ.color = new BABYLON.Color3(0, 0, 1);
+
+            return scene;
+        };
+
+        const loadSplineData = async () => {
+            try {
+                const response = await fetch('arc-spline-data.json');
+                splineData = await response.json();
+                console.log("Loaded spline data:", splineData);
+                return true;
+            } catch (error) {
+                console.error("Error loading spline data:", error);
+                document.getElementById('info').innerHTML +=
+                    '<div style="color: #f44336; margin-top: 10px;">⚠️ Failed to load arc-spline-data.json</div>';
+                return false;
+            }
+        };
+
+        const renderSpline = (scene) => {
+            if (!splineData) return;
+
+            // Update UI
+            document.getElementById('segmentCount').textContent = splineData.segmentCount;
+            document.getElementById('totalLength').textContent = splineData.totalLength.toFixed(4);
+
+            // Check C1 continuity
+            let allC1 = true;
+            for (const conn of splineData.connections) {
+                if (conn.angleDegrees > 1.0) {
+                    allC1 = false;
+                    break;
+                }
+            }
+            const continuityEl = document.getElementById('continuity');
+            continuityEl.textContent = allC1 ? '✓ Yes' : '✗ No';
+            continuityEl.className = allC1 ? 'value c1-ok' : 'value c1-bad';
+
+            // Render segments
+            const colors = [
+                new BABYLON.Color3(1, 0.3, 0.3),    // Red
+                new BABYLON.Color3(0.3, 1, 0.3),    // Green
+                new BABYLON.Color3(0.3, 0.3, 1),    // Blue
+                new BABYLON.Color3(1, 1, 0.3),      // Yellow
+                new BABYLON.Color3(1, 0.3, 1),      // Magenta
+                new BABYLON.Color3(0.3, 1, 1)       // Cyan
+            ];
+
+            for (let i = 0; i < splineData.segments.length; i++) {
+                const segment = splineData.segments[i];
+                const color = colors[i % colors.length];
+
+                // Create curve from samples
+                const points = segment.samples.map(p =>
+                    new BABYLON.Vector3(p[0], p[1], p[2])
+                );
+
+                // Tube mesh
+                const tube = BABYLON.MeshBuilder.CreateTube(
+                    `segment${i}`,
+                    {
+                        path: points,
+                        radius: 0.03,
+                        cap: BABYLON.Mesh.CAP_ALL,
+                        updatable: false
+                    },
+                    scene
+                );
+
+                const tubeMaterial = new BABYLON.StandardMaterial(`tubeMat${i}`, scene);
+                tubeMaterial.diffuseColor = color;
+                tubeMaterial.emissiveColor = color.scale(0.2);
+                tubeMaterial.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+                tube.material = tubeMaterial;
+
+                // Start/End markers
+                const startSphere = BABYLON.MeshBuilder.CreateSphere(
+                    `start${i}`,
+                    { diameter: 0.1 },
+                    scene
+                );
+                startSphere.position = new BABYLON.Vector3(
+                    segment.startPoint[0],
+                    segment.startPoint[1],
+                    segment.startPoint[2]
+                );
+                const startMat = new BABYLON.StandardMaterial(`startMat${i}`, scene);
+                startMat.diffuseColor = new BABYLON.Color3(0, 1, 0);
+                startMat.emissiveColor = new BABYLON.Color3(0, 0.3, 0);
+                startSphere.material = startMat;
+            }
+
+            // Last endpoint
+            const lastSeg = splineData.segments[splineData.segments.length - 1];
+            const endSphere = BABYLON.MeshBuilder.CreateSphere(
+                `end`,
+                { diameter: 0.1 },
+                scene
+            );
+            endSphere.position = new BABYLON.Vector3(
+                lastSeg.endPoint[0],
+                lastSeg.endPoint[1],
+                lastSeg.endPoint[2]
+            );
+            const endMat = new BABYLON.StandardMaterial(`endMat`, scene);
+            endMat.diffuseColor = new BABYLON.Color3(1, 0, 0);
+            endMat.emissiveColor = new BABYLON.Color3(0.3, 0, 0);
+            endSphere.material = endMat;
+
+            // Render connection points and tangents
+            for (let i = 0; i < splineData.connections.length; i++) {
+                const conn = splineData.connections[i];
+                const point = new BABYLON.Vector3(conn.point[0], conn.point[1], conn.point[2]);
+
+                // Connection point marker
+                const connSphere = BABYLON.MeshBuilder.CreateSphere(
+                    `conn${i}`,
+                    { diameter: 0.08 },
+                    scene
+                );
+                connSphere.position = point;
+                const connMat = new BABYLON.StandardMaterial(`connMat${i}`, scene);
+                connMat.diffuseColor = conn.angleDegrees < 1.0
+                    ? new BABYLON.Color3(0, 1, 1)  // Cyan for good C1
+                    : new BABYLON.Color3(1, 1, 0); // Yellow for bad C1
+                connSphere.material = connMat;
+
+                // Tangent vectors (scaled for visibility)
+                const scale = 0.3;
+                const t1End = point.add(new BABYLON.Vector3(
+                    conn.tangent1[0] * scale,
+                    conn.tangent1[1] * scale,
+                    conn.tangent1[2] * scale
+                ));
+                const t2End = point.add(new BABYLON.Vector3(
+                    conn.tangent2[0] * scale,
+                    conn.tangent2[1] * scale,
+                    conn.tangent2[2] * scale
+                ));
+
+                const tangent1Line = BABYLON.MeshBuilder.CreateLines(
+                    `tangent1_${i}`,
+                    { points: [point, t1End] },
+                    scene
+                );
+                tangent1Line.color = new BABYLON.Color3(1, 1, 0);
+
+                const tangent2Line = BABYLON.MeshBuilder.CreateLines(
+                    `tangent2_${i}`,
+                    { points: [point, t2End] },
+                    scene
+                );
+                tangent2Line.color = new BABYLON.Color3(1, 0.5, 0);
+            }
+
+            // Focus camera on spline
+            if (splineData.segments.length > 0) {
+                const firstPoint = splineData.segments[0].startPoint;
+                const lastPoint = lastSeg.endPoint;
+                const centerX = (firstPoint[0] + lastPoint[0]) / 2;
+                const centerY = (firstPoint[1] + lastPoint[1]) / 2;
+                const centerZ = (firstPoint[2] + lastPoint[2]) / 2;
+
+                scene.activeCamera.target = new BABYLON.Vector3(centerX, centerY, centerZ);
+            }
+        };
+
+        // Main initialization
+        (async () => {
+            const scene = createScene();
+            const dataLoaded = await loadSplineData();
+
+            if (dataLoaded) {
+                renderSpline(scene);
+            }
+
+            engine.runRenderLoop(() => {
+                scene.render();
+            });
+
+            window.addEventListener("resize", () => {
+                engine.resize();
+            });
+        })();
+    </script>
+</body>
+</html>

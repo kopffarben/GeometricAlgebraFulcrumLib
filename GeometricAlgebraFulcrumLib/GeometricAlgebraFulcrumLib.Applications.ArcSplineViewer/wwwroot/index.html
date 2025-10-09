@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc-Spline Viewer - Select Mode</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .mode-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .mode-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .mode-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .mode-features {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .mode-features li {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .mode-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .mode-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+
+        .mode-button:hover {
+            opacity: 0.9;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Arc-Spline Viewer</h1>
+            <p>Interactive 3D visualization for C¹-continuous arc-splines with curve fitting</p>
+        </div>
+
+        <div class="mode-grid">
+            <!-- Point-Click Mode -->
+            <a href="point-click.html" class="mode-card">
+                <div class="mode-icon">🖱️</div>
+                <h2 class="mode-title">Point & Click Mode</h2>
+                <p class="mode-description">
+                    Add control points individually by clicking on the ground plane.
+                </p>
+                <ul class="mode-features">
+                    <li>Click to add individual control points</li>
+                    <li>Real-time C¹-continuity visualization</li>
+                    <li>Tangent vector display at connections</li>
+                    <li>Adjustable plane orientation</li>
+                    <li>Perfect for precise spline construction</li>
+                </ul>
+                <div class="mode-button">Launch Point & Click</div>
+            </a>
+
+            <!-- Draw Mode -->
+            <a href="draw.html" class="mode-card">
+                <div class="mode-icon">✏️</div>
+                <h2 class="mode-title">Draw & Fit Mode</h2>
+                <p class="mode-description">
+                    Draw freehand curves with automatic curve fitting and simplification.
+                </p>
+                <ul class="mode-features">
+                    <li>Click & drag to draw continuous curves</li>
+                    <li>Douglas-Peucker simplification</li>
+                    <li>Arc-based circle fitting algorithm</li>
+                    <li>Adjustable tube radius & point size</li>
+                    <li>Wireframe visualization mode</li>
+                    <li>Toggle raw/fitted points display</li>
+                </ul>
+                <div class="mode-button">Launch Draw & Fit</div>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>
+                Powered by <a href="https://www.babylonjs.com/" target="_blank">Babylon.js</a>
+                and Conformal Geometric Algebra (CGA)
+            </p>
+            <p style="margin-top: 10px;">
+                <a href="test.html">🧪 Run Arc Fitting Tests</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

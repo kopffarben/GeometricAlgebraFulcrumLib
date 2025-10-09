@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc Fitting Tests</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #4ec9b0;
+            border-bottom: 2px solid #4ec9b0;
+            padding-bottom: 10px;
+        }
+
+        .button {
+            background: #0e639c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .button:hover {
+            background: #1177bb;
+        }
+
+        .button:active {
+            background: #0d5a8f;
+        }
+
+        #output {
+            background: #252526;
+            border: 1px solid #3c3c3c;
+            border-radius: 4px;
+            padding: 20px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .info {
+            background: #1e3a5f;
+            border-left: 4px solid #0e639c;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success { color: #4ec9b0; }
+        .error { color: #f48771; }
+        .warning { color: #dcdcaa; }
+
+        code {
+            background: #3c3c3c;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #ce9178;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Arc Fitting Tests - Synthetic Data</h1>
+
+    <div class="info">
+        <strong>Test Suite:</strong><br>
+        Dieser Test verwendet synthetische Daten (perfekte Kreisbögen) um das Arc Fitting zu validieren.<br><br>
+
+        <strong>Tests:</strong><br>
+        1. <strong>Circle Fitting</strong>: Fitte einen Kreis an Punkte auf einem bekannten Bogen<br>
+        2. <strong>Single Arc</strong>: Teste Segmentierung bei einem einzelnen 90° Bogen<br>
+        3. <strong>Arc Segmentation</strong>: Teste S-Kurve (2 Bögen) mit verschiedenen Parametern<br><br>
+
+        <strong>Console Output:</strong> Die detaillierten Ergebnisse werden in der Server-Konsole ausgegeben!
+    </div>
+
+    <button class="button" onclick="runTests()">▶ Run Tests</button>
+
+    <div id="output">Klicke auf "Run Tests" um die Tests zu starten...\n\nDie detaillierten Ergebnisse werden in der Server-Console angezeigt.</div>
+
+    <script>
+        async function runTests() {
+            const output = document.getElementById('output');
+            output.textContent = '⏳ Running tests...\n\n';
+
+            try {
+                const response = await fetch('/api/test/arcfitting');
+                const data = await response.json();
+
+                if (response.ok) {
+                    output.innerHTML = `<span class="success">✓ Tests completed successfully!</span>\n\n` +
+                                     `<span class="warning">⚠ Check the server console for detailed output!</span>\n\n` +
+                                     `Message: ${data.message}\n\n` +
+                                     `<strong>To see results:</strong>\n` +
+                                     `Look at the console where you ran "dotnet run"`;
+                } else {
+                    output.innerHTML = `<span class="error">✗ Tests failed!</span>\n\n${data.message || data}`;
+                }
+            } catch (error) {
+                output.innerHTML = `<span class="error">✗ Error running tests!</span>\n\n${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

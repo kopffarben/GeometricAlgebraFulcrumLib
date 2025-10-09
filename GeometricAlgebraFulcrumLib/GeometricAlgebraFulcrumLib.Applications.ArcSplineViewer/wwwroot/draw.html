@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc-Spline Drawing Tool</title>
+    <style>
+        html, body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            max-width: 320px;
+            z-index: 100;
+        }
+        #controls h3 {
+            margin-top: 0;
+            color: #4CAF50;
+            font-size: 18px;
+        }
+        .control-group {
+            margin: 15px 0;
+        }
+        .control-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #bbb;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .control-group select,
+        .control-group input[type="range"] {
+            width: 100%;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid #555;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        .slider-value {
+            display: inline-block;
+            margin-left: 10px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px 5px 5px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .button.danger {
+            background: #f44336;
+        }
+        .button.danger:hover {
+            background: #da190b;
+        }
+        .stat-box {
+            margin: 12px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            border-left: 3px solid #4CAF50;
+        }
+        .stat {
+            margin: 4px 0;
+            font-size: 12px;
+        }
+        .label {
+            color: #aaa;
+        }
+        .value {
+            color: #fff;
+            font-weight: bold;
+        }
+        .c1-ok {
+            color: #4CAF50;
+        }
+        .c1-bad {
+            color: #f44336;
+        }
+        #status {
+            margin-top: 12px;
+            padding: 10px;
+            background: rgba(76, 175, 80, 0.15);
+            border-radius: 4px;
+            font-size: 12px;
+            color: #4CAF50;
+            border-left: 3px solid #4CAF50;
+        }
+        .instructions {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            font-size: 11px;
+            color: #999;
+            line-height: 1.6;
+        }
+        .instructions strong {
+            color: #ddd;
+        }
+    </style>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <div id="controls">
+        <h3>✏️ Draw Arc-Spline</h3>
+
+        <div class="stat-box">
+            <div class="stat">
+                <span class="label">Raw Points:</span>
+                <span class="value" id="rawPointCount">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Fitted Points:</span>
+                <span class="value" id="fittedPointCount">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Segments:</span>
+                <span class="value" id="segmentCount">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">C¹-Continuity:</span>
+                <span class="value" id="continuity">-</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>Fitting Method</label>
+            <select id="fittingMethod">
+                <option value="douglas-peucker">Douglas-Peucker</option>
+                <option value="arc-fit">Arc Fit</option>
+                <option value="none">None (Direct)</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>
+                Simplification Strength
+                <span class="slider-value" id="epsilonValue">0.15</span>
+            </label>
+            <input type="range" id="epsilonSlider" min="0" max="100" value="15" step="1">
+        </div>
+
+        <div class="control-group">
+            <label>Controller Normal</label>
+            <select id="normalSelect">
+                <option value="0,0,1">+Z (XY Plane)</option>
+                <option value="0,1,0">+Y (XZ Plane)</option>
+                <option value="1,0,0">+X (YZ Plane)</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>
+                Tube Radius (px)
+                <span class="slider-value" id="tubeRadiusValue">4</span>
+            </label>
+            <input type="range" id="tubeRadiusSlider" min="1" max="20" value="4" step="1">
+        </div>
+
+        <div class="control-group">
+            <label>
+                Control Point Size (px)
+                <span class="slider-value" id="pointSizeValue">15</span>
+            </label>
+            <input type="range" id="pointSizeSlider" min="5" max="50" value="15" step="1">
+        </div>
+
+        <div class="control-group">
+            <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="checkbox" id="wireframeToggle" style="width: auto; margin-right: 8px;">
+                Wireframe Mode
+            </label>
+        </div>
+
+        <div class="control-group">
+            <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="checkbox" id="showRawPointsToggle" checked style="width: auto; margin-right: 8px;">
+                Show Raw Points
+            </label>
+        </div>
+
+        <div class="control-group">
+            <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="checkbox" id="showFittedPointsToggle" checked style="width: auto; margin-right: 8px;">
+                Show Fitted Points
+            </label>
+        </div>
+
+        <button class="button danger" onclick="clearDrawing()">✕ Clear</button>
+
+        <div class="instructions">
+            <strong>📝 How to Draw:</strong><br>
+            • <strong>Click & Drag</strong> on ground to draw<br>
+            • Release mouse to fit curve<br>
+            • <strong>Right Drag</strong> to rotate view<br>
+            • <strong>Wheel</strong> to zoom
+        </div>
+
+        <div id="status">Ready! Click and drag on the ground to draw.</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("renderCanvas");
+        const engine = new BABYLON.Engine(canvas, true);
+
+        // State
+        let rawPoints = [];
+        let isDrawing = false;
+        let scene = null;
+        let camera = null;
+        let ground = null;
+        let drawingCameraDistance = 10.0; // Average camera distance during drawing
+        let splineMeshes = [];
+        let rawPointMarkers = [];
+        let fittedPointMarkers = [];
+
+        // Visualization settings
+        let vizSettings = {
+            tubeRadius: 0.04,
+            pointSize: 0.15,
+            wireframe: false,
+            showRawPoints: true,
+            showFittedPoints: true
+        };
+
+        // Epsilon slider
+        document.getElementById('epsilonSlider').addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            document.getElementById('epsilonValue').textContent = val === 0 ? 'Auto' : (val / 100).toFixed(2);
+        });
+
+        // Tube radius slider
+        document.getElementById('tubeRadiusSlider').addEventListener('input', (e) => {
+            const pixelValue = parseInt(e.target.value);
+            vizSettings.tubeRadius = pixelValue / 100.0;  // Convert to world units
+            document.getElementById('tubeRadiusValue').textContent = pixelValue;
+            refreshVisualization();
+        });
+
+        // Point size slider
+        document.getElementById('pointSizeSlider').addEventListener('input', (e) => {
+            const pixelValue = parseInt(e.target.value);
+            vizSettings.pointSize = pixelValue / 100.0;  // Convert to world units
+            document.getElementById('pointSizeValue').textContent = pixelValue;
+            refreshPointMarkers();
+        });
+
+        // Wireframe toggle
+        document.getElementById('wireframeToggle').addEventListener('change', (e) => {
+            vizSettings.wireframe = e.target.checked;
+            refreshVisualization();
+        });
+
+        // Show raw points toggle
+        document.getElementById('showRawPointsToggle').addEventListener('change', (e) => {
+            vizSettings.showRawPoints = e.target.checked;
+            rawPointMarkers.forEach(m => m.setEnabled(e.target.checked));
+        });
+
+        // Show fitted points toggle
+        document.getElementById('showFittedPointsToggle').addEventListener('change', (e) => {
+            vizSettings.showFittedPoints = e.target.checked;
+            fittedPointMarkers.forEach(m => m.setEnabled(e.target.checked));
+        });
+
+        function refreshVisualization() {
+            // Re-render spline with new settings
+            if (splineMeshes.length > 0) {
+                const lastSplineData = window.lastSplineData;
+                if (lastSplineData) {
+                    renderSpline(lastSplineData);
+                }
+            }
+        }
+
+        function refreshPointMarkers() {
+            // Update raw point markers - recalculate pixel-based size for each position
+            rawPointMarkers.forEach((marker, idx) => {
+                const worldSize = pixelsToWorldSize(vizSettings.pointSize * 100, marker.position);
+                const scale = worldSize; // Original sphere has diameter 1.0
+                marker.scaling = new BABYLON.Vector3(scale, scale, scale);
+            });
+            // Update fitted point markers
+            fittedPointMarkers.forEach((marker, idx) => {
+                const worldSize = pixelsToWorldSize(vizSettings.pointSize * 120, marker.position);
+                const scale = worldSize;
+                marker.scaling = new BABYLON.Vector3(scale, scale, scale);
+            });
+        }
+
+        const createScene = () => {
+            const scene = new BABYLON.Scene(engine);
+            scene.clearColor = new BABYLON.Color4(0.1, 0.1, 0.15, 1.0);
+
+            // Camera
+            camera = new BABYLON.ArcRotateCamera(
+                "camera",
+                -Math.PI / 2,
+                Math.PI / 3,
+                10,
+                new BABYLON.Vector3(1, 1, 0),
+                scene
+            );
+            camera.attachControl(canvas, true);
+            camera.wheelPrecision = 50;
+            camera.lowerRadiusLimit = 2;
+            camera.upperRadiusLimit = 50;
+
+            // Lights
+            const light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+            light1.intensity = 0.7;
+            const light2 = new BABYLON.PointLight("light2", new BABYLON.Vector3(5, 5, 5), scene);
+            light2.intensity = 0.5;
+
+            // Ground plane - VIEL GRÖSSER für unbegrenztes Zeichnen
+            ground = BABYLON.MeshBuilder.CreateGround("ground", {
+                width: 200,
+                height: 200,
+                subdivisions: 20  // Grid für Wireframe
+            }, scene);
+            const groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+            groundMat.diffuseColor = new BABYLON.Color3(0.2, 0.2, 0.25);
+            groundMat.specularColor = new BABYLON.Color3(0, 0, 0);
+            groundMat.alpha = 0.3;
+            groundMat.wireframe = true;
+            ground.material = groundMat;
+            ground.position.y = 0;
+
+            // Axes
+            const axisSize = 2;
+            BABYLON.MeshBuilder.CreateLines("axisX", {
+                points: [BABYLON.Vector3.Zero(), new BABYLON.Vector3(axisSize, 0, 0)]
+            }, scene).color = new BABYLON.Color3(1, 0, 0);
+
+            BABYLON.MeshBuilder.CreateLines("axisY", {
+                points: [BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, axisSize, 0)]
+            }, scene).color = new BABYLON.Color3(0, 1, 0);
+
+            BABYLON.MeshBuilder.CreateLines("axisZ", {
+                points: [BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 0, axisSize)]
+            }, scene).color = new BABYLON.Color3(0, 0, 1);
+
+            return scene;
+        };
+
+        const addRawPointMarker = (position) => {
+            const sphere = BABYLON.MeshBuilder.CreateSphere(
+                `raw${rawPointMarkers.length}`,
+                { diameter: 1.0 },
+                scene
+            );
+            sphere.position = position;
+            // Scale based on pixel size
+            const worldSize = pixelsToWorldSize(vizSettings.pointSize * 100, position);
+            sphere.scaling = new BABYLON.Vector3(worldSize, worldSize, worldSize);
+            const mat = new BABYLON.StandardMaterial(`rawMat${rawPointMarkers.length}`, scene);
+            mat.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+            mat.alpha = 0.5;
+            sphere.material = mat;
+            sphere.setEnabled(vizSettings.showRawPoints);
+            rawPointMarkers.push(sphere);
+        };
+
+        const fitAndRender = async () => {
+            if (rawPoints.length < 2) {
+                document.getElementById('status').textContent = 'Need at least 2 points to fit curve';
+                document.getElementById('status').style.color = '#f44336';
+                return;
+            }
+
+            // Get settings
+            const fittingMethod = document.getElementById('fittingMethod').value;
+            const epsilonSlider = parseInt(document.getElementById('epsilonSlider').value);
+            let epsilon = epsilonSlider === 0 ? 0.0 : epsilonSlider / 100.0;
+
+            // Zoom-abhängige Simplification:
+            // PROBLEM: Bei großer Distanz wird epsilon zu groß → schlechte Fits
+            // LÖSUNG: Begrenze den Zoom-Faktor stark (max 1.5x)
+            // Grund: Resampling normalisiert bereits die Point-Dichte
+            const referenceDistance = 10.0;
+            const rawZoomFactor = drawingCameraDistance / referenceDistance;
+            const zoomFactor = Math.min(1.5, Math.max(0.5, rawZoomFactor)); // Begrenzt auf [0.5, 1.5]
+            epsilon = epsilon * zoomFactor;
+
+            console.log(`Zoom-adjusted epsilon: slider=${epsilonSlider/100}, cameraDistance=${drawingCameraDistance.toFixed(2)}, rawZoomFactor=${rawZoomFactor.toFixed(2)}, clampedZoomFactor=${zoomFactor.toFixed(2)}, finalEpsilon=${epsilon.toFixed(3)}`);
+
+            const normalSelect = document.getElementById('normalSelect');
+            const normalStr = normalSelect.value.split(',');
+            const controllerNormal = {
+                x: parseFloat(normalStr[0]),
+                y: parseFloat(normalStr[1]),
+                z: parseFloat(normalStr[2])
+            };
+
+            try {
+                document.getElementById('status').textContent = 'Fitting curve...';
+                document.getElementById('status').style.color = '#2196F3';
+
+                const response = await fetch('/api/arcspline/fit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        rawPoints: rawPoints,
+                        controllerNormal: controllerNormal,
+                        fittingMethod: fittingMethod,
+                        epsilon: epsilon
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText);
+                }
+
+                const splineData = await response.json();
+                renderSpline(splineData);
+
+                document.getElementById('status').textContent = '✓ Curve fitted successfully!';
+                document.getElementById('status').style.color = '#4CAF50';
+            } catch (error) {
+                console.error('Error fitting curve:', error);
+                document.getElementById('status').textContent = '✗ Error: ' + error.message;
+                document.getElementById('status').style.color = '#f44336';
+            }
+        };
+
+        // Helper: Convert pixel size to world space size based on camera
+        const pixelsToWorldSize = (pixelSize, worldPosition) => {
+            if (!camera || !scene) return pixelSize / 100.0; // Fallback
+
+            // Get distance from camera to world position
+            const cameraPos = camera.position;
+            const distance = BABYLON.Vector3.Distance(cameraPos, worldPosition);
+
+            // Get canvas height
+            const canvasHeight = engine.getRenderHeight();
+
+            // Convert pixels to world units using perspective projection
+            // Formula: worldSize = (pixelSize / canvasHeight) * (2 * distance * tan(fov/2))
+            const fov = camera.fov; // Field of view in radians
+            const worldSize = (pixelSize / canvasHeight) * (2.0 * distance * Math.tan(fov / 2.0));
+
+            return worldSize;
+        };
+
+        const renderSpline = (splineData) => {
+            // Save for refresh
+            window.lastSplineData = splineData;
+
+            // Clear old meshes
+            splineMeshes.forEach(mesh => mesh.dispose());
+            splineMeshes = [];
+            fittedPointMarkers.forEach(marker => marker.dispose());
+            fittedPointMarkers = [];
+
+            // Update stats
+            document.getElementById('rawPointCount').textContent = rawPoints.length;
+            document.getElementById('fittedPointCount').textContent = splineData.segmentCount + 1;
+            document.getElementById('segmentCount').textContent = splineData.segmentCount;
+
+            // C1 continuity
+            let allC1 = true;
+            for (const conn of splineData.connections) {
+                if (conn.angleDegrees > 1.0) {
+                    allC1 = false;
+                    break;
+                }
+            }
+            const continuityEl = document.getElementById('continuity');
+            continuityEl.textContent = allC1 ? '✓ Yes' : '✗ No';
+            continuityEl.className = allC1 ? 'value c1-ok' : 'value c1-bad';
+
+            // Render segments
+            const colors = [
+                new BABYLON.Color3(1, 0.3, 0.3),
+                new BABYLON.Color3(0.3, 1, 0.3),
+                new BABYLON.Color3(0.3, 0.3, 1),
+                new BABYLON.Color3(1, 1, 0.3),
+                new BABYLON.Color3(1, 0.3, 1),
+                new BABYLON.Color3(0.3, 1, 1)
+            ];
+
+            for (let i = 0; i < splineData.segments.length; i++) {
+                const segment = splineData.segments[i];
+                const color = colors[i % colors.length];
+
+                const curvePoints = segment.samples.map(p =>
+                    new BABYLON.Vector3(p[0], p[1], p[2])
+                );
+
+                // Debug: Check if arc is actually curved
+                if (curvePoints.length >= 3) {
+                    const start = curvePoints[0];
+                    const mid = curvePoints[Math.floor(curvePoints.length / 2)];
+                    const end = curvePoints[curvePoints.length - 1];
+                    const linearMid = BABYLON.Vector3.Lerp(start, end, 0.5);
+                    const deviation = BABYLON.Vector3.Distance(mid, linearMid);
+                    console.log(`Segment ${i}: radius=${segment.radius.toFixed(3)}, samples=${curvePoints.length}, deviation=${deviation.toFixed(4)} (0=straight)`);
+                }
+
+                // Calculate tube radius based on middle point of path
+                const midPoint = curvePoints[Math.floor(curvePoints.length / 2)];
+                const tubeRadius = pixelsToWorldSize(vizSettings.tubeRadius * 100, midPoint);
+
+                const tube = BABYLON.MeshBuilder.CreateTube(
+                    `segment${i}`,
+                    { path: curvePoints, radius: tubeRadius, cap: BABYLON.Mesh.CAP_ALL },
+                    scene
+                );
+
+                const tubeMaterial = new BABYLON.StandardMaterial(`tubeMat${i}`, scene);
+                tubeMaterial.diffuseColor = color;
+                tubeMaterial.emissiveColor = color.scale(0.2);
+                tubeMaterial.wireframe = vizSettings.wireframe;
+                tube.material = tubeMaterial;
+                splineMeshes.push(tube);
+
+                // Fitted point markers
+                if (i === 0) {
+                    const startPos = new BABYLON.Vector3(segment.startPoint[0], segment.startPoint[1], segment.startPoint[2]);
+                    const startMarker = BABYLON.MeshBuilder.CreateSphere(`fitted0`, { diameter: 1.0 }, scene);
+                    startMarker.position = startPos;
+                    const worldSize = pixelsToWorldSize(vizSettings.pointSize * 120, startPos);
+                    startMarker.scaling = new BABYLON.Vector3(worldSize, worldSize, worldSize);
+                    const startMat = new BABYLON.StandardMaterial(`fittedMat0`, scene);
+                    startMat.diffuseColor = new BABYLON.Color3(0, 1, 0);
+                    startMat.emissiveColor = new BABYLON.Color3(0, 0.3, 0);
+                    startMarker.material = startMat;
+                    startMarker.setEnabled(vizSettings.showFittedPoints);
+                    fittedPointMarkers.push(startMarker);
+                }
+
+                const endPos = new BABYLON.Vector3(segment.endPoint[0], segment.endPoint[1], segment.endPoint[2]);
+                const endMarker = BABYLON.MeshBuilder.CreateSphere(`fitted${i+1}`, { diameter: 1.0 }, scene);
+                endMarker.position = endPos;
+                const worldSizeEnd = pixelsToWorldSize(vizSettings.pointSize * 120, endPos);
+                endMarker.scaling = new BABYLON.Vector3(worldSizeEnd, worldSizeEnd, worldSizeEnd);
+                const endMat = new BABYLON.StandardMaterial(`fittedMat${i+1}`, scene);
+                endMat.diffuseColor = new BABYLON.Color3(1, 0.5, 0);
+                endMat.emissiveColor = new BABYLON.Color3(0.3, 0.15, 0);
+                endMarker.material = endMat;
+                endMarker.setEnabled(vizSettings.showFittedPoints);
+                fittedPointMarkers.push(endMarker);
+            }
+
+            // Connection points with tangents
+            for (let i = 0; i < splineData.connections.length; i++) {
+                const conn = splineData.connections[i];
+                const point = new BABYLON.Vector3(conn.point[0], conn.point[1], conn.point[2]);
+
+                const connSphere = BABYLON.MeshBuilder.CreateSphere(`conn${i}`, { diameter: 0.1 }, scene);
+                connSphere.position = point;
+                const connMat = new BABYLON.StandardMaterial(`connMat${i}`, scene);
+                connMat.diffuseColor = conn.angleDegrees < 1.0
+                    ? new BABYLON.Color3(0, 1, 1)
+                    : new BABYLON.Color3(1, 1, 0);
+                connSphere.material = connMat;
+                splineMeshes.push(connSphere);
+
+                // Tangent lines
+                const scale = 0.3;
+                const t1End = point.add(new BABYLON.Vector3(
+                    conn.tangent1[0] * scale,
+                    conn.tangent1[1] * scale,
+                    conn.tangent1[2] * scale
+                ));
+                const tangent1Line = BABYLON.MeshBuilder.CreateLines(`tangent1_${i}`, { points: [point, t1End] }, scene);
+                tangent1Line.color = new BABYLON.Color3(1, 1, 0);
+                splineMeshes.push(tangent1Line);
+            }
+        };
+
+        const clearDrawing = () => {
+            rawPoints = [];
+            splineMeshes.forEach(mesh => mesh.dispose());
+            splineMeshes = [];
+            rawPointMarkers.forEach(marker => marker.dispose());
+            rawPointMarkers = [];
+            fittedPointMarkers.forEach(marker => marker.dispose());
+            fittedPointMarkers = [];
+
+            document.getElementById('rawPointCount').textContent = '0';
+            document.getElementById('fittedPointCount').textContent = '0';
+            document.getElementById('segmentCount').textContent = '0';
+            document.getElementById('continuity').textContent = '-';
+            document.getElementById('status').textContent = 'Ready! Click and drag on the ground to draw.';
+            document.getElementById('status').style.color = '#4CAF50';
+        };
+
+        // Main initialization
+        scene = createScene();
+
+        // Drawing logic
+        scene.onPointerObservable.add((pointerInfo) => {
+            if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERDOWN) {
+                if (pointerInfo.event.button === 0) { // Left click
+                    const pickResult = scene.pick(scene.pointerX, scene.pointerY);
+                    if (pickResult.hit && pickResult.pickedMesh === ground) {
+                        isDrawing = true;
+
+                        // WICHTIG: Deaktiviere Camera Controls während Drawing
+                        scene.activeCamera.detachControl();
+
+                        // Speichere initiale Kamera-Distanz für zoom-abhängige Simplification
+                        const point = pickResult.pickedPoint;
+                        drawingCameraDistance = BABYLON.Vector3.Distance(camera.position, point);
+
+                        rawPoints = [];
+                        rawPointMarkers.forEach(m => m.dispose());
+                        rawPointMarkers = [];
+                        splineMeshes.forEach(m => m.dispose());
+                        splineMeshes = [];
+                        fittedPointMarkers.forEach(m => m.dispose());
+                        fittedPointMarkers = [];
+
+                        rawPoints.push({ x: point.x, y: point.y, z: point.z });
+                        addRawPointMarker(point);
+
+                        document.getElementById('status').textContent = 'Drawing... drag to add points';
+                        document.getElementById('status').style.color = '#2196F3';
+                    }
+                }
+            } else if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERMOVE) {
+                if (isDrawing) {
+                    // WICHTIG: Hole ALLE Maus-Positionen seit dem letzten Frame
+                    // getCoalescedEvents() gibt alle Zwischenpositionen zurück
+                    const events = pointerInfo.event.getCoalescedEvents
+                        ? pointerInfo.event.getCoalescedEvents()
+                        : [pointerInfo.event];
+
+                    // Verarbeite ALLE Events in chronologischer Reihenfolge
+                    for (const event of events) {
+                        const pickResult = scene.pick(event.clientX, event.clientY);
+                        if (pickResult.hit && pickResult.pickedMesh === ground) {
+                            const point = pickResult.pickedPoint;
+
+                            // Only add if distance from last point is significant
+                            if (rawPoints.length === 0 ||
+                                BABYLON.Vector3.Distance(
+                                    new BABYLON.Vector3(rawPoints[rawPoints.length-1].x, rawPoints[rawPoints.length-1].y, rawPoints[rawPoints.length-1].z),
+                                    point
+                                ) > 0.05) {
+
+                                rawPoints.push({ x: point.x, y: point.y, z: point.z });
+                                addRawPointMarker(point);
+                            }
+                        }
+                    }
+
+                    document.getElementById('rawPointCount').textContent = rawPoints.length;
+                }
+            } else if (pointerInfo.type === BABYLON.PointerEventTypes.POINTERUP) {
+                if (isDrawing && pointerInfo.event.button === 0) {
+                    isDrawing = false;
+
+                    // WICHTIG: Reaktiviere Camera Controls nach Drawing
+                    scene.activeCamera.attachControl(canvas, true);
+
+                    if (rawPoints.length >= 2) {
+                        fitAndRender();
+                    } else {
+                        document.getElementById('status').textContent = 'Need at least 2 points. Try again!';
+                        document.getElementById('status').style.color = '#f44336';
+                    }
+                }
+            }
+        });
+
+        engine.runRenderLoop(() => {
+            scene.render();
+        });
+
+        window.addEventListener("resize", () => {
+            engine.resize();
+        });
+    </script>
+</body>
+</html>
