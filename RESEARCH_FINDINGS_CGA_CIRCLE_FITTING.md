@@ -351,6 +351,131 @@ GeometricAlgebraFulcrumLib.Modeling/Geometry/CGa/Float64/Elements/
 
 ---
 
+## Precision Considerations: Float32 vs Float64
+
+**Update:** 10. Oktober 2025
+
+### GA-FuL Float Precision Support Analysis
+
+**TL;DR:** GA-FuL hat **KEINE native float32 CGA-Klassen**. Verwende `CGaFloat64` intern, konvertiere zu `float` beim Output.
+
+### Detailed Analysis
+
+| Component | Float64 | Float32 | Status |
+|-----------|---------|---------|--------|
+| **CGA Geometric Space** | ✅ `CGaFloat64GeometricSpace5D` | ❌ Nicht vorhanden | Float64 only |
+| **Circle from Points** | ✅ `DefineRealRoundCircleFromPoints` | ❌ Nicht vorhanden | Float64 only |
+| **Jacobi Eigendecomposer** | ✅ `double[,]` | ❌ Nicht vorhanden | Float64 only |
+| **Generic\<T\>** | ✅ `CGaGeometricSpace<T>` | ⚠️ Theoretisch möglich | Ungetestet |
+
+**Code Evidence:**
+```
+GeometricAlgebraFulcrumLib/Modeling/Geometry/CGa/
+├── Float64/          ← 83 files ✅ COMPLETE
+├── Generic/          ← 70 files ✅ (but Jacobi still double)
+└── Float32/          ← ❌ DOES NOT EXIST
+```
+
+### Recommended Strategy: **Float64 Internal, Float32 Output**
+
+**Architecture:**
+```
+VR Input (Vector3 float)
+    ↓ ToDouble()
+OnlinePCA (Vector3D double)
+    ↓
+Jacobi Eigendecomposer (double[,])
+    ↓
+CGaFloat64GeometricSpace5D.DefineRealRoundCircleFromPoints()
+    ↓ ToFloat()
+ArcSegment (Vector3 float) → GPU/BabylonJS
+```
+
+**Rationale:**
+
+1. ✅ **Zero Implementation Overhead**
+   - Nutze GA-FuL Float64 CGA direkt
+   - Keine Custom-Implementierung nötig
+   - Start sofort möglich
+
+2. ✅ **Better Numerical Stability**
+   - Double precision während PCA & Circle-Fitting
+   - Vermeidet Akkumulationsfehler
+   - CGA-Operationen (Division, Sqrt) stabiler
+
+3. ✅ **Negligible Overhead**
+   - Memory: ~3 KB pro Stroke (256 Punkte)
+   - Performance: <1 µs Conversion-Zeit
+   - GPU bekommt trotzdem float32
+
+4. ✅ **Proven & Tested**
+   - GA-FuL Float64 battle-tested
+   - Keine Überraschungen bei Edge-Cases
+   - Standard workflow
+
+**Precision Analysis:**
+
+| Stage | Type | Precision | Rationale |
+|-------|------|-----------|-----------|
+| **Input** | `Vector3` (float) | ~7 digits | VR Controller, GPU |
+| **PCA** | `double` | ~15 digits | Eigenzerlegung braucht Stabilität |
+| **Circle-Fit** | `CGaFloat64` | ~15 digits | CGA Divisions & Sqrt stabil |
+| **Output** | `Vector3` (float) | ~7 digits | GPU/BabylonJS compatible |
+
+**Tolerance Check:**
+- Fitting Tolerance: `EpsilonRadial = 1e-3 m` (1 mm)
+- Float32 Precision: ~0.001% error at 1m scale
+- **Conclusion:** Float32 output precision **sufficient** für VR
+
+### Implementation Example
+
+```csharp
+// FitSettings.cs - User API: float
+public sealed class FitSettings
+{
+    public float EpsilonRadial { get; init; } = 1e-3f;  // float für User
+}
+
+// OnlinePCA.cs - Internal: double
+public sealed class OnlinePCA
+{
+    private Vector3D _mean;        // double intern
+    private Matrix3x3D _covariance;
+
+    public void AddPoint(Vector3 p)    // Input: float
+    {
+        var pd = ToDouble(p);  // Konvertiere sofort
+        // ... PCA in double
+    }
+
+    public (Vector3 normal, ...) GetPlane()  // Output: float
+    {
+        var eigenVec = JacobiDecompose(_covariance);  // double
+        return ToFloat(eigenVec);  // Konvertiere am Ende
+    }
+}
+
+// CircleFitCGA.cs - Internal: CGaFloat64
+public static class CircleFitCGA
+{
+    private static readonly CGaFloat64GeometricSpace5D _cga;
+
+    public static (Vector3 center, float radius) Fit(Vector3[] points)
+    {
+        // To double
+        var p1_64 = ToDouble(points[0]);
+        // ... CGA in double
+        var circle = _cga.DefineRealRoundCircleFromPoints(...);
+        // To float
+        return (ToFloat(circle.Center), (float)circle.Radius);
+    }
+}
+```
+
+**Siehe:** `ANALYSIS_FLOAT32_SUPPORT.md` für vollständige Analyse & Decision Matrix.
+
+---
+
 ## Fazit
 
 **Kann man Circle-Fitting direkt in CGA machen?**

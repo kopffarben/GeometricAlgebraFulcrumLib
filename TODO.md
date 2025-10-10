@@ -32,6 +32,33 @@ Ein **VR-Sketch-System** das Benutzereingaben (VR-Controller) in Echtzeit zu Arc
 
 ## 📐 Architektur-Entscheidungen
 
+### 0. **Precision Strategy: Float64 Internal, Float32 Output**
+
+**Entscheidung:** Intern `double` (Float64) für GA-FuL CGA, Output `float` (Float32) für GPU/VR.
+
+**Begründung:**
+- ❌ GA-FuL hat **KEINE nativen Float32 CGA-Klassen** (`CGaFloat32GeometricSpace` existiert nicht)
+- ❌ Jacobi-Eigenzerlegung (für PCA) nur als `double[,]` verfügbar
+- ✅ Konversion `double` → `float` ist trivial (~1-2 CPU cycles pro Wert)
+- ✅ Bessere numerische Stabilität während Circle-Fitting
+- ✅ Memory Overhead negligible (~3 KB pro Stroke bei 256 Punkten)
+- ✅ GPU bekommt `float` via `System.Numerics.Vector3` (BabylonJS kompatibel)
+
+**Architektur:**
+```
+User Input (Vector3 float)
+    ↓ ToDouble()
+OnlinePCA (intern double)
+    ↓
+CircleFitCGA (CGaFloat64GeometricSpace5D)
+    ↓ ToFloat()
+ArcSegment (Vector3 float) → GPU/BabylonJS
+```
+
+**Siehe:** `ANALYSIS_FLOAT32_SUPPORT.md` für vollständige Analyse.
+
+---
+
 ### 1. Fitting-Algorithmus: **Hybrid 2-Phasen-Ansatz**
 
 **Phase 1 (MVP):** Euklid-PCA + CGA Circle-Fit
@@ -194,13 +221,14 @@ X' = M X M̃
 ```csharp
 public sealed class FitSettings
 {
-    public double EpsilonRadial { get; init; } = 1e-3;     // max radialer Fehler [m]
-    public double EpsilonPlanar { get; init; } = 2e-3;     // max Abstand zur PCA-Ebene [m]
-    public double EpsilonAngle { get; init; } = 0.087;     // ~5° Tangenten-Winkel [rad]
-    public double EpsilonLine { get; init; } = 1e-3;       // max Linienabstand [m]
-    public double RMax { get; init; } = 1e6;               // "praktisch gerade" Schwelle
-    public double MinAngleRad { get; init; } = 0.087;      // min. Bogenwinkel [rad] (~5°)
-    public double MinChordLength { get; init; } = 1e-2;    // min. Sehnenlänge [m]
+    // User-facing API uses float (GPU-compatible)
+    public float EpsilonRadial { get; init; } = 1e-3f;     // max radialer Fehler [m]
+    public float EpsilonPlanar { get; init; } = 2e-3f;     // max Abstand zur PCA-Ebene [m]
+    public float EpsilonAngle { get; init; } = 0.087f;     // ~5° Tangenten-Winkel [rad]
+    public float EpsilonLine { get; init; } = 1e-3f;       // max Linienabstand [m]
+    public float RMax { get; init; } = 1e6f;               // "praktisch gerade" Schwelle
+    public float MinAngleRad { get; init; } = 0.087f;      // min. Bogenwinkel [rad] (~5°)
+    public float MinChordLength { get; init; } = 1e-2f;    // min. Sehnenlänge [m]
     public int MinPointsSegment { get; init; } = 3;        // min. Punkte für Segment
     public int MaxWindow { get; init; } = 256;             // Ringpuffer-Größe
     public int AllowOutliers { get; init; } = 1;           // erlaubte Ausreißer in Folge
@@ -217,21 +245,21 @@ public sealed class ArcSegment
 {
     public SegmentType Type { get; init; }
 
-    // Endpunkte (beide Typen)
-    public Vector3 P0 { get; init; }
+    // Endpunkte (beide Typen) - float für GPU/BabylonJS
+    public Vector3 P0 { get; init; }   // System.Numerics.Vector3 (float)
     public Vector3 P1 { get; init; }
 
     // Linie
     public Vector3 Direction { get; init; }  // normiert
 
-    // Bogen
+    // Bogen - float für GPU
     public Vector3 Center { get; init; }
     public Vector3 PlaneNormal { get; init; }  // normiert
-    public double Radius { get; init; }
-    public double Theta { get; init; }         // |Winkel| [rad]
-    public int Sign { get; init; }             // ±1 Drehsinn
+    public float Radius { get; init; }
+    public float Theta { get; init; }         // |Winkel| [rad]
+    public int Sign { get; init; }            // ±1 Drehsinn
 
-    // CGA (optional, für VR-Layer)
+    // CGA (intern double, für Motor-Konstruktion)
     public CGaFloat64Round? Circle { get; init; }
 
     // Timestamps (optional, für VR)
@@ -239,7 +267,7 @@ public sealed class ArcSegment
     public double EndTime { get; init; }
 
     // Computed properties
-    public double ArcLength => Type == SegmentType.Arc
+    public float ArcLength => Type == SegmentType.Arc
         ? Radius * Theta
         : (P1 - P0).Length();
 }
@@ -264,60 +292,111 @@ public sealed class ArcSpline
 
 **Quelle:** Welford-Algorithmus für inkrementelle Mittelwert/Kovarianz
 
+**Precision Strategy:** Intern `double`, API gibt `float` (Vector3) zurück
+
 ```csharp
 public sealed class OnlinePCA
 {
     private int _n;
-    private Vector3 _mean;
-    private Matrix3x3 _covariance;  // Symmetric
+    private Vector3D _mean;              // double intern für Stabilität
+    private Matrix3x3D _covariance;      // double 3×3 symmetrisch
 
+    // Input: float (Vector3)
     public void AddPoint(Vector3 p)
     {
+        // Sofort zu double konvertieren
+        var pd = new Vector3D(p.X, p.Y, p.Z);
+
         _n++;
-        var delta = p - _mean;
+        var delta = pd - _mean;
         _mean += delta / _n;
-        var delta2 = p - _mean;
+        var delta2 = pd - _mean;
         _covariance += OuterProduct(delta, delta2);
     }
 
+    // Output: float (Vector3)
     public (Vector3 center, Vector3 normal, Vector3 u, Vector3 v) GetPlane()
     {
-        // Eigenzerlegung (nutze GA-FuL Jacobi)
+        // Eigenzerlegung in double (GA-FuL Jacobi)
         var (eigenvalues, eigenvectors) = JacobiEigendecompose(_covariance);
 
         // Normal = kleinster Eigenvektor
-        var normal = eigenvectors[indexOfSmallest(eigenvalues)];
+        var normalD = eigenvectors[indexOfSmallest(eigenvalues)];
 
         // {u,v} = die zwei größeren
-        var u = eigenvectors[indexOfLargest(eigenvalues)];
-        var v = eigenvectors[indexOfMiddle(eigenvalues)];
+        var uD = eigenvectors[indexOfLargest(eigenvalues)];
+        var vD = eigenvectors[indexOfMiddle(eigenvalues)];
 
-        return (_mean, normal, u, v);
+        // Konvertiere zu float für Output
+        return (
+            ToFloat(_mean),
+            ToFloat(normalD),
+            ToFloat(uD),
+            ToFloat(vD)
+        );
     }
 
-    public double PlanarError(ReadOnlySpan<Vector3> points, Vector3 normal, Vector3 center)
+    public float PlanarError(ReadOnlySpan<Vector3> points, Vector3 normal, Vector3 center)
     {
-        return points.Max(p => Math.Abs(Vector3.Dot(p - center, normal)));
+        // Konversion zu double für präzise Rechnung
+        var normalD = ToDouble(normal);
+        var centerD = ToDouble(center);
+
+        float maxError = 0;
+        foreach (var p in points)
+        {
+            var pd = ToDouble(p);
+            var error = Math.Abs(Vector3D.Dot(pd - centerD, normalD));
+            maxError = Math.Max(maxError, (float)error);
+        }
+        return maxError;
     }
 }
 ```
 
 **GA-FuL Integration:**
 - Nutze: `GeometricAlgebraFulcrumLib.Applications.Symbolic/EllipseFitting/JacobiSymmetricEigenDecomposer.cs`
-- Adaptiere für 3×3 Matrix
+- Adaptiere für 3×3 Matrix (existierende Implementation nutzt `double[,]`)
+- Conversion Utils: `ToDouble(Vector3)` → `Vector3D`, `ToFloat(Vector3D)` → `Vector3`
 
 ### 1.4 Circle-Fit in CGA
 
 **`CircleFitCGA.cs`**
 
+**Precision Strategy:** Input `Vector3` (float) → intern CGaFloat64 (double) → Output `float`
+
 **Methode 1: 3-Punkt (exakt)**
 ```csharp
-public static CGaFloat64Round FitCircleThreePoints(
-    CGaFloat64GeometricSpace cga,
-    Vector3 p1, Vector3 p2, Vector3 p3)
+public static class CircleFitCGA
 {
-    // Direkt via GA-FuL vorhanden!
-    return cga.DefineRealRoundCircleFromPoints(p1, p2, p3);
+    // Singleton CGaFloat64 instance
+    private static readonly CGaFloat64GeometricSpace5D _cga =
+        CGaFloat64GeometricSpace5D.Instance;
+
+    // Input: Vector3 (float), Output: float center + radius
+    public static (Vector3 center, float radius, Vector3 normal) FitCircleThreePoints(
+        Vector3 p1, Vector3 p2, Vector3 p3)
+    {
+        // Konvertiere zu LinFloat64Vector3D (GA-FuL double type)
+        var p1_64 = LinFloat64Vector3D.Create(p1.X, p1.Y, p1.Z);
+        var p2_64 = LinFloat64Vector3D.Create(p2.X, p2.Y, p2.Z);
+        var p3_64 = LinFloat64Vector3D.Create(p3.X, p3.Y, p3.Z);
+
+        // CGA Circle-Fit (double intern)
+        var circle = _cga.DefineRealRoundCircleFromPoints(p1_64, p2_64, p3_64);
+
+        // Dekodiere Kreis-Parameter (double)
+        var centerDecoded = circle.PositionToVector3D();  // LinFloat64Vector3D
+        var radiusDecoded = circle.RealRadius;             // double
+        var normalDecoded = circle.NormalDirectionToVector3D();
+
+        // Konvertiere zu float für Output
+        return (
+            new Vector3((float)centerDecoded.X, (float)centerDecoded.Y, (float)centerDecoded.Z),
+            (float)radiusDecoded,
+            new Vector3((float)normalDecoded.X, (float)normalDecoded.Y, (float)normalDecoded.Z)
+        );
+    }
 }
 ```
 
