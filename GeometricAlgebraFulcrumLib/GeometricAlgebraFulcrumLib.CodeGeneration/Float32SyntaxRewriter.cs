@@ -241,10 +241,12 @@ public class Float32SyntaxRewriter : CSharpSyntaxRewriter
 
         // TRANSFORM: LinVector method names → LinFloat32Vector
         // Examples: ToLinVector2D → ToLinFloat32Vector2D, CreateLinVector → CreateLinFloat32Vector
-        // This matches the transformation done in VisitInvocationExpression for call sites
-        if (methodName.StartsWith("ToLin") || methodName.StartsWith("CreateLin") || methodName.StartsWith("CreateUnitLin"))
+        // ToUnitLinVector3D → ToUnitLinFloat32Vector3D
+        // This matches the transformation done in VisitMemberAccessExpression for call sites
+        if (methodName.StartsWith("ToLin") || methodName.StartsWith("ToUnit") || methodName.StartsWith("CreateLin") || methodName.StartsWith("CreateUnitLin"))
         {
             var newMethodName = methodName
+                .Replace("ToUnitLinVector", "ToUnitLinFloat32Vector")
                 .Replace("ToLinVector", "ToLinFloat32Vector")
                 .Replace("CreateLinVector", "CreateLinFloat32Vector")
                 .Replace("CreateUnitLinVector", "CreateUnitLinFloat32Vector");
@@ -641,6 +643,31 @@ public class Float32SyntaxRewriter : CSharpSyntaxRewriter
             return castExpression;
         }
 
+        // ToLinVector/ToUnitLinVector method calls → ToLinFloat32Vector/ToUnitLinFloat32Vector
+        // Handles method chains like: vector.ToUnitLinVector3D()
+        // Fixes errors in LinFloat32Vector3DAffineUtils.g.cs and LinFloat32RotationUtils.g.cs
+        if (memberName.StartsWith("ToUnitLinVector") ||
+            memberName.StartsWith("ToLinVector") ||
+            memberName.StartsWith("CreateUnitLinVector") ||
+            memberName.StartsWith("CreateLinVector"))
+        {
+            var newMemberName = memberName;
+            if (memberName.StartsWith("ToUnitLinVector"))
+                newMemberName = memberName.Replace("ToUnitLinVector", "ToUnitLinFloat32Vector");
+            else if (memberName.StartsWith("ToLinVector"))
+                newMemberName = memberName.Replace("ToLinVector", "ToLinFloat32Vector");
+            else if (memberName.StartsWith("CreateUnitLinVector"))
+                newMemberName = memberName.Replace("CreateUnitLinVector", "CreateUnitLinFloat32Vector");
+            else if (memberName.StartsWith("CreateLinVector"))
+                newMemberName = memberName.Replace("CreateLinVector", "CreateLinFloat32Vector");
+
+            if (newMemberName != memberName)
+            {
+                var newName = SyntaxFactory.IdentifierName(newMemberName);
+                return base.VisitMemberAccessExpression(node.WithName(newName));
+            }
+        }
+
         return base.VisitMemberAccessExpression(node);
     }
 
@@ -672,6 +699,55 @@ public class Float32SyntaxRewriter : CSharpSyntaxRewriter
                 _insideVectorComplexMethod = previousFlag;
 
                 return result;
+            }
+
+            // ToKVector() / ToScalar() on BasisBlade/BasisVector needs processor argument
+            // Transform: processor.BasisVector(k).ToKVector() → processor.BasisVector(k).ToKVector((XGaFloat32Processor)processor)
+            // This fixes Float64KVector return type issues by calling the Float32 overload
+            if ((memberName == "ToKVector" || memberName == "ToScalar" || memberName == "ToVector" || memberName == "ToBivector") &&
+                node.ArgumentList.Arguments.Count == 0)
+            {
+                var expressionText = memberAccess.Expression.ToString();
+                if (expressionText.Contains("BasisBlade") || expressionText.Contains("BasisVector"))
+                {
+                    // Extract processor variable name from expression chain
+                    // Pattern: "processor.BasisVector(k)" → "(XGaFloat32Processor)processor"
+                    // Pattern: "Metric.BasisVector(k)" → "(XGaFloat32Processor)Metric"
+                    // Pattern: inside Processor class → "this"
+                    ExpressionSyntax processorExpr;
+
+                    if (expressionText.Contains("processor.") || expressionText.StartsWith("processor"))
+                    {
+                        // Cast processor to XGaFloat32Processor: (XGaFloat32Processor)processor
+                        processorExpr = SyntaxFactory.CastExpression(
+                            SyntaxFactory.ParseTypeName("Float32.Processors.XGaFloat32Processor"),
+                            SyntaxFactory.IdentifierName("processor")
+                        );
+                    }
+                    else if (expressionText.Contains("Metric.") || expressionText.StartsWith("Metric"))
+                    {
+                        // Cast Metric to XGaFloat32Processor: (XGaFloat32Processor)Metric
+                        processorExpr = SyntaxFactory.CastExpression(
+                            SyntaxFactory.ParseTypeName("Float32.Processors.XGaFloat32Processor"),
+                            SyntaxFactory.IdentifierName("Metric")
+                        );
+                    }
+                    else
+                    {
+                        // Inside a Processor class, use "this"
+                        processorExpr = SyntaxFactory.ThisExpression();
+                    }
+
+                    // Visit children first
+                    var visitedNode = (InvocationExpressionSyntax)base.VisitInvocationExpression(node)!;
+
+                    // Add processor argument
+                    var processorArg = SyntaxFactory.Argument(processorExpr);
+                    var newArguments = SyntaxFactory.SingletonSeparatedList(processorArg);
+                    var newArgumentList = SyntaxFactory.ArgumentList(newArguments);
+
+                    return visitedNode.WithArgumentList(newArgumentList);
+                }
             }
 
             // NextDouble() needs cast to float

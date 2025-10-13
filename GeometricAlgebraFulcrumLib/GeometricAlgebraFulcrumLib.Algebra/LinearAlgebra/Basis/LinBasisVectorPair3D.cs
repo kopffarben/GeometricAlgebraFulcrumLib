@@ -515,4 +515,42 @@ public sealed record LinBasisVectorPair3D :
         return RightNormal;
     }
 
+    // ============================================================
+    // Float32 overloads for code generation compatibility
+    // Added to support Float32 source generator
+    // ============================================================
+
+    /// <summary>
+    /// Float32 version: Compute rotation quaternion from this basis vector pair to two Float32 3D vectors
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.Space3D.LinFloat32Quaternion VectorPairToVectorPairRotationFloat32Quaternion(
+        GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.Space3D.ILinFloat32Vector3D dstVector1,
+        GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.Space3D.ILinFloat32Vector3D dstVector2,
+        float zeroEpsilon = GeometricAlgebraFulcrumLib.Algebra.Scalars.Float32.Float32Utils.ZeroEpsilon)
+    {
+        // Convert to Float64, compute, then convert back
+        var float64Quaternion = VectorPairToVectorPairRotationQuaternion(
+            GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D.LinFloat64Vector3D.Create(
+                (double)dstVector1.X,
+                (double)dstVector1.Y,
+                (double)dstVector1.Z
+            ),
+            GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D.LinFloat64Vector3D.Create(
+                (double)dstVector2.X,
+                (double)dstVector2.Y,
+                (double)dstVector2.Z
+            ),
+            (double)zeroEpsilon
+        );
+
+        // Convert back to Float32 - parameter order: (scalar, iScalar, jScalar, kScalar)
+        return GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.Space3D.LinFloat32Quaternion.Create(
+            (float)float64Quaternion.Scalar,
+            (float)float64Quaternion.ScalarI,
+            (float)float64Quaternion.ScalarJ,
+            (float)float64Quaternion.ScalarK
+        );
+    }
+
 }
