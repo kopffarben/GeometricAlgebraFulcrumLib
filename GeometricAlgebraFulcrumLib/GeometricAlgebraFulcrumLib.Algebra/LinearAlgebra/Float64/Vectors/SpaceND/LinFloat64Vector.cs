@@ -73,7 +73,7 @@ public sealed class LinFloat64Vector :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static LinFloat64Vector Create(IReadOnlyDictionary<int, double> basisScalarPair)
+    public static LinFloat64Vector Create(IReadOnlyDictionary<int, double> basisScalarPair)
     {
         return new LinFloat64Vector(basisScalarPair);
     }
@@ -1445,6 +1445,29 @@ public sealed class LinFloat64Vector :
             .OrderBy(p => p.Key.Index)
             .Select(p => $"({p.Value:G}){p.Key}")
             .ConcatenateText(" + ");
+    }
+
+    // ============================================================
+    // Float32 Generator Compatibility - Dictionary overloads
+    // Added to support auto-generated extension methods
+    // ============================================================
+
+    /// <summary>
+    /// Create LinFloat64Vector from Dictionary
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector Create(Dictionary<int, double> indexScalarDictionary)
+    {
+        return new LinFloat64Vector(indexScalarDictionary);
+    }
+
+    /// <summary>
+    /// Create LinFloat64Vector from SingleItemDictionary
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector Create(SingleItemDictionary<int, double> indexScalarDictionary)
+    {
+        return new LinFloat64Vector(indexScalarDictionary);
     }
 
 }
