@@ -8,6 +8,10 @@
     <Platforms>AnyCPU;x64</Platforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
+
+    <!-- Float32 Source Generator Configuration -->
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -69,6 +73,21 @@
   <ItemGroup>
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj" />
+  </ItemGroup>
+
+  <!-- Float32 Source Generator Reference -->
+  <ItemGroup>
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.CodeGeneration\GeometricAlgebraFulcrumLib.CodeGeneration.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <!-- Float64 Files as AdditionalFiles for Generator -->
+  <ItemGroup>
+    <AdditionalFiles Include="Calculus\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Geometry\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Trajectories\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Graphics\**\Float64\**\*.cs" />
   </ItemGroup>
 
 </Project>

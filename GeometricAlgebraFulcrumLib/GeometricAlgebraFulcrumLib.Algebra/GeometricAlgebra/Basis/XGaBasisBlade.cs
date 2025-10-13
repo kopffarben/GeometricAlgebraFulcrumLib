@@ -892,6 +892,14 @@ public sealed record XGaBasisBlade :
         );
     }
 
+    public Float32.Multivectors.XGaFloat32KVector ToKVector(Float32.Processors.XGaFloat32Processor processor)
+    {
+        return processor.KVectorTerm(
+            Id,
+            1f
+        );
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaKVector<T> ToKVector<T>(XGaProcessor<T> processor)
     {

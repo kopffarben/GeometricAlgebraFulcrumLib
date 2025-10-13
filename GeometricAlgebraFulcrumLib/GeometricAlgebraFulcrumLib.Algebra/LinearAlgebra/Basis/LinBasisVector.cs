@@ -408,6 +408,34 @@ public sealed record LinBasisVector
         return new LinFloat64VectorTerm(ToPositiveBasis(), -1d);
     }
 
+    // Float32 overloads
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm ToVectorTerm(float scalar)
+    {
+        return new GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm(
+            this,
+            scalar * Sign
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm ToZeroVectorTerm32()
+    {
+        return new GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm(ToPositiveBasis(), 0f);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm ToPositiveUnitVectorTerm32()
+    {
+        return new GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm(ToPositiveBasis(), 1f);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm ToNegativeUnitVectorTerm32()
+    {
+        return new GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm(ToPositiveBasis(), -1f);
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector2D ToLinVector2D()
