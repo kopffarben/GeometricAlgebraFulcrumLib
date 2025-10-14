@@ -369,6 +369,15 @@ public class Float32SyntaxRewriter : CSharpSyntaxRewriter
             return null; // Remove this method from the generated code
         }
 
+        // SKIP: Methods with float parameters (likely have double overloads)
+        // Example: ScalarFromNumber(float) AND ScalarFromNumber(double)
+        // After transformation, both become: ScalarFromNumber(float) → duplicate error
+        // We keep only the double version, which transforms to float in Float32
+        if (HasFloatParameter(node.ParameterList))
+        {
+            return null; // Remove this method from the generated code
+        }
+
         // BLACKLIST: Skip specific methods with float parameters that would create duplicates
         // These methods exist in both float and double versions in Float64 code
         // After transformation, both become float versions, causing duplicate method errors
