@@ -54,7 +54,8 @@
   <!-- NOTE: Rewriter filters out duplicates by skipping operators/methods with float parameters -->
   <ItemGroup>
     <AdditionalFiles Include="Scalars\Float64\**\*.cs" Exclude="Scalars\Float64\Float64Utils.cs" />
-    <AdditionalFiles Include="LinearAlgebra\Float64\**\*.cs" />
+    <AdditionalFiles Include="LinearAlgebra\Float64\**\*.cs"
+                     Exclude="LinearAlgebra\Float64\Vectors\Space3D\ILinFloat64Vector3D.cs;LinearAlgebra\Float64\Vectors\Space2D\ILinFloat64Vector2D.cs" />
     <AdditionalFiles Include="GeometricAlgebra\Float64\**\*.cs" />
     <AdditionalFiles Include="Polynomials\Float64\**\*.cs" />
   </ItemGroup>

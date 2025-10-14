@@ -1,3 +1,4 @@
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -131,6 +132,149 @@ public class Float32SyntaxRewriter : CSharpSyntaxRewriter
         return base.VisitConstructorDeclaration(
             node.WithIdentifier(SyntaxFactory.Identifier(newName))
         );
+    }
+
+    // ============================================================
+    // BASE LIST: Transform Interface/Base Class references
+    // ============================================================
+
+    public override SyntaxNode? VisitBaseList(BaseListSyntax node)
+    {
+        // Transform each base type (interface or base class)
+        var transformedTypes = new List<BaseTypeSyntax>();
+
+        foreach (var baseType in node.Types)
+        {
+            var transformedType = TransformBaseType(baseType);
+            transformedTypes.Add(transformedType);
+        }
+
+        return node.WithTypes(SyntaxFactory.SeparatedList(transformedTypes));
+    }
+
+    private BaseTypeSyntax TransformBaseType(BaseTypeSyntax baseType)
+    {
+        // Get the type syntax (e.g., ILinFloat64Vector3D, ITriplet<Float64Scalar>)
+        var typeSyntax = baseType.Type;
+
+        // Transform the type
+        var transformedType = TransformTypeSyntax(typeSyntax);
+
+        return baseType.WithType(transformedType);
+    }
+
+    private TypeSyntax TransformTypeSyntax(TypeSyntax typeSyntax)
+    {
+        switch (typeSyntax)
+        {
+            case GenericNameSyntax genericName:
+                // Generic type like ITriplet<Float64Scalar> (check BEFORE SimpleNameSyntax!)
+                return TransformGenericName(genericName);
+
+            case QualifiedNameSyntax qualifiedName:
+                // Qualified type like Namespace.ILinFloat64Vector3D
+                return TransformQualifiedName(qualifiedName);
+
+            case SimpleNameSyntax simpleName:
+                // Simple type like ILinFloat64Vector3D
+                return TransformSimpleTypeName(simpleName);
+
+            case PredefinedTypeSyntax predefinedType:
+                // Predefined type like double, int, etc.
+                return TransformPredefinedType(predefinedType);
+
+            default:
+                return typeSyntax;
+        }
+    }
+
+    private TypeSyntax TransformSimpleTypeName(SimpleNameSyntax simpleName)
+    {
+        var originalName = simpleName.Identifier.Text;
+
+        // Transform if it contains "Float64" OR is a special Graphics interface
+        var transformedName = (originalName.IndexOf("Float64", StringComparison.Ordinal) >= 0 || IsSpecialGraphicsInterface(originalName))
+            ? ReplaceFloat64ToFloat32(originalName)
+            : originalName;
+
+        if (simpleName is GenericNameSyntax genericName)
+        {
+            // Handle generic type like ITriplet<Float64Scalar>
+            return TransformGenericName(genericName);
+        }
+
+        // Return transformed simple name
+        return SyntaxFactory.IdentifierName(transformedName);
+    }
+
+    private TypeSyntax TransformQualifiedName(QualifiedNameSyntax qualifiedName)
+    {
+        // Transform both left and right parts
+        NameSyntax transformedLeft = qualifiedName.Left switch
+        {
+            QualifiedNameSyntax qn => (NameSyntax)TransformQualifiedName(qn),
+            GenericNameSyntax gn => (NameSyntax)TransformGenericName(gn),
+            SimpleNameSyntax sn => (NameSyntax)TransformSimpleTypeName(sn),
+            _ => qualifiedName.Left
+        };
+
+        var transformedRight = (SimpleNameSyntax)TransformTypeSyntax(qualifiedName.Right);
+
+        return SyntaxFactory.QualifiedName(
+            transformedLeft,
+            transformedRight
+        );
+    }
+
+    private TypeSyntax TransformGenericName(GenericNameSyntax genericName)
+    {
+        var originalName = genericName.Identifier.Text;
+
+        // Transform the generic type name itself ONLY if it contains Float64
+        var transformedName = originalName.IndexOf("Float64", StringComparison.Ordinal) >= 0
+            ? ReplaceFloat64ToFloat32(originalName)
+            : originalName;
+
+        // Transform type arguments recursively (e.g., Float64Scalar -> Float32Scalar, double -> float)
+        // Only transform if the type contains Float64 or double (including nested)
+        var transformedArgs = new List<TypeSyntax>();
+        foreach (var typeArg in genericName.TypeArgumentList.Arguments)
+        {
+            var transformedArg = ShouldTransformType(typeArg)
+                ? TransformTypeSyntax(typeArg)
+                : typeArg;
+            transformedArgs.Add(transformedArg);
+        }
+
+        return SyntaxFactory.GenericName(
+            SyntaxFactory.Identifier(transformedName),
+            SyntaxFactory.TypeArgumentList(
+                SyntaxFactory.SeparatedList(transformedArgs)
+            )
+        );
+    }
+
+    private bool ShouldTransformType(TypeSyntax typeSyntax)
+    {
+        // Transform types that contain "Float64" OR contain "double" anywhere (including nested)
+        // Examples: "Float64Scalar", "double", "KeyValuePair<IndexSet, double>", "IReadOnlyList<double>"
+        var typeString = typeSyntax.ToString();
+        return typeString.IndexOf("Float64", StringComparison.Ordinal) >= 0 ||
+               typeString.IndexOf("double", StringComparison.Ordinal) >= 0;
+    }
+
+    private TypeSyntax TransformPredefinedType(PredefinedTypeSyntax predefinedType)
+    {
+        // Transform double → float in predefined types (e.g., IReadOnlyList<double> → IReadOnlyList<float>)
+        if (predefinedType.Keyword.IsKind(SyntaxKind.DoubleKeyword))
+        {
+            return SyntaxFactory.PredefinedType(
+                SyntaxFactory.Token(SyntaxKind.FloatKeyword)
+            ).WithTriviaFrom(predefinedType);
+        }
+
+        // Keep other predefined types unchanged (int, bool, string, etc.)
+        return predefinedType;
     }
 
     // ============================================================
@@ -1238,8 +1382,22 @@ public class Float32SyntaxRewriter : CSharpSyntaxRewriter
         return typeString == "float" || typeString == "Single" || typeString == "System.Single";
     }
 
+    private static bool IsSpecialGraphicsInterface(string name)
+    {
+        // Graphics interfaces that don't follow Float64 naming convention
+        // These are defined in Modeling project without Float64 in their name
+        return name == "IGraphicsVertex3D" ||
+               name == "IGraphicsSurfaceLocalFrame3D";
+    }
+
     private static string ReplaceFloat64ToFloat32(string text)
     {
+        // Special handling for Graphics interfaces without Float64 in name
+        if (text == "IGraphicsVertex3D")
+            return "IGraphicsFloat32Vertex3D";
+        if (text == "IGraphicsSurfaceLocalFrame3D")
+            return "IGraphicsFloat32SurfaceLocalFrame3D";
+
         return text
             .Replace("Float64", "Float32")
             .Replace("float64", "float32")
