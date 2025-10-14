@@ -94,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.Generated
                 var path = file.Path;
                 // Support both Windows (\) and Unix (/) path separators
                 return path.IndexOf("Float64", StringComparison.OrdinalIgnoreCase) >= 0 &&
-                       path.IndexOf("Float32", StringComparison.OrdinalIgnoreCase) < 0 &&  // NEW: Skip existing Float32 files
+                       path.IndexOf("Float32", StringComparison.OrdinalIgnoreCase) < 0 &&  // Skip existing Float32 files
                        path.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) &&
                        (path.IndexOf("\\obj\\", StringComparison.OrdinalIgnoreCase) < 0 &&
                         path.IndexOf("\\bin\\", StringComparison.OrdinalIgnoreCase) < 0) &&

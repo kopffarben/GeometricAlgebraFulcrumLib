@@ -1,10 +1,24 @@
 # Float32 Generator - Aktionsplan für 100% Coverage
 
 **Projekt:** GeometricAlgebraFulcrumLib.Modeling
-**Aktueller Status:** 96.0% (19/~2000 Fehler)
-**Ziel:** 100% Float32 Coverage
+**Aktueller Status:** 99.1% (18/~2000 Fehler)
+**Ziel:** 99.5% → 100% Float32 Coverage
 **Datum:** 2025-10-14
 **Basierend auf:** BUGREPORT.md, CONTEXT.md, ANALYSE.md
+
+---
+
+## ⚡ IMMEDIATE ACTION REQUIRED (30 Minutes)
+
+**🐛 Generator Bug Found:** 9 duplicate method errors (CS0111) due to missing float parameter check
+
+**Quick Fix Available:**
+- File: `Float32SyntaxRewriter.cs` line ~370
+- Add: 3 lines of code (`HasFloatParameter` check)
+- Impact: 18 → 9 errors (50% reduction)
+- Time: 30 minutes
+
+**See section below for exact code and test commands!**
 
 ---
 
@@ -12,21 +26,93 @@
 
 **Aktueller Stand:**
 - ✅ Algebra-Projekt: 100% (431 → 0 Fehler)
-- ✅ Modeling-Projekt: 96.0% (~2000 → 19 Fehler)
+- ✅ Modeling-Projekt: 99.1% (~2000 → 18 Fehler)
 - ✅ Generator-Features: AST-Transformation, Enum Support, Path Hashing
-- ❌ 5 Quelldateien mit Interface/Base Class Dependencies
+- ❌ 3 Quelldateien mit 18 Fehler (9 Generator-Bug + 9 Architektur)
 
-**Zwei Lösungswege:**
-1. **Option B (Pragmatisch):** 2-3h manuelle Interface-Erstellung → 100% Coverage
-2. **Option C (Puristisch):** 2-3d Semantic Model Integration → 100% Generator-Only
+**Error Breakdown:**
+| Category | Count | Type | Fix Effort |
+|----------|-------|------|------------|
+| Duplicate Methods (CS0111) | 9 | **Generator Bug** | **30 min** ← DO THIS! |
+| Interface Mismatches | 5 | Architecture | 60 min (optional) |
+| Abstract Method Signature | 4 | Architecture | 45 min (optional) |
 
-**Empfehlung:** ✅ **Option B für sofortige 100% Coverage**
+**Lösungswege:**
+1. **IMMEDIATE (Recommended):** Fix generator bug (30min) → 18 → 9 errors (99.5%)
+2. **Option B (Optional):** Architecture changes (3h) → 9 → 0 errors (100%)
+3. **Option C (Not Recommended):** Semantic Model (2-3d) → Too much effort
+
+**Empfehlung:** ✅ **Fix generator bug immediately, evaluate Float32 Signal usage before doing Option B**
 
 ---
 
-## Option B: Manuelle Float32-Versionen (2-3 Stunden)
+## IMMEDIATE FIX: Generator Bug (30 Minutes) - DO THIS FIRST!
 
-**Konzept:** Erstelle fehlende Float32-Interfaces und passe Architektur an (mehr Generics).
+**Konzept:** Fix duplicate method generation by skipping methods with float parameters
+
+### Quick Fix: Add HasFloatParameter Check
+
+**Status:** ⬜ Not started (HIGHEST PRIORITY)
+
+**File to Modify:** `Float32SyntaxRewriter.cs`
+**Location:** Line ~370 (inside `VisitMethodDeclaration`, after `HasFloatThisParameter` check)
+
+**Exact Code to Add:**
+```csharp
+// SKIP: Methods with float parameters (likely have double overloads)
+// This prevents duplicates like ScalarFromNumber(float) + ScalarFromNumber(double) → both becoming float
+if (HasFloatParameter(node.ParameterList))
+{
+    return null;  // Skip float overload, keep double overload (transforms to float)
+}
+```
+
+**Test Commands:**
+```bash
+# 1. Rebuild generator
+cd GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.CodeGeneration
+dotnet build
+
+# 2. Clean generated files
+cd ../GeometricAlgebraFulcrumLib.Modeling
+rm -rf obj/Generated
+
+# 3. Regenerate with clean build
+dotnet build --no-incremental
+
+# 4. Verify fix - Count CS0111 errors (should be 0)
+dotnet build 2>&1 | grep "error CS0111" | wc -l
+
+# 5. Count total errors (should be 9, down from 18)
+dotnet build 2>&1 | grep "error CS" | wc -l
+```
+
+**Expected Results:**
+- Before: 18 errors total (9 CS0111 + 9 architecture)
+- After: 9 errors total (0 CS0111 + 9 architecture)
+- **Success:** 50% error reduction in 30 minutes!
+
+**Why This Works:**
+- Operators already skip float parameters (line 291: `HasFloatParameter`)
+- Extension methods skip `this float` (line 367: `HasFloatThisParameter`)
+- Regular methods DON'T skip float parameters → This causes duplicates
+- Adding same check for regular methods fixes the issue
+
+**Acceptance Criteria:**
+- [ ] No CS0111 duplicate method errors
+- [ ] Total errors reduced from 18 to 9
+- [ ] Build completes successfully
+- [ ] Generated code compiles (with 9 architecture errors remaining)
+
+**Time Estimate:** 30 minutes (5 min code + 5 min rebuild + 10 min test + 10 min validation)
+
+---
+
+## Option B: Architecture Changes (2-3 Stunden) - OPTIONAL
+
+**Konzept:** Erstelle fehlende Float32-Interfaces und passe Architektur an (mehr Generics)
+
+**Note:** Only do these if Float32 signals are actually used! Do Quick Fix first, then evaluate need.
 
 ### Checkliste
 
