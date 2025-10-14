@@ -99,5 +99,14 @@
     <AdditionalFiles Include="Signals\**\*Float64*.cs" Exclude="Signals\**\Float64\**\*.cs" />
   </ItemGroup>
 
+  <!-- Clean Generated Files Before Build -->
+  <!-- This ensures stale generated files don't cause build errors -->
+  <Target Name="CleanGeneratedFiles" BeforeTargets="CoreCompile">
+    <PropertyGroup>
+      <GeneratedPath>$(BaseIntermediateOutputPath)Generated</GeneratedPath>
+    </PropertyGroup>
+    <RemoveDir Directories="$(GeneratedPath)" Condition="Exists('$(GeneratedPath)')" />
+    <Message Text="Float32 Generator: Cleaned generated files at $(GeneratedPath)" Importance="high" Condition="Exists('$(GeneratedPath)')" />
+  </Target>
 
 </Project>
