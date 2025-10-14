@@ -13,7 +13,7 @@ using MathNet.Numerics;
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 public sealed class Float64ComplexSignalSpectrum :
-    ScalarSignalSpectrum<Complex>
+    ScalarSignalSpectrum<Complex, double, Float64SamplingSpecs>
 {
     protected override Complex ZeroValue
         => Complex.Zero;
@@ -60,7 +60,7 @@ public sealed class Float64ComplexSignalSpectrum :
 
 
     public Float64ComplexSignalSpectrum(int sampleCount, double samplingRate)
-        : base(sampleCount, samplingRate)
+        : base(Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate))
     {
     }
 
@@ -122,9 +122,9 @@ public sealed class Float64ComplexSignalSpectrum :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override ScalarSignalSpectrum<Complex> CreateSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
+    protected override ScalarSignalSpectrum<Complex, double, Float64SamplingSpecs> CreateSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
     {
-        return new Float64ComplexSignalSpectrum(SamplingSpecs, indexSampleDictionary);
+        return new Float64ComplexSignalSpectrum(samplingSpecs, indexSampleDictionary);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

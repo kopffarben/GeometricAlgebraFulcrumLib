@@ -479,7 +479,7 @@ public static class Float64SignalUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<Complex> GetValue(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample, double t)
+    public static IReadOnlyList<Complex> GetValue(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IReadOnlyList<ScalarSignalSpectrum<Complex, double, Float64SamplingSpecs>.SignalSpectrumSample> vectorSpectrumSample, double t)
     {
         var valueArray = new Complex[vectorSpectrumSample.Count];
 
@@ -508,7 +508,7 @@ public static class Float64SignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<Float64SampledTimeSignal> GetRealSignal(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample, IEnumerable<double> tValues)
+    public static IReadOnlyList<Float64SampledTimeSignal> GetRealSignal(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IReadOnlyList<ScalarSignalSpectrum<Complex, double, Float64SamplingSpecs>.SignalSpectrumSample> vectorSpectrumSample, IEnumerable<double> tValues)
     {
         return vectorSpectrum
             .Select((spectrum, i) => spectrum.GetRealSignal(vectorSpectrumSample[i], tValues))
@@ -517,14 +517,14 @@ public static class Float64SignalUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> GetSample(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, int index)
+    public static IReadOnlyList<ScalarSignalSpectrum<Complex, double, Float64SamplingSpecs>.SignalSpectrumSample> GetSample(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, int index)
     {
         return vectorSpectrum
             .Select(s => s.GetSample(index))
             .ToImmutableArray();
     }
 
-    public static IReadOnlyList<Float64ComplexSignalSpectrum> Add(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IEnumerable<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample)
+    public static IReadOnlyList<Float64ComplexSignalSpectrum> Add(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IEnumerable<ScalarSignalSpectrum<Complex, double, Float64SamplingSpecs>.SignalSpectrumSample> vectorSpectrumSample)
     {
         var i = 0;
         foreach (var sample in vectorSpectrumSample)

@@ -7,8 +7,9 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals;
 
-public abstract class ScalarSignalSpectrum<T> :
-    IReadOnlyList<ScalarSignalSpectrum<T>.SignalSpectrumSample>
+public abstract class ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> :
+    IReadOnlyList<ScalarSignalSpectrum<T, TScalar, TSamplingSpecs>.SignalSpectrumSample>
+    where TSamplingSpecs : ISamplingSpecs<TScalar>
 {
     public sealed record SignalSpectrumSample(int Index, T Value);
 
@@ -19,15 +20,15 @@ public abstract class ScalarSignalSpectrum<T> :
     public int Count
         => SamplingSpecs.SampleCount;
 
-    public Float64SamplingSpecs SamplingSpecs { get; }
+    public TSamplingSpecs SamplingSpecs { get; }
 
     public int SampleCount
         => SamplingSpecs.SampleCount;
 
-    public double SamplingRate
+    public TScalar SamplingRate
         => SamplingSpecs.SamplingRate;
 
-    public double FrequencyResolution
+    public TScalar FrequencyResolution
         => SamplingSpecs.FrequencyResolution;
 
     public double FrequencyResolutionHz
@@ -71,28 +72,28 @@ public abstract class ScalarSignalSpectrum<T> :
     public IEnumerable<int> FrequencyIndices
         => Samples.Select(r => r.Index);
 
-    public IEnumerable<double> Frequencies
+    public IEnumerable<TScalar> Frequencies
         => Samples.Select(r => GetFrequency(r.Index));
 
-    public IEnumerable<double> FrequenciesHz
+    public IEnumerable<TScalar> FrequenciesHz
         => Samples.Select(r => GetFrequencyHz(r.Index));
 
-    public double FrequencyMin
+    public TScalar FrequencyMin
         => Frequencies.Min();
 
-    public double FrequencyMinHz
+    public TScalar FrequencyMinHz
         => FrequenciesHz.Min();
 
-    public double FrequencyMax
+    public TScalar FrequencyMax
         => Frequencies.Max();
 
-    public double FrequencyMaxHz
+    public TScalar FrequencyMaxHz
         => FrequenciesHz.Max();
 
-    public Pair<double> FrequencyRange
+    public Pair<TScalar> FrequencyRange
         => Frequencies.GetRange();
 
-    public Pair<double> FrequencyRangeHz
+    public Pair<TScalar> FrequencyRangeHz
         => FrequenciesHz.GetRange();
 
     public SignalSpectrumSample this[int index]
@@ -116,21 +117,14 @@ public abstract class ScalarSignalSpectrum<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ScalarSignalSpectrum(int sampleCount, double samplingRate)
-    {
-        SamplingSpecs = Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate);
-        IndexSampleDictionary = new Dictionary<int, SignalSpectrumSample>();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ScalarSignalSpectrum(Float64SamplingSpecs samplingSpecs)
+    protected ScalarSignalSpectrum(TSamplingSpecs samplingSpecs)
     {
         SamplingSpecs = samplingSpecs;
         IndexSampleDictionary = new Dictionary<int, SignalSpectrumSample>();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ScalarSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
+    protected ScalarSignalSpectrum(TSamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
     {
         Debug.Assert(
             indexSampleDictionary.Keys.All(
@@ -156,27 +150,27 @@ public abstract class ScalarSignalSpectrum<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetFrequency(int index)
+    public TScalar GetFrequency(int index)
     {
         return SamplingSpecs.GetFrequency(index);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetFrequencyHz(int index)
+    public TScalar GetFrequencyHz(int index)
     {
         return SamplingSpecs.GetFrequencyHz(index);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> Clear()
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> Clear()
     {
         IndexSampleDictionary.Clear();
 
         return this;
     }
 
-    public ScalarSignalSpectrum<T> RemoveZeroValueSamples()
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> RemoveZeroValueSamples()
     {
         var indexArray =
             IndexSampleDictionary
@@ -190,7 +184,7 @@ public abstract class ScalarSignalSpectrum<T> :
         return this;
     }
 
-    public ScalarSignalSpectrum<T> RemoveHighFrequencySamples(double cutoffFrequency)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> RemoveHighFrequencySamples(TScalar cutoffFrequency)
     {
         var indexSet = new HashSet<int>();
 
@@ -239,7 +233,7 @@ public abstract class ScalarSignalSpectrum<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> Set(int index, T value)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> Set(int index, T value)
     {
         if (index < 0 || index >= SampleCount)
             index = index.Mod(SampleCount);
@@ -253,13 +247,13 @@ public abstract class ScalarSignalSpectrum<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> Set(SignalSpectrumSample spectrumSample)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> Set(SignalSpectrumSample spectrumSample)
     {
         return Set(spectrumSample.Index, spectrumSample.Value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> Set(IEnumerable<SignalSpectrumSample> spectrumSamples)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> Set(IEnumerable<SignalSpectrumSample> spectrumSamples)
     {
         foreach (var (index, value) in spectrumSamples)
             Set(index, value);
@@ -269,7 +263,7 @@ public abstract class ScalarSignalSpectrum<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> Add(int index, T value)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> Add(int index, T value)
     {
         if (index < 0 || index >= SampleCount)
             index = index.Mod(SampleCount);
@@ -283,13 +277,13 @@ public abstract class ScalarSignalSpectrum<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> Add(SignalSpectrumSample spectrumSample)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> Add(SignalSpectrumSample spectrumSample)
     {
         return Add(spectrumSample.Index, spectrumSample.Value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> Add(IEnumerable<SignalSpectrumSample> spectrumSamples)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> Add(IEnumerable<SignalSpectrumSample> spectrumSamples)
     {
         foreach (var (index, value) in spectrumSamples)
             Add(index, value);
@@ -299,7 +293,7 @@ public abstract class ScalarSignalSpectrum<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> Subtract(int index, T value)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> Subtract(int index, T value)
     {
         if (index < 0 || index >= SampleCount)
             index = index.Mod(SampleCount);
@@ -313,13 +307,13 @@ public abstract class ScalarSignalSpectrum<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> Subtract(SignalSpectrumSample spectrumSample)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> Subtract(SignalSpectrumSample spectrumSample)
     {
         return Subtract(spectrumSample.Index, spectrumSample.Value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> Subtract(IEnumerable<SignalSpectrumSample> spectrumSamples)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> Subtract(IEnumerable<SignalSpectrumSample> spectrumSamples)
     {
         foreach (var (index, value) in spectrumSamples)
             Subtract(index, value);
@@ -329,7 +323,7 @@ public abstract class ScalarSignalSpectrum<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> MapValues(Func<T, T> valueMapping)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> MapValues(Func<T, T> valueMapping)
     {
         var indexSampleDictionary = IndexSampleDictionary.ToDictionary(
             p => p.Key,
@@ -343,7 +337,7 @@ public abstract class ScalarSignalSpectrum<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> MapValuesByIndexValue(Func<int, T, T> indexValueMapping)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> MapValuesByIndexValue(Func<int, T, T> indexValueMapping)
     {
         var indexSampleDictionary = IndexSampleDictionary.ToDictionary(
             p => p.Key,
@@ -357,7 +351,7 @@ public abstract class ScalarSignalSpectrum<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> MapValuesByFrequencyValue(Func<double, T, T> frequencyValueMapping)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> MapValuesByFrequencyValue(Func<double, T, T> frequencyValueMapping)
     {
         var indexSampleDictionary = IndexSampleDictionary.ToDictionary(
             p => p.Key,
@@ -371,7 +365,7 @@ public abstract class ScalarSignalSpectrum<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> GetCopy()
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> GetCopy()
     {
         var indexSampleDictionary = IndexSampleDictionary.ToDictionary(
             p => p.Key,
@@ -382,17 +376,17 @@ public abstract class ScalarSignalSpectrum<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ScalarSignalSpectrum<T> ScaleBy(T scalingFactor)
+    public ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> ScaleBy(T scalingFactor)
     {
         return MapValues(value => Times(value, scalingFactor));
     }
 
-    protected ScalarSignalSpectrum<T> CreateSignalSpectrum(Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
+    protected ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> CreateSignalSpectrum(Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
     {
         return CreateSignalSpectrum(SamplingSpecs, indexSampleDictionary);
     }
 
-    protected abstract ScalarSignalSpectrum<T> CreateSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary);
+    protected abstract ScalarSignalSpectrum<T, TScalar, TSamplingSpecs> CreateSignalSpectrum(TSamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary);
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
