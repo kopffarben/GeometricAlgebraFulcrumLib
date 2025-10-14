@@ -99,6 +99,14 @@ public class Float32SyntaxRewriter : CSharpSyntaxRewriter
         );
     }
 
+    public override SyntaxNode? VisitEnumDeclaration(EnumDeclarationSyntax node)
+    {
+        var newName = ReplaceFloat64ToFloat32(node.Identifier.Text);
+        return base.VisitEnumDeclaration(
+            node.WithIdentifier(SyntaxFactory.Identifier(newName))
+        );
+    }
+
     public override SyntaxNode? VisitRecordDeclaration(RecordDeclarationSyntax node)
     {
         // Track the current record name for blacklist checking (using original name before transformation)

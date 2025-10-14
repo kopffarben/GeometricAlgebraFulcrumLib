@@ -84,10 +84,20 @@
 
   <!-- Float64 Files as AdditionalFiles for Generator -->
   <ItemGroup>
+    <!-- Files in Float64 folders (392 files) -->
     <AdditionalFiles Include="Calculus\**\Float64\**\*.cs" />
     <AdditionalFiles Include="Geometry\**\Float64\**\*.cs" />
     <AdditionalFiles Include="Trajectories\**\Float64\**\*.cs" />
     <AdditionalFiles Include="Graphics\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Signals\**\Float64\**\*.cs" />
+
+    <!-- Files with Float64 in filename but NOT in Float64 folder (86 files) -->
+    <AdditionalFiles Include="Calculus\**\*Float64*.cs" Exclude="Calculus\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Geometry\**\*Float64*.cs" Exclude="Geometry\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Trajectories\**\*Float64*.cs" Exclude="Trajectories\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Graphics\**\*Float64*.cs" Exclude="Graphics\**\Float64\**\*.cs;Graphics\**\*Float64BufferAttribute*.cs" />
+    <AdditionalFiles Include="Signals\**\*Float64*.cs" Exclude="Signals\**\Float64\**\*.cs" />
   </ItemGroup>
+
 
 </Project>

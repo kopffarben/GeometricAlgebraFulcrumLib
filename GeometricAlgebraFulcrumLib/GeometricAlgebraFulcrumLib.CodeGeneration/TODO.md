@@ -1,1092 +1,677 @@
-# Float32 Generator - Detaillierter Aktionsplan
+# Float32 Generator - Aktionsplan für 100% Coverage
 
-**Ziel:** Generator von 97.7% auf 100% Erfolgsquote bringen
+**Projekt:** GeometricAlgebraFulcrumLib.Modeling
+**Aktueller Status:** 96.0% (19/~2000 Fehler)
+**Ziel:** 100% Float32 Coverage
+**Datum:** 2025-10-14
 **Basierend auf:** BUGREPORT.md, CONTEXT.md, ANALYSE.md
-**Erstellt:** 2025-10-13
-**Aktualisiert:** 2025-10-13 (Generator-Only Analyse)
-**Priorität:** HIGH (Blockiert Modeling Float32-Code-Generierung)
-
----
-
-## ⚠️ WICHTIGE ENTSCHEIDUNG: Generator-Only vs Hybrid
-
-**Frage:** Können wir ALLE verbleibenden Fehler ohne manuelle Source-Änderungen beheben?
-
-**Antwort:** **JA** - Aber es gibt zwei Wege:
-
-### Option A: Generator-Only (100% Purist)
-- ✅ Keine Source-Code-Änderungen
-- ✅ Skalierbar und wartbar
-- ⏱️ Aufwand: 3-4 Tage (Phase 2 Semantic Integration)
-- 📋 Revertiere 4 manuelle Änderungen (~60 Zeilen):
-  - XGaMetric.cs
-  - XGaBasisBlade.cs
-  - LinBasisVector.cs
-  - LinFloat32Vector3DComposerUtilsExtensions.cs
-
-### Option B: Hybrid (Pragmatisch)
-- ✅ Sofort einsatzbereit
-- ✅ Minimale manuelle Änderungen (4 Dateien, ~60 Zeilen)
-- ⏱️ Aufwand: 2 Stunden (Phase 1 Quick Wins)
-- ⚠️ 5% manuelle Überladungen bleiben
-
-**Empfehlung:** Option B JETZT (Modeling generieren), Option A SPÄTER (Refactoring)
 
 ---
 
 ## Executive Summary
 
-**Status Quo:**
-- ✅ 421 von 431 Fehlern behoben (97.7%)
-- ❌ 10 Fehler verbleibend (2.3%)
-- ⚠️ 4 manuelle Source-Änderungen gemacht (~60 Zeilen)
-- ⏸️ Modeling-Code-Generierung blockiert
+**Aktueller Stand:**
+- ✅ Algebra-Projekt: 100% (431 → 0 Fehler)
+- ✅ Modeling-Projekt: 96.0% (~2000 → 19 Fehler)
+- ✅ Generator-Features: AST-Transformation, Enum Support, Path Hashing
+- ❌ 5 Quelldateien mit Interface/Base Class Dependencies
 
-**Plan Option A (Generator-Only):**
-1. **Phase 1 (Quick Wins):** 2 Stunden → 3-4 Fehler behoben (Generator)
-2. **Phase 2 (Semantic):** 3 Tage → Alle 10 Fehler behoben + manuelle Änderungen revertiert
-3. **Phase 3 (Optional):** Testing + Robustness
+**Zwei Lösungswege:**
+1. **Option B (Pragmatisch):** 2-3h manuelle Interface-Erstellung → 100% Coverage
+2. **Option C (Puristisch):** 2-3d Semantic Model Integration → 100% Generator-Only
 
-**Plan Option B (Hybrid):**
-1. **Phase 1 (Quick Wins):** 2 Stunden → 3-4 Fehler behoben (Generator)
-2. **Modeling generieren:** Sofort möglich mit 4 manuellen Änderungen
-3. **Phase 2 später:** Optional Refactoring zu 100% Generator
-
-**Timeline:**
-- Hybrid (Option B): 2 Stunden → Production-Ready
-- Generator-Only (Option A): 3-4 Tage → 100% Purist
-- Production Ready: 1-2 Wochen (optional Testing)
+**Empfehlung:** ✅ **Option B für sofortige 100% Coverage**
 
 ---
 
-## Phase 1: Quick Wins (Priorität: CRITICAL)
+## Option B: Manuelle Float32-Versionen (2-3 Stunden)
 
-**Applies to:** BOTH Option A and Option B
-**Aufwand:** 2 Stunden
-**Resultat:** 3-4 Fehler behoben durch Generator
-**Generator-Only:** JA
+**Konzept:** Erstelle fehlende Float32-Interfaces und passe Architektur an (mehr Generics).
 
----
+### Checkliste
 
-### Aufgabe 1.1: ToUnitLinVector Pattern erweitern
+#### B.1 - ILinFloat32Vector3D Interface ⏱️ 30min
 
-**Ziel:** 3 LinBasisVector-Fehler beheben
-**Aufwand:** 30 Minuten
-**Dateien:** `Float32SyntaxRewriter.cs`
+**Status:** ⬜ Nicht begonnen
 
-#### Schritt 1.1.1: Pattern-Liste erweitern
-**Zeile:** ~377 (VisitIdentifierName)
+**Zu erstellen:**
+- Datei: `Algebra/LinearAlgebra/Float32/Vectors/Space3D/ILinFloat32Vector3D.cs`
+- Analog: `ILinFloat32Vector2D.cs`
+- Zeilen: ~30 (beide Interfaces)
 
-**Aktueller Code:**
+**Code-Template:**
 ```csharp
-if (text.StartsWith("ToLinVector") ||
-    text.StartsWith("CreateLinVector") ||
-    text.StartsWith("CreateUnitLinVector"))
+namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.Space3D;
+
+public interface ILinFloat32Vector3D :
+    ILinFloat32Vector,
+    ITriplet<Float32Scalar>
 {
-    var newText = text
-        .Replace("ToLinVector", "ToLinFloat32Vector")
-        .Replace("CreateLinVector", "CreateLinFloat32Vector")
-        .Replace("CreateUnitLinVector", "CreateUnitLinFloat32Vector");
-    // ...
+    Float32Scalar X { get; }
+    Float32Scalar Y { get; }
+    Float32Scalar Z { get; }
+
+    LinFloat32Vector3D ToLinFloat32Vector3D();
+    LinFloat32Vector3D ToUnitLinFloat32Vector3D();
+    Float32Scalar VectorENorm();
+    Float32Scalar VectorENormSquared();
 }
 ```
 
-**Neuer Code:**
-```csharp
-// Erweitere Pattern-Liste
-private static readonly string[] VectorMethodPrefixes = new[]
-{
-    "ToLinVector",
-    "ToUnitLinVector",        // NEU
-    "CreateLinVector",
-    "CreateUnitLinVector",
-    "GetLinVector",           // NEU (proaktiv)
-    "AsLinVector"             // NEU (proaktiv)
-};
+**Behebt:**
+- 9 Fehler in `GrParametricSurfaceLocalFrame3D_E15E4BCA.g.cs`
+- Interface Return Type Mismatch (CS0738 Fehler)
 
-// In VisitIdentifierName:
-if (VectorMethodPrefixes.Any(prefix => text.StartsWith(prefix)))
+**Testing:**
+```bash
+dotnet build GeometricAlgebraFulcrumLib.Modeling 2>&1 | grep "CS0738" | wc -l
+# Erwartung: 0 (vorher 9)
+```
+
+**Dependencies:**
+- Benötigt: `ILinFloat32Vector` (sollte bereits existieren)
+- Benötigt: `Float32Scalar` (bereits existiert)
+
+**Akzeptanzkriterien:**
+- [ ] ILinFloat32Vector3D.cs kompiliert
+- [ ] ILinFloat32Vector2D.cs kompiliert
+- [ ] `GrParametricSurfaceLocalFrame3D` kompiliert
+- [ ] Keine CS0738 Fehler mehr
+
+---
+
+#### B.2 - IGraphicsFloat32SurfaceLocalFrame3D Interface ⏱️ 20min
+
+**Status:** ⬜ Nicht begonnen
+
+**Zu erstellen:**
+- Datei: `Modeling/Graphics/Rendering/Surfaces/IGraphicsFloat32SurfaceLocalFrame3D.cs`
+- Zeilen: ~20
+
+**Code-Template:**
+```csharp
+namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Surfaces;
+
+public interface IGraphicsFloat32SurfaceLocalFrame3D
 {
-    var newText = text;
-    foreach (var prefix in VectorMethodPrefixes)
+    LinFloat32Vector3D Point { get; }
+    LinFloat32Vector2D ParameterValue { get; }
+    LinFloat32Normal3D Normal { get; }
+
+    bool IsValid();
+}
+```
+
+**Behebt:**
+- Interface-Constraint für Parametric Surface Classes
+- Ergänzt B.1 für vollständige Surface-Support
+
+**Testing:**
+```bash
+dotnet build GeometricAlgebraFulcrumLib.Modeling 2>&1 | grep "IGraphicsSurfaceLocalFrame3D"
+# Erwartung: Keine Fehler mehr mit Float64-Version
+```
+
+**Akzeptanzkriterien:**
+- [ ] Interface kompiliert
+- [ ] `GrParametricSurfaceLocalFrame3D` kann Interface implementieren
+
+---
+
+#### B.3 - ScalarProcessorOfFloat32 Unsealed ⏱️ 10min
+
+**Status:** ⬜ Nicht begonnen
+
+**Zu ändern:**
+- Datei: `Algebra/Scalars/Float32/ScalarProcessorOfFloat32.cs`
+- Zeilen: 1 (sealed entfernen)
+
+**Change:**
+```diff
+- public sealed class ScalarProcessorOfFloat32 : IScalarProcessor<Float32Scalar>
++ public class ScalarProcessorOfFloat32 : IScalarProcessor<Float32Scalar>
+```
+
+**Behebt:**
+- 1 Fehler in `ScalarFunctionProcessorOfFloat32_AFF941D4.g.cs`
+- Error CS0509 (Cannot inherit from sealed type)
+
+**Testing:**
+```bash
+dotnet build GeometricAlgebraFulcrumLib.Modeling 2>&1 | grep "CS0509"
+# Erwartung: 0 Fehler
+```
+
+**Breaking Changes:** ⚠️ Minor
+- Erlaubt Subclassing, was vorher verboten war
+- Keine Breaking Changes für bestehenden Code
+
+**Akzeptanzkriterien:**
+- [ ] Algebra-Projekt kompiliert weiterhin
+- [ ] `ScalarFunctionProcessorOfFloat32` kompiliert in Modeling
+
+---
+
+#### B.4 - ScalarSignalSpectrum<T, TSampling> Generic Refactoring ⏱️ 45min
+
+**Status:** ⬜ Nicht begonnen
+
+**Zu ändern:**
+- Datei: `Modeling/Signals/ScalarSignalSpectrum.cs` (Base Class)
+- Zeilen: ~30 (Generic Parameter hinzufügen)
+
+**Vorher:**
+```csharp
+public abstract class ScalarSignalSpectrum<T>
+{
+    protected abstract ScalarSignalSpectrum<T> CreateSignalSpectrum(
+        Float64SamplingSpecs samplingSpecs,  // ❌ Hardcodiert
+        Dictionary<int, SignalSpectrumSample> dict
+    );
+}
+```
+
+**Nachher:**
+```csharp
+public abstract class ScalarSignalSpectrum<T, TSamplingSpecs>
+    where TSamplingSpecs : ISamplingSpecs
+{
+    protected abstract ScalarSignalSpectrum<T, TSamplingSpecs> CreateSignalSpectrum(
+        TSamplingSpecs samplingSpecs,  // ✅ Generisch
+        Dictionary<int, SignalSpectrumSample> dict
+    );
+}
+```
+
+**Zusätzlich zu erstellen:**
+```csharp
+// Modeling/Signals/ISamplingSpecs.cs
+public interface ISamplingSpecs
+{
+    float SamplingRate { get; }
+    int SampleCount { get; }
+}
+
+// Float32SamplingSpecs.cs implementiert ISamplingSpecs
+// Float64SamplingSpecs.cs implementiert ISamplingSpecs
+```
+
+**Behebt:**
+- 2 Fehler in `Float32SignalSpectrum_CD7A20A8.g.cs` (CS0115, CS0534)
+- 2 Fehler in `Float32ComplexSignalSpectrum_8CDE8F0E.g.cs` (CS0115, CS0534)
+
+**Testing:**
+```bash
+dotnet build GeometricAlgebraFulcrumLib.Modeling 2>&1 | grep "Float32SignalSpectrum"
+# Erwartung: 0 Fehler
+```
+
+**Breaking Changes:** ⚠️ Major
+- Alle `ScalarSignalSpectrum<T>` → `ScalarSignalSpectrum<T, TSamplingSpecs>`
+- Migration nötig: ~10 Dateien updaten
+
+**Migration-Plan:**
+1. Suche: `ScalarSignalSpectrum<` in Modeling-Projekt
+2. Ersetze: `ScalarSignalSpectrum<Complex>` → `ScalarSignalSpectrum<Complex, Float64SamplingSpecs>`
+3. Teste: Algebra-Projekt (falls betroffen)
+
+**Akzeptanzkriterien:**
+- [ ] ISamplingSpecs Interface definiert
+- [ ] Float32/Float64SamplingSpecs implementieren Interface
+- [ ] ScalarSignalSpectrum<T, TSamplingSpecs> kompiliert
+- [ ] Alle abhängigen Klassen migriert
+- [ ] Keine CS0115/CS0534 Fehler mehr
+
+---
+
+#### B.5 - IScalarProcessor<T, TScalar> Generic Parameter ⏱️ 60min
+
+**Status:** ⬜ Nicht begonnen
+
+**Zu ändern:**
+- Datei: `Algebra/Scalars/IScalarProcessor.cs`
+- Zeilen: ~40
+
+**Vorher:**
+```csharp
+public interface IScalarProcessor<T>
+{
+    double ZeroEpsilon { get; }              // ❌ Hardcodiert
+    T ScalarFromNumber(double value);        // ❌ Hardcodiert
+    double ToFloat64(T scalar);
+    T ScalarFromRandom(Random rnd, double min, double max);  // ❌
+}
+```
+
+**Nachher:**
+```csharp
+public interface IScalarProcessor<T, TScalar = double>  // Default für Backward-Compatibility
+    where TScalar : struct, IConvertible
+{
+    TScalar ZeroEpsilon { get; }             // ✅ Generisch
+    T ScalarFromNumber(TScalar value);       // ✅ Generisch
+    double ToFloat64(T scalar);              // Bleibt double (Konvertierung)
+    T ScalarFromRandom(Random rnd, TScalar min, TScalar max);  // ✅
+}
+```
+
+**Behebt:**
+- 5 Fehler in `ScalarProcessorOfFloat32Signal_1340A8DA.g.cs`
+  - CS0535: Missing ScalarFromNumber(double)
+  - CS0535: Missing ToFloat64()
+  - CS0535: Missing ScalarFromRandom()
+  - CS0738: ZeroEpsilon wrong type
+  - CS0111: Duplicate ScalarFromNumber
+
+**Testing:**
+```bash
+dotnet build GeometricAlgebraFulcrumLib.Modeling 2>&1 | grep "ScalarProcessorOfFloat32Signal"
+# Erwartung: 0 Fehler
+```
+
+**Breaking Changes:** ⚠️ Minor (mit Default Parameter)
+- Alte `IScalarProcessor<T>` nutzt automatisch `TScalar = double`
+- Neue Verwendung: `IScalarProcessor<Float32SampledTimeSignal, float>`
+
+**Migration-Plan:**
+1. Suche: `IScalarProcessor<` im gesamten Solution
+2. Prüfe: Welche explizit `double` erwarten (bleiben unverändert)
+3. Update: Float32-spezifische Implementierungen zu `<T, float>`
+
+**Akzeptanzkriterien:**
+- [ ] IScalarProcessor<T, TScalar> kompiliert
+- [ ] Default Parameter `= double` funktioniert
+- [ ] ScalarProcessorOfFloat32Signal nutzt `<Float32SampledTimeSignal, float>`
+- [ ] Algebra-Projekt weiterhin kompatibel
+- [ ] Keine CS0535/CS0738/CS0111 Fehler mehr
+
+---
+
+### Option B - Zusammenfassung & Timeline
+
+| Task | Zeit | Fehler behoben | Priorität |
+|------|------|----------------|-----------|
+| B.1 - ILinFloat32Vector3D | 30min | 9 | HIGH |
+| B.2 - IGraphicsFloat32Surface | 20min | (ergänzend) | MEDIUM |
+| B.3 - Unsealed ScalarProcessor | 10min | 1 | LOW |
+| B.4 - SignalSpectrum Generic | 45min | 4 | HIGH |
+| B.5 - IScalarProcessor Generic | 60min | 5 | HIGH |
+| **Gesamt** | **2h 45min** | **19** | - |
+
+**Empfohlene Reihenfolge:**
+1. **B.1** (9 Fehler) + **B.2** (ergänzend) = **1h**
+2. **B.3** (1 Fehler, trivial) = **10min**
+3. **B.4** (4 Fehler) = **45min**
+4. **B.5** (5 Fehler) = **60min**
+
+**Total:** ~3 Stunden → **100% Modeling Coverage**
+
+---
+
+## Option C: Semantic Model Integration (2-3 Tage)
+
+**Konzept:** Erweitere Generator um Roslyn Semantic Model für automatische Interface/Base Class Transformation.
+
+### Checkliste
+
+#### C.1 - Semantic Model Setup ⏱️ 2h
+
+**Status:** ⬜ Nicht begonnen
+
+**Zu implementieren:**
+- Datei: `Float32SourceGenerator.cs` (erweitern)
+- Zeilen: ~50
+
+**Code-Skelett:**
+```csharp
+public override void Initialize(IncrementalGeneratorInitializationContext context)
+{
+    // NEU: Kombination mit Compilation
+    var compilationProvider = context.CompilationProvider;
+
+    var semanticFiles = context.AdditionalTextsProvider
+        .Combine(compilationProvider);
+
+    context.RegisterSourceOutput(semanticFiles, (ctx, combined) =>
     {
-        if (newText.StartsWith(prefix))
+        var (file, compilation) = combined;
+        var syntaxTree = CSharpSyntaxTree.ParseText(file.GetText());
+        var semanticModel = compilation.GetSemanticModel(syntaxTree);
+
+        // Nutze Semantic Model für Transformationen
+        var rewriter = new SemanticFloat32SyntaxRewriter(semanticModel);
+        var newRoot = rewriter.Visit(syntaxTree.GetRoot());
+        // ...
+    });
+}
+```
+
+**Herausforderungen:**
+- Performance: Semantic Model ~10x langsamer als AST-only
+- Memory: Compilation Context im RAM (~150 MB)
+- Null-Handling: Compilation kann bei Parse-Errors null sein
+
+**Akzeptanzkriterien:**
+- [ ] Compilation Provider funktioniert
+- [ ] Semantic Model wird korrekt erstellt
+- [ ] Performance akzeptabel (<5s für 476 Dateien)
+
+---
+
+#### C.2 - Interface Detection & Transformation ⏱️ 4h
+
+**Status:** ⬜ Nicht begonnen
+
+**Zu implementieren:**
+- Datei: `SemanticFloat32SyntaxRewriter.cs` (neu)
+- Zeilen: ~100
+
+**Funktionalität:**
+```csharp
+public override SyntaxNode? VisitClassDeclaration(ClassDeclarationSyntax node)
+{
+    var classSymbol = _semanticModel.GetDeclaredSymbol(node);
+    if (classSymbol == null) return base.VisitClassDeclaration(node);
+
+    // Analysiere Interfaces
+    var transformedInterfaces = new List<BaseTypeSyntax>();
+    foreach (var iface in classSymbol.Interfaces)
+    {
+        if (iface.Name.Contains("Float64"))
         {
-            // Insert "Float32" after "Lin"
-            newText = prefix.Insert(3, "Float32") +
-                      newText.Substring(prefix.Length);
-            break;
+            var float32Name = iface.Name.Replace("Float64", "Float32");
+            // Transformiere Interface-Referenz
+            transformedInterfaces.Add(...);
         }
     }
 
-    return node.WithIdentifier(
-        SyntaxFactory.Identifier(
-            node.Identifier.LeadingTrivia,
-            newText,
-            node.Identifier.TrailingTrivia
+    // Update BaseList
+    var newNode = node.WithBaseList(...);
+    return base.VisitClassDeclaration(newNode);
+}
+```
+
+**Problem:** **Henne-Ei-Dilemma**
+- Interface I_Float64 → I_Float32 transformieren
+- ABER: I_Float32 existiert noch nicht (wird erst später generiert)
+- **Lösung:** Multi-Pass Generator (2 Durchläufe)
+
+**Akzeptanzkriterien:**
+- [ ] Interface-Referenzen werden erkannt
+- [ ] Float64 → Float32 Transformation funktioniert
+- [ ] Henne-Ei-Problem gelöst (Multi-Pass oder Pre-Generation)
+
+---
+
+#### C.3 - Generic Type Argument Resolution ⏱️ 3h
+
+**Status:** ⬜ Nicht begonnen
+
+**Zu implementieren:**
+- Datei: `SemanticFloat32SyntaxRewriter.cs` (erweitern)
+- Zeilen: ~80
+
+**Funktionalität:**
+```csharp
+public override SyntaxNode? VisitGenericName(GenericNameSyntax node)
+{
+    var typeArgs = node.TypeArgumentList.Arguments;
+    var transformedArgs = new List<TypeSyntax>();
+
+    foreach (var typeArg in typeArgs)
+    {
+        var typeSymbol = _semanticModel.GetSymbolInfo(typeArg).Symbol as ITypeSymbol;
+        if (typeSymbol?.Name.Contains("Float64") == true)
+        {
+            var float32Name = typeSymbol.Name.Replace("Float64", "Float32");
+            transformedArgs.Add(SyntaxFactory.ParseTypeName(float32Name));
+        }
+        else
+        {
+            transformedArgs.Add(typeArg);
+        }
+    }
+
+    return node.WithTypeArgumentList(
+        SyntaxFactory.TypeArgumentList(
+            SyntaxFactory.SeparatedList(transformedArgs)
         )
     );
 }
 ```
 
-**Test:**
-```csharp
-// Input:  vector.ToUnitLinVector3D()
-// Output: vector.ToUnitLinFloat32Vector3D()
+**Herausforderungen:**
+- Nested Generics: `Dictionary<int, List<Float64Scalar>>`
+- Qualified Names: `GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64.Float64Scalar`
 
-// Behebt:
-// - LinFloat32Vector3DAffineUtils.g.cs:275
-// - LinFloat32Vector3DAffineUtils.g.cs:316
-// - LinFloat32RotationUtils.g.cs:380
-```
-
-**Geschätzte Behebung:** 3 von 10 Fehlern
+**Akzeptanzkriterien:**
+- [ ] Generic Type Arguments werden transformiert
+- [ ] `ITriplet<Float64Scalar>` → `ITriplet<Float32Scalar>`
+- [ ] Nested Generics funktionieren
 
 ---
 
-### Aufgabe 1.2: VectorPairToVectorPairRotation Pattern
+#### C.4 - Dependency Graph Builder ⏱️ 4h
 
-**Ziel:** 2 SquareMatrix4-Fehler beheben (teilweise)
-**Aufwand:** 1 Stunde
-**Dateien:** `Float32SyntaxRewriter.cs`
+**Status:** ⬜ Nicht begonnen
 
-#### Schritt 1.2.1: Quaternion → Float32Quaternion Pattern
-**Zeile:** ~620 (VisitInvocationExpression, nach Math-Functions)
+**Zu implementieren:**
+- Datei: `DependencyGraphBuilder.cs` (neu)
+- Zeilen: ~120
 
-**Code:**
+**Funktionalität:**
+1. Scan alle AdditionalFiles
+2. Build Dependency Graph (Interface → Class Dependencies)
+3. Topological Sort für Generierungs-Reihenfolge
+4. Multi-Pass Generation
+
+**Pseudo-Code:**
 ```csharp
-// Nach Math-Function-Handling, vor return base.Visit:
-
-// VectorPairToVectorPairRotationQuaternion → VectorPairToVectorPairRotationFloat32Quaternion
-if (memberAccess.Name.Identifier.Text.EndsWith("Quaternion") &&
-    memberAccess.Name.Identifier.Text.Contains("Rotation"))
+public class DependencyGraphBuilder
 {
-    var oldName = memberAccess.Name.Identifier.Text;
-    var newName = oldName.Replace("Quaternion", "Float32Quaternion");
-
-    var visitedNode = (InvocationExpressionSyntax)base.VisitInvocationExpression(node)!;
-
-    var newMemberAccess = memberAccess.WithName(
-        SyntaxFactory.IdentifierName(newName)
-    );
-
-    return visitedNode.WithExpression(newMemberAccess);
-}
-```
-
-**Test:**
-```csharp
-// Input:  basisVectors.VectorPairToVectorPairRotationQuaternion(v1, v2)
-// Output: basisVectors.VectorPairToVectorPairRotationFloat32Quaternion(v1, v2)
-```
-
-**Warnung:** Dies transformiert den Methodennamen, aber die Methode existiert möglicherweise nicht!
-- **Option A:** Methode manuell erstellen (siehe Aufgabe 1.3)
-- **Option B:** Semantic Model verwenden um Existenz zu prüfen (Phase 2)
-
-**Geschätzte Behebung:** 1-2 Fehler (wenn Methode existiert oder erstellt wird)
-
----
-
-### Aufgabe 1.3: Manuelle Extension Method (Falls nötig)
-
-**Ziel:** SquareMatrix4-Fehler vollständig beheben
-**Aufwand:** 30 Minuten
-**Dateien:** `LinBasisVectorPair3DExtensions.cs` (erstellen)
-
-#### Schritt 1.3.1: Extension Method erstellen
-
-**Neue Datei:** `GeometricAlgebraFulcrumLib.Algebra/LinearAlgebra/Basis/LinBasisVectorPair3DExtensions.cs`
-
-```csharp
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.Space3D;
-
-namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-
-/// <summary>
-/// Float32 Extension Methods für LinBasisVectorPair3D
-/// </summary>
-public static class LinBasisVectorPair3DExtensions
-{
-    /// <summary>
-    /// Erstellt ein Float32-Quaternion für Rotation zwischen zwei Vektorpaaren
-    /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat32Quaternion VectorPairToVectorPairRotationFloat32Quaternion(
-        this LinBasisVectorPair3D basisVectors,
-        ILinFloat32Vector3D unitVector1,
-        ILinFloat32Vector3D unitVector2)
+    public List<AdditionalText> OrderByDependencies(IEnumerable<AdditionalText> files)
     {
-        // Implementierung basierend auf Float64-Version
-        // TODO: Prüfe LinBasisVectorPair3D.cs für Float64-Implementierung
-        // und konvertiere zu Float32
+        var graph = new Dictionary<string, List<string>>();
 
-        // Placeholder (wird nach Analyse der Float64-Version ausgefüllt)
-        throw new NotImplementedException(
-            "TODO: Implementiere Float32-Version basierend auf Float64 VectorPairToVectorPairRotationQuaternion"
-        );
+        // Build Graph
+        foreach (var file in files)
+        {
+            var dependencies = ExtractDependencies(file);
+            graph[file.Path] = dependencies;
+        }
+
+        // Topological Sort
+        return TopologicalSort(graph);
     }
 }
 ```
 
-**Nächste Schritte:**
-1. Finde Float64-Implementierung in `LinBasisVectorPair3D.cs` oder Extensions
-2. Kopiere Logic, ersetze double → float
-3. Test mit SquareMatrix4.CreateRotationMatrix3D
+**Problem:** Roslyn Generators sind **file-by-file**, kein Multi-Pass API
 
-**Geschätzte Behebung:** 2 Fehler (SquareMatrix4.g.cs:365, 366)
+**Workaround:**
+- Pass 1: Generiere alle Interfaces
+- Pass 2: Generiere alle Classes
+- **Implementierung:** Zwei separate `RegisterSourceOutput` Calls
 
----
-
-### Phase 1 Zusammenfassung
-
-**Nach Phase 1:**
-- ✅ 4-5 Fehler behoben (ToUnitLinVector + optional VectorPair)
-- ⏳ 5-6 Fehler verbleibend (XGaFloat64 Return Types)
-- ⏱️ Aufwand: 2 Stunden
-
-**Verbleibende Fehler erfordern Phase 2 (Semantic Analysis)**
+**Akzeptanzkriterien:**
+- [ ] Dependency Graph wird korrekt gebaut
+- [ ] Topological Sort funktioniert
+- [ ] Multi-Pass Generation funktioniert
 
 ---
 
-## Phase 2: Semantic Integration (Priorität: HIGH)
+#### C.5 - Circular Dependency Detection ⏱️ 2h
 
-**⚠️ NUR für Option A (Generator-Only)** - Für Option B optional
+**Status:** ⬜ Nicht begonnen
 
-### Ziel
-- Alle 10 Fehler beheben **durch Generator**
-- 100% Kompilierbarkeit erreichen
-- **Revertiere alle 4 manuellen Source-Änderungen**
-- Generator robust machen
+**Zu implementieren:**
+- Datei: `DependencyGraphBuilder.cs` (erweitern)
+- Zeilen: ~60
 
-**Aufwand:** 3-4 Tage
-**Dateien:** `F32Gen.cs`, `Float32SyntaxRewriter.cs`
-**Generator-Only:** JA - Dies ist der Kern der puristischen Lösung
+**Funktionalität:**
+```csharp
+private void DetectCycles(Dictionary<string, List<string>> graph)
+{
+    var visited = new HashSet<string>();
+    var recursionStack = new HashSet<string>();
 
-### Manuelle Änderungen die nach Phase 2 revertiert werden können:
+    foreach (var node in graph.Keys)
+    {
+        if (HasCycle(node, graph, visited, recursionStack))
+        {
+            // Report Diagnostic
+            context.ReportDiagnostic(Diagnostic.Create(
+                "FLOAT32GEN003",
+                "Circular Interface Dependency detected",
+                ...
+            ));
+        }
+    }
+}
+```
 
+**Akzeptanzkriterien:**
+- [ ] Circular Dependencies werden erkannt
+- [ ] Diagnostics werden gemeldet
+- [ ] Generator bricht nicht ab
+
+---
+
+#### C.6 - Testing & Debugging ⏱️ 4h
+
+**Status:** ⬜ Nicht begonnen
+
+**Tasks:**
+1. Unit Tests für Semantic Model Integration
+2. Integration Tests (Algebra + Modeling)
+3. Performance-Tests (Benchmark vs AST-only)
+4. Edge Case Testing (Nested Generics, Circular Deps)
+
+**Test-Framework:**
+- Roslyn SourceGenerator Testing Package
+- Snapshot-based Testing (Verify)
+- BenchmarkDotNet für Performance
+
+**Akzeptanzkriterien:**
+- [ ] Alle Tests grün
+- [ ] Performance <10s für 476 Dateien
+- [ ] Edge Cases abgedeckt
+
+---
+
+### Option C - Zusammenfassung & Timeline
+
+| Phase | Tasks | Zeit | Komplexität |
+|-------|-------|------|-------------|
+| **Setup** | C.1 Semantic Model | 2h | Hoch |
+| **Core** | C.2 Interface + C.3 Generics | 7h | Sehr Hoch |
+| **Advanced** | C.4 Dependency Graph + C.5 Cycles | 6h | Extrem Hoch |
+| **QA** | C.6 Testing & Debugging | 4h | Hoch |
+| **Gesamt** | | **19h** | **Sehr Hoch** |
+
+**Realistische Schätzung:** 2-3 Arbeitstage (mit Pausen, Debugging)
+
+**Risiken:**
+- 🔴 **Hoch:** Henne-Ei-Problem schwer lösbar
+- 🟡 **Mittel:** Performance-Einbußen
+- 🟡 **Mittel:** Circular Dependencies
+- 🟢 **Niedrig:** API-Kompatibilität
+
+---
+
+## Vergleich: Option B vs C
+
+| Kriterium | Option B | Option C |
+|-----------|----------|----------|
+| **Aufwand** | 3 Stunden | 2-3 Tage |
+| **Risiko** | Niedrig | Mittel-Hoch |
+| **Wartung** | +6 Dateien (~125 Zeilen) | +Generator-Komplexität (~410 Zeilen) |
+| **ROI** | ⭐⭐⭐⭐⭐ Exzellent | ⭐⭐ Fragwürdig |
+| **Time-to-Market** | ✅ Sofort | ⏱️ 1 Woche |
+| **Skalierbarkeit** | ⚠️ Niedrig | ✅ Hoch |
+| **Code Quality** | Mix (Gen + Manual) | ✅ 100% Gen |
+
+---
+
+## Empfehlung & Nächste Schritte
+
+### ✅ Sofort (Option B): Manuelle Float32-Versionen
+
+**Begründung:**
+- 96% → 100% in 3 Stunden
+- Niedriges Risiko, hoher ROI
+- Modeling-Projekt sofort einsatzbereit
+
+**Start mit:**
+1. **B.1 + B.2** (1 Stunde) → Behebt 9 Fehler
+2. **B.3** (10 Minuten) → Behebt 1 Fehler
+3. **B.4** (45 Minuten) → Behebt 4 Fehler
+4. **B.5** (60 Minuten) → Behebt 5 Fehler
+
+**Nach Completion:**
+- ✅ 100% Modeling Coverage
+- ✅ Alle Tests grün
+- ✅ Produktiv einsatzbereit
+
+---
+
+### 🔮 Langfristig (Option C): Semantic Model Integration
+
+**Erwägen wenn:**
+- Weitere Projekte Float32-Support benötigen
+- >50 Interface-Dependencies betroffen
+- Budget für 1 Woche Entwicklung vorhanden
+- Generator als Open Source oder Produkt geplant
+
+**Vorteile:**
+- Skaliert auf beliebige Projekte
+- 100% Generator-Only (keine manuellen Änderungen)
+- Wiederverwendbar
+
+**Empfehlung:** Als Roadmap-Item notieren, aber nicht für aktuelle 19 Fehler
+
+---
+
+## Status Tracking
+
+### Gesamt-Fortschritt
+
+- [x] BUGREPORT.md erstellt (19 Fehler analysiert)
+- [x] CONTEXT.md erstellt (Architektur dokumentiert)
+- [x] ANALYSE.md erstellt (Option B vs C)
+- [x] TODO.md erstellt (dieser Plan)
+- [ ] Option B umgesetzt (0/5 Tasks)
+- [ ] 100% Modeling Coverage erreicht
+
+### Option B Tasks Status
+
+- [ ] B.1 - ILinFloat32Vector3D (30min)
+- [ ] B.2 - IGraphicsFloat32Surface (20min)
+- [ ] B.3 - Unsealed ScalarProcessor (10min)
+- [ ] B.4 - SignalSpectrum Generic (45min)
+- [ ] B.5 - IScalarProcessor Generic (60min)
+
+**Gesamtfortschritt:** 0/5 (0%)
+
+---
+
+## Referenzen
+
+- **BUGREPORT.md** - Detaillierte Fehler-Analyse (19 Fehler, 5 Quelldateien)
+- **CONTEXT.md** - Generator-Architektur & Limitationen
+- **ANALYSE.md** - Methodische Analyse Option B vs C
+- **Float32SourceGenerator.cs** - Generator Entry Point
+- **Float32SyntaxRewriter.cs** - AST Transformation Logic
+
+**Build-Commands:**
 ```bash
-# Diese Änderungen können entfernt werden nach Phase 2:
-git diff GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/XGaMetric.cs
-git diff GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/Basis/XGaBasisBlade.cs
-git diff GeometricAlgebraFulcrumLib.Algebra/LinearAlgebra/Basis/LinBasisVector.cs
-git clean -f GeometricAlgebraFulcrumLib.Algebra/LinearAlgebra/Float32/Vectors/Space3D/LinFloat32Vector3DComposerUtilsExtensions.cs
+# Generator rebuilden
+dotnet build GeometricAlgebraFulcrumLib.CodeGeneration/
+
+# Modeling mit Generator testen
+rm -rf GeometricAlgebraFulcrumLib.Modeling/obj/Generated
+dotnet build GeometricAlgebraFulcrumLib.Modeling/ --no-incremental
+
+# Fehler zählen
+dotnet build GeometricAlgebraFulcrumLib.Modeling/ 2>&1 | grep "error CS" | wc -l
 ```
-
----
-
-### Aufgabe 2.1: SemanticModel Setup
-
-**Aufwand:** 4 Stunden
-**Dateien:** `F32Gen.cs`, `Float32SyntaxRewriter.cs`
-
-#### Schritt 2.1.1: Generator Pipeline erweitern
-
-**Datei:** `F32Gen.cs`
-**Zeile:** Initialize method
-
-**Aktueller Code:**
-```csharp
-context.RegisterSourceOutput(filesProvider, (spc, file) =>
-{
-    var syntaxTree = CSharpSyntaxTree.ParseText(...);
-    var rewriter = new Float32SyntaxRewriter();  // <-- Kein SemanticModel
-    var newRoot = rewriter.Visit(syntaxTree.GetRoot());
-    // ...
-});
-```
-
-**Neuer Code:**
-```csharp
-// Step 1: Combine Compilation with Files
-var compilationAndFiles = context.CompilationProvider.Combine(
-    context.AdditionalTextsProvider.Collect()
-);
-
-context.RegisterSourceOutput(compilationAndFiles, (spc, source) =>
-{
-    var (compilation, files) = source;
-
-    foreach (var file in files)
-    {
-        // Parse
-        var syntaxTree = CSharpSyntaxTree.ParseText(
-            file.GetText()!,
-            path: file.Path
-        );
-
-        // Create Semantic Model
-        var compilation WithTree = compilation.AddSyntaxTrees(syntaxTree);
-        var semanticModel = compilationWithTree.GetSemanticModel(syntaxTree);
-
-        // Transform with Semantic Model
-        var rewriter = new Float32SyntaxRewriter(semanticModel);
-        var newRoot = rewriter.Visit(syntaxTree.GetRoot());
-
-        // Generate
-        spc.AddSource(GetOutputFileName(file), newRoot.ToFullString());
-    }
-});
-```
-
-**Wichtig:** Performance-Impact beachten! Semantic Model ist teuer.
-
----
-
-#### Schritt 2.1.2: SyntaxRewriter Constructor erweitern
-
-**Datei:** `Float32SyntaxRewriter.cs`
-**Zeile:** ~34
-
-**Code:**
-```csharp
-public class Float32SyntaxRewriter : CSharpSyntaxRewriter
-{
-    // Neue Fields
-    private readonly SemanticModel? _semanticModel;
-    private readonly bool _useSemantics;
-
-    // Caches für Performance
-    private readonly Dictionary<SyntaxNode, ISymbol?> _symbolCache = new();
-    private readonly Dictionary<ITypeSymbol, bool> _isFloat64Cache = new();
-
-    // Aktualisierter Constructor
-    public Float32SyntaxRewriter(SemanticModel? semanticModel = null)
-        : base(visitIntoStructuredTrivia: false)
-    {
-        _semanticModel = semanticModel;
-        _useSemantics = semanticModel != null;
-    }
-
-    // Helper Methods
-    private ISymbol? GetSymbolCached(SyntaxNode node)
-    {
-        if (!_useSemantics) return null;
-
-        if (!_symbolCache.TryGetValue(node, out var symbol))
-        {
-            symbol = _semanticModel!.GetSymbolInfo(node).Symbol;
-            _symbolCache[node] = symbol;
-        }
-        return symbol;
-    }
-
-    private bool IsFloat64Type(ITypeSymbol? typeSymbol)
-    {
-        if (typeSymbol == null) return false;
-
-        if (!_isFloat64Cache.TryGetValue(typeSymbol, out var result))
-        {
-            result = typeSymbol.Name.Contains("Float64") ||
-                     typeSymbol.Name == "Double" ||
-                     typeSymbol.SpecialType == SpecialType.System_Double;
-            _isFloat64Cache[typeSymbol] = result;
-        }
-        return result;
-    }
-}
-```
-
----
-
-### Aufgabe 2.2: BasisBlade Context-Aware Transformation
-
-**Aufwand:** 4 Stunden
-**Dateien:** `Float32SyntaxRewriter.cs`
-
-#### Schritt 2.2.1: Context Tracking erweitern
-
-**Zeile:** Nach Field Declarations (~40)
-
-**Code:**
-```csharp
-// Context Stack für verschachtelte Scopes
-private readonly Stack<ContextInfo> _contextStack = new();
-
-private class ContextInfo
-{
-    public string? ClassName { get; set; }
-    public string? MethodName { get; set; }
-    public bool IsFloat32ProcessorContext { get; set; }
-    public INamedTypeSymbol? ContainingType { get; set; }
-}
-
-// Property für aktuellen Kontext
-private ContextInfo CurrentContext =>
-    _contextStack.Count > 0 ? _contextStack.Peek() : new ContextInfo();
-```
-
-#### Schritt 2.2.2: ClassDeclaration Context
-
-**Zeile:** VisitClassDeclaration (~66)
-
-**Erweiterter Code:**
-```csharp
-public override SyntaxNode? VisitClassDeclaration(ClassDeclarationSyntax node)
-{
-    // Track current class context
-    var className = node.Identifier.Text;
-    var isFloat32Processor = className.Contains("Float32Processor");
-
-    INamedTypeSymbol? typeSymbol = null;
-    if (_useSemantics)
-    {
-        typeSymbol = _semanticModel!.GetDeclaredSymbol(node) as INamedTypeSymbol;
-        isFloat32Processor = typeSymbol?.Name.Contains("Float32Processor") ?? false;
-    }
-
-    _contextStack.Push(new ContextInfo
-    {
-        ClassName = className,
-        IsFloat32ProcessorContext = isFloat32Processor,
-        ContainingType = typeSymbol
-    });
-
-    // Existing transformation logic
-    var newName = ReplaceFloat64ToFloat32(node.Identifier.Text);
-    var result = base.VisitClassDeclaration(
-        node.WithIdentifier(SyntaxFactory.Identifier(newName))
-    );
-
-    _contextStack.Pop();
-    return result;
-}
-```
-
-#### Schritt 2.2.3: BasisBlade().ToKVector() Transformation
-
-**Zeile:** In VisitInvocationExpression, nach Math-Functions (~700+)
-
-**Code:**
-```csharp
-// BasisBlade().ToKVector() context-aware transformation
-if (_useSemantics &&
-    CurrentContext.IsFloat32ProcessorContext &&
-    node.Expression is MemberAccessExpressionSyntax memberAccess &&
-    memberAccess.Name.Identifier.Text == "ToKVector" &&
-    memberAccess.Expression.ToString().Contains("BasisBlade"))
-{
-    var symbolInfo = GetSymbolCached(node);
-    if (symbolInfo is IMethodSymbol methodSymbol &&
-        IsFloat64Type(methodSymbol.ReturnType))
-    {
-        // Transform: .ToKVector() → .ToKVector(this)
-        var visitedNode = (InvocationExpressionSyntax)base.VisitInvocationExpression(node)!;
-
-        // Check if already has arguments
-        if (visitedNode.ArgumentList.Arguments.Count == 0)
-        {
-            var thisArg = SyntaxFactory.Argument(
-                SyntaxFactory.ThisExpression()
-            );
-
-            return visitedNode.WithArgumentList(
-                SyntaxFactory.ArgumentList(
-                    SyntaxFactory.SingletonSeparatedList(thisArg)
-                )
-            );
-        }
-    }
-}
-```
-
-**Test:**
-```csharp
-// In XGaFloat32Processor context:
-// Input:  BasisBlade((IndexSet)7).ToKVector().EInverse()
-// Output: BasisBlade((IndexSet)7).ToKVector(this).EInverse()
-```
-
-**Geschätzte Behebung:** 5 XGaFloat64 Fehler
-
----
-
-### Aufgabe 2.3: Method Overload Validation
-
-**Aufwand:** 4 Stunden
-**Dateien:** `Float32SyntaxRewriter.cs`, neue Helper-Klasse
-
-#### Schritt 2.3.1: Overload Checker Helper
-
-**Neue Datei:** `Float32SyntaxRewriter.OverloadChecker.cs` (Partial Class)
-
-```csharp
-partial class Float32SyntaxRewriter
-{
-    private class OverloadChecker
-    {
-        private readonly SemanticModel _semanticModel;
-
-        public OverloadChecker(SemanticModel semanticModel)
-        {
-            _semanticModel = semanticModel;
-        }
-
-        public bool HasFloat32Overload(IMethodSymbol float64Method, out IMethodSymbol? float32Method)
-        {
-            float32Method = null;
-
-            var containingType = float64Method.ContainingType;
-            if (containingType == null) return false;
-
-            // Generate expected Float32 method name
-            var float32Name = float64Method.Name.Replace("Float64", "Float32");
-
-            // Find candidates
-            var candidates = containingType.GetMembers(float32Name)
-                .OfType<IMethodSymbol>()
-                .ToList();
-
-            // Check parameter compatibility
-            foreach (var candidate in candidates)
-            {
-                if (IsCompatibleSignature(float64Method, candidate))
-                {
-                    float32Method = candidate;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private bool IsCompatibleSignature(IMethodSymbol method1, IMethodSymbol method2)
-        {
-            if (method1.Parameters.Length != method2.Parameters.Length)
-                return false;
-
-            for (int i = 0; i < method1.Parameters.Length; i++)
-            {
-                var param1 = method1.Parameters[i];
-                var param2 = method2.Parameters[i];
-
-                // Check if parameter types are "compatible"
-                // (Float64 version vs Float32 version)
-                if (!AreCompatibleTypes(param1.Type, param2.Type))
-                    return false;
-            }
-
-            return true;
-        }
-
-        private bool AreCompatibleTypes(ITypeSymbol type1, ITypeSymbol type2)
-        {
-            // Same type
-            if (SymbolEqualityComparer.Default.Equals(type1, type2))
-                return true;
-
-            // double vs float
-            if (type1.SpecialType == SpecialType.System_Double &&
-                type2.SpecialType == SpecialType.System_Single)
-                return true;
-
-            // Float64 vs Float32 types
-            if (type1.Name.Replace("Float64", "Float32") == type2.Name)
-                return true;
-
-            // ILinFloat64Vector3D vs ILinFloat32Vector3D
-            if (type1.AllInterfaces.Any(i => i.Name.Contains("Float64")) &&
-                type2.AllInterfaces.Any(i => i.Name.Contains("Float32")))
-                return true;
-
-            return false;
-        }
-    }
-}
-```
-
-#### Schritt 2.3.2: Validation in VisitInvocationExpression
-
-**Code:**
-```csharp
-private OverloadChecker? _overloadChecker;
-
-public override SyntaxNode? VisitInvocationExpression(InvocationExpressionSyntax node)
-{
-    if (_useSemantics)
-    {
-        _overloadChecker ??= new OverloadChecker(_semanticModel!);
-
-        var symbolInfo = GetSymbolCached(node);
-        if (symbolInfo is IMethodSymbol methodSymbol)
-        {
-            // Check if method will be transformed
-            if (methodSymbol.Name.Contains("Float64") ||
-                methodSymbol.ReturnType.Name.Contains("Float64"))
-            {
-                // Check if Float32 overload exists
-                if (!_overloadChecker.HasFloat32Overload(methodSymbol, out var float32Method))
-                {
-                    // Warnung: Float32-Überladung nicht gefunden
-                    // TODO: Generate Diagnostic (Phase 3)
-                    Console.WriteLine(
-                        $"Warning: No Float32 overload found for {methodSymbol.Name} " +
-                        $"at {node.GetLocation().GetLineSpan()}"
-                    );
-                }
-            }
-        }
-    }
-
-    // Continue with normal transformation
-    return base.VisitInvocationExpression(node);
-}
-```
-
----
-
-### Phase 2 Zusammenfassung
-
-**Nach Phase 2:**
-- ✅ Alle 10 Fehler behoben
-- ✅ 100% Kompilierbarkeit
-- ✅ Semantic-basierte Transformationen
-- ✅ Overload Validation (Console Warnings)
-- ⏱️ Aufwand: 3-4 Tage
-
-**Nächster Schritt:** Phase 3 (Optional) für Production-Ready
-
----
-
-## Phase 3: Production Ready (Optional, Priorität: MEDIUM)
-
-### Ziel
-- IDE-Integration (Diagnostics)
-- Testing Framework
-- Maintainability (Rule-Based System)
-
-**Aufwand:** 1-2 Wochen
-**ROI:** Langfristige Wartbarkeit
-
----
-
-### Aufgabe 3.1: Diagnostics System
-
-**Aufwand:** 2 Tage
-**Dateien:** `F32Gen.cs`, neue `Diagnostics.cs`
-
-#### Schritt 3.1.1: DiagnosticDescriptor definieren
-
-**Neue Datei:** `Float32DiagnosticDescriptors.cs`
-
-```csharp
-using Microsoft.CodeAnalysis;
-
-namespace GAF.Gen;
-
-public static class Float32DiagnosticDescriptors
-{
-    private const string Category = "Float32Generator";
-
-    public static readonly DiagnosticDescriptor MissingFloat32Overload = new(
-        id: "GAF001",
-        title: "Missing Float32 Method Overload",
-        messageFormat: "Method '{0}' has no Float32 overload. Generated code may not compile.",
-        category: Category,
-        defaultSeverity: DiagnosticSeverity.Warning,
-        isEnabledByDefault: true,
-        description: "The Float32 generator detected a method call that will be transformed, " +
-                     "but the corresponding Float32 overload does not exist."
-    );
-
-    public static readonly DiagnosticDescriptor Float64ReturnTypeInFloat32Context = new(
-        id: "GAF002",
-        title: "Float64 Return Type in Float32 Context",
-        messageFormat: "Method '{0}' returns Float64 type in Float32 context",
-        category: Category,
-        defaultSeverity: DiagnosticSeverity.Info,
-        isEnabledByDefault: true,
-        description: "A method that returns a Float64 type was detected in a Float32 context. " +
-                     "This may require manual transformation or additional overloads."
-    );
-
-    public static readonly DiagnosticDescriptor TransformationApplied = new(
-        id: "GAF003",
-        title: "Float32 Transformation Applied",
-        messageFormat: "Transformed '{0}' to '{1}'",
-        category: Category,
-        defaultSeverity: DiagnosticSeverity.Hidden,
-        isEnabledByDefault: false,  // Only for debugging
-        description: "Informational: A transformation was successfully applied."
-    );
-}
-```
-
-#### Schritt 3.1.2: Diagnostics Reporting
-
-**In `Float32SyntaxRewriter.cs`:**
-
-```csharp
-public class Float32SyntaxRewriter : CSharpSyntaxRewriter
-{
-    private readonly List<Diagnostic> _diagnostics = new();
-
-    public IReadOnlyList<Diagnostic> Diagnostics => _diagnostics;
-
-    private void ReportDiagnostic(DiagnosticDescriptor descriptor, Location location, params object[] messageArgs)
-    {
-        var diagnostic = Diagnostic.Create(descriptor, location, messageArgs);
-        _diagnostics.Add(diagnostic);
-    }
-
-    // In VisitInvocationExpression:
-    if (!_overloadChecker.HasFloat32Overload(methodSymbol, out _))
-    {
-        ReportDiagnostic(
-            Float32DiagnosticDescriptors.MissingFloat32Overload,
-            node.GetLocation(),
-            methodSymbol.Name
-        );
-    }
-}
-```
-
-**In `F32Gen.cs`:**
-
-```csharp
-context.RegisterSourceOutput(compilationAndFiles, (spc, source) =>
-{
-    var (compilation, files) = source;
-
-    foreach (var file in files)
-    {
-        // ... transform ...
-        var rewriter = new Float32SyntaxRewriter(semanticModel);
-        var newRoot = rewriter.Visit(syntaxTree.GetRoot());
-
-        // Report diagnostics
-        foreach (var diagnostic in rewriter.Diagnostics)
-        {
-            spc.ReportDiagnostic(diagnostic);
-        }
-
-        spc.AddSource(outputName, newRoot.ToFullString());
-    }
-});
-```
-
-**Resultat:** Warnings erscheinen in Visual Studio Error List!
-
----
-
-### Aufgabe 3.2: Unit Testing Framework
-
-**Aufwand:** 3 Tage
-**Dateien:** Neue `GeometricAlgebraFulcrumLib.CodeGeneration.Tests` Projekt
-
-#### Schritt 3.2.1: Test-Projekt erstellen
-
-```xml
-<!-- GeometricAlgebraFulcrumLib.CodeGeneration.Tests.csproj -->
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.x" />
-    <PackageReference Include="xunit" Version="2.x" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.x" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.CodeGeneration\..." />
-  </ItemGroup>
-</Project>
-```
-
-#### Schritt 3.2.2: Test Helpers
-
-**Datei:** `TestHelpers.cs`
-
-```csharp
-public static class TestHelpers
-{
-    public static string Transform(string sourceCode)
-    {
-        var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
-        var rewriter = new Float32SyntaxRewriter();
-        var newRoot = rewriter.Visit(syntaxTree.GetRoot());
-        return newRoot.ToFullString();
-    }
-
-    public static void AssertTransform(string input, string expected)
-    {
-        var actual = Transform(input).Trim();
-        expected = expected.Trim();
-
-        Assert.Equal(expected, actual);
-    }
-
-    public static void AssertCompiles(string code)
-    {
-        var syntaxTree = CSharpSyntaxTree.ParseText(code);
-        var compilation = CSharpCompilation.Create(
-            "TestAssembly",
-            new[] { syntaxTree },
-            GetReferences(),
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
-        );
-
-        var diagnostics = compilation.GetDiagnostics()
-            .Where(d => d.Severity == DiagnosticSeverity.Error)
-            .ToList();
-
-        if (diagnostics.Any())
-        {
-            var errors = string.Join("\n", diagnostics.Select(d => d.ToString()));
-            Assert.Fail($"Code does not compile:\n{errors}");
-        }
-    }
-}
-```
-
-#### Schritt 3.2.3: Test Cases
-
-**Datei:** `Float32SyntaxRewriterTests.cs`
-
-```csharp
-public class Float32SyntaxRewriterTests
-{
-    [Fact]
-    public void Transform_MathSin_ProducesMathFSin()
-    {
-        var input = "Math.Sin(x)";
-        var expected = "MathF.Sin(x)";
-
-        TestHelpers.AssertTransform(input, expected);
-    }
-
-    [Fact]
-    public void Transform_ToUnitLinVector3D_ProducesToUnitLinFloat32Vector3D()
-    {
-        var input = "vector.ToUnitLinVector3D()";
-        var expected = "vector.ToUnitLinFloat32Vector3D()";
-
-        TestHelpers.AssertTransform(input, expected);
-    }
-
-    [Fact]
-    public void Transform_L2NormChained_DoesNotCastBool()
-    {
-        var input = "eigenVector.L2Norm().IsNearZero()";
-        var expected = "eigenVector.L2Norm().IsNearZero()";  // No (float) cast!
-
-        TestHelpers.AssertTransform(input, expected);
-    }
-
-    [Fact]
-    public void Transform_RealFile_Compiles()
-    {
-        var sourceCode = File.ReadAllText(
-            "../../TestData/LinFloat64Vector.cs"
-        );
-
-        var transformed = TestHelpers.Transform(sourceCode);
-
-        TestHelpers.AssertCompiles(transformed);
-    }
-
-    // Regression Tests
-    [Fact]
-    public void BugFix_BasisBladeInFloat32Context_AddsThisParameter()
-    {
-        var input = @"
-            public class XGaFloat64Processor {
-                void Method() {
-                    BasisBlade(7).ToKVector();
-                }
-            }";
-
-        var expected = @"
-            public class XGaFloat32Processor {
-                void Method() {
-                    BasisBlade(7).ToKVector(this);
-                }
-            }";
-
-        // TODO: Requires SemanticModel for this test
-        // TestHelpers.AssertTransform(input, expected);
-    }
-}
-```
-
-**Target:** 80%+ Code Coverage
-
----
-
-### Aufgabe 3.3: Rule-Based Refactoring (Optional)
-
-**Aufwand:** 5 Tage
-**Dateien:** Neue Architecture
-
-#### Konzept
-
-Siehe ANALYSE.md Abschnitt 3.2 "Rule-Based System"
-
-**Grund zur Überlegung:**
-- Aktuell: 171 if/else Branches → schwer wartbar
-- Zukunft: Extensible Rules → leicht zu erweitern
-
-**Entscheidung:** Optional, nur bei langfristiger Wartung nötig
-
----
-
-## Timeline & Milestones
-
-### Woche 1: Quick Wins + Semantic Setup
-
-**Tag 1 (2 Stunden)**
-- ✅ Aufgabe 1.1: ToUnitLinVector Pattern
-- ✅ Aufgabe 1.2: VectorPairRotation Pattern
-- 📊 Milestone: 4-5 Fehler behoben
-
-**Tag 2-3 (2 Tage)**
-- ✅ Aufgabe 2.1: SemanticModel Setup
-- ✅ Aufgabe 2.2: BasisBlade Context-Aware
-- 📊 Milestone: Semantic Model integriert
-
-**Tag 4-5 (2 Tage)**
-- ✅ Aufgabe 2.2.3: ToKVector Transformation komplett
-- ✅ Aufgabe 2.3: Overload Validation
-- 📊 Milestone: 10/10 Fehler behoben, 100% kompilierbar
-
----
-
-### Woche 2 (Optional): Production Ready
-
-**Tag 6-7**
-- Aufgabe 3.1: Diagnostics System
-- 📊 Milestone: IDE Integration
-
-**Tag 8-10**
-- Aufgabe 3.2: Testing Framework
-- 📊 Milestone: 80% Test Coverage
-
----
-
-## Testing & Validation Strategy
-
-### Nach jeder Aufgabe
-
-```bash
-# 1. Generator neu builden
-cd GeometricAlgebraFulcrumLib.CodeGeneration
-dotnet build
-
-# 2. Algebra-Projekt builden (verwendet Generator)
-cd ../GeometricAlgebraFulcrumLib.Algebra
-dotnet clean
-dotnet build --no-incremental
-
-# 3. Fehler zählen
-dotnet build --no-incremental 2>&1 | grep "error CS" | wc -l
-
-# 4. Spezifische Fehler prüfen
-dotnet build --no-incremental 2>&1 | grep "error CS"
-```
-
-### Acceptance Criteria
-
-**Phase 1:**
-- [ ] ToUnitLinVector3D transformiert korrekt
-- [ ] VectorPairRotation...Quaternion transformiert korrekt
-- [ ] Fehleranzahl: ≤ 6
-
-**Phase 2:**
-- [ ] BasisBlade().ToKVector(this) in Float32Processor
-- [ ] Alle XGaFloat64 Return Types transformiert
-- [ ] Fehleranzahl: 0
-- [ ] Build erfolgreich: EXIT CODE 0
-
-**Phase 3 (Optional):**
-- [ ] Warnings in Visual Studio Error List
-- [ ] Unit Tests: ≥ 50 Tests
-- [ ] Test Coverage: ≥ 80%
-- [ ] Regression Tests für alle 10 behobenen Fehler
-
----
-
-## Rollback Plan
-
-Falls Semantic Integration Probleme macht:
-
-### Fallback Option 1: Manuelle Fixes
-Statt Generator → Fixe die 10 Fehler manuell in den Source-Files
-
-**Aufwand:** 2-3 Stunden
-**Files zu ändern:**
-- XGaBasisBlade.cs: ToKVector Überladungen
-- LinBasisVectorPair3D Extensions
-- Source-Files wo nötig
-
-**Pro:** Schnell
-**Con:** Nicht skalierbar
-
-### Fallback Option 2: Hybrid
-- Phase 1 (Patterns) → implementieren
-- Semantic Integration → überspringen
-- Verbleibende 5-6 Fehler → manuell fixen
-
-**Aufwand:** 4 Stunden total
-**Erfolgsquote:** 100%
-
----
-
-## Success Metrics
-
-### Quantitativ
-- Fehlerrate: 0/431 (100% Erfolg)
-- Build-Zeit: < 30 Sekunden
-- Generator Performance: < 5 Sekunden für 200 Files
-
-### Qualitativ
-- ✅ Code kompiliert
-- ✅ Keine manuellen Nachbearbeitungen nötig
-- ✅ IDE zeigt Warnings bei Problemen
-- ✅ Tests dokumentieren erwartetes Verhalten
-
----
-
-## Nächste Schritte
-
-### JETZT STARTEN
-
-```bash
-# 1. Backup erstellen
-git commit -am "Checkpoint before Float32 generator improvements"
-
-# 2. Branch für Entwicklung
-git checkout -b feature/float32-generator-semantic
-
-# 3. Start mit Quick Win
-# Öffne: Float32SyntaxRewriter.cs
-# Finde: VisitIdentifierName (~Zeile 377)
-# Implementiere: Aufgabe 1.1
-```
-
-**Erste Datei zum Editieren:**
-`D:\_MBOX\_CODE\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.CodeGeneration\Float32SyntaxRewriter.cs`
-
-**Erste Änderung:** Zeile ~377, erweitere ToLinVector Pattern um ToUnitLinVector
-
-**Erwartetes Resultat nach 30 Minuten:** 7-8 Fehler verbleibend (von 10)
-
----
-
-## Anhang: Code-Snippets Ready-to-Use
-
-Alle Code-Snippets aus den Aufgaben sind Copy-Paste-Ready und getestet gegen die aktuelle Code-Struktur.
-
-**Dateien im Kontext:**
-- BUGREPORT.md: Fehler-Details
-- CONTEXT.md: Generator-Architektur
-- ANALYSE.md: Methodische Ansätze
-- TODO.md (dieses Dokument): Konkreter Aktionsplan
-
----
-
-**Let's build a perfect Float32 Generator! 🚀**

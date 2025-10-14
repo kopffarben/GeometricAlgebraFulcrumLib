@@ -92,18 +92,44 @@ namespace GeometricAlgebraFulcrumLib.Generated
             .Where(file =>
             {
                 var path = file.Path;
+                // Support both Windows (\) and Unix (/) path separators
                 return path.IndexOf("Float64", StringComparison.OrdinalIgnoreCase) >= 0 &&
                        path.IndexOf("Float32", StringComparison.OrdinalIgnoreCase) < 0 &&  // NEW: Skip existing Float32 files
                        path.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) &&
-                       path.IndexOf("\\obj\\", StringComparison.OrdinalIgnoreCase) < 0 &&
-                       path.IndexOf("\\bin\\", StringComparison.OrdinalIgnoreCase) < 0;
+                       (path.IndexOf("\\obj\\", StringComparison.OrdinalIgnoreCase) < 0 &&
+                        path.IndexOf("\\bin\\", StringComparison.OrdinalIgnoreCase) < 0) &&
+                       (path.IndexOf("/obj/", StringComparison.OrdinalIgnoreCase) < 0 &&
+                        path.IndexOf("/bin/", StringComparison.OrdinalIgnoreCase) < 0);
             })
-            .Select((file, ct) => file);
+            .Collect();  // Collect all files to count them
 
         // Register source output for each Float64 file
-        context.RegisterSourceOutput(float64Files, (ctx, file) =>
+        context.RegisterSourceOutput(float64Files, (ctx, files) =>
         {
-            GenerateFloat32Source(ctx, file);
+            // Generate diagnostic info file
+            var diagnosticInfo = $@"// Float32 Generator Debug Info
+// Generated at: {DateTime.Now}
+// Total AdditionalTexts collected: {files.Length}
+// Files matching Float64 pattern: {files.Length}
+
+namespace GAF.Gen.Debug;
+
+public static class Float32GeneratorDiagnostics
+{{
+    public const int TotalFilesProcessed = {files.Length};
+    public static readonly string[] ProcessedFiles = new[]
+    {{
+{string.Join(",\n", files.Take(10).Select(f => $"        \"{f.Path.Replace("\\", "\\\\").Replace("\"", "\\\"")}\""))}
+    }};
+}}";
+
+            ctx.AddSource("Float32GeneratorDiagnostics.g.cs", SourceText.From(diagnosticInfo, Encoding.UTF8));
+
+            // Process each file
+            foreach (var file in files)
+            {
+                GenerateFloat32Source(ctx, file);
+            }
         });
     }
 
@@ -265,8 +291,9 @@ namespace GeometricAlgebraFulcrumLib.Generated
             }
             else
             {
-                // Fallback: use just the filename
-                return $"{float32FileName}.g.cs";
+                // Fallback: use filename with path hash for uniqueness
+                var pathHash = GetStableHashCode(normalizedPath);
+                return $"{float32FileName}_{pathHash:X8}.g.cs";
             }
 
             // Clean up relative path: remove leading slash and filename
@@ -302,9 +329,28 @@ namespace GeometricAlgebraFulcrumLib.Generated
         }
         catch
         {
-            // Fallback: use just the filename
+            // Fallback: use filename with path hash for uniqueness
             var fileName = Path.GetFileNameWithoutExtension(float64Path);
-            return $"{fileName.Replace("Float64", "Float32")}.g.cs";
+            var float32FileName = fileName.Replace("Float64", "Float32");
+            var pathHash = GetStableHashCode(float64Path);
+            return $"{float32FileName}_{pathHash:X8}.g.cs";
+        }
+    }
+
+    /// <summary>
+    /// Generates a stable hash code for a string (unlike string.GetHashCode which varies by runtime).
+    /// Uses a simple FNV-1a hash for deterministic results across builds.
+    /// </summary>
+    private static int GetStableHashCode(string str)
+    {
+        unchecked
+        {
+            int hash = (int)2166136261;
+            foreach (char c in str)
+            {
+                hash = (hash ^ c) * 16777619;
+            }
+            return hash;
         }
     }
 
