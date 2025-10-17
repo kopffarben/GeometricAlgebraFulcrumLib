@@ -853,9 +853,9 @@ public static class BasisBladeUtils
     
     public static IntegerSign GradeInvolutionSignOfGrade(this int grade)
     {
-        return (grade & 1) != 0 
-            ? IntegerSign.Positive 
-            : IntegerSign.Negative;
+        return (grade & 1) != 0
+            ? IntegerSign.Negative
+            : IntegerSign.Positive;
     }
 
     /// <summary>
@@ -864,12 +864,12 @@ public static class BasisBladeUtils
     /// </summary>
     /// <param name="grade"></param>
     /// <returns></returns>
-    
+
     public static IntegerSign GradeInvolutionSignOfGrade(this uint grade)
     {
-        return (grade & 1) != 0 
-            ? IntegerSign.Positive 
-            : IntegerSign.Negative;
+        return (grade & 1) != 0
+            ? IntegerSign.Negative
+            : IntegerSign.Positive;
     }
         
     /// <summary>

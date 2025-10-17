@@ -344,7 +344,7 @@ public class XGaFloat64RandomComposer :
     public XGaFloat64Bivector GetBivector(int index)
     {
         return Processor.BivectorTerm(
-            index.BasisVectorIndexToId(),
+            index.BasisBivectorIndexToId(),
             GetScalarValue()
         );
     }

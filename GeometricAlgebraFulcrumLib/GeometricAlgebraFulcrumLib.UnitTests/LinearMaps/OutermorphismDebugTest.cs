@@ -28,7 +28,7 @@ public class OutermorphismDebugTest
         var dict = new Dictionary<int, LinFloat64Vector>();
         for (int i = 0; i < scalars.Length; i++)
         {
-            dict[i] = LinFloat64Vector.Create(i, scalars[i]);
+            dict[i] = LinFloat64Vector.CreateScaledBasis(i, scalars[i]);
         }
         var linearMap = dict.ToLinUnilinearMap();
         var outermorphism = processor.ToOutermorphism(linearMap);

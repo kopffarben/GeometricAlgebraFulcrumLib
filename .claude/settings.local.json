@@ -24,7 +24,8 @@
       "mcp__serena__think_about_whether_you_are_done",
       "mcp__sequential-thinking__sequentialthinking",
       "Bash(tree:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(git add:*)"
     ]
   },
   "enabledMcpjsonServers": [

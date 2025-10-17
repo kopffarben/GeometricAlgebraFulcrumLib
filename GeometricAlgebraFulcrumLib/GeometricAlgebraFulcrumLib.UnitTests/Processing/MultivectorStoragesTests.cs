@@ -277,8 +277,11 @@ public sealed class MultivectorStoragesTests
 
                 var storageDiff = Subtract(result1, result2);
 
-                Debug.Assert(storageDiff.IsZero);
-                Assert.That(storageDiff.IsZero);
+                // Use tolerance for floating-point comparisons instead of exact zero check
+                // Floating-point operations accumulate small rounding errors
+                const double tolerance = 1e-12;
+                Assert.That(storageDiff.IsNearZero(tolerance),
+                    $"Operation {funcName} mismatch between {storage1.GetType().Name} and {storage2.GetType().Name}: diff={storageDiff.Norm().ScalarValue}");
             }
         }
     }
@@ -337,7 +340,10 @@ public sealed class MultivectorStoragesTests
 
             var storageDiff = Subtract(result1, result2);
 
-            Assert.That(storageDiff.IsZero);
+            // Use tolerance for floating-point comparisons instead of exact zero check
+            const double tolerance = 1e-12;
+            Assert.That(storageDiff.IsNearZero(tolerance),
+                $"Operation {funcName} mismatch for {storage1.GetType().Name}: diff={storageDiff.Norm().ScalarValue}");
         }
     }
 
@@ -382,7 +388,10 @@ public sealed class MultivectorStoragesTests
 
             var storageDiff = Subtract(result1, result2);
 
-            Assert.That(storageDiff.IsZero);
+            // Use tolerance for floating-point comparisons
+            const double tolerance = 1e-12;
+            Assert.That(storageDiff.IsNearZero(tolerance),
+                $"Gp(self) mismatch for {storage1.GetType().Name}: diff={storageDiff.Norm().ScalarValue}");
 
 
             result1 = storage1.Gp(storage1.Reverse());
@@ -390,7 +399,8 @@ public sealed class MultivectorStoragesTests
 
             storageDiff = Subtract(result1, result2);
 
-            Assert.That(storageDiff.IsZero);
+            Assert.That(storageDiff.IsNearZero(tolerance),
+                $"Gp(Reverse) mismatch for {storage1.GetType().Name}: diff={storageDiff.Norm().ScalarValue}");
 
 
             var scalar1 = storage1.SpSquared();

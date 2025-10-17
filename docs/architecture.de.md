@@ -6,6 +6,8 @@ lang: de
 
 # GA-FuL Architektur
 
+**[🇬🇧 English Version](architecture.en.md)**
+
 ## Inhaltsverzeichnis
 
 1. [Übersicht](#übersicht)
@@ -269,7 +271,7 @@ var cga = CGaFloat64GeometricSpace5D.Instance;
 var point = cga.Encode.IpnsRound.Point(x, y, z);
 
 // Kodiere eine Sphäre
-var sphere = cga.Encode.IpnsRound.Sphere(centerX, centerY, centerZ, radius);
+var sphere = cga.Encode.IpnsRound.RealSphere(radius, centerX, centerY, centerZ);
 
 // Schneide zwei Objekte
 var intersection = sphere.Op(plane);
@@ -415,8 +417,8 @@ Der MCO führt folgende Optimierungen durch:
 var context = new MetaContext();
 var scalarProcessor = context.ScalarProcessor;
 
-// 2. Prozessor erstellen
-var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+// 2. Prozessor für Metaprogrammierung erstellen
+var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
 
 // 3. Input-Parameter
 var x = context.CreateParameter("x");

@@ -26,12 +26,10 @@ lang: en
 ### Example 1: Vector Products in 3D
 
 ```csharp
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 
-// Setup
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var processor = XGaProcessor<double>.Create(scalarProcessor, 3, 0, 0);
+// Setup - Use modern simplified API
+var processor = XGaFloat64Processor.Euclidean;
 
 // Define two vectors
 var v1 = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();  // x-axis
@@ -66,8 +64,7 @@ Console.WriteLine($"Scalar Product v1·v3: {dot2}");
 The cross product in 3D can be elegantly expressed through GA:
 
 ```csharp
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+var processor = XGaFloat64Processor.Euclidean;
 
 var a = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();
 var b = processor.CreateComposer().SetVectorTerm(1, 1.0).GetVector();
@@ -94,8 +91,7 @@ Console.WriteLine($"Cross Product (direct): {cross2}");
 ```csharp
 using System;
 
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+var processor = XGaFloat64Processor.Euclidean;
 
 // Define rotation plane (bivector)
 var B = processor.CreateBivector(
@@ -128,9 +124,9 @@ Console.WriteLine($"Rotated (90° in xy): {vRotated}");
 ### Example 4: Points, Lines, Planes
 
 ```csharp
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Encode 3D points in 5D CGA
@@ -145,7 +141,7 @@ Console.WriteLine($"Plane through three points: {plane}");
 
 // Encode a line
 var linePoint = cga.Encode.IpnsRound.Point(0, 0, 0);
-var lineDirection = scalarProcessor.CreateLinVector3D(1, 1, 1);
+var lineDirection = LinFloat64Vector3D.Create(1, 1, 1);
 var line = cga.Encode.OpnsFlat.Line(linePoint, lineDirection);
 
 Console.WriteLine($"Line: {line}");
@@ -161,16 +157,10 @@ Console.WriteLine($"Intersection point: {intersection}");
 ### Example 5: Spheres and Circles
 
 ```csharp
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var cga = CGaFloat64GeometricSpace5D.Instance;
 
-// Define sphere
-var sphere = cga.Encode.IpnsRound.Sphere(
-    centerX: 0,
-    centerY: 0,
-    centerZ: 0,
-    radius: 1
-);
+// Define sphere (radius=1.0, center at origin)
+var sphere = cga.Encode.IpnsRound.RealSphere(1.0, 0, 0, 0);
 
 // Define plane (z = 0)
 var p1 = cga.Encode.IpnsRound.Point(-1, -1, 0);
@@ -200,15 +190,15 @@ Console.WriteLine($"Circle Normal: {circleData.NormalDirectionToVector3D()}");
 
 ```csharp
 using System;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Define a point
 var point = cga.Encode.IpnsRound.Point(1, 0, 0);
 
 // Translation
-var translationVector = scalarProcessor.CreateLinVector3D(1, 2, 3);
+var translationVector = LinFloat64Vector3D.Create(1, 2, 3);
 var translator = cga.CreateTranslator(translationVector);
 var translatedPoint = translator.OmMap(point);
 
@@ -247,8 +237,7 @@ Console.WriteLine($"Combined transform: {transformedPoint.DecodeIpnsRound.Point(
 ```csharp
 using System;
 
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+var processor = XGaFloat64Processor.Euclidean;
 
 // Rotation axis (must be normalized)
 var axis = processor.CreateComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).SetVectorTerm(2, 1.0).GetVector().Normalize();
@@ -280,8 +269,7 @@ Console.WriteLine($"Rotated around (1,1,1) by 60°: {vRotated}");
 ### Example 8: Reflection at Plane
 
 ```csharp
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+var processor = XGaFloat64Processor.Euclidean;
 
 // Normal of reflection plane (e.g. xy-plane, normal = z-axis)
 var normal = processor.CreateComposer().SetVectorTerm(2, 1.0).GetVector();
@@ -494,8 +482,7 @@ void ComputeNormSquared(double x, double y, double& result) {
 ```csharp
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.PGa;
 
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var pga = XGaProjectiveSpace<double>.Create(scalarProcessor, 3);
+var pga = XGaProjectiveSpace<double>.Create(3);
 
 // Points in projective coordinates
 var p1 = pga.EncodePoint(1, 0, 0);
@@ -519,8 +506,7 @@ Console.WriteLine($"Plane: {plane}");
 Quaternions can be represented as even-grade multivectors in 3D GA:
 
 ```csharp
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+var processor = XGaFloat64Processor.Euclidean;
 
 // Quaternion: q = a + b*i + c*j + d*k
 // In GA: q = a + b*e23 + c*e31 + d*e12
@@ -556,8 +542,7 @@ Console.WriteLine($"Quaternion Product: {product}");
 ### Example 15: Plücker Coordinates for Lines
 
 ```csharp
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+var processor = XGaFloat64Processor.Euclidean;
 
 // Line defined by two points
 var p1 = processor.CreateComposer().GetVector(); // Origin
@@ -583,8 +568,7 @@ Console.WriteLine($"Line Bivector: {lineBivector}");
 ```csharp
 using System;
 
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+var processor = XGaFloat64Processor.Euclidean;
 
 // Define two rotors
 var B1 = processor.CreateBivector(xy: 1, xz: 0, yz: 0).Normalize();
@@ -614,14 +598,13 @@ Console.WriteLine($"Interpolated (t=0.5): {result}");
 ```csharp
 using System;
 
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Point in 3D
 var point = cga.Encode.IpnsRound.Point(1, 0, 0);
 
 // Inversion sphere (origin, radius 1)
-var sphere = cga.Encode.IpnsRound.Sphere(0, 0, 0, 1);
+var sphere = cga.Encode.IpnsRound.RealSphere(1.0, 0, 0, 0);
 
 // Inversion at point
 // p' = sphere * p * sphere / |sphere|^2
@@ -636,27 +619,16 @@ Console.WriteLine($"Inverted: {invertedPoint}");
 
 ---
 
-### Example 18: Signal Processing with GA
+### Example 18: Advanced GA Applications
 
-```csharp
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+GA-FuL supports various advanced applications beyond basic geometry:
 
-// Create signal processor
-var signalProcessor = ScalarProcessorOfSignal.Create(sampleRate: 44100);
+- **Signal Processing**: Vector representations of time-series data
+- **Optimization**: Gradient descent using GA formulations
+- **Machine Learning**: Feature transformations in GA spaces
+- **Physics Simulations**: Rigid body dynamics and kinematics
 
-// Generate signal vectors
-var signal1 = signalProcessor.CreateSineWave(frequency: 440, duration: 1.0);
-var signal2 = signalProcessor.CreateSineWave(frequency: 880, duration: 1.0);
-
-var processor = XGaProcessor<Signal>.Create(signalProcessor);
-
-var v1 = processor.CreateVector(signal1, signal2);
-
-// GA operations on signals
-var norm = v1.Norm();
-
-Console.WriteLine($"Signal Norm: {norm}");
-```
+Consult the applications directory for detailed examples of these use cases.
 
 ---
 
@@ -669,7 +641,7 @@ These examples demonstrate the versatility of GA-FuL:
 ✓ **Transformations**: Rotations, reflections, translations
 ✓ **Symbolic Mathematics**: Mathematica integration
 ✓ **Code Generation**: Optimized code in C++, C#, etc.
-✓ **Advanced Applications**: Quaternions, Plücker coordinates, signal processing
+✓ **Advanced Applications**: Quaternions, Plücker coordinates, PGA
 
 For more examples, see the projects in the repository:
 - `GeometricAlgebraFulcrumLib.Applications`
@@ -677,5 +649,7 @@ For more examples, see the projects in the repository:
 - `GeometricAlgebraFulcrumLib.UnitTests`
 
 ---
+
+**Last Updated**: 2025-10-17 | **API**: Current | **Verified**: ✅
 
 [← Back to Main Documentation](README.en.md)

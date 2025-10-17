@@ -82,27 +82,23 @@ The main NuGet packages are already included in the project files:
 ### Simple Vector Operations
 
 ```csharp
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 
-// 1. Select scalar processor (64-bit floats)
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
+// 1. Create GA processor (3D Euclidean GA) - Modern simplified API
+var processor = XGaFloat64Processor.Euclidean;
 
-// 2. Create GA processor (3D Euclidean GA)
-var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+// 2. Create vectors
+var v1 = processor.CreateComposer()
+    .SetVectorTerm(0, 1)
+    .SetVectorTerm(1, 0)
+    .SetVectorTerm(2, 0)
+    .GetVector();  // x-axis
 
-// 3. Create vectors
-var composer = processor.CreateComposer();
-composer.SetVectorTerm(0, 1);
-composer.SetVectorTerm(1, 0);
-composer.SetVectorTerm(2, 0);
-var v1 = composer.GetVector();  // x-axis
-
-composer = processor.CreateComposer();
-composer.SetVectorTerm(0, 0);
-composer.SetVectorTerm(1, 1);
-composer.SetVectorTerm(2, 0);
-var v2 = composer.GetVector();  // y-axis
+var v2 = processor.CreateComposer()
+    .SetVectorTerm(0, 0)
+    .SetVectorTerm(1, 1)
+    .SetVectorTerm(2, 0)
+    .GetVector();  // y-axis
 
 // 4. Geometric product
 var gp = v1.Gp(v2);  // = xy bivector
@@ -175,37 +171,49 @@ var v = composer.GetVector();
 
 A **GA processor** manages multivectors and GA operations.
 
-**Types:**
+**Types (Float64):**
 
 ```csharp
-// Generic GA processor (arbitrary metric)
-var processor = XGaProcessor<T>.Create(scalarProcessor);
+// Euclidean (all e_i^2 = +1) - Most common
+var euclidean = XGaFloat64Processor.Euclidean;
 
-// Euclidean GA (all e_i^2 = +1)
-var euclidean = XGaProcessor<T>.CreateEuclidean(scalarProcessor);
+// Conformal (includes 1 negative signature)
+var conformal = XGaFloat64Processor.Conformal;
 
-// Conformal GA
-var conformal = XGaConformalSpace5D<T>.Create(scalarProcessor);
+// Projective (includes 1 zero signature)
+var projective = XGaFloat64Processor.Projective;
 
-// Projective GA
-var projective = XGaProjectiveSpace<T>.Create(scalarProcessor, dimension);
+// Custom metric
+var custom = XGaFloat64Processor.Create(
+    negativeCount: 1,
+    zeroCount: 0
+);
 ```
 
-**With Metric:**
+**Types (Generic for non-Float64):**
+
 ```csharp
-// Metric (p, q, r)
-// p: Number of +1 squares
-// q: Number of -1 squares
-// r: Number  0 squares
+// Generic GA processor (for Rational, Symbolic, etc.)
+var processor = XGaProcessor<T>.CreateEuclidean(scalarProcessor);
 
-// 3D Euclidean: (3, 0, 0)
-var ga3d = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+// Custom metric with generic type
+var custom = XGaProcessor<T>.Create(
+    scalarProcessor,
+    negativeCount: 1,
+    zeroCount: 0
+);
+```
 
-// Spacetime (Minkowski): (3, 1, 0)
-var spacetime = XGaProcessor<double>.Create(scalarProcessor, 1, 0); // Minkowski spacetime (3,1)
+**Common Metrics:**
+```csharp
+// 3D Euclidean: All positive signatures
+var ga3d = XGaFloat64Processor.Euclidean;
 
-// 5D Conformal: (4, 1, 0)
-var cga5d = XGaProcessor<double>.Create(scalarProcessor, 4, 1, 0);
+// Spacetime (Minkowski): (3,1,0) - 3 positive, 1 negative
+var spacetime = XGaFloat64Processor.Create(negativeCount: 1, zeroCount: 0);
+
+// 5D Conformal: (4,1,0) - Used for 3D geometry
+var cga = CGaFloat64GeometricSpace5D.Instance;  // Specialized CGA
 ```
 
 ---
@@ -284,7 +292,12 @@ var fdp = v1.Fdp(v2);
 **Unary Operations:**
 
 ```csharp
-var mv = processor.CreateMultivector(...);
+// Create a multivector (example)
+var composer = processor.CreateComposer();
+composer.SetTerm(0, 1.0);  // Scalar
+composer.SetVectorTerm(0, 2.0);  // e_1
+composer.SetBivectorTerm(0, 1, 3.0);  // e_1 ∧ e_2
+var mv = composer.GetMultivector();
 
 // Reverse
 var rev = mv.Reverse();
@@ -351,11 +364,11 @@ var p3 = cga.Encode.IpnsRound.Point(0, 1, 0);
 var plane = p1.Op(p2).Op(p3);
 
 // Define sphere
-var sphere = cga.Encode.IpnsRound.Sphere(
+var sphere = cga.Encode.IpnsRound.RealSphere(
+    radius: 2,
     centerX: 1,
     centerY: 1,
-    centerZ: 1,
-    radius: 2
+    centerZ: 1
 );
 
 // Intersection of plane and sphere (yields circle)
@@ -379,7 +392,7 @@ using GeometricAlgebraFulcrumLib.Mathematica;
 
 // Mathematica scalar processor
 var scalarProcessor = ScalarProcessorOfMathematica.Instance;
-var processor = XGaProcessor<Expr>.Create(scalarProcessor);
+var processor = XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
 
 // Symbolic parameters
 var x = scalarProcessor.CreateSymbol("x");
@@ -571,44 +584,76 @@ GeometricAlgebraFulcrumLib/
 
 **Problem:**
 ```csharp
-var sp1 = ScalarProcessorOfFloat64.Instance;
-var proc = XGaProcessor<double>.Create(sp1);
-var v = proc.CreateVector(1, 2, 3);
+// Float64 processor
+var proc1 = XGaFloat64Processor.Euclidean;
+var v1 = proc1.CreateComposer()
+    .SetVectorTerm(0, 1)
+    .SetVectorTerm(1, 2)
+    .SetVectorTerm(2, 3)
+    .GetVector();
 
-// ERROR: Wrong scalar type
+// ERROR: Different scalar type (Float32)
 var sp2 = ScalarProcessorOfFloat32.Instance;
-var other = XGaProcessor<float>.Create(sp2);
-var result = v.Gp(other.CreateVector(4, 5, 6));  // Compilation error!
+var proc2 = XGaProcessor<float>.CreateEuclidean(sp2);
+var v2 = proc2.CreateComposer()
+    .SetVectorTerm(0, 4f)
+    .SetVectorTerm(1, 5f)
+    .SetVectorTerm(2, 6f)
+    .GetVector();
+
+var result = v1.Gp(v2);  // Compilation error! Different types
 ```
 
 **Solution:** Use consistent scalar types:
 ```csharp
-var sp = ScalarProcessorOfFloat64.Instance;
-var proc = XGaProcessor<double>.Create(sp);
-var v1 = proc.CreateVector(1, 2, 3);
-var v2 = proc.CreateVector(4, 5, 6);
+var processor = XGaFloat64Processor.Euclidean;
+var v1 = processor.CreateComposer()
+    .SetVectorTerm(0, 1)
+    .SetVectorTerm(1, 2)
+    .SetVectorTerm(2, 3)
+    .GetVector();
+var v2 = processor.CreateComposer()
+    .SetVectorTerm(0, 4)
+    .SetVectorTerm(1, 5)
+    .SetVectorTerm(2, 6)
+    .GetVector();
 var result = v1.Gp(v2);  // OK!
 ```
 
 ---
 
-### Error 2: Wrong Metric
+### Error 2: Dimension Awareness
 
-**Problem:**
+**Note:** GA-FuL processors don't have a fixed dimension. You can create vectors of any dimension:
+
 ```csharp
-// 3D Euclidean
-var proc = XGaProcessor<double>.CreateEuclidean(sp);
+var processor = XGaFloat64Processor.Euclidean;
 
-// Try to create 4D vector
-var v = proc.CreateVector(1, 2, 3, 4);  // Works, but...
-// ... processor expects 3D metric!
+// Create 3D vector
+var v3d = processor.CreateComposer()
+    .SetVectorTerm(0, 1)
+    .SetVectorTerm(1, 2)
+    .SetVectorTerm(2, 3)
+    .GetVector();
+
+// Create 4D vector with the same processor
+var v4d = processor.CreateComposer()
+    .SetVectorTerm(0, 1)
+    .SetVectorTerm(1, 2)
+    .SetVectorTerm(2, 3)
+    .SetVectorTerm(3, 4)
+    .GetVector();
+
+// Both work fine!
 ```
 
-**Solution:** Define metric explicitly:
+**Custom Metric Example:**
 ```csharp
-// For 4D
-var proc = XGaProcessor<double>.Create(sp, 4, 0, 0);
-var v = proc.CreateVector(1, 2, 3, 4);  // OK!
+// For non-Euclidean metrics (e.g., Minkowski spacetime)
+var spacetime = XGaFloat64Processor.Create(
+    negativeCount: 1,  // Time dimension
+    zeroCount: 0
+);
 ```
 
 ---
@@ -617,16 +662,31 @@ var v = proc.CreateVector(1, 2, 3, 4);  // OK!
 
 **Problem:**
 ```csharp
-var v = processor.CreateVector(1, 2, 3);
-// v is NOT normalized!
+var processor = XGaFloat64Processor.Euclidean;
+var v = processor.CreateComposer()
+    .SetVectorTerm(0, 1)
+    .SetVectorTerm(1, 2)
+    .SetVectorTerm(2, 3)
+    .GetVector();
+// v is NOT normalized! Magnitude = sqrt(1² + 2² + 3²) = sqrt(14) ≈ 3.74
 ```
 
 **Solution:**
 ```csharp
-var v = processor.CreateVector(1, 2, 3).Normalize();
-// or
-var v = processor.CreateVector(1, 2, 3);
-v = v.DivideByNorm();
+var v = processor.CreateComposer()
+    .SetVectorTerm(0, 1)
+    .SetVectorTerm(1, 2)
+    .SetVectorTerm(2, 3)
+    .GetVector()
+    .Normalize();  // Now magnitude = 1
+
+// Or separately:
+var v = processor.CreateComposer()
+    .SetVectorTerm(0, 1)
+    .SetVectorTerm(1, 2)
+    .SetVectorTerm(2, 3)
+    .GetVector();
+v = v.DivideByNorm();  // Same as Normalize()
 ```
 
 ---
@@ -635,36 +695,57 @@ v = v.DivideByNorm();
 
 1. **Use `var`**: Code becomes more readable
    ```csharp
-   var processor = XGaProcessor<double>.Create(...);
+   var processor = XGaFloat64Processor.Euclidean;
    // instead of
-   XGaProcessor<double> processor = XGaProcessor<double>.Create(...);
+   XGaFloat64Processor processor = XGaFloat64Processor.Euclidean;
    ```
 
 2. **Reuse processors**: Create processors only once
    ```csharp
-   // Good
-   var processor = XGaProcessor<double>.CreateEuclidean(sp);
-   var v1 = processor.CreateVector(...);
-   var v2 = processor.CreateVector(...);
+   // Good: Reuse processor
+   var processor = XGaFloat64Processor.Euclidean;
+   var v1 = processor.CreateComposer().SetVectorTerm(0, 1).GetVector();
+   var v2 = processor.CreateComposer().SetVectorTerm(1, 1).GetVector();
 
-   // Bad
-   var v1 = XGaProcessor<double>.CreateEuclidean(sp).CreateVector(...);
-   var v2 = XGaProcessor<double>.CreateEuclidean(sp).CreateVector(...);
+   // Bad: Create processor multiple times
+   var v1 = XGaFloat64Processor.Euclidean.CreateComposer().SetVectorTerm(0, 1).GetVector();
+   var v2 = XGaFloat64Processor.Euclidean.CreateComposer().SetVectorTerm(1, 1).GetVector();
    ```
 
-3. **Use composer for complex multivectors**
+3. **Reuse composers**: For multiple similar multivectors
    ```csharp
+   var processor = XGaFloat64Processor.Euclidean;
    var composer = processor.CreateComposer();
-   composer.SetTerm(...);
-   composer.AddTerm(...);
-   var mv = composer.GetMultivector();
+
+   // First vector
+   composer.Clear();
+   composer.SetVectorTerm(0, 1).SetVectorTerm(1, 0);
+   var v1 = composer.GetVector();
+
+   // Second vector (reuse composer)
+   composer.Clear();
+   composer.SetVectorTerm(0, 0).SetVectorTerm(1, 1);
+   var v2 = composer.GetVector();
    ```
 
-4. **Check your results**: Use `.ToString()` for debugging
+4. **Use method chaining for simple cases**
+   ```csharp
+   // Simple vector creation with chaining
+   var v = processor.CreateComposer()
+       .SetVectorTerm(0, 1)
+       .SetVectorTerm(1, 2)
+       .SetVectorTerm(2, 3)
+       .GetVector();
+   ```
+
+5. **Check your results**: Use `.ToString()` for debugging
    ```csharp
    Console.WriteLine($"Result: {result}");
+   Console.WriteLine($"Norm: {result.Norm()}");
    ```
 
 ---
+
+**Last Updated**: 2025-10-17 | **API**: Fully updated with modern XGaFloat64Processor API
 
 [← Back to Main Documentation](README.en.md)

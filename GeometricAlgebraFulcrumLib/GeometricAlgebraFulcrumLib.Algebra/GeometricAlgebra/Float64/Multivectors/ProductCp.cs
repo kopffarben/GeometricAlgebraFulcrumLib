@@ -113,93 +113,50 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Cp(XGaFloat64Vector mv2)
         {
-            if (this is XGaFloat64Vector v1)
-                return v1.Op(mv2);
-
-            return this is XGaFloat64Scalar || IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddCpTerms(this, mv2)
-                    .GetMultivector();
+            // Commutator Product: [a,b] = ab - ba
+            return Gp(mv2) - mv2.Gp(this);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Cp(XGaFloat64Bivector mv2)
         {
-            return this is XGaFloat64Scalar || IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddCpTerms(this, mv2)
-                    .GetMultivector();
+            // Commutator Product: [a,b] = ab - ba
+            return Gp(mv2) - mv2.Gp(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Cp(XGaFloat64HigherKVector mv2)
         {
-            return this is XGaFloat64Scalar || IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddCpTerms(this, mv2)
-                    .GetMultivector();
+            // Commutator Product: [a,b] = ab - ba
+            return Gp(mv2) - mv2.Gp(this);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Cp(XGaFloat64GradedMultivector mv2)
         {
-            //return (EGp(mv2) - mv2.EGp(this)).Divide(2d);
-
-            return this is XGaFloat64Scalar || IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddCpTerms(this, mv2)
-                    .GetMultivector();
+            // Commutator Product: [a,b] = ab - ba
+            return Gp(mv2) - mv2.Gp(this);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Cp(XGaFloat64UniformMultivector mv2)
         {
-            //return (EGp(mv2) - mv2.EGp(this)).Divide(2d);
-
-            return this is XGaFloat64Scalar || IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddCpTerms(this, mv2)
-                    .GetMultivector();
+            // Commutator Product: [a,b] = ab - ba
+            return Gp(mv2) - mv2.Gp(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Cp(XGaFloat64KVector mv2)
         {
-            if (this is XGaFloat64Vector v1 && mv2 is XGaFloat64Vector v2)
-                return v1.Op(v2);
-
-            return this is XGaFloat64Scalar || mv2 is XGaFloat64Scalar || IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddCpTerms(this, mv2)
-                    .GetMultivector();
+            // Commutator Product: [a,b] = ab - ba
+            return Gp(mv2) - mv2.Gp(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Cp(XGaFloat64Multivector mv2)
         {
-            //return (EGp(mv2) - mv2.EGp(this)).Divide(2d);
-
-            if (this is XGaFloat64Vector v1 && mv2 is XGaFloat64Vector v2)
-                return v1.Op(v2);
-
-            return this is XGaFloat64Scalar || mv2 is XGaFloat64Scalar || IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddCpTerms(this, mv2)
-                    .GetMultivector();
+            // Commutator Product: [a,b] = ab - ba
+            return Gp(mv2) - mv2.Gp(this);
         }
 
     }

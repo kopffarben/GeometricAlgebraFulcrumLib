@@ -271,7 +271,7 @@ var cga = CGaFloat64GeometricSpace5D.Instance;
 var point = cga.Encode.IpnsRound.Point(x, y, z);
 
 // Encode a sphere
-var sphere = cga.Encode.IpnsRound.Sphere(centerX, centerY, centerZ, radius);
+var sphere = cga.Encode.IpnsRound.RealSphere(radius, centerX, centerY, centerZ);
 
 // Intersect two objects
 var intersection = sphere.Op(plane);
@@ -417,8 +417,8 @@ The MCO performs the following optimizations:
 var context = new MetaContext();
 var scalarProcessor = context.ScalarProcessor;
 
-// 2. Create processor
-var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+// 2. Create processor for metaprogramming
+var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
 
 // 3. Input parameters
 var x = context.CreateParameter("x");

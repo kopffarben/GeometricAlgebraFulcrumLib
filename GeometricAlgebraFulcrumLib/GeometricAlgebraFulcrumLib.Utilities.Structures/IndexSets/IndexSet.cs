@@ -361,13 +361,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator IndexSet(int indexSet)
         {
-            return indexSet == 0 ? EmptySet : new IndexSet();
+            return indexSet == 0 ? EmptySet : new IndexSet((uint)indexSet);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator IndexSet(ulong indexSet)
         {
-            return indexSet == 0UL ? EmptySet : new IndexSet();
+            return indexSet == 0UL ? EmptySet : new IndexSet(indexSet);
         }
     
     

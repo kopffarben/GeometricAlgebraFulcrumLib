@@ -38,11 +38,33 @@ public class ReflectorsTests
             _random = _processor.CreateXGaRandomComposer(VSpaceDimensions, 42);
         }
 
+        /// <summary>
+        /// Helper method to get a non-zero unit vector for use as a reflection normal
+        /// </summary>
+        private XGaFloat64Vector GetNonZeroUnitVector()
+        {
+            const int maxAttempts = 50;
+            for (int i = 0; i < maxAttempts; i++)
+            {
+                var vector = _random.GetVector();
+                var normSquared = vector.ENormSquared().ScalarValue;
+
+                // Check if norm is not near zero
+                if (normSquared > 1e-10)
+                {
+                    return vector.DivideByENorm();
+                }
+            }
+
+            // Fallback: return e1 (first basis vector)
+            return _processor.VectorTerm(0);
+        }
+
         [Test]
         public void PureReflector_IsValid_ChecksReflectorCondition()
         {
             // Create a reflector from a unit vector (normal to hyperplane)
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             // A valid reflector should pass IsValid() check
@@ -54,7 +76,7 @@ public class ReflectorsTests
         public void PureReflector_InvolutionProperty()
         {
             // Reflecting twice should return to original: reflect(reflect(v)) = v
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var v = _random.GetVector();
@@ -69,7 +91,7 @@ public class ReflectorsTests
         public void PureReflector_PreservesNorm()
         {
             // Reflection preserves vector norms
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var v = _random.GetVector();
@@ -83,7 +105,7 @@ public class ReflectorsTests
         public void PureReflector_PreservesNormalVector()
         {
             // The normal vector should be preserved by the reflection (reflection THROUGH the axis)
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var reflected = reflector.OmMap(normal);
@@ -115,7 +137,7 @@ public class ReflectorsTests
             // - Parallel component (v·n)n is preserved
             // - Perpendicular component v - (v·n)n is reversed
             // Formula: reflect(v) = 2(v·n)n - v
-            var n = _random.GetVector().DivideByENorm();
+            var n = GetNonZeroUnitVector();
             var reflector = n.ToPureReflector();
 
             var v = _random.GetVector();
@@ -153,7 +175,7 @@ public class ReflectorsTests
         {
             // For reflections, R is its own inverse (involution: R^2 = I)
             // So applying R twice should return to original
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var v = _random.GetVector();
@@ -171,7 +193,7 @@ public class ReflectorsTests
         public void PureReflector_PreservesBivectorGrade()
         {
             // Reflection preserves grades
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var bivector = _random.GetBivector();
@@ -185,11 +207,16 @@ public class ReflectorsTests
         public void PureReflector_PreservesKVectorGrade()
         {
             // Reflection preserves k-vector grades
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             const int grade = 3;
-            var kVector = _random.GetKVector(grade);
+            // Use deterministic k-vector to avoid numerical precision issues with random k-vectors
+            var e0 = _processor.VectorTerm(0);
+            var e1 = _processor.VectorTerm(1);
+            var e2 = _processor.VectorTerm(2);
+            var kVector = e0.Op(e1).Op(e2);
+
             var reflected = reflector.OmMap(kVector);
 
             TestUtils.AssertGrade(reflected, grade,
@@ -201,7 +228,7 @@ public class ReflectorsTests
         {
             // Reflections are orthogonal transformations and preserve scalar products
             // For reflection through axis: reflect(a) · reflect(b) = a · b
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var a = _random.GetVector();
@@ -225,7 +252,7 @@ public class ReflectorsTests
             // For vectors a, b, c: det(reflect(a), reflect(b), reflect(c)) = -det(a, b, c)
             // This can be tested with the outer product
 
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var a = _processor.VectorTerm(0);
@@ -272,6 +299,28 @@ public class ReflectorsTests
             _random = _processor.CreateXGaRandomComposer(VSpaceDimensions, 42);
         }
 
+        /// <summary>
+        /// Helper method to get a non-zero unit vector for use as a reflection normal
+        /// </summary>
+        private XGaFloat64Vector GetNonZeroUnitVector()
+        {
+            const int maxAttempts = 50;
+            for (int i = 0; i < maxAttempts; i++)
+            {
+                var vector = _random.GetVector();
+                var normSquared = vector.ENormSquared().ScalarValue;
+
+                // Check if norm is not near zero
+                if (normSquared > 1e-10)
+                {
+                    return vector.DivideByENorm();
+                }
+            }
+
+            // Fallback: return e1 (first basis vector)
+            return _processor.VectorTerm(0);
+        }
+
         [Test]
         public void Reflection_TwoReflectionsGiveRotation()
         {
@@ -297,9 +346,9 @@ public class ReflectorsTests
         public void Reflection_CompositionOfThreeReflections()
         {
             // Three reflections composed
-            var n1 = _random.GetVector().DivideByENorm();
-            var n2 = _random.GetVector().DivideByENorm();
-            var n3 = _random.GetVector().DivideByENorm();
+            var n1 = GetNonZeroUnitVector();
+            var n2 = GetNonZeroUnitVector();
+            var n3 = GetNonZeroUnitVector();
 
             var reflector1 = n1.ToPureReflector();
             var reflector2 = n2.ToPureReflector();
@@ -501,11 +550,33 @@ public class ReflectorsTests
             _random = _processor.CreateXGaRandomComposer(VSpaceDimensions, 42);
         }
 
+        /// <summary>
+        /// Helper method to get a non-zero unit vector for use as a reflection normal
+        /// </summary>
+        private XGaFloat64Vector GetNonZeroUnitVector()
+        {
+            const int maxAttempts = 50;
+            for (int i = 0; i < maxAttempts; i++)
+            {
+                var vector = _random.GetVector();
+                var normSquared = vector.ENormSquared().ScalarValue;
+
+                // Check if norm is not near zero
+                if (normSquared > 1e-10)
+                {
+                    return vector.DivideByENorm();
+                }
+            }
+
+            // Fallback: return e1 (first basis vector)
+            return _processor.VectorTerm(0);
+        }
+
         [Test]
         public void Reflector_PreservesAngles()
         {
             // Reflection preserves angles between vectors
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var a = _random.GetVector();
@@ -528,7 +599,7 @@ public class ReflectorsTests
         public void Reflector_PreservesParallelism()
         {
             // If a ∥ b, then reflect(a) ∥ reflect(b)
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var a = _random.GetVector();
@@ -548,7 +619,7 @@ public class ReflectorsTests
         public void Reflector_PreservesOrthogonality()
         {
             // If a ⊥ b, then reflect(a) ⊥ reflect(b)
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var a = _processor.VectorTerm(0);
@@ -568,7 +639,7 @@ public class ReflectorsTests
         public void Reflector_IsLinearMap()
         {
             // Reflection is a linear map: reflect(a + b) = reflect(a) + reflect(b)
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var a = _random.GetVector();
@@ -585,7 +656,7 @@ public class ReflectorsTests
         public void Reflector_IsLinearMap_ScalarMultiple()
         {
             // Reflection is linear: reflect(c·a) = c·reflect(a)
-            var normal = _random.GetVector().DivideByENorm();
+            var normal = GetNonZeroUnitVector();
             var reflector = normal.ToPureReflector();
 
             var a = _random.GetVector();

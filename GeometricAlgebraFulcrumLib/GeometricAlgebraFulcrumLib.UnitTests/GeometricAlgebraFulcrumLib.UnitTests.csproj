@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Structures\GeometricAlgebraFulcrumLib.Utilities.Structures.csproj" />
   </ItemGroup>
 

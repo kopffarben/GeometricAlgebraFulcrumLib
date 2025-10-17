@@ -1,88 +1,88 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using NumericalGeometryLib.Calculus.AutoDiff;
-//using Xunit;
-//using static GeometricAlgebraFulcrumLib.UnitTests.AutoDiff.Utils;
+using System;
+using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.AutoDiff;
+using NUnit.Framework;
+using static GeometricAlgebraFulcrumLib.UnitTests.AutoDiff.Utils;
 
-//namespace GeometricAlgebraFulcrumLib.UnitTests.AutoDiff
-//{
-//    public class TermBuilderContractTests
-//    {
-//        private static readonly Variable x = new Variable();
-//        private static readonly Variable y = new Variable();
+namespace GeometricAlgebraFulcrumLib.UnitTests.AutoDiff;
 
-//        [Fact]
-//        public void ConstantContract()
-//        {
-//            Assert.IsType<Constant>(TermBuilder.Constant(1));
-//            Assert.IsType<Zero>(TermBuilder.Constant(0));
-//        }
+[TestFixture]
+public class TermBuilderContractTests
+{
+    private static readonly Variable x = new Variable();
+    private static readonly Variable y = new Variable();
 
-//        [Fact]
-//        public void SumValidationContract()
-//        {
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Sum(null));
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Sum(x, null));
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Sum(null, x));
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Sum(x, y, null));
-//            Assert.Throws<ArgumentException>(() => TermBuilder.Sum(x, y, Vec(x, null)));
-//            Assert.Throws<ArgumentException>(() => TermBuilder.Sum(Vec(x, null)));
-//        }
+    [Test]
+    public void ConstantContract()
+    {
+        Assert.That(TermBuilder.Constant(1), Is.InstanceOf<Constant>());
+        Assert.That(TermBuilder.Constant(0), Is.InstanceOf<Zero>());
+    }
 
-//        [Fact]
-//        public void ProductContract()
-//        {
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Product(x, null));
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Product(null, x));
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Product(x, y, null));
-//            Assert.Throws<ArgumentException>(() => TermBuilder.Product(x, y, Vec(x, null)));
-//            Assert.IsType<Product>(TermBuilder.Product(x, y));
-//        }
+    [Test]
+    public void SumValidationContract()
+    {
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Sum(null));
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Sum(x, null));
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Sum(null, x));
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Sum(x, y, null));
+        Assert.Throws<ArgumentException>(() => TermBuilder.Sum(x, y, Vec(x, null)));
+        Assert.Throws<ArgumentException>(() => TermBuilder.Sum(Vec(x, null)));
+    }
 
-//        [Fact]
-//        public void PowerContract()
-//        {
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Power(null, 1));
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Power(x, null));
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Power(null, x));
-//            Assert.IsType<ConstPower>(TermBuilder.Power(x, 1));
+    [Test]
+    public void ProductContract()
+    {
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Product(x, null));
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Product(null, x));
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Product(x, y, null));
+        Assert.Throws<ArgumentException>(() => TermBuilder.Product(x, y, Vec(x, null)));
+        Assert.That(TermBuilder.Product(x, y), Is.InstanceOf<Product>());
+    }
 
-//            Assert.Throws<ArgumentException>(() => TermBuilder.Power(x, double.NaN));
-//            Assert.Throws<ArgumentException>(() => TermBuilder.Power(x, double.PositiveInfinity));
-//            Assert.IsType<TermPower>(TermBuilder.Power(x, y));
-//            Assert.IsType<TermPower>(TermBuilder.Power(1, y));
-//        }
+    [Test]
+    public void PowerContract()
+    {
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Power(null, 1));
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Power(x, null));
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Power(null, x));
+        Assert.That(TermBuilder.Power(x, 1), Is.InstanceOf<ConstPower>());
 
-//        [Fact]
-//        public void ExpContract()
-//        {
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Exp(null));
-//            Assert.IsType<Exp>(TermBuilder.Exp(x));
-//        }
+        Assert.Throws<ArgumentException>(() => TermBuilder.Power(x, double.NaN));
+        Assert.Throws<ArgumentException>(() => TermBuilder.Power(x, double.PositiveInfinity));
+        Assert.That(TermBuilder.Power(x, y), Is.InstanceOf<TermPower>());
+        Assert.That(TermBuilder.Power(1, y), Is.InstanceOf<TermPower>());
+    }
 
-//        [Fact]
-//        public void LogContract()
-//        {
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.Log(null));
-//            Assert.IsType<Log>(TermBuilder.Log(x));
-//        }
+    [Test]
+    public void ExpContract()
+    {
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Exp(null));
+        Assert.That(TermBuilder.Exp(x), Is.InstanceOf<Exp>());
+    }
 
-//        [Xunit.Theory]
-//        [MemberData(nameof(QuadFormContractData))]
-//        public void QuadFormContract(Term x, Term y, Term a11, Term a21, Term a12, Term a22)
-//        {
-//            Assert.Throws<ArgumentNullException>(() => TermBuilder.QuadForm(x, y, a11, a21, a12, a22));
-//        }
+    [Test]
+    public void LogContract()
+    {
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.Log(null));
+        Assert.That(TermBuilder.Log(x), Is.InstanceOf<Log>());
+    }
 
-//        public static IEnumerable<object[]> QuadFormContractData() =>
-//            new[]
-//            {
-//                new Term[] { null, y, 1, 2, 3, 4 },
-//                new Term[] { x, null, 1, 2, 3, 4 },
-//                new Term[] { x, y, null, 2, 3, 4 },
-//                new Term[] { x, y, 1, null, 3, 4 },
-//                new Term[] { x, y, 1, 2, null, 4 },
-//                new Term[] { x, y, 1, 2, 3, null },
-//            };
-//    }
-//}
+    [Test]
+    [TestCaseSource(nameof(QuadFormContractData))]
+    public void QuadFormContract(Term x, Term y, Term a11, Term a21, Term a12, Term a22)
+    {
+        Assert.Throws<ArgumentNullException>(() => TermBuilder.QuadForm(x, y, a11, a21, a12, a22));
+    }
+
+    public static IEnumerable<object[]> QuadFormContractData() =>
+        new[]
+        {
+            new Term[] { null, y, 1, 2, 3, 4 },
+            new Term[] { x, null, 1, 2, 3, 4 },
+            new Term[] { x, y, null, 2, 3, 4 },
+            new Term[] { x, y, 1, null, 3, 4 },
+            new Term[] { x, y, 1, 2, null, 4 },
+            new Term[] { x, y, 1, 2, 3, null },
+        };
+}
