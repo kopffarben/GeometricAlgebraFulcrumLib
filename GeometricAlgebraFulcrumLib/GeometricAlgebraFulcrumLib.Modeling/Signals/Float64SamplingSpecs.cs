@@ -13,6 +13,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 public sealed record Float64SamplingSpecs :
+    ISamplingSpecs<double>,
     IAlgebraicElement
 {
     public static Float64SamplingSpecs Static { get; }

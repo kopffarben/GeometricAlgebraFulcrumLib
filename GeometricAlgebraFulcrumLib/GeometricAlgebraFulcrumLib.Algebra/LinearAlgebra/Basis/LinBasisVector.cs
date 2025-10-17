@@ -408,6 +408,34 @@ public sealed record LinBasisVector
         return new LinFloat64VectorTerm(ToPositiveBasis(), -1d);
     }
 
+    // Float32 overloads
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm ToVectorTerm(float scalar)
+    {
+        return new GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm(
+            this,
+            scalar * Sign
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm ToZeroVectorTerm32()
+    {
+        return new GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm(ToPositiveBasis(), 0f);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm ToPositiveUnitVectorTerm32()
+    {
+        return new GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm(ToPositiveBasis(), 1f);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm ToNegativeUnitVectorTerm32()
+    {
+        return new GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.SpaceND.LinFloat32VectorTerm(ToPositiveBasis(), -1f);
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector2D ToLinVector2D()
@@ -1522,5 +1550,35 @@ public sealed record LinBasisVector
     public override string ToString()
     {
         return $"({Sign})<{Index}>";
+    }
+
+    // ============================================================
+    // Float32 overloads for code generation compatibility
+    // Added to support Float32 source generator
+    // ============================================================
+
+    /// <summary>
+    /// Float32 version: Compute rotation quaternion from this basis vector to a Float32 3D vector
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.Space3D.LinFloat32Quaternion VectorToVectorRotationQuaternion(GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.Space3D.ILinFloat32Vector3D dstVector, float zeroEpsilon = GeometricAlgebraFulcrumLib.Algebra.Scalars.Float32.Float32Utils.ZeroEpsilon)
+    {
+        // Convert to Float64, compute, then convert back
+        var float64Quaternion = VectorToVectorRotationQuaternion(
+            GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D.LinFloat64Vector3D.Create(
+                (double)dstVector.X,
+                (double)dstVector.Y,
+                (double)dstVector.Z
+            ),
+            (double)zeroEpsilon
+        );
+
+        // Convert back to Float32 - parameter order: (scalar, iScalar, jScalar, kScalar)
+        return GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float32.Vectors.Space3D.LinFloat32Quaternion.Create(
+            (float)float64Quaternion.Scalar,
+            (float)float64Quaternion.ScalarI,
+            (float)float64Quaternion.ScalarJ,
+            (float)float64Quaternion.ScalarK
+        );
     }
 }

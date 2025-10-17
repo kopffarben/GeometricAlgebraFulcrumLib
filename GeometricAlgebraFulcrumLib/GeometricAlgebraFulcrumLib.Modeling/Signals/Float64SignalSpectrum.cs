@@ -6,14 +6,14 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 public sealed class Float64SignalSpectrum :
-    ScalarSignalSpectrum<double>
+    ScalarSignalSpectrum<double, double, Float64SamplingSpecs>
 {
     protected override double ZeroValue
         => 0d;
 
 
     public Float64SignalSpectrum(int sampleCount, double samplingRate)
-        : base(sampleCount, samplingRate)
+        : base(Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate))
     {
     }
 
@@ -59,9 +59,9 @@ public sealed class Float64SignalSpectrum :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override ScalarSignalSpectrum<double> CreateSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
+    protected override ScalarSignalSpectrum<double, double, Float64SamplingSpecs> CreateSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
     {
-        return new Float64SignalSpectrum(SamplingSpecs, indexSampleDictionary);
+        return new Float64SignalSpectrum(samplingSpecs, indexSampleDictionary);
     }
 
 

@@ -8,6 +8,10 @@
     <Platforms>AnyCPU;x64</Platforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
+
+    <!-- Float32 Source Generator Configuration -->
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\Generated</CompilerGeneratedFilesOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -70,5 +74,39 @@
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj" />
   </ItemGroup>
+
+  <!-- Float32 Source Generator Reference -->
+  <ItemGroup>
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.CodeGeneration\GeometricAlgebraFulcrumLib.CodeGeneration.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <!-- Float64 Files as AdditionalFiles for Generator -->
+  <ItemGroup>
+    <!-- Files in Float64 folders (392 files) -->
+    <AdditionalFiles Include="Calculus\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Geometry\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Trajectories\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Graphics\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Signals\**\Float64\**\*.cs" />
+
+    <!-- Files with Float64 in filename but NOT in Float64 folder (86 files) -->
+    <AdditionalFiles Include="Calculus\**\*Float64*.cs" Exclude="Calculus\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Geometry\**\*Float64*.cs" Exclude="Geometry\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Trajectories\**\*Float64*.cs" Exclude="Trajectories\**\Float64\**\*.cs" />
+    <AdditionalFiles Include="Graphics\**\*Float64*.cs" Exclude="Graphics\**\Float64\**\*.cs;Graphics\**\*Float64BufferAttribute*.cs" />
+    <AdditionalFiles Include="Signals\**\*Float64*.cs" Exclude="Signals\**\Float64\**\*.cs" />
+  </ItemGroup>
+
+  <!-- Clean Generated Files Before Build -->
+  <!-- This ensures stale generated files don't cause build errors -->
+  <Target Name="CleanGeneratedFiles" BeforeTargets="CoreCompile">
+    <PropertyGroup>
+      <GeneratedPath>$(BaseIntermediateOutputPath)Generated</GeneratedPath>
+    </PropertyGroup>
+    <RemoveDir Directories="$(GeneratedPath)" Condition="Exists('$(GeneratedPath)')" />
+    <Message Text="Float32 Generator: Cleaned generated files at $(GeneratedPath)" Importance="high" Condition="Exists('$(GeneratedPath)')" />
+  </Target>
 
 </Project>

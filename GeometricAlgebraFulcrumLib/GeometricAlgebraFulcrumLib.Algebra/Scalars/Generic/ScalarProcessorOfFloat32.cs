@@ -3,7 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
-public sealed class ScalarProcessorOfFloat32
+public class ScalarProcessorOfFloat32
     : INumericScalarProcessor<float>
 {
     public static ScalarProcessorOfFloat32 Instance { get; }

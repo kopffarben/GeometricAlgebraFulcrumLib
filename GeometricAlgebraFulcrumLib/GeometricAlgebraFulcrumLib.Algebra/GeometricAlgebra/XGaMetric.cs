@@ -1,4 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float32.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
@@ -1386,6 +1387,25 @@ public abstract class XGaMetric
             0 => gradeKVectorDictionary is EmptyDictionary<int, XGaFloat64KVector>,
 
             1 => gradeKVectorDictionary is SingleItemDictionary<int, XGaFloat64KVector> dict &&
+                 dict.Key >= 0 &&
+                 dict.Value.Metric.HasSameSignature(this) &&
+                 dict.Value.IsValid(),
+
+            _ => gradeKVectorDictionary.All(p =>
+                p.Key >= 0 &&
+                p.Value.Metric.HasSameSignature(this) &&
+                p.Value.IsValid()
+            )
+        };
+    }
+
+    public bool IsValidMultivectorDictionary(IReadOnlyDictionary<int, XGaFloat32KVector> gradeKVectorDictionary)
+    {
+        return gradeKVectorDictionary.Count switch
+        {
+            0 => gradeKVectorDictionary is EmptyDictionary<int, XGaFloat32KVector>,
+
+            1 => gradeKVectorDictionary is SingleItemDictionary<int, XGaFloat32KVector> dict &&
                  dict.Key >= 0 &&
                  dict.Value.Metric.HasSameSignature(this) &&
                  dict.Value.IsValid(),
