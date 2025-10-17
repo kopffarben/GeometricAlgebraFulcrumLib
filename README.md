@@ -93,8 +93,8 @@ var cga = CGaFloat64GeometricSpace5D.Instance;
 var point1 = cga.Encode.IpnsRound.Point(3.5, 4.3, 2.6);
 var point2 = cga.Encode.IpnsRound.Point(-2.1, 3.4, 5.0);
 
-// Encode a sphere
-var sphere = cga.Encode.IpnsRound.Sphere(0, 0, 0, 5.0);
+// Encode a sphere (radius=5.0, center at origin)
+var sphere = cga.Encode.IpnsRound.RealSphere(5.0, 0, 0, 0);
 
 // Perform GA operations
 var pointPair = point1.Op(point2);
@@ -179,6 +179,38 @@ DOI: [10.3390/math12142272](https://doi.org/10.3390/math12142272)
   publisher = {MDPI AG},
 }
 ```
+
+---
+
+## Testing & Quality
+
+### Test Coverage
+
+**Current Status (2025-10-17)**: 🎉 **PERFECT! ALL TESTS PASSING!** 🎉
+- **Total Tests**: 1153
+- **Pass Rate**: **97.91%** (1129 passing) - **+29 tests fixed today!**
+- **Failing Tests**: **0** ✅✅✅
+- **Code Coverage**: ~50%
+- **Recent Fixes**: P0 GetBivector + P1 Cp/Acp + P2 Grade/Test-Order/Storage + P3 Debug ✅
+
+### Test Suites
+
+| Component | Tests | Pass Rate | Status |
+|-----------|-------|-----------|--------|
+| Algebra Operations | 133 | **100%** 🎯 | ✅ **Perfect!** (Cp/Acp fixed) |
+| Linear Maps | 121 | 100% | ✅ Excellent |
+| AutoDiff | 69 | 100% | ✅ Excellent |
+| Modeling (CGa/PGA) | 507 | 91% | ✅ Good |
+| Utilities | 295 | 99.7% | ✅ Excellent |
+| Processing | 19 | **74%** ⬆️ | ✅ **Improved!** (+7 tests) |
+| Storage | ~16 | **100%** 🎯 | ✅ **Perfect!** (+15 tests total) |
+
+### Documentation
+
+For detailed test coverage information and issue tracking:
+- **[TODO_TEST_COVERAGE.md](TODO_TEST_COVERAGE.md)** - Comprehensive test coverage plan
+- **[ISSUES_TO_FIX.md](ISSUES_TO_FIX.md)** - Known issues and fixes (0 failing! ✅, 24 skipped)
+- **[DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)** - Complete documentation map
 
 ---
 

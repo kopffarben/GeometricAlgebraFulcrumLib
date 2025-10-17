@@ -6,6 +6,8 @@ lang: de
 
 # GA-FuL API-Referenz
 
+**[🇬🇧 English Version](api-reference.en.md)**
+
 ## Inhaltsverzeichnis
 
 1. [Übersicht](#übersicht)
@@ -141,27 +143,45 @@ bool lt = a < b;         // true
 
 ## GA-Prozessoren
 
-### `XGaProcessor<T>`
+### `XGaFloat64Processor` (Vereinfachte Float64 API)
 
-**Namespace:** `GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended`
+**Namespace:** `GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors`
 
-**Beschreibung:** Haupt-GA-Prozessor für Extended GA
+**Beschreibung:** Vereinfachter Float64-spezifischer GA-Prozessor (empfohlen für die meisten Benutzer)
 
 **Konstruktion:**
 
 ```csharp
-// Mit spezifischer Metrik (q, r) - p wird automatisch berechnet
-var processor = XGaProcessor<double>.Create(
-    scalarProcessor,
-    negativeCount: 0,  // q: Anzahl -1 Quadrate
-    zeroCount: 0       // r: Anzahl  0 Quadrate
+// Euklidisch (alle +1) - Am häufigsten
+var processor = XGaFloat64Processor.Euclidean;
+
+// Konformal (1 negative Signatur)
+var conformal = XGaFloat64Processor.Conformal;
+
+// Projektiv (1 Null-Signatur)
+var projective = XGaFloat64Processor.Projective;
+
+// Benutzerdefinierte Metrik
+var custom = XGaFloat64Processor.Create(
+    negativeCount: 1,  // Anzahl -1 Quadrate
+    zeroCount: 0       // Anzahl  0 Quadrate
 );
+```
 
-// Euklidisch (alle +1)
-var euclidean = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+---
 
-// Konformal (4,1,0) für 5D-CGA
-var conformal = XGaProcessor<double>.CreateConformal(scalarProcessor);
+### `XGaProcessor<T>` (Generische API)
+
+**Namespace:** `GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended`
+
+**Beschreibung:** Generischer GA-Prozessor für benutzerdefinierte Skalartypen (Rational, Symbolic, etc.)
+
+**Konstruktion:**
+
+```csharp
+// Für nicht-Float64 Typen (z.B. Rational, Symbolic)
+var scalarProcessor = ScalarProcessorOfRational.Instance;
+var processor = XGaProcessor<Rational>.CreateEuclidean(scalarProcessor);
 ```
 
 **Wichtige Eigenschaften:**
@@ -570,7 +590,7 @@ var pi = context.CreateConstant("pi", Math.PI);
 
 // 4. Berechnungen
 var scalarProcessor = context.ScalarProcessor;
-var processor = XGaProcessor<IMetaExpression>.Create(scalarProcessor, 0, 0);
+var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
 var v = processor.CreateComposer()
     .SetVectorTerm(0, x)
     .SetVectorTerm(1, y)
@@ -682,20 +702,33 @@ var code = composer.GenerateCode(context);
 
 **Namespace:** `GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra`
 
-**Vektoren:**
+**Vektoren (Float64):**
 
 ```csharp
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
+
 // 2D Vektor
-var v2d = scalarProcessor.CreateVector2D(x, y);
+var v2d = LinFloat64Vector2D.Create(x, y);
 
 // 3D Vektor
-var v3d = scalarProcessor.CreateVector3D(x, y, z);
+var v3d = LinFloat64Vector3D.Create(x, y, z);
 
 // 4D Vektor
-var v4d = scalarProcessor.CreateVector4D(x, y, z, w);
+var v4d = LinFloat64Vector4D.Create(x, y, z, w);
 
-// n-D Vektor
-var vnd = scalarProcessor.CreateVectorND(components);
+// n-D Vektor (generisch Float64)
+var vnd = Float64Vector.Create(component1, component2, component3, ...);
+```
+
+**Vektoren (Generisch):**
+
+```csharp
+// Für nicht-Float64 Typen (Rational, Symbolic, etc.)
+var v2d = scalarProcessor.CreateVector2D(x, y);
+var v3d = scalarProcessor.CreateVector3D(x, y, z);
+var v4d = scalarProcessor.CreateVector4D(x, y, z, w);
 ```
 
 **Matrizen:**

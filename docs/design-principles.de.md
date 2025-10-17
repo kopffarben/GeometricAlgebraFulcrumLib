@@ -6,6 +6,8 @@ lang: de
 
 # GA-FuL Design-Prinzipien
 
+**[🇬🇧 English Version](design-principles.en.md)**
+
 ## Inhaltsverzeichnis
 
 1. [Übersicht](#übersicht)
@@ -51,8 +53,16 @@ Diese Prinzipien entstanden aus der Erfahrung mit dem Vorgängersystem [GMac](ht
 ```csharp
 // Derselbe Code funktioniert mit allen Skalartypen
 var processor = XGaProcessor<T>.CreateEuclidean(scalarProcessor);
-var v1 = processor.Vector(a, b, c);
-var v2 = processor.Vector(x, y, z);
+var v1 = processor.CreateComposer()
+    .SetVectorTerm(0, a)
+    .SetVectorTerm(1, b)
+    .SetVectorTerm(2, c)
+    .GetVector();
+var v2 = processor.CreateComposer()
+    .SetVectorTerm(0, x)
+    .SetVectorTerm(1, y)
+    .SetVectorTerm(2, z)
+    .GetVector();
 var result = v1.Gp(v2); // Geometrisches Produkt
 
 // T kann sein: double, float, decimal, BigDecimal, Expr, etc.
@@ -161,9 +171,19 @@ Zielsprachen-Code (C++, C#, CUDA, etc.)
 var context = new MetaContext();
 var x = context.CreateParameter("x");
 var y = context.CreateParameter("y");
+var scalarProcessor = context.ScalarProcessor;
+var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
 
-var v1 = processor.Vector(x, y, 0);
-var v2 = processor.Vector(1, 1, 1);
+var v1 = processor.CreateComposer()
+    .SetVectorTerm(0, x)
+    .SetVectorTerm(1, y)
+    .SetVectorTerm(2, 0)
+    .GetVector();
+var v2 = processor.CreateComposer()
+    .SetVectorTerm(0, 1)
+    .SetVectorTerm(1, 1)
+    .SetVectorTerm(2, 1)
+    .GetVector();
 var result = v1.Gp(v2);
 
 // 2. Optimiere
@@ -230,8 +250,8 @@ Niedrig│    │   System-Utilities-Layer    │
 *High-Level (Modellierung):*
 ```csharp
 // Koordinatenfreie, intuitive API
-var point = cga.EncodeIpnsRound.Point(x, y, z);
-var sphere = cga.EncodeIpnsRound.Sphere(cx, cy, cz, radius);
+var point = cga.Encode.IpnsRound.Point(x, y, z);
+var sphere = cga.Encode.IpnsRound.RealSphere(radius, cx, cy, cz);
 var intersection = point.Op(sphere);
 ```
 
@@ -685,8 +705,16 @@ var scalarProcessor = new MyCustomScalarProcessor();
 var processor = XGaProcessor<MyScalar>.CreateEuclidean(scalarProcessor);
 
 // 3. Alle GA-Operationen funktionieren automatisch!
-var v1 = processor.Vector(a, b, c);
-var v2 = processor.Vector(x, y, z);
+var v1 = processor.CreateComposer()
+    .SetVectorTerm(0, a)
+    .SetVectorTerm(1, b)
+    .SetVectorTerm(2, c)
+    .GetVector();
+var v2 = processor.CreateComposer()
+    .SetVectorTerm(0, x)
+    .SetVectorTerm(1, y)
+    .SetVectorTerm(2, z)
+    .GetVector();
 var result = v1.Gp(v2);
 ```
 

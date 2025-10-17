@@ -91,8 +91,8 @@ public class Combination
             throw new Exception("Invalid negative parameter in Choose()");
         if (n < k)
             return 0;  // special case
-        if (n == k)
-            return 1;
+        if (k == 0 || n == k)
+            return 1;  // C(n,0) = 1 and C(n,n) = 1
 
         long delta, iMax;
 

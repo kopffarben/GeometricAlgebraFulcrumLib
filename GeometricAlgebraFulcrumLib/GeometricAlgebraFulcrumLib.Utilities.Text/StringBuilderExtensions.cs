@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+using System;
+using System.Numerics;
 using System.Text;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Text
@@ -9,10 +10,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Text
         public static StringBuilder Append(this StringBuilder s, Complex number)
         {
             if (number.Real != 0)
+            {
                 s.Append(number.Real.ToString("G"));
 
-            if (number.Imaginary != 0)
+                if (number.Imaginary != 0)
+                    s.Append(number.Imaginary >= 0 ? " + " : " - ")
+                     .Append(Math.Abs(number.Imaginary).ToString("G"))
+                     .Append(" i");
+            }
+            else if (number.Imaginary != 0)
+            {
                 s.Append(number.Imaginary.ToString("G")).Append(" i");
+            }
 
             return s;
         }
@@ -20,10 +29,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Text
         public static StringBuilder Append(this StringBuilder s, Complex number, string doubleFormatString)
         {
             if (number.Real != 0)
+            {
                 s.Append(number.Real.ToString(doubleFormatString));
 
-            if (number.Imaginary != 0)
+                if (number.Imaginary != 0)
+                    s.Append(number.Imaginary >= 0 ? " + " : " - ")
+                     .Append(Math.Abs(number.Imaginary).ToString(doubleFormatString))
+                     .Append(" i");
+            }
+            else if (number.Imaginary != 0)
+            {
                 s.Append(number.Imaginary.ToString(doubleFormatString)).Append(" i");
+            }
 
             return s;
         }
@@ -31,10 +48,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Text
         public static StringBuilder AppendLine(this StringBuilder s, Complex number, string doubleFormatString)
         {
             if (number.Real != 0)
+            {
                 s.Append(number.Real.ToString(doubleFormatString));
 
-            if (number.Imaginary != 0)
+                if (number.Imaginary != 0)
+                    s.Append(number.Imaginary >= 0 ? " + " : " - ")
+                     .Append(Math.Abs(number.Imaginary).ToString(doubleFormatString))
+                     .Append(" i");
+            }
+            else if (number.Imaginary != 0)
+            {
                 s.Append(number.Imaginary.ToString(doubleFormatString)).Append(" i");
+            }
 
             s.AppendLine();
 
@@ -44,10 +69,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Text
         public static StringBuilder AppendLine(this StringBuilder s, Complex number)
         {
             if (number.Real != 0)
+            {
                 s.Append(number.Real.ToString("G"));
 
-            if (number.Imaginary != 0)
+                if (number.Imaginary != 0)
+                    s.Append(number.Imaginary >= 0 ? " + " : " - ")
+                     .Append(Math.Abs(number.Imaginary).ToString("G"))
+                     .Append(" i");
+            }
+            else if (number.Imaginary != 0)
+            {
                 s.Append(number.Imaginary.ToString("G")).Append(" i");
+            }
 
             s.AppendLine();
 
@@ -57,10 +90,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Text
         public static StringBuilder AppendComplexNumber(this StringBuilder s, double numberReal, double numberImaginary, string doubleFormatString)
         {
             if (numberReal != 0)
+            {
                 s.Append(numberReal.ToString(doubleFormatString));
 
-            if (numberImaginary != 0)
+                if (numberImaginary != 0)
+                    s.Append(numberImaginary >= 0 ? " + " : " - ")
+                     .Append(Math.Abs(numberImaginary).ToString(doubleFormatString))
+                     .Append(" i");
+            }
+            else if (numberImaginary != 0)
+            {
                 s.Append(numberImaginary.ToString(doubleFormatString)).Append(" i");
+            }
 
             return s;
         }
@@ -68,10 +109,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Text
         public static StringBuilder AppendComplexNumber(this StringBuilder s, double numberReal, double numberImaginary)
         {
             if (numberReal != 0)
+            {
                 s.Append(numberReal.ToString("G"));
 
-            if (numberImaginary != 0)
+                if (numberImaginary != 0)
+                    s.Append(numberImaginary >= 0 ? " + " : " - ")
+                     .Append(Math.Abs(numberImaginary).ToString("G"))
+                     .Append(" i");
+            }
+            else if (numberImaginary != 0)
+            {
                 s.Append(numberImaginary.ToString("G")).Append(" i");
+            }
 
             return s;
         }

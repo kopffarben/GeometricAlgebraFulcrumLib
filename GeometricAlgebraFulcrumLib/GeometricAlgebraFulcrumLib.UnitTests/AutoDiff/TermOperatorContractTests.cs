@@ -1,46 +1,46 @@
-﻿//using System;
-//using NumericalGeometryLib.Calculus.AutoDiff;
-//using Xunit;
+using System;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.AutoDiff;
+using NUnit.Framework;
 
-//namespace GeometricAlgebraFulcrumLib.UnitTests.AutoDiff
-//{
-//    public class TermOperatorContractTests
-//    {
-//        Term x = new Variable();
+namespace GeometricAlgebraFulcrumLib.UnitTests.AutoDiff;
 
-//        [Fact]
-//        public void PlusContract()
-//        {
-//            Assert.Throws<ArgumentNullException>(() => x + null);
-//            Assert.Throws<ArgumentNullException>(() => null + x);
-//        }
+[TestFixture]
+public class TermOperatorContractTests
+{
+    Term x = new Variable();
 
-//        [Fact]
-//        public void StarContract()
-//        {
-//            Assert.Throws<ArgumentNullException>(() => x * null);
-//            Assert.Throws<ArgumentNullException>(() => null * x);
-//        }
+    [Test]
+    public void PlusContract()
+    {
+        Assert.Throws<ArgumentNullException>(() => { var _ = x + null; });
+        Assert.Throws<ArgumentNullException>(() => { var _ = null + x; });
+    }
 
-//        [Fact]
-//        public void UnaryMinusContract()
-//        {
-//            Term trm = null;
-//            Assert.Throws<ArgumentNullException>(() => -trm);
-//        }
+    [Test]
+    public void StarContract()
+    {
+        Assert.Throws<ArgumentNullException>(() => { var _ = x * null; });
+        Assert.Throws<ArgumentNullException>(() => { var _ = null * x; });
+    }
 
-//        [Fact]
-//        public void BinaryMinusContract()
-//        {
-//            Assert.Throws<ArgumentNullException>(() => x - null);
-//            Assert.Throws<ArgumentNullException>(() => null - x);
-//        }
+    [Test]
+    public void UnaryMinusContract()
+    {
+        Term trm = null;
+        Assert.Throws<ArgumentNullException>(() => { var _ = -trm; });
+    }
 
-//        [Fact]
-//        public void SlashContract()
-//        {
-//            Assert.Throws<ArgumentNullException>(() => null / x);
-//            Assert.Throws<ArgumentNullException>(() => x / null);
-//        }
-//    }
-//}
+    [Test]
+    public void BinaryMinusContract()
+    {
+        Assert.Throws<ArgumentNullException>(() => { var _ = x - null; });
+        Assert.Throws<ArgumentNullException>(() => { var _ = null - x; });
+    }
+
+    [Test]
+    public void SlashContract()
+    {
+        Assert.Throws<ArgumentNullException>(() => { var _ = null / x; });
+        Assert.Throws<ArgumentNullException>(() => { var _ = x / null; });
+    }
+}

@@ -69,7 +69,7 @@ public sealed class XGaFloat64PureRotor
             return false;
 
         // Make sure storage contains only terms of grades 0,2
-        if (Multivector.IsEven(2))
+        if (!Multivector.IsEven(2))
             return false;
 
         // Make sure storage gp reverse(storage) == 1

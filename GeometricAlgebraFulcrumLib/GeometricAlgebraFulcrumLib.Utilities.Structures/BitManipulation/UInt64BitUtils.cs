@@ -2292,14 +2292,18 @@ public static class UInt64BitUtils
     public static int GetNthSetBitPosition(this ulong bits, int index)
     {
         var count = 0;
+        var position = 0;  // Track cumulative position
 
         while (bits != 0 && count <= index)
         {
             var trailingZeros = BitOperations.TrailingZeroCount(bits);
+            position += trailingZeros;  // Accumulate position
+
             if (count == index)
-                return trailingZeros;
+                return position;  // Return absolute position
 
             bits >>= trailingZeros + 1;
+            position++;  // +1 for the set bit we just passed
             count++;
         }
 
@@ -2316,14 +2320,18 @@ public static class UInt64BitUtils
     public static int TryGetNthSetBitPosition(this ulong bits, int index)
     {
         var count = 0;
+        var position = 0;  // Track cumulative position
 
         while (bits != 0 && count <= index)
         {
             var trailingZeros = BitOperations.TrailingZeroCount(bits);
+            position += trailingZeros;  // Accumulate position
+
             if (count == index)
-                return trailingZeros;
+                return position;  // Return absolute position
 
             bits >>= trailingZeros + 1;
+            position++;  // +1 for the set bit we just passed
             count++;
         }
 

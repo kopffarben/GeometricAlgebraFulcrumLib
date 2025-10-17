@@ -9,6 +9,12 @@ lang: de
 **Autor:** Ahmad H. Eid
 **E-Mail:** ga.computing.eg@gmail.com
 
+⚠️ **Hinweis**: Die deutsche Version wird aktualisiert. Für aktuelle Informationen siehe **[English Version](README.en.md)**.
+
+**Status**: In Aktualisierung | **Letztes Update**: 2025-10-17
+
+---
+
 ## Inhaltsverzeichnis
 
 1. [Einführung](#einführung)

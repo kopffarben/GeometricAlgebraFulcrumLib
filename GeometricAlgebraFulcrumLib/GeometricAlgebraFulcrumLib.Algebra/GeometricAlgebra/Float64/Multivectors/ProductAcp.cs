@@ -137,117 +137,50 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Acp(XGaFloat64Vector mv2)
         {
-            if (this is XGaFloat64Scalar s1)
-                return mv2.Times(s1.ScalarValue);
-
-            return IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddAcpTerms(this, mv2)
-                    .GetMultivector();
+            // Anti-Commutator Product: {a,b} = ab + ba
+            return Gp(mv2) + mv2.Gp(this);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Acp(XGaFloat64Bivector mv2)
         {
-            if (this is XGaFloat64Scalar s1)
-                return mv2.Times(s1.ScalarValue);
-
-            return IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddAcpTerms(this, mv2)
-                    .GetMultivector();
+            // Anti-Commutator Product: {a,b} = ab + ba
+            return Gp(mv2) + mv2.Gp(this);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Acp(XGaFloat64HigherKVector mv2)
         {
-            if (this is XGaFloat64Scalar s1)
-                return mv2.Times(s1.ScalarValue);
-
-            return IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddAcpTerms(this, mv2)
-                    .GetMultivector();
+            // Anti-Commutator Product: {a,b} = ab + ba
+            return Gp(mv2) + mv2.Gp(this);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64Multivector Acp(XGaFloat64GradedMultivector mv2)
         {
-            //return (EGp(mv2) + mv2.EGp(this)).Divide(2d);
-
-            if (this is XGaFloat64Scalar s1)
-                return mv2.Times(s1.ScalarValue);
-
-            return IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddAcpTerms(this, mv2)
-                    .GetMultivector();
+            // Anti-Commutator Product: {a,b} = ab + ba
+            return Gp(mv2) + mv2.Gp(this);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64Multivector Acp(XGaFloat64UniformMultivector mv2)
         {
-            //return (EGp(mv2) + mv2.EGp(this)).Divide(2d);
-
-            if (this is XGaFloat64Scalar s1)
-                return mv2.Times(s1.ScalarValue);
-
-            return IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddAcpTerms(this, mv2)
-                    .GetMultivector();
+            // Anti-Commutator Product: {a,b} = ab + ba
+            return Gp(mv2) + mv2.Gp(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Acp(XGaFloat64KVector mv2)
         {
-            if (this is XGaFloat64Scalar s1)
-                return mv2.Times(s1.ScalarValue);
-
-            if (mv2 is XGaFloat64Scalar s2)
-                return Times(s2.ScalarValue);
-
-            if (this is XGaFloat64Vector v1 && mv2 is XGaFloat64Vector v2)
-                return v1.Sp(v2);
-
-            return IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddAcpTerms(this, mv2)
-                    .GetMultivector();
+            // Anti-Commutator Product: {a,b} = ab + ba
+            return Gp(mv2) + mv2.Gp(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64Multivector Acp(XGaFloat64Multivector mv2)
         {
-            //return (EGp(mv2) + mv2.EGp(this)).Divide(2d);
-
-            if (this is XGaFloat64Scalar s1)
-                return mv2.Times(s1.ScalarValue);
-            
-            if (mv2 is XGaFloat64Scalar s2)
-                return Times(s2.ScalarValue);
-
-            if (this is XGaFloat64Vector v1 && mv2 is XGaFloat64Vector v2)
-                return v1.Sp(v2);
-
-            return IsZero || mv2.IsZero
-                ? Processor.ScalarZero
-                : Processor
-                    .CreateMultivectorComposer()
-                    .AddAcpTerms(this, mv2)
-                    .GetMultivector();
+            // Anti-Commutator Product: {a,b} = ab + ba
+            return Gp(mv2) + mv2.Gp(this);
         }
     }
 

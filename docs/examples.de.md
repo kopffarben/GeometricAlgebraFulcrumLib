@@ -6,6 +6,12 @@ lang: de
 
 # GA-FuL Verwendungsbeispiele
 
+⚠️ **Hinweis**: Die deutsche Version wird aktualisiert. Für aktuelle API-Beispiele siehe **[English Version](examples.en.md)**.
+
+**Status**: In Aktualisierung | **Letztes Update**: 2025-10-17
+
+---
+
 ## Inhaltsverzeichnis
 
 1. [Grundlegende GA-Operationen](#grundlegende-ga-operationen)
@@ -673,5 +679,7 @@ Für weitere Beispiele siehe die Projekte im Repository:
 - `GeometricAlgebraFulcrumLib.UnitTests`
 
 ---
+
+[← Zurück zur Hauptdokumentation](README.de.md)
 
 [← Zurück zur Hauptdokumentation](README.en.md)

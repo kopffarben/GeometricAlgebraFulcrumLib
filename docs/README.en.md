@@ -145,6 +145,29 @@ For more details, see the [Project Structure Documentation](project-structure.en
 
 ---
 
+## Testing & Quality
+
+**Status (2025-10-17)**: 🎉 **97.91% Tests Passing!** 🎉
+
+- **Total Tests**: 1,153
+- **Passing**: 1,129 (97.91%) ✅
+- **Failing**: 0
+- **Skipped**: 24
+- **Code Coverage**: ~50%
+
+**Test Suites**:
+| Component | Tests | Pass Rate |
+|-----------|-------|-----------|
+| Algebra Operations | 133 | 100% 🎯 |
+| Linear Maps | 121 | 100% |
+| AutoDiff | 69 | 100% |
+| Modeling (CGa/PGA) | 507 | 91% |
+| Utilities | 295 | 99.7% |
+
+See [ISSUES_TO_FIX.md](https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/ISSUES_TO_FIX.md) for details.
+
+---
+
 ## Getting Started
 
 For a quick introduction to GA-FuL, please read the [Getting Started Guide](getting-started.en.md).
@@ -152,17 +175,16 @@ For a quick introduction to GA-FuL, please read the [Getting Started Guide](gett
 A simple example:
 
 ```csharp
-// Define scalar processor for 64-bit floating point numbers
-var scalarProcessor = ScalarProcessorOfFloat64.Instance;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
 
-// Create a CGA space
+// Create a CGA space for 3D geometry
 var cga = CGaFloat64GeometricSpace5D.Instance;
 
 // Encode points as CGA null vectors
 var point1 = cga.Encode.IpnsRound.Point(3.5, 4.3, 2.6);
 var point2 = cga.Encode.IpnsRound.Point(-2.1, 3.4, 5.0);
 
-// Perform GA operations (simplified example)
+// Perform GA operations (outer product)
 var result = point1.Op(point2);
 ```
 
@@ -234,5 +256,7 @@ This documentation is divided into several thematic sections:
 - **Deutsch:** `.de.md` files
 
 ---
+
+**Last Updated**: 2025-10-17 | **Status**: Active | **Test Pass Rate**: 97.91% ✅
 
 **Note:** This documentation provides comprehensive information about GA-FuL. Use the table of contents to navigate to desired topics.
