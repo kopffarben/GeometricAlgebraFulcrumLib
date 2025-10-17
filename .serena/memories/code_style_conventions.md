@@ -26,12 +26,48 @@
 - **Sealed Classes**: Used for test fixtures and final implementations
 
 ## Testing Patterns
+
+### Test Naming
 - **Test Class Naming**: `<FeatureName>Tests` (e.g., `BasisBladeTests`, `RotorsTests`)
-- **Test Method Naming**: Descriptive with `Test` prefix (e.g., `TestIdGradeIndexConversion`)
-- **Attributes**: 
+- **Test Method Naming**: Descriptive with `Test` prefix or clear descriptive names (e.g., `TestIdGradeIndexConversion`, `Rotation_PreservesNorm`)
+- **Attributes**:
   - `[TestFixture]` for test classes
   - `[Test]` for test methods
-- **Assertions**: Both `Debug.Assert()` and `Assert.That()` used together for debugging and testing
+  - `[Ignore("reason")]` for known library limitations
+
+### Assertions
+- **Dual Assertions**: Use both `Debug.Assert()` and `Assert.That()` together
+  - `Debug.Assert()` catches bugs during development
+  - `Assert.That()` catches bugs in CI/CD
+- **Descriptive Messages**: Always include actual values in failure messages
+  ```csharp
+  Assert.That(condition, $"Expected X, got {actualValue}");
+  ```
+
+### Floating-Point Comparisons
+**CRITICAL**: Never use exact zero comparisons for floating-point arithmetic
+```csharp
+// ❌ WRONG
+Assert.That(result.IsZero);
+
+// ✅ CORRECT
+const double tolerance = 1e-12;
+Assert.That(result.IsNearZero(tolerance));
+```
+
+### Test Isolation
+- **Random Generators**: Always create fresh instances per test with explicit seeds
+  ```csharp
+  var random = new Random(42);  // Fresh per test
+  ```
+- **No Shared State**: Avoid static fields that persist across tests
+- **Independent Tests**: Each test must run correctly in any order
+
+### Test Organization
+- **One Test Class Per Feature**: Keep related tests together
+- **Setup/Teardown**: Use `[OneTimeSetUp]` and `[OneTimeTearDown]` sparingly
+- **Test Data**: Use `[TestCase]` for data-driven tests when appropriate
+- **Debug Tests**: Separate debug/diagnostic tests in their own files (e.g., `RotorDebugTest.cs`)
 
 ## Documentation
 - XML documentation comments for public APIs (standard C# convention)

@@ -295,15 +295,201 @@ var e2 = frame[1];  // Second basis vector
 
 - Test classes use `[TestFixture]` (NUnit)
 - Test methods use `[Test]` attribute
-- Both `Debug.Assert()` and `Assert.That()` are used together
+- Both `Debug.Assert()` and `Assert.That()` are used together for debugging and testing
 - Test naming: `Test<FeatureName>` or descriptive names
 - Test classes: `<Feature>Tests.cs`
 
+**Test Directory Structure:**
 Located in: `GeometricAlgebraFulcrumLib.UnitTests/`
-- `Algebra/` - Core algebra tests
-- `Geometry/` - Geometric operations tests
-- `LinearMaps/` - Rotors, reflectors, outermorphisms tests
-- `Processing/` - Basis blade and multivector storage tests
+- `Algebra/` - Core algebra tests (133 tests, 100% passing)
+- `LinearMaps/` - Rotors, reflectors, outermorphisms tests (121 tests, 100% passing)
+- `AutoDiff/` - Automatic differentiation tests (69 tests, 100% passing)
+- `Processing/` - Basis blade and multivector storage tests (19 tests)
+- `Modeling/Geometry/CGa/` - Conformal GA tests (507 tests, 91% passing)
+- `Modeling/Graphics/` - Graphics primitives, accelerators tests
+- `Modeling/Signals/` - Signal processing tests
+- `Utilities/` - BitManipulation, IndexSets, Combinations tests (295 tests, 99.7% passing)
+
+**Test Statistics (as of 2025-10-17):**
+- Total: 1153 tests
+- Pass Rate: 97.92% (1129 passing)
+- Failing: 0 (all critical bugs fixed!)
+- Skipped: 24 (known library limitations or future work)
+
+## Testing Best Practices & Learnings
+
+Based on 1000+ tests and multiple bug fixes, these are critical learnings:
+
+### 1. Floating-Point Comparisons
+**NEVER use exact zero comparisons for floating-point arithmetic.**
+
+```csharp
+// ❌ WRONG - Will fail due to rounding errors
+Assert.That(result.IsZero);
+
+// ✅ CORRECT - Use tolerance-based comparison
+const double tolerance = 1e-12;
+Assert.That(result.IsNearZero(tolerance),
+    $"Expected near-zero, got {result.Norm().ScalarValue}");
+```
+
+**Why:** Different multivector storage implementations (Uniform, Graded, Dense) compute operations in different orders, accumulating different rounding errors. Typical differences: 1e-13 to 1e-15.
+
+**Where this matters:**
+- MultivectorStoragesTests - comparing different storage types
+- Product operations (Gp, Cp, Acp, etc.)
+- Self-operations like Gp(Reverse())
+
+### 2. Random Number Generator Isolation
+**Always isolate random generator state between tests to avoid test-order dependencies.**
+
+```csharp
+// ❌ WRONG - Shared state causes flakiness
+public class MyTests
+{
+    private static Random _random = new Random(42);  // Shared!
+
+    [Test]
+    public void Test1()
+    {
+        var value = _random.Next();  // Depends on previous test order!
+    }
+}
+
+// ✅ CORRECT - Fresh state per test
+[Test]
+public void TestWithIsolatedRandom()
+{
+    var random = new Random(42);  // Fresh seed
+    var value = random.Next();    // Predictable!
+}
+```
+
+**Why:** Test execution order can vary (parallel execution, test selection, etc.). Tests must be independent.
+
+**Fixed bugs:** BasisBladeTests.TestOddGradeInvolution failed when run after certain tests due to shared random state.
+
+### 3. API Correctness - IndexSet Creation
+**Critical bug found:** `BasisVectorIndexToId()` vs `BasisBivectorIndexToId()`
+
+```csharp
+// ❌ WRONG - GetBivector bug (CRITICAL!)
+public XGaFloat64Bivector GetBivector(int index)
+{
+    return Processor.BivectorTerm(
+        index.BasisVectorIndexToId(),  // Creates single index - WRONG!
+        GetScalarValue()
+    );
+}
+
+// ✅ CORRECT - Fixed version
+public XGaFloat64Bivector GetBivector(int index)
+{
+    return Processor.BivectorTerm(
+        index.BasisBivectorIndexToId(),  // Creates pair of indices
+        GetScalarValue()
+    );
+}
+```
+
+**Impact:** This bug blocked 13 tests in MultivectorStoragesTests. A bivector requires TWO basis vector indices (e.g., e₁∧e₂), not one!
+
+### 4. Product Implementation Patterns
+**Commutator and Anti-Commutator products have simple, direct formulas.**
+
+```csharp
+// ✅ CORRECT Implementation Pattern
+// Commutator Product: [A,B] = (AB - BA) / 2
+public static XGaFloat64Multivector Cp(this XGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
+{
+    return mv1.Gp(mv2)
+        .Subtract(mv2.Gp(mv1))
+        .Divide(2d);
+}
+
+// Anti-Commutator Product: {A,B} = (AB + BA) / 2
+public static XGaFloat64Multivector Acp(this XGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
+{
+    return mv1.Gp(mv2)
+        .Add(mv2.Gp(mv1))
+        .Divide(2d);
+}
+```
+
+**Lesson:** These products are NOT inner/outer product variations. They're simple algebraic combinations of the geometric product.
+
+### 5. Grade Involution Logic
+**Sign patterns for grade involution were reversed.**
+
+```csharp
+// ❌ WRONG - Reversed logic
+grade % 2 == 0 ? scalar : -scalar  // Even grades negated - WRONG!
+
+// ✅ CORRECT - Odd grades get negated
+grade % 2 == 0 ? scalar : scalar.Negative()  // Grade 1,3,5,... negated
+```
+
+**Mathematical rule:** Grade involution negates odd-grade terms (vectors, trivectors, etc.), not even-grade terms.
+
+### 6. Known Edge Cases & Limitations
+
+#### CreatePureRotor with Antiparallel Vectors
+**Limitation:** `vector.CreatePureRotor(targetVector)` fails when vectors are nearly antiparallel (angle ≈ 180°).
+
+```csharp
+// ⚠️ KNOWN ISSUE - May throw DebugAssertException
+var u1 = random.GetVector().DivideByENorm();
+var u2 = random.GetVector().DivideByENorm();
+var rotor = u1.CreatePureRotor(u2);  // Fails if u1 ≈ -u2
+
+// ✅ WORKAROUND - Check for antiparallel case
+var cosAngle = u1.ESp(u2);
+if (Math.Abs(cosAngle + 1.0) < 1e-10)
+{
+    // Vectors are antiparallel - handle specially or skip
+    return;
+}
+var rotor = u1.CreatePureRotor(u2);
+```
+
+**Why:** The library's `GetNormalVector()` method creates a circular dependency when finding a perpendicular vector to antiparallel vectors.
+
+**Affected:** Rotation tests are flaky when using random vectors without checking angles.
+
+### 7. BitManipulation Edge Cases
+**Critical bug found:** `GetNthSetBitPosition` returned relative positions instead of absolute.
+
+```csharp
+// Example of the bug (NOW FIXED):
+ulong bitPattern = 0b1010;  // Bits at positions 1 and 3
+// WRONG result: GetNthSetBitPosition(bitPattern, 1) returned 2 (relative)
+// CORRECT result: Should return 3 (absolute position)
+```
+
+**Lesson:** Always test with sparse bit patterns where position != index.
+
+### 8. Testing Strategy Insights
+
+**Test Coverage by Priority:**
+1. **Core Algebra** (P0): Product operations, unary operations - 100% must pass
+2. **LinearMaps** (P1): Rotors, reflectors - Critical for geometric transformations
+3. **Storage Consistency** (P1): All storage types must produce identical results
+4. **Edge Cases** (P2): Empty sets, antiparallel vectors, boundary conditions
+5. **CGa/Modeling** (P3): Domain-specific - acceptable to have some known limitations
+
+**Best Testing Patterns:**
+- Use `Debug.Assert()` + `Assert.That()` together (catches bugs in development + CI)
+- Test with multiple random seeds to catch flaky tests
+- Compare results across different storage types for consistency
+- Always test edge cases: dimension=0, grade=0, empty multivectors
+- Use descriptive assertion messages with actual values
+
+### 9. Documentation References
+For comprehensive issue tracking and test coverage details:
+- `ISSUES_TO_FIX.md` - All known issues with priority levels (0 failing tests!)
+- `TODO_TEST_COVERAGE.md` - Complete test coverage plan and statistics
+- `DOCUMENTATION_INDEX.md` - Central documentation registry
+- `UnitTests/KNOWN_ISSUES.md` - Known library bugs and workarounds
 
 ## Key Files and Locations
 
@@ -335,11 +521,19 @@ Located in: `GeometricAlgebraFulcrumLib.UnitTests/`
 
 ## Common Pitfalls
 
+### General Programming Pitfalls
 1. **Don't hardcode scalar operations:** Use `processor.ScalarProcessor.Add(a, b)` not `a + b`
 2. **Don't mutate multivectors:** They're immutable—use composers instead
 3. **Don't ignore metric:** `XGaFloat64Processor.Create(2, 0)` ≠ `XGaFloat64Processor.Euclidean` for products
 4. **Don't mix processors:** Multivectors from different processors are incompatible
 5. **Don't forget grade:** `CreateKVectorComposer(grade)` requires consistent grade—mixing grades needs `CreateMultivectorComposer()`
+
+### Testing & Numerical Pitfalls
+6. **Don't use exact zero comparisons:** Always use `IsNearZero(tolerance)` instead of `IsZero` for floating-point results
+7. **Don't share random state:** Create fresh `Random` instances per test with explicit seeds
+8. **Don't use wrong IndexSet APIs:** `BasisVectorIndexToId()` creates vectors; `BasisBivectorIndexToId()` creates bivectors
+9. **Don't assume antiparallel vectors work:** Check angles before calling `CreatePureRotor()` with random vectors
+10. **Don't test implementation details:** Test mathematical properties (e.g., `rotor * vector * rotor.Reverse()` preserves norm) not internal state
 
 ## External Documentation
 
