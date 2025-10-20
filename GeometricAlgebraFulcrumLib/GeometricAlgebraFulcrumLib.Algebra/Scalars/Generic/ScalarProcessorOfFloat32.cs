@@ -154,6 +154,23 @@ public sealed class ScalarProcessorOfFloat32
     {
         return this.ScalarFromValue(scalar1 / scalar2);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<float> Remainder(float scalar1, float scalar2)
+    {
+        var remainder = float.Ieee754Remainder(scalar1, scalar2);
+        //Math.IEEERemainder := dividend - (divisor * Math.Round(dividend / divisor))
+        //
+        //Remainder operator (%) := (Math.Abs(dividend) - (Math.Abs(divisor) *
+        // (Math.Floor(Math.Abs(dividend) / Math.Abs(divisor))))) *
+        // Math.Sign(dividend)
+
+        //var ratio = scalar1 / scalar2;
+        //var fractionalPart = ratio - MathF.Truncate(ratio);
+        //var remainder = fractionalPart * scalar2;
+        
+        return this.ScalarFromValue(remainder);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Scalar<float> Positive(float scalar)
@@ -182,7 +199,19 @@ public sealed class ScalarProcessorOfFloat32
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Scalar<float> UnitStep(float scalar)
     {
-        return this.ScalarFromValue(scalar < 0f ? 0f : 1f);
+        return scalar < 0f ? Zero : One;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<float> IntegerPart(float scalar)
+    {
+        return this.ScalarFromValue(MathF.Truncate(scalar));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<float> FractionalPart(float scalar)
+    {
+        return this.ScalarFromValue(scalar - MathF.Truncate(scalar));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -432,11 +461,11 @@ public sealed class ScalarProcessorOfFloat32
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Scalar<float> VectorToRadians(float scalarX, float scalarY)
     {
-        var value = Math.Atan2(scalarY, scalarX);
+        var value = MathF.Atan2(scalarY, scalarX);
 
-        if (value < 0) value += Math.Tau;
+        if (value < 0) value += MathF.Tau;
 
-        return ScalarFromNumber(value);
+        return value.ScalarFromValue(this);
     }
 
 }
