@@ -215,18 +215,19 @@ double result = proc.Add(3.0, 4.0);  // ✅ Works exactly as before!
 
 ---
 
-## Implementation Effort
+## Implementation Effort (UPDATED with Modeling Layer)
 
 ### Phase 0: Prototyping (4h)
-✅ **DONE** - ReversedApproachPrototype.cs zeigt es funktioniert!
+✅ **DONE** - ReversedFloatingPointPrototype.cs zeigt es funktioniert!
 
 ### Phase 1: Core Interfaces (8h)
-- IMathOperations<T> interface (~300 LOC)
-- MathDouble, MathFloat, MathHalf (~3× 400 LOC = 1200 LOC)
-- SymbolicScalar : INumber<T>, IMathOperations<T> (~1500 LOC)
+- IScalarOps<T> interface (~50 LOC)
+- FloatingScalar<T> where T : IFloatingPointIeee754<T> (~150 LOC)
+- ComplexScalar (~200 LOC)
+- SymbolicScalar (~1500 LOC)
 
-### Phase 2: Unified Processor (20h)
-- XGaProcessor<T> where T : INumber<T>, IMathOperations<T>
+### Phase 2: Unified Algebra Processor (20h)
+- XGaProcessor<T> where T : IScalarOps<T>
 - Convert all algorithms to use operators + static abstracts
 - ~15,000 LOC changes
 
@@ -236,12 +237,38 @@ double result = proc.Add(3.0, 4.0);  // ✅ Works exactly as before!
 - Conversion helpers
 - ~2000 LOC
 
-### Phase 4: Testing (12h)
-- Performance benchmarks
-- Symbolic AST validation
-- Compatibility tests
+### Phase 4: Modeling - CGa Float32 Extensions (30h) **NEW**
+- CGaFloat32Extensions class (~1000 LOC)
+- Extension methods for Float32 input/output
+- LinFloat32Vector2D/3D types
+- Testing with Float32
 
-**Total**: 52 hours (vs 60h Two-Track, vs 180h Wrapper Struct)
+### Phase 5: Modeling - PGa Verification (4h) **NEW**
+- Verify PGaBlade<float> works (already generic!)
+- Test cases for PGa with Float32
+- Documentation
+
+### Phase 6: Testing & Benchmarking (12h)
+- Performance benchmarks (Float64 vs Float32 vs REVERSED)
+- Symbolic AST validation
+- Integration tests (Modeling + Algebra)
+- Memory usage analysis
+
+### Phase 7: Documentation (10h)
+- Architecture decision document
+- Float32 usage guide
+- Migration guide (zero migration!)
+- API reference updates
+
+**Total**: **96 hours** (~2.5 weeks full-time)
+
+**Breakdown**:
+- Algebra layer: 40h (Phases 1-3)
+- Modeling layer: 34h (Phases 4-5)
+- Testing: 12h (Phase 6)
+- Documentation: 10h (Phase 7)
+
+**vs Alternatives**: 96h (vs 60h Two-Track without Modeling, vs 200h+ Full Generic CGa)
 
 ---
 
@@ -365,10 +392,12 @@ Ultra-Conservative (no change)→ Current (Float64)
 
 ## Next Steps
 
-1. ✅ **Prototype** - DONE (ReversedApproachPrototype.cs)
-2. ⏭️ **Performance Validation** - Benchmark prototype
-3. ⏭️ **Decision Approval** - Get stakeholder buy-in
+1. ✅ **Prototype** - DONE (ReversedFloatingPointPrototype.cs)
+2. ✅ **Modeling Analysis** - DONE (MODELING_LAYER_ANALYSIS.md)
+3. ⏭️ **Decision Approval** - Get stakeholder buy-in for 96h implementation
 4. ⏭️ **Implementation** - Start Phase 1 (Core Interfaces)
+5. ⏭️ **Modeling Extensions** - Add CGa Float32 helpers (Phase 4)
+6. ⏭️ **Testing & Documentation** - Phases 6-7
 
 ---
 
@@ -379,8 +408,16 @@ Der **REVERSED APPROACH** ist eine game-changing Idee vom User die ALLE anderen 
 - **Better than Two-Track**: Code-Unifikation, weniger LOC
 - **Better than Wrapper Struct**: Weniger Code, bessere Performance, geringerer Aufwand
 - **Better than Current**: Eliminiert Duplikation, Float32 Support, wartbarer
+- **Better than Full Generic CGa**: 96h statt 200h+, zero breaking changes
+
+**CRITICAL INSIGHT**: Die Library hat **BEREITS** eine Hybrid-Architektur!
+- ✅ Algebra: XGaProcessor<T> existiert schon
+- ✅ PGa: PGaBlade<T> existiert schon (fully generic!)
+- ❌ CGa: Nur Float64 (90+ files) → Float32 Extensions statt full generic
 
 **Dies ist der optimale Weg forward!** 🎯
+
+**Siehe auch**: MODELING_LAYER_ANALYSIS.md für komplette Modeling-Analyse
 
 ---
 
