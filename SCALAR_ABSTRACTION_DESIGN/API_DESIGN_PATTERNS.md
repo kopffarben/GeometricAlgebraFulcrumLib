@@ -2,8 +2,20 @@
 ## Konsistente Hybrid-API über alle Library-Layer
 
 **Teil von:** [SCALAR_ABSTRACTION_DESIGN.md](./SCALAR_ABSTRACTION_DESIGN.md)
-**Version:** 2.0
-**Datum:** 2025-01-22
+**Version:** 2.1 (Korrigiert - Generic Literals Fixed)
+**Datum:** 2025-01-22 (Updated: 2025-10-22)
+
+---
+
+## ⚠️ KRITISCHE KORREKTUR (2025-10-22)
+
+**Generic Numeric Literals Problem:** Die ursprünglichen Code-Beispiele enthielten `0.5d * T` Pattern, welches in C# Generic-Code NICHT kompiliert (`double * T` ist nicht definiert).
+
+**Korrekte Patterns:**
+1. **ScalarProcessor verwenden:** `ScalarProcessor.Times(ScalarProcessor.ScalarFromNumber(0.5), value)`
+2. **Alternatives Pattern (wenn IFloatingPointIeee754<T> Constraint):** `T.CreateChecked(0.5) * value`
+
+Alle Code-Beispiele unten wurden korrigiert oder mit **⚠️ Warnungen** versehen.
 
 ---
 
@@ -372,11 +384,17 @@ public CGaBlade<T> HyperSphere(IScalar<T> radiusSquared)
 public CGaFloat64Blade HyperSphere(double radiusSquared)
 ```
 
-**After:**
+**After (KORRIGIERT):**
 ```csharp
 // Generic - Hybrid API
 public CGaBlade<T> HyperSphere(T radiusSquared)
-    => GeometricSpace.Eo - 0.5d * radiusSquared * GeometricSpace.Ei;
+{
+    // ⚠️ KORRIGIERT: 0.5d * radiusSquared kompiliert NICHT (double × T undefined)
+    // KORREKT: ScalarProcessor verwenden
+    var half = ScalarProcessor.ScalarFromNumber(0.5);
+    var term = ScalarProcessor.Times(half, radiusSquared);
+    return GeometricSpace.Eo - term * GeometricSpace.Ei;
+}
 
 public CGaBlade<T> HyperSphere(Scalar<T> radiusSquared)
     => HyperSphere(radiusSquared.ScalarValue);
@@ -441,9 +459,15 @@ public CGaBlade<T> Point(LinFloat64Vector3D egaPoint)
 public CGaBlade<T> Point(XGaVector<T> egaPoint)
 {
     var p = GeometricSpace.Encode.VGa.VectorAsXGaVector(egaPoint);
+
+    // ⚠️ KORRIGIERT: 0.5d * egaPoint.NormSquared() kompiliert nicht
+    var normSquared = egaPoint.NormSquared();  // Returns Scalar<T>
+    var half = ScalarProcessor.ScalarFromNumber(0.5);
+    var term = ScalarProcessor.Times(half, normSquared.ScalarValue);
+
     var kVector = GeometricSpace.EoVector +
                   p +
-                  0.5d * egaPoint.NormSquared() * GeometricSpace.EiVector;
+                  term * GeometricSpace.EiVector;
     return new CGaBlade<T>(GeometricSpace, kVector);
 }
 
@@ -461,9 +485,14 @@ private CGaBlade<T> PointCore(T x, T y, T z)
         )
     ).ScalarValue;  // Unwrap zu T!
 
+    // ✅ KORREKT: ScalarProcessor.Times() mit ScalarFromNumber()
+    // Das ist das RICHTIGE Pattern für generic code!
+    var half = ScalarProcessor.ScalarFromNumber(0.5);
+    var term = ScalarProcessor.Times(half, pNormSquared);
+
     var kVector = GeometricSpace.EoVector +
                   p +
-                  ScalarProcessor.Times(0.5d, pNormSquared) * GeometricSpace.EiVector;
+                  term * GeometricSpace.EiVector;
 
     return new CGaBlade<T>(GeometricSpace, kVector);
 }
@@ -473,10 +502,11 @@ private CGaBlade<T> PointCore(T x, T y, T z)
 
 **Before:**
 ```csharp
-// Generic
+// Generic (FALSCH - kompiliert nicht!)
 public CGaBlade<T> RealSphere(IScalar<T> radius, XGaVector<T> egaCenter)
 {
     var c = Point(egaCenter);
+    // ❌ FALSCH: 0.5d * radius * radius kompiliert nicht (double × IScalar<T>)
     return c - 0.5d * radius * radius * GeometricSpace.Ei;
 }
 

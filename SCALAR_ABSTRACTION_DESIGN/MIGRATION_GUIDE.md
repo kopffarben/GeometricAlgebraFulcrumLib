@@ -44,15 +44,15 @@ Funktioniert **100% unverändert**!
 
 ### Interne Änderung (unsichtbar für dich):
 
-**Vor dem Refactoring:**
+**Vor dem Refactoring (IST):**
 ```
 CGaFloat64GeometricSpace
-└── Eigene Implementation (~3000 LOC)
+└── Separate Implementation (28,064 LOC - massive Duplikation!)
 ```
 
-**Nach dem Refactoring:**
+**Nach dem Refactoring (SOLL):**
 ```
-CGaFloat64GeometricSpace (Wrapper)
+CGaFloat64GeometricSpace (Thin Wrapper, ~3,000-5,000 LOC)
 └── Delegiert zu CGaGeometricSpace<double>
 ```
 
@@ -159,11 +159,20 @@ var cga = CGaGeometricSpace5D<IMetaExpressionAtomic>.Create(context);
 ### Symbolische Parameter
 
 ```csharp
-// Parameter definieren
-var radius = context.GetOrDefineParameterVariable("radius");
-var centerX = context.GetOrDefineParameterVariable("centerX");
-var centerY = context.GetOrDefineParameterVariable("centerY");
-var centerZ = context.GetOrDefineParameterVariable("centerZ");
+// ⚠️ KORRIGIERT: GetOrDefineParameterVariable() gibt IMetaExpressionAtomic zurück
+// Muss zu IScalar<T> gewrapped werden für CGa API
+
+// Parameter definieren (gibt IMetaExpressionAtomic zurück)
+var radiusAtomic = context.GetOrDefineParameterVariable("radius");
+var centerXAtomic = context.GetOrDefineParameterVariable("centerX");
+var centerYAtomic = context.GetOrDefineParameterVariable("centerY");
+var centerZAtomic = context.GetOrDefineParameterVariable("centerZ");
+
+// Wrapping zu IScalar<T> (nötig für CGa Encoder API)
+var radius = context.ScalarProcessor.ScalarFromValue(radiusAtomic);
+var centerX = context.ScalarProcessor.ScalarFromValue(centerXAtomic);
+var centerY = context.ScalarProcessor.ScalarFromValue(centerYAtomic);
+var centerZ = context.ScalarProcessor.ScalarFromValue(centerZAtomic);
 ```
 
 ### Symbolische Operationen
@@ -171,14 +180,27 @@ var centerZ = context.GetOrDefineParameterVariable("centerZ");
 ```csharp
 // GA-Operationen mit symbolischen Parametern
 var sphere = cga.Encode.IpnsRound.RealSphere(radius, centerX, centerY, centerZ);
-var plane = cga.Encode.OpnsFlat.Plane(0.0, 0.0, 1.0, 0.0);
+
+// ⚠️ PROBLEM: Plane() mit numeric literals (0.0) mixed mit symbolic Type
+// Workaround: Auch literals als symbolic Parameter oder via ScalarFromNumber
+var zero = context.ScalarProcessor.ScalarFromNumber(0.0);
+var one = context.ScalarProcessor.ScalarFromNumber(1.0);
+var plane = cga.Encode.OpnsFlat.Plane(zero, zero, one, zero);
+
 var intersection = sphere.Op(plane);  // Symbolisch!
 
-// Transformation
-var translated = sphere.TranslateBy(1.0, 2.0, 3.0);
+// ⚠️ PROBLEM: TranslateBy() mit numeric literals in Generic<T> Code
+// Aktuell nicht lösbar ohne API-Extension oder Constraint
+// var translated = sphere.TranslateBy(1.0, 2.0, 3.0);  // KOMPILIERT NICHT!
+
+// Workaround: Manuelle Translation mit ScalarProcessor
+var tx = context.ScalarProcessor.ScalarFromNumber(1.0);
+var ty = context.ScalarProcessor.ScalarFromNumber(2.0);
+var tz = context.ScalarProcessor.ScalarFromNumber(3.0);
+// var translated = sphere.TranslateBy(tx, ty, tz);  // Wenn API existiert
 
 // Mehr Operationen
-var scaled = 2 * translated;  // Operators arbeiten!
+var scaled = 2 * translated;  // Operators arbeiten! ✅
 ```
 
 ### Optimierung
@@ -197,16 +219,16 @@ context.OptimizeContext();
 ### Code-Generierung
 
 ```csharp
-// C# Float32 Code generieren
-var codeGen = new GaFuLMetaContextCodeComposer(context, "float");
-codeGen.TargetLanguage = "CSharp";
-var csharpCode = codeGen.Generate();
+// ⚠️ KORRIGIERT: Constructor signature war falsch dokumentiert
+// Tatsächliche Signature: GaFuLMetaContextCodeComposer(GaFuLLanguageServerBase, MetaContext)
 
-// Oder C++ Code
-codeGen.TargetLanguage = "CPlusPlus";
-var cppCode = codeGen.Generate();
+// TODO: Dokumentation wie GaFuLLanguageServerBase erstellt wird fehlt!
+// Placeholder:
+// var languageServer = /* ... GaFuLLanguageServerBase erstellen ... */;
+// var codeGen = new GaFuLMetaContextCodeComposer(languageServer, context);
+// var generatedCode = codeGen.Generate();
 
-// Ergebnis: Optimierter, GPU-ready Code!
+// ⚠️ AKTUELL NICHT NUTZBAR ohne Dokumentation des LanguageServer-Setups
 ```
 
 ### Workflow-Beispiel: Prototyping → Optimization → Deploy
@@ -223,10 +245,12 @@ var optimized = /* ... symbolische Version ... */;
 context.OptimizeContext();
 
 // 3. CODE-GEN: Float32 für GPU
-var codeGen = new GaFuLMetaContextCodeComposer(context, "float");
-var gpuCode = codeGen.Generate();
+// ⚠️ KORRIGIERT: Constructor signature
+// var languageServer = /* ... */;  // TODO: Setup dokumentieren
+// var codeGen = new GaFuLMetaContextCodeComposer(languageServer, context);
+// var gpuCode = codeGen.Generate();
 
-// 4. DEPLOY: GPU Kernel nutzen
+// 4. DEPLOY: GPU Kernel nutzen (Code-Gen aktuell nicht vollständig dokumentiert)
 // → Optimaler Code, maximale Performance!
 ```
 
@@ -423,7 +447,7 @@ public void NewFloat32Test()
 
 ### Q: Funktionieren alte Tests noch?
 
-**A:** Ja! Alle 507 bestehenden CGa Tests passen nach dem Refactoring.
+**A:** Ja! Alle 162 bestehenden CGa Tests passen nach dem Refactoring (nach Phase 0 Test-Baseline).
 
 ### Q: Was ist mit MetaContext?
 

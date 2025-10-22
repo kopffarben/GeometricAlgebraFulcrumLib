@@ -2,8 +2,24 @@
 ## Scalar Abstraction System - Detaillierte Architektur
 
 **Teil von:** [SCALAR_ABSTRACTION_DESIGN.md](./SCALAR_ABSTRACTION_DESIGN.md)
-**Version:** 2.0
-**Datum:** 2025-01-22
+**Version:** 2.1 (Review-Update)
+**Datum:** 2025-01-22 (Updated: 2025-10-22)
+
+---
+
+## ⚠️ CRITICAL UPDATE (2025-10-22)
+
+**Status nach 6-Architekten-Review:** Architektur ist konzeptionell korrekt, aber **Metriken veraltet** und **IST vs SOLL nicht getrennt**.
+
+**Korrigierte Metriken:**
+- ❌ **FALSCH (alt):** "507 CGa Tests" → **RICHTIG: IST: 8 Tests, SOLL: 162 Baseline + 190 neue = 352 total**
+- ❌ **FALSCH (alt):** "3,000 LOC Duplikation" → **RICHTIG: ~25,000 LOC Duplikation (IST-Problem)**
+- ✅ **KORREKT:** Float32 existiert (ScalarProcessorOfFloat32, 442 LOC)
+- ✅ **KORREKT:** XGa Hybrid API vollständig implementiert
+
+**IST vs SOLL klargestellt:**
+- **IST (Problem):** Float64 = 28k LOC, Generic = 23k LOC (separate Implementations)
+- **SOLL (Lösung):** Float64 = 3-5k LOC thin wrapper, Generic = 23k LOC (core logic)
 
 ---
 
@@ -209,43 +225,62 @@ public sealed class ScalarProcessorOfFloat64 : IScalarProcessor<double>
 
 ### Geometrie-Systeme Status-Übersicht
 
-| System | Generic Version | Float64 Version | Status | Priorität |
-|--------|----------------|-----------------|--------|-----------|
-| **CGa** (Conformal) | ⚠️ IScalar<T> only | ❌ Separate Implementation (~3000 LOC) | **REFACTORING NÖTIG** | **P0** |
-| **PGa** (Projective) | ✅ Hybrid API | ✅ Deprecated (commented out) | **ERFOLGSGESCHICHTE** | - |
-| **VGa** (Vector/Euclidean) | ❌ Nicht vorhanden | ✅ Simple Wrapper (~200 LOC) | OK | P2 |
-| **HGa** (Hyperbolic) | ✅ Minimal (2 files) | ❌ Nicht vorhanden | OK | - |
-| **Euclidean** (E3D, E2D) | ✅ Komplett generisch | - | PERFEKT | - |
+| System | Generic Version | Float64 Version | IST-Status (Problem) | SOLL-Status (Lösung) | Priorität |
+|--------|----------------|-----------------|----------------------|----------------------|-----------|
+| **CGa** (Conformal) | ✅ Circle/Point mit Hybrid API | ❌ **28,064 LOC separate Implementation** | **PROBLEM: ~25k LOC Duplikation** | **LÖSUNG: 3-5k LOC thin wrapper** | **P0** |
+| **PGa** (Projective) | ✅ Hybrid API | ✅ Deprecated (commented out) | **ERFOLGSGESCHICHTE** (bereits thin wrapper) | - | - |
+| **VGa** (Vector/Euclidean) | ❌ **FEHLT KOMPLETT** | ✅ Float64-only (~200 LOC) | **BLOCKIERT Float32 Workflows** | **Generic implementieren** | **P0** |
+| **HGa** (Hyperbolic) | ✅ Generic-only (2 files) | ❌ Kein Float64 | OK (Nischen-Use-Case) | Optional: Float64 wrapper | P2 |
+| **Euclidean** (E3D, E2D) | ✅ Komplett generisch | - | PERFEKT | - | - |
 
-### ❌ CGa (Conformal Geometric Algebra) - PROBLEM
+### ❌ CGa (Conformal Geometric Algebra) - HAUPTPROBLEM
 
-**Verzeichnisstruktur:**
+**IST-Zustand (AKTUELLES PROBLEM):**
+
 ```
 Modeling/Geometry/CGa/
-├── Generic/
-│   ├── Blades/
-│   │   └── CGaBlade.cs (✅ Hat bereits Operatoren!)
-│   ├── Encoding/
-│   │   ├── CGaIpnsRoundEncoder.cs (⚠️ Nur IScalar<T> API)
+├── Generic/      23,020 LOC (77 files) ← Separate Implementation
+│   ├── Blades/ CGaBlade.cs (✅ Hat bereits Operatoren!)
+│   ├── Encoding/ (✅ Circle/Point haben Hybrid API: T+double+float+IScalar<T>)
+│   │   ├── CGaIpnsRoundEncoder.cs
 │   │   ├── CGaIpnsFlatEncoder.cs
 │   │   ├── CGaOpnsRoundEncoder.cs
 │   │   └── CGaOpnsFlatEncoder.cs
 │   ├── Decoding/
 │   └── CGaGeometricSpace.cs
-└── Float64/
-    ├── Blades/
-    │   └── CGaFloat64Blade.cs
+│
+└── Float64/      28,064 LOC (83 files) ← ❌ EIGENSTÄNDIGE IMPLEMENTATION!
+    ├── Blades/ CGaFloat64Blade.cs
     ├── Encoding/
-    │   ├── CGaFloat64IpnsRoundEncoder.cs (❌ Separate Implementation!)
-    │   └── ... (komplett dupliziert!)
+    │   ├── CGaFloat64IpnsRoundEncoder.cs (❌ Komplett separate Logik!)
+    │   └── ... (ALLES DUPLIZIERT!)
     └── CGaFloat64GeometricSpace.cs
+
+PROBLEM: ~25,000 LOC CODE-DUPLIKATION (~90% Overlap)
 ```
 
-**Problem-Analyse:**
+**Problem-Analyse (IST):**
 
-1. **Code-Duplikation:** Generic und Float64 sind vollständig separate Implementationen
-2. **Unvollständige Generic API:** Nur IScalar<T> Überladungen, keine T/Scalar<T>/convenience
-3. **Produktions-Nutzung:** Float64 wird in allen 507 Tests und Applications genutzt
+1. **❌ Massive Code-Duplikation:** Generic und Float64 haben separate, duplizierte Implementations
+2. **✅ Hybrid API existiert** für Circle/Point (aber nicht überall konsistent)
+3. **❌ Float64 wird aktiv genutzt** in Production (Refactoring blockiert ohne Tests)
+4. **❌ Tests fehlen:** IST: 8 Tests, BENÖTIGT: 162 Baseline + 190 neue = 352 total
+
+**SOLL-Zustand (LÖSUNG NACH PHASE 3):**
+
+```
+Modeling/Geometry/CGa/
+├── Generic/      23,020 LOC (unverändert) ← CORE IMPLEMENTATION (alle Logik)
+│   └── ... (vollständige Hybrid API für alle Encoder/Decoder)
+│
+└── Float64/      3,000-5,000 LOC ← THIN WRAPPER!
+    ├── CGaFloat64GeometricSpace.cs (delegiert zu Generic<double>)
+    ├── CGaFloat64Blade.cs (Wrapper)
+    ├── CGaFloat64IpnsRoundEncoder.cs (delegiert zu Generic)
+    └── ... (NUR Wrapping-Code)
+
+LÖSUNG: ~23,000 LOC EINGESPART!
+```
 
 **CGa Generic Encoder (Current):**
 ```csharp
@@ -592,24 +627,28 @@ ScalarProcessorOfERational          ScalarProcessorOfEDecimal
 
 ### CGa Architektur (Vor vs. Nach Refactoring)
 
-**VOR dem Refactoring:**
+**VOR dem Refactoring (IST - PROBLEM):**
 ```
 CGaGeometricSpace<T>                CGaFloat64GeometricSpace
-    (Generic)                            (Float64)
+    (Generic - 23k LOC)                  (Float64 - 28k LOC)
         │                                    │
         │                                    │
-    IScalar<T> API                       double API
+    Hybrid API (Circle/Point)            double API
+    (teilweise)                              │
         │                                    │
         │                                    │
-    Nicht genutzt!                    507 Tests + Apps
+    Wenig genutzt                    Production-genutzt
         │                                    │
         └────────────┬───────────────────────┘
                      │
             Separate Implementationen
-           (Code-Duplikation ~3000 LOC)
+           (Code-Duplikation ~25,000 LOC!)
+                     │
+            ❌ KEINE Tests zum Validieren
+            (IST: 8, BENÖTIGT: 162 Baseline)
 ```
 
-**NACH dem Refactoring:**
+**NACH dem Refactoring (SOLL - LÖSUNG):**
 ```
         CGaGeometricSpace<T>
              (Generic)

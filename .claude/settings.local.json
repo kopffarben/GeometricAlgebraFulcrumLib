@@ -28,7 +28,10 @@
       "Bash(git add:*)",
       "Bash(awk -F'/' '{for(i=1;i<=NF;i++) if($i ~ /GeometricAlgebraFulcrumLib\\.[^/]+$/) print $i}')",
       "Bash(awk -F: '{print $1}')",
-      "Bash(dotnet test GeometricAlgebraFulcrumLib.UnitTests/GeometricAlgebraFulcrumLib.UnitTests.csproj --filter \"FullyQualifiedName~ScalarAbstractionProofOfConceptTests\" --verbosity normal)"
+      "Bash(dotnet test:*)",
+      "Bash(powershell -Command \"(Get-ChildItem -Path ''GeometricAlgebraFulcrumLib\\GeometricAlgebraFulcrumLib.Modeling\\Geometry\\CGa\\Float64'' -Filter ''*.cs'' -Recurse | Measure-Object -Property Length -Sum).Sum\")",
+      "Bash(powershell -Command \"(Get-ChildItem -Path ''GeometricAlgebraFulcrumLib\\GeometricAlgebraFulcrumLib.Modeling\\Geometry\\CGa\\Generic'' -Filter ''*.cs'' -Recurse | Measure-Object -Property Length -Sum).Sum\")",
+      "Bash(dotnet build:*)"
     ]
   },
   "enabledMcpjsonServers": [
