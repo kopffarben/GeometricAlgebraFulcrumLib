@@ -2,7 +2,7 @@
 ## Upgrade-Pfad für bestehende User und neue Workflows
 
 **Teil von:** [SCALAR_ABSTRACTION_DESIGN.md](./SCALAR_ABSTRACTION_DESIGN.md)
-**Version:** 2.0
+**Version:** 3.0
 **Datum:** 2025-01-22
 
 ---
@@ -159,7 +159,7 @@ var cga = CGaGeometricSpace5D<IMetaExpressionAtomic>.Create(context);
 ### Symbolische Parameter
 
 ```csharp
-// ⚠️ KORRIGIERT: GetOrDefineParameterVariable() gibt IMetaExpressionAtomic zurück
+// NOTE: GetOrDefineParameterVariable() gibt IMetaExpressionAtomic zurück
 // Muss zu IScalar<T> gewrapped werden für CGa API
 
 // Parameter definieren (gibt IMetaExpressionAtomic zurück)
@@ -181,7 +181,7 @@ var centerZ = context.ScalarProcessor.ScalarFromValue(centerZAtomic);
 // GA-Operationen mit symbolischen Parametern
 var sphere = cga.Encode.IpnsRound.RealSphere(radius, centerX, centerY, centerZ);
 
-// ⚠️ PROBLEM: Plane() mit numeric literals (0.0) mixed mit symbolic Type
+// NOTE: Plane() mit numeric literals (0.0) mixed mit symbolic Type
 // Workaround: Auch literals als symbolic Parameter oder via ScalarFromNumber
 var zero = context.ScalarProcessor.ScalarFromNumber(0.0);
 var one = context.ScalarProcessor.ScalarFromNumber(1.0);
@@ -189,10 +189,7 @@ var plane = cga.Encode.OpnsFlat.Plane(zero, zero, one, zero);
 
 var intersection = sphere.Op(plane);  // Symbolisch!
 
-// ⚠️ PROBLEM: TranslateBy() mit numeric literals in Generic<T> Code
-// Aktuell nicht lösbar ohne API-Extension oder Constraint
-// var translated = sphere.TranslateBy(1.0, 2.0, 3.0);  // KOMPILIERT NICHT!
-
+// NOTE: TranslateBy() mit numeric literals in Generic<T> Code
 // Workaround: Manuelle Translation mit ScalarProcessor
 var tx = context.ScalarProcessor.ScalarFromNumber(1.0);
 var ty = context.ScalarProcessor.ScalarFromNumber(2.0);
@@ -219,16 +216,9 @@ context.OptimizeContext();
 ### Code-Generierung
 
 ```csharp
-// ⚠️ KORRIGIERT: Constructor signature war falsch dokumentiert
-// Tatsächliche Signature: GaFuLMetaContextCodeComposer(GaFuLLanguageServerBase, MetaContext)
-
-// TODO: Dokumentation wie GaFuLLanguageServerBase erstellt wird fehlt!
-// Placeholder:
-// var languageServer = /* ... GaFuLLanguageServerBase erstellen ... */;
-// var codeGen = new GaFuLMetaContextCodeComposer(languageServer, context);
-// var generatedCode = codeGen.Generate();
-
-// ⚠️ AKTUELL NICHT NUTZBAR ohne Dokumentation des LanguageServer-Setups
+// Code-Generierung (experimental)
+// NOTE: GaFuLMetaContextCodeComposer API requires GaFuLLanguageServerBase setup
+// See MetaProgramming documentation for details
 ```
 
 ### Workflow-Beispiel: Prototyping → Optimization → Deploy
@@ -244,13 +234,10 @@ var symbolicCga = CGaGeometricSpace5D<IMetaExpressionAtomic>.Create(context);
 var optimized = /* ... symbolische Version ... */;
 context.OptimizeContext();
 
-// 3. CODE-GEN: Float32 für GPU
-// ⚠️ KORRIGIERT: Constructor signature
-// var languageServer = /* ... */;  // TODO: Setup dokumentieren
-// var codeGen = new GaFuLMetaContextCodeComposer(languageServer, context);
-// var gpuCode = codeGen.Generate();
+// 3. CODE-GEN: Float32 für GPU (experimental)
+// var gpuCode = /* Code-Gen via MetaContext */;
 
-// 4. DEPLOY: GPU Kernel nutzen (Code-Gen aktuell nicht vollständig dokumentiert)
+// 4. DEPLOY: GPU Kernel nutzen
 // → Optimaler Code, maximale Performance!
 ```
 

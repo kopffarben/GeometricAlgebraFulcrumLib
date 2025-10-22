@@ -19,3 +19,5 @@
 Diese Agenten sollen dir dann ihre Findings übergeben
 Du validierst diese Findings.
 Du sollst Sie dann für mich zusammenfassen und analysieren.
+
+Da diese Dokumente als Vorlage zur Implmentation diehnen sollen und History oder Erwähnung von Critical Findings die aber gelöst und bedacht sind dann nur verwirren, schreibe keine History, vermerke in den Dokumenten nicht wenn du etwas geändert has, sondern ändere es einfach.

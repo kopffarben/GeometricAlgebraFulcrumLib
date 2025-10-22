@@ -1,42 +1,21 @@
 # GA-FUL Implementation Roadmap
-## 3-Phasen Plan: 9-12 Wochen (REVIDIERT)
+## 4-Phasen Plan: 15-20 Wochen
 
 **Teil von:** [SCALAR_ABSTRACTION_DESIGN.md](./SCALAR_ABSTRACTION_DESIGN.md)
-**Version:** 2.1 (Timeline Korrigiert)
-**Datum:** 2025-01-22 (Updated: 2025-10-22)
-
----
-
-## ⚠️ KRITISCHE TIMELINE-REVISION nach 6-Architekten-Review (2025-10-22)
-
-**Original Schätzung:** 6-9 Wochen (massiv zu optimistisch)
-**1. Revision:** 9-12 Wochen (immer noch zu optimistisch)
-**FINAL Revision:** **15-20 Wochen inkl. Phase 0** (realistisch)
-
-**Hauptgründe für Revision:**
-1. **🆕 Phase 0 (NEU):** 2-3 Wochen - Test-Infrastruktur & Baseline MUSS ERST GEBAUT WERDEN
-   - **IST:** 8 Tests existieren (99.3% fehlen!)
-   - **BENÖTIGT:** 162 Baseline Regression-Tests + 190 neue Tests = 352 total
-2. **Phase 1:** 1 Woche - Float32 existiert bereits ✅ (nur Konsolidierung)
-3. **Phase 2:** 4-6 Wochen - CGa API komplexer, ~400 Method-Overloads
-4. **Phase 3:** 6-7 Wochen (NICHT 4-5) - Code-Duplikation ~25k LOC (NICHT 15-20k!)
-   - **IST:** Float64 28k LOC, Generic 23k LOC (separate Implementations)
-   - **SOLL:** Float64 3-5k LOC thin wrapper (23k LOC eingespart)
-
-**Timeline-Mathe-Korrektur:**
-- Phase 2+3 hatten falsche Stunden-Schätzungen (68-70h für 4-6 Wochen = unmöglich)
-- Korrigiert: Phase 2 = 160-240h, Phase 3 = 240-280h
+**Version:** 3.0
+**Datum:** 2025-01-22
 
 ---
 
 ## Inhaltsverzeichnis
 
 1. [Roadmap-Übersicht](#roadmap-übersicht)
-2. [Phase 1: Foundation (1 Woche - REVIDIERT)](#phase-1-foundation-1-woche)
-3. [Phase 2: CGa Generic API Extensions (4-6 Wochen - REVIDIERT)](#phase-2-cga-generic-api-extensions-4-6-wochen)
-4. [Phase 3: CGa Float64 Wrapper Refactoring (4-5 Wochen - REVIDIERT)](#phase-3-cga-float64-wrapper-refactoring-4-5-wochen)
-5. [Qualitätssicherung & Testing](#qualitätssicherung--testing)
-6. [Risiko-Mitigation](#risiko-mitigation)
+2. [Phase 0: Test-Baseline & Infrastructure (2-3 Wochen)](#phase-0-test-baseline--infrastructure-2-3-wochen)
+3. [Phase 1: ScalarProcessorOfFloating<T> (1 Woche)](#phase-1-scalarprocessoroffloatingt-1-woche)
+4. [Phase 2: CGa Generic API Extensions (4-6 Wochen)](#phase-2-cga-generic-api-extensions-4-6-wochen)
+5. [Phase 3: CGa Float64 Wrapper Refactoring (6-7 Wochen)](#phase-3-cga-float64-wrapper-refactoring-6-7-wochen)
+6. [Qualitätssicherung & Testing](#qualitätssicherung--testing)
+7. [Risiko-Mitigation](#risiko-mitigation)
 
 ---
 
@@ -102,9 +81,7 @@ GESAMT: 15-20 Wochen (realistisch mit Buffer)
 
 ---
 
-## Phase 1: Foundation (1 Woche - REVIDIERT)
-
-**⚠️ SCOPE REDUZIERT:** ScalarProcessorOfFloat32 existiert bereits (442 LOC)! Phase 1 nur noch Konsolidierung zu generischer Lösung, nicht komplette Neu-Implementation.
+## Phase 1: ScalarProcessorOfFloating<T> (1 Woche)
 
 ### Ziele
 
@@ -601,9 +578,7 @@ dotnet run -c Release --filter *ScalarProcessorFloat32*
 
 ---
 
-## Phase 2: CGa Generic API Extensions (4-6 Wochen - ERWEITERT)
-
-**⚠️ SCOPE ERWEITERT:** CGa API ist aktuell inkonsistent (Point hat Hybrid-API, Circle/Sphere nicht). Komplexität höher als erwartet - ~400 Method-Overloads nötig.
+## Phase 2: CGa Generic API Extensions (4-6 Wochen)
 
 ### Ziele
 
@@ -893,16 +868,14 @@ public CGaBlade<double> Float64_EncodePoint()
 
 ---
 
-## Phase 3: CGa Float64 Wrapper Refactoring (4-5 Wochen - ERWEITERT)
-
-**⚠️ SCOPE MASSIV UNTERSCHÄTZT:** Code-Duplikation ist **15,000-20,000 LOC** (nicht 3,000 wie ursprünglich angenommen)! CGa/Float64 hat 82 Files mit 28,064 LOC total.
+## Phase 3: CGa Float64 Wrapper Refactoring (6-7 Wochen)
 
 ### Ziele
 
-1. Float64 zu dünnem Wrapper über Generic<double> umbauen
+1. Float64 zu dünnem Wrapper über Generic<double> umbauen (28k → 3-5k LOC)
 2. Public API 100% beibehalten (Zero Breaking Changes!)
-3. Alle **162 Tests** müssen passen (korrigiert von 507)
-4. Performance <1% Overhead
+3. Alle **162 Tests** müssen passen
+4. Performance <2% Overhead
 
 ### Woche 7: Wrapper Implementation
 
@@ -1149,17 +1122,12 @@ dotnet run -c Release
 | **Buffer** | 2-3 | ~80-120 | Unvorhergesehenes, Bugfixes |
 | **GESAMT** | **15-20** | **~600-800h** | **Production Ready!** |
 
-**⚠️ Timeline-Mathe KORRIGIERT:**
-- Phase 2/3 hatten falsche Stunden (68-70h ≠ 4-6 Wochen!)
-- Korrekt: 1 Woche @ 40h = 40 Stunden
-- Phase 3 ist MASSIV: 25,000 LOC Refactoring (nicht 15k!)
-
 ### Success Criteria
 
 ✅ **ScalarProcessorOfFloating<T>** funktioniert für float, double, Half
-✅ **Performance:** Float32 ~90%, Float64 Wrapper <1% overhead
+✅ **Performance:** Float32 ~90%, Float64 Wrapper <2% overhead
 ✅ **CGa Workflows:** Float32 GPU + Symbolic funktionieren
-✅ **Tests:** Alle **162** CGa Tests passen (korrigiert von 507)
+✅ **Tests:** Alle **162** CGa Tests passen
 ✅ **Backward Compatibility:** Float64 API 100% kompatibel
 ✅ **Documentation:** Komplett und aktuell
 

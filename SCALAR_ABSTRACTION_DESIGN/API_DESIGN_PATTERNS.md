@@ -2,20 +2,8 @@
 ## Konsistente Hybrid-API über alle Library-Layer
 
 **Teil von:** [SCALAR_ABSTRACTION_DESIGN.md](./SCALAR_ABSTRACTION_DESIGN.md)
-**Version:** 2.1 (Korrigiert - Generic Literals Fixed)
-**Datum:** 2025-01-22 (Updated: 2025-10-22)
-
----
-
-## ⚠️ KRITISCHE KORREKTUR (2025-10-22)
-
-**Generic Numeric Literals Problem:** Die ursprünglichen Code-Beispiele enthielten `0.5d * T` Pattern, welches in C# Generic-Code NICHT kompiliert (`double * T` ist nicht definiert).
-
-**Korrekte Patterns:**
-1. **ScalarProcessor verwenden:** `ScalarProcessor.Times(ScalarProcessor.ScalarFromNumber(0.5), value)`
-2. **Alternatives Pattern (wenn IFloatingPointIeee754<T> Constraint):** `T.CreateChecked(0.5) * value`
-
-Alle Code-Beispiele unten wurden korrigiert oder mit **⚠️ Warnungen** versehen.
+**Version:** 3.0
+**Datum:** 2025-01-22
 
 ---
 
@@ -250,14 +238,14 @@ public static class PGaEncodePGaElementUtils
 
 **Validierung:** ✅ PGa nutzt ähnliches Pattern, aber OHNE T + Scalar<T> Überladungen. Wir erweitern für CGa!
 
-### CGa Layer (Modeling) - ⚠️ ZU REFACTOREN
+### CGa Layer (Modeling) - Implementation Target
 
 **Current (Generic):**
 ```csharp
 // Datei: CGa/Generic/Encoding/CGaIpnsRoundEncoder.cs
 public class CGaIpnsRoundEncoder<T> : CGaEncoderBase<T>
 {
-    // ⚠️ NUR IScalar<T>!
+    // Current: Only IScalar<T> API
     public CGaBlade<T> Circle(IScalar<T> radiusSquared, IScalar<T> centerX, IScalar<T> centerY)
     {
         return HyperSphere(
@@ -384,13 +372,12 @@ public CGaBlade<T> HyperSphere(IScalar<T> radiusSquared)
 public CGaFloat64Blade HyperSphere(double radiusSquared)
 ```
 
-**After (KORRIGIERT):**
+**After:**
 ```csharp
 // Generic - Hybrid API
 public CGaBlade<T> HyperSphere(T radiusSquared)
 {
-    // ⚠️ KORRIGIERT: 0.5d * radiusSquared kompiliert NICHT (double × T undefined)
-    // KORREKT: ScalarProcessor verwenden
+    // Use ScalarProcessor for numeric literals in generic code
     var half = ScalarProcessor.ScalarFromNumber(0.5);
     var term = ScalarProcessor.Times(half, radiusSquared);
     return GeometricSpace.Eo - term * GeometricSpace.Ei;
@@ -460,7 +447,7 @@ public CGaBlade<T> Point(XGaVector<T> egaPoint)
 {
     var p = GeometricSpace.Encode.VGa.VectorAsXGaVector(egaPoint);
 
-    // ⚠️ KORRIGIERT: 0.5d * egaPoint.NormSquared() kompiliert nicht
+    // Use ScalarProcessor for numeric literals in generic code
     var normSquared = egaPoint.NormSquared();  // Returns Scalar<T>
     var half = ScalarProcessor.ScalarFromNumber(0.5);
     var term = ScalarProcessor.Times(half, normSquared.ScalarValue);
@@ -853,7 +840,7 @@ private static T UnwrapToT<T>(object value)
 |-------|---------|--------|
 | **XGa (Algebra)** | T + Scalar<T> + IScalar<T> | ✅ Implementiert |
 | **PGa (Modeling)** | IScalar<T> + double/float + Scalar<T> structures | ✅ Implementiert |
-| **CGa (Modeling)** | **Wird zu:** T + Scalar<T> + IScalar<T> + double/float/int | ⚠️ Phase 2 |
+| **CGa (Modeling)** | T + Scalar<T> + IScalar<T> + double/float/int | Phase 2 Implementation |
 | **CGaBlade Operators** | T + Scalar<T> + IScalar<T> + int/float/double | ✅ Implementiert |
 
 **Ergebnis:** Perfekte Konsistenz über alle Library-Layer nach Refactoring! ✅
