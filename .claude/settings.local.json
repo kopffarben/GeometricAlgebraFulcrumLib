@@ -25,7 +25,10 @@
       "mcp__sequential-thinking__sequentialthinking",
       "Bash(tree:*)",
       "Bash(find:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(awk -F'/' '{for(i=1;i<=NF;i++) if($i ~ /GeometricAlgebraFulcrumLib\\.[^/]+$/) print $i}')",
+      "Bash(awk -F: '{print $1}')",
+      "Bash(dotnet test GeometricAlgebraFulcrumLib.UnitTests/GeometricAlgebraFulcrumLib.UnitTests.csproj --filter \"FullyQualifiedName~ScalarAbstractionProofOfConceptTests\" --verbosity normal)"
     ]
   },
   "enabledMcpjsonServers": [
