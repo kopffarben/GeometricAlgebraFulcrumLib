@@ -31,6 +31,19 @@ Dieses Dokument beschreibt das finale Design für die Vereinheitlichung der Scal
 | **CGa Float64** | Dünner Wrapper über `CGaGeometricSpace<double>` | Backward Compatibility, keine Breaking Changes |
 | **IScalarProcessor Erweiterung** | `Scalar<T> Scalar(T value)` Methode hinzufügen | Konsistentes Wrapping |
 
+### Component Status Overview
+
+| Component | Exists Now? | Status | Available After |
+|-----------|-------------|--------|-----------------|
+| **ScalarProcessorOfFloat32** | ✅ Yes | Legacy implementation (364 LOC), will be replaced | N/A (deprecated) |
+| **ScalarProcessorOfFloating<T>** | ❌ No | To be implemented | Phase 1 |
+| **CGa Generic (IScalar<T> API)** | ✅ Yes | Incomplete - only IScalar<T> overloads | Now |
+| **CGa Generic (Hybrid API)** | ❌ No | T + double + float overloads missing | Phase 2 |
+| **CGa Float64 (Current)** | ✅ Yes | Standalone 28,064 LOC implementation | Now |
+| **CGa Float64 (Thin Wrapper)** | ❌ No | To be implemented as wrapper over Generic<double> | Phase 3 |
+| **VGA Generic** | ❌ No | Missing completely | Future work |
+| **Test Infrastructure** | ⚠️ Partial | 162 tests exist, need CI integration | Phase 0 |
+
 ### IST-Zustand (Current State - PROBLEME)
 
 **❌ HAUPTPROBLEM: CGa Code-Duplikation ~19,600 LOC**
@@ -57,9 +70,12 @@ DUPLIKATION:     ~19,608 LOC (~100% der Generic Implementation)
 
 **✅ CGa Float64 als Thin Wrapper:**
 ```
-CGa/Float64/     11,000-14,000 LOC    ← Thin Wrapper (delegiert zu Generic<double>)
+CGa/Float64/     16,000-19,000 LOC    ← Thin Wrapper + Visualizer (5,459 LOC Float64-only)
 CGa/Generic/     19,608 LOC (unverändert) ← Core Implementation
-ERSPARNIS:       ~10,000-13,000 LOC eliminated!
+ERSPARNIS:       ~5,000-9,000 LOC eliminated!
+
+Note: Visualizer (5,459 LOC) cannot be wrapped due to tight BabylonJS coupling.
+      It remains as Float64-only implementation.
 ```
 
 **✅ Test-Infrastruktur komplett:**
@@ -90,11 +106,11 @@ Dieses Design-Dokument ist in folgende Teildokumente aufgeteilt:
    - Best Practices
 
 4. **[IMPLEMENTATION_ROADMAP.md](./IMPLEMENTATION_ROADMAP.md)**
-   - 4-Phasen Implementierungsplan (15-20 Wochen)
-   - Phase 0: Test-Baseline (2-3 Wochen, 162 Tests)
-   - Phase 1: ScalarProcessorOfFloating<T> (1 Woche)
+   - 4-Phasen Implementierungsplan (19-25 Wochen)
+   - Phase 0: Test-Baseline & Performance PoC (7-8 Wochen)
+   - Phase 1: ScalarProcessorOfFloating<T> (2-3 Wochen inkl. Migration)
    - Phase 2: CGa Generic API Extensions (4-6 Wochen)
-   - Phase 3: CGa Float64 Wrapper Refactoring (6-7 Wochen, ~25k LOC)
+   - Phase 3: CGa Float64 Wrapper Refactoring (11-14 Wochen inkl. Visualizer)
    - Deliverables und Success Criteria
 
 5. **[HYBRID_API_IMPLEMENTATION_GUIDE.md](./HYBRID_API_IMPLEMENTATION_GUIDE.md)**
@@ -211,7 +227,7 @@ var circle = space.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
 **Komponenten:**
 - 🔲 **ScalarProcessorOfFloating<T>** für float, double, Half
 - 🔲 **VGA Generic** Implementation (blockiert aktuell Float32 Workflows)
-- 🔲 **CGa Float64 Thin Wrapper** (IST: 24k LOC, SOLL: 11-14k LOC)
+- 🔲 **CGa Float64 Thin Wrapper** (IST: 28k LOC, SOLL: 16-19k LOC inkl. Visualizer)
 
 ### ✅ Erfolgs-Kriterien nach Completion
 
@@ -222,40 +238,67 @@ var circle = space.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
 - ✅ **Symbolischer Workflow funktioniert** (MetaContext Integration)
 
 **Performance (zu validieren via Benchmarks):**
-- ✅ **Float32:** ≥85% von raw float (TARGET: ~90%, Minimum: 85%)
+- ✅ **Float32 (Microbenchmarks):** ≥85% von raw float (TARGET: ~90%, Minimum: 85%)
+- ✅ **Float32 (Reale Workloads):** ≥60% von raw float (Conservative: 60-75%, Optimistic: 75-85%)
 - ✅ **Float64 Wrapper:** ≤5% Overhead (TARGET: <2%, Akzeptabel: ≤5%)
 
-> **⚠️ WICHTIG - Performance-Ziele Status:**
-> Alle Performance-Ziele (90% Float32, <5% Float64) sind **unvalidierte Predictions**.
-> ZERO Benchmarks existieren aktuell. Empirische Validation erforderlich in Phase 0.
+> **🔴 CRITICAL - Performance-Ziele sind UNVALIDIERT:**
+>
+> **ALLE** Performance-Ziele (90% Float32, <5% Float64) sind **unvalidierte Predictions**!
+> - ❌ ZERO Benchmarks existieren im aktuellen Codebase
+> - ❌ Dictionary-Overhead (15-20%) ist NICHT berücksichtigt
+> - ❌ Allocation Storm (10-15%) ist NICHT gemessen
+> - ❌ JIT Devirtualization ist NICHT verifiziert
+>
+> **Phase 0b (Float32 PoC) ist MANDATORY** um zu validieren ob 60-75% erreichbar sind.
+> Wenn Float32 <60% erreicht → Abort Float32 Workflow!
+>
 > Siehe [PERFORMANCE_ANALYSIS.md](./PERFORMANCE_ANALYSIS.md) für Details.
 
 **Code-Qualität:**
-- ✅ **Code-Duplikation eliminiert:** 24k → 11-14k LOC in Float64 (~10-13k saved)
+- ✅ **Code-Duplikation eliminiert:** 28k → 16-19k LOC in Float64 (~5-9k saved, Visualizer remains Float64-only)
 - ✅ **API Konsistenz:** Alle Encoder mit vollständiger Hybrid API
 
 ---
 
 ## Implementation Roadmap Summary
 
-### Phase 0: Test-Baseline & Infrastructure (2-3 Wochen) **[CRITICAL FIRST]**
+### Phase 0: Test-Baseline, Performance PoC & Validation (7-8 Wochen) **[CRITICAL FIRST]**
 
-**Deliverables:**
-1. UnitTests .csproj erstellen und zu Solution hinzufügen
-2. CI Integration (GitHub Actions / Azure DevOps)
-3. 162 Baseline Regression-Tests für Float64 CGa
-4. Performance Baseline messen
+**Split into 3 Sub-Phases:**
+
+**Phase 0a: Test Infrastructure (2 Wochen)**
+- UnitTests .csproj erstellen und zu Solution hinzufügen
+- CI Integration (GitHub Actions / Azure DevOps)
+- Verify 162 existing CGa tests, run baseline
+- Document current pass rate (expected: 100%)
+
+**Phase 0b: Float32 PoC & Performance Validation (3-4 Wochen)**
+- Implement ScalarProcessorOfFloating<float> prototype
+- Test with 10-15 CGa operations (Circle, Sphere, Intersections)
+- Create 20-30 performance benchmarks (microbenchmarks + realistic workloads)
+- **GO/NO-GO Decision:** If Float32 <60% performance → Abort Float32 workflow
+
+**Phase 0c: Performance Baseline & Symbolic PoC (2 Wochen)**
+- Measure CGa Float64 baseline (20+ operations)
+- Validate symbolic workflow with MetaContext
+- Establish acceptance criteria for Phase 3
+- Document rollback strategy
 
 **Success Criteria:**
-- ✅ 162 Tests implementiert und passing (100%)
-- ✅ Performance Baseline dokumentiert
+- ✅ 162 Tests run successfully (100% pass expected)
+- ✅ Float32 PoC achieves ≥60% performance (realistic workloads)
+- ✅ Performance baseline documented with 20+ benchmarks
 - ✅ CI Pipeline funktioniert
+- ✅ GO/NO-GO decision made (stop if performance targets unrealistic)
 
-### Phase 1: ScalarProcessorOfFloating<T> (1 Woche)
+### Phase 1: ScalarProcessorOfFloating<T> (2-3 Wochen)
 
 **Deliverables:**
 - Unified ScalarProcessorOfFloating<T> Implementation
+- Migration of 100 ScalarProcessorOfFloat64 usages
 - 50 Unit Tests
+- Compatibility validation (old vs new behavior)
 
 ### Phase 2: CGa Generic API Extensions (4-6 Wochen)
 
@@ -263,30 +306,24 @@ var circle = space.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
 - Hybrid API für alle CGa Encoders/Decoders
 - 120 Integration Tests (Float32 + Symbolic)
 
-### Phase 3: Float64 Wrapper Refactoring (9-11 Wochen)
+### Phase 3: Float64 Wrapper Refactoring (11-14 Wochen)
 
 **Deliverables:**
-- Float64 als thin wrapper (24k → 11-14k LOC)
-- 100% Regression-Test Pass-Rate
-- Performance <5% Overhead
+- Float64 als thin wrapper (28k → 16-19k LOC)
+- Visualizer strategy decision (keep Float64-only or migrate)
+- 100% Regression-Test Pass-Rate (162 tests)
+- Performance <5% Overhead validation
 
-**Gesamte Timeline: 19-25 Wochen**
-- Phase 0: 2-3 Wochen
-- Phase 1: 1 Woche
-- Phase 2: 4-6 Wochen
-- Phase 3: 9-11 Wochen (Elements Complexity: 9k LOC, Visualizer: 4.4k LOC)
-- Buffer: 3-4 Wochen
+**Gesamte Timeline: 24-31 Wochen**
+- Phase 0: 7-8 Wochen (Test Baseline + Float32 PoC + Performance Validation)
+- Phase 1: 2-3 Wochen (ScalarProcessorOfFloating<T> + Migration)
+- Phase 2: 4-6 Wochen (CGa Generic API Extensions)
+- Phase 3: 11-14 Wochen (Float64 Wrapper + Visualizer + Regression Testing)
 
----
-
-## Änderungshistorie
-
-| Version | Datum | Änderungen |
-|---------|-------|------------|
-| 1.0 | 2025-01-20 | Initial draft (IMPLEMENTATION_DESIGN_DOCUMENT.md) |
-| 1.5 | 2025-01-21 | Design-Revision nach IScalarOps<T> Ablehnung |
-| 2.0 | 2025-01-22 | Finale Version nach kompletter Architektur-Validierung |
-| **2.1** | **2025-10-22** | **CRITICAL CORRECTIONS nach 5-Architekten Review:** Test-Count (162 statt 507), Code-Duplikation (15k statt 3k), Timeline (9-12 statt 6-9 Wochen), Workflow-Beispiele korrigiert, CGa API Inkonsistenz dokumentiert, Float32 Status aktualisiert |
+**Conservative Estimate with Buffer: 32-40 Wochen**
+- Includes 30% buffer for unknowns
+- Accounts for Visualizer complexity (5,459 LOC Float64-only)
+- Includes migration validation time (100 usages)
 
 ---
 

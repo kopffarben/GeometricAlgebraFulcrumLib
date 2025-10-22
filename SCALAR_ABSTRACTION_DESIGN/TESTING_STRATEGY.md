@@ -13,21 +13,24 @@
 
 | Phase | Test-Typ | Anzahl Tests | Success Criteria |
 |-------|----------|--------------|------------------|
+| **0** | Regression Baseline (CGa Float64) | **162** | **Run & verify 100% pass** (existing tests) |
+| **0** | Performance Baseline | ~20-30 | Establish baseline for comparison |
 | **1** | Unit (ScalarProcessor) | ~50 | 100% pass |
-| **1** | Performance (Benchmarks) | ~10 | ~90% von raw float |
+| **1** | Performance (Float32 PoC) | ~10 | ≥60% realistic workloads, ≥85% microbenchmarks |
 | **2** | Integration (Float32/Symbolic) | ~40 | Workflows funktionieren |
 | **2** | Unit (CGa Generic API) | ~80 | 100% pass |
-| **3** | Regression (CGa Float64) | **162** | **100% pass** |
-| **3** | Performance (Float64 Wrapper) | ~10 | <2% overhead |
-| **GESAMT** | | **~352** | **100% pass** |
+| **3** | Regression (CGa Float64 Wrapper) | **162** | **100% pass** (no regressions after refactoring) |
+| **3** | Performance (Float64 Wrapper) | ~10 | ≤5% overhead (Target: <2%) |
+| **GESAMT** | | **~384-394** | **100% pass** |
 
 ### Test-Baseline Status
 
-> **📊 Aktuelle Test-Situation:**
+> **📊 Test-Baseline Status:**
 > - **162 CGa Float64 Tests existieren bereits** im Repository (`GeometricAlgebraFulcrumLib.UnitTests/Modeling/Geometry/CGa/`)
-> - Diese Tests dienen als **Regression-Baseline** für Phase 3
-> - **190 neue Tests** müssen in Phase 1+2 geschrieben werden
-> - **Total nach Completion: 352 Tests**
+> - **Phase 0 Deliverable:** Run these 162 tests to establish baseline (NOT write new tests)
+> - Diese Tests dienen als **Regression-Baseline** für Phase 3 (must pass 100% after refactoring)
+> - **190-220 neue Tests** müssen in Phase 0b, 1, und 2 geschrieben werden
+> - **Total nach Completion: ~384-394 Tests** (162 existing + 220 new)
 
 ---
 

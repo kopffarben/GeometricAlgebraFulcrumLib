@@ -1,5 +1,5 @@
 # GA-FUL Implementation Roadmap
-## 4-Phasen Plan: 19-25 Wochen
+## 4-Phasen Plan: 24-31 Wochen (Conservative: 32-40 Wochen)
 
 **Teil von:** [SCALAR_ABSTRACTION_DESIGN.md](./SCALAR_ABSTRACTION_DESIGN.md)
 **Version:** 3.0
@@ -10,10 +10,10 @@
 ## Inhaltsverzeichnis
 
 1. [Roadmap-Übersicht](#roadmap-übersicht)
-2. [Phase 0: Test-Baseline & Infrastructure (2-3 Wochen)](#phase-0-test-baseline--infrastructure-2-3-wochen)
-3. [Phase 1: ScalarProcessorOfFloating<T> (1 Woche)](#phase-1-scalarprocessoroffloatingt-1-woche)
+2. [Phase 0: Test-Baseline, Performance PoC & Validation (7-8 Wochen)](#phase-0-test-baseline-performance-poc--validation-7-8-wochen)
+3. [Phase 1: ScalarProcessorOfFloating<T> (2-3 Wochen)](#phase-1-scalarprocessoroffloatingt-2-3-wochen)
 4. [Phase 2: CGa Generic API Extensions (4-6 Wochen)](#phase-2-cga-generic-api-extensions-4-6-wochen)
-5. [Phase 3: CGa Float64 Wrapper Refactoring (9-11 Wochen)](#phase-3-cga-float64-wrapper-refactoring-9-11-wochen)
+5. [Phase 3: CGa Float64 Wrapper Refactoring (11-14 Wochen)](#phase-3-cga-float64-wrapper-refactoring-11-14-wochen)
 6. [Qualitätssicherung & Testing](#qualitätssicherung--testing)
 7. [Risiko-Mitigation](#risiko-mitigation)
 
@@ -21,29 +21,38 @@
 
 ## Roadmap-Übersicht
 
-### Zeitplan (FINAL KORRIGIERT)
+### Zeitplan (UPDATED WITH ARCHITECT FINDINGS)
 
 ```
-🆕 PHASE 0 (2-3 Wochen): Test-Baseline & Infrastructure - CRITICAL!
+🆕 PHASE 0 (7-8 Wochen): Test-Baseline, Performance PoC & Validation - CRITICAL!
 │
-├── Woche 0-1: Test-Infrastruktur aufbauen
-│   ├── UnitTests .csproj erstellen + CI Integration
-│   ├── 8 existierende PoC-Tests integrieren
-│   └── Alle Code-Beispiele aus Docs als Tests
+├── Phase 0a (2 Wochen): Test Infrastructure
+│   ├── Week 0-1: UnitTests .csproj erstellen + CI Integration
+│   ├── Verify 162 existing CGa tests exist and run
+│   ├── Document baseline results (expected: 100% pass)
+│   └── Integrate 8 PoC tests from Feature branch
 │
-├── Woche 1-2: Baseline Regression-Tests schreiben
-│   ├── 162 Regression-Tests für IST-Float64 CGa (MUSS 100% passen!)
-│   ├── Performance Baseline messen
-│   └── Float32 Workflow PoC validieren
+├── Phase 0b (3-4 Wochen): Float32 PoC & Performance Validation - MANDATORY!
+│   ├── Week 2-3: Implement ScalarProcessorOfFloating<float> prototype
+│   ├── Test with 10-15 CGa operations (Circle, Sphere, Intersections)
+│   ├── Week 4-5: Create 20-30 performance benchmarks
+│   │   ├── Microbenchmarks: Scalar operations (Add, Multiply, Sqrt)
+│   │   ├── Realistic workloads: Batch encode 1k circles, intersection tests
+│   │   └── Memory profiling: Allocation counts, GC pressure
+│   └── **GO/NO-GO GATE:** If Float32 <60% performance → ABORT Float32 workflow!
 │
-└── Woche 2-3: Validation & Go/No-Go Decision
-    ├── Symbolic Workflow PoC validieren
-    ├── VGA Generic Gap analysieren
-    └── GO-Decision oder Design-Revision
+└── Phase 0c (2 Wochen): Performance Baseline & Symbolic PoC
+    ├── Week 6-7: Measure CGa Float64 baseline (20+ operations)
+    ├── Validate symbolic workflow (MetaContext + code generation)
+    ├── Establish acceptance criteria for Phase 3 wrapper
+    ├── Document rollback strategy for each phase
+    └── Final GO decision: Proceed to Phase 1 or revise design
 
-PHASE 1 (1 Woche): ScalarProcessorOfFloating<T>
+PHASE 1 (2-3 Wochen): ScalarProcessorOfFloating<T> + Migration
 │
-└── Woche 3: Konsolidierung + 50 Unit Tests + Benchmarks
+├── Week 8-9: Implementation + 50 Unit Tests
+├── Week 10: Migration of 100 ScalarProcessorOfFloat64 usages
+└── Compatibility validation (old vs new behavior)
 
 PHASE 2 (4-6 Wochen): CGa Generic API Extensions
 │
@@ -52,37 +61,45 @@ PHASE 2 (4-6 Wochen): CGa Generic API Extensions
 ├── Woche 7-8: Integration Tests (120 neue Tests)
 └── Woche 9: Float32 & Symbolic Validation
 
-PHASE 3 (9-11 Wochen): Float64 Wrapper (24k → 11-14k LOC!)
+PHASE 3 (11-14 Wochen): Float64 Wrapper (28k → 16-19k LOC!)
 │
-├── Woche 10-12: Encoder/Decoder Wrappers (83 files!)
-├── Woche 13-15: Operations Wrappers
-├── Woche 16-18: Elements Wrappers (9k LOC Complexity!)
-├── Woche 19: Regressions-Testing (162 Tests MÜSSEN passen)
-├── Woche 20: Performance Validation (<5% overhead)
-└── Woche 21: Documentation & Release Prep
+├── Week 11-13: Encoder/Decoder Wrappers (83 files!)
+├── Week 14-16: Operations Wrappers
+├── Week 17-19: Elements Wrappers (9k LOC Complexity!)
+├── Week 20-21: Visualizer Strategy & Implementation
+│   ├── Decision: Keep Float64-only (5,459 LOC) OR implement Generic<T>
+│   └── If Generic: +3-4 weeks for BabylonJS integration
+├── Week 22-23: Regression Testing (162 Tests MUST pass 100%)
+└── Week 24: Performance Validation (<5% overhead) + Release Prep
 
-GESAMT: 19-25 Wochen (realistisch mit Buffer)
-- Phase 0: 2-3 Wochen (NEU - CRITICAL!)
-- Phase 1: 1 Woche
-- Phase 2: 4-6 Wochen
-- Phase 3: 9-11 Wochen (Elements: 9k LOC, Visualizer: 4.4k LOC)
-- Buffer: 3-4 Wochen für Unvorhergesehenes
+GESAMT: 24-31 Wochen
+- Phase 0: 7-8 Wochen (Test Baseline + Float32 PoC + Performance Validation)
+- Phase 1: 2-3 Wochen (ScalarProcessorOfFloating<T> + Migration)
+- Phase 2: 4-6 Wochen (CGa Generic API Extensions)
+- Phase 3: 11-14 Wochen (Float64 Wrapper + Visualizer + Regression)
+
+CONSERVATIVE ESTIMATE: 32-40 Wochen
+- Includes 30% buffer for unknowns
+- Accounts for Visualizer complexity (5,459 LOC Float64-only)
+- Includes migration validation time (100 ScalarProcessorOfFloat64 usages)
 ```
 
 ### Milestones (REVIDIERT)
 
-| Milestone | Phase | Woche | Erfolgs-Kriterium |
-|-----------|-------|-------|-------------------|
-| **M0: Test-Baseline Established** | 0 | 2-3 | **162 Baseline-Tests existieren & passen** (IST: 8) |
-| **M1: Float32 Processor Ready** | 1 | 3 | ScalarProcessorOfFloating<T> + 50 Tests + Benchmarks |
-| **M2: CGa API Extended** | 2 | 9 | Hybrid API komplett, 120 Integration Tests pass |
-| **M3: Float32 & Symbolic Validated** | 2 | 9 | Beide Workflows produktionsreif |
-| **M4: Float64 Refactored** | 3 | 19 | **Alle 162 Baseline-Tests passen** nach Wrapper-Refactoring |
-| **M5: Production Ready** | 3 | 21 | Performance ≤5% Overhead, Docs komplett, Release |
+| Milestone | Phase | Week | Erfolgs-Kriterium |
+|-----------|-------|------|-------------------|
+| **M0a: Test Infrastructure** | 0a | 2 | CI Integration, 162 existing tests verified |
+| **M0b: Float32 PoC Validated** | 0b | 5-6 | Float32 achieves ≥60% performance, GO/NO-GO decision |
+| **M0c: Baselines Established** | 0c | 7-8 | Performance baseline documented, symbolic PoC validated |
+| **M1: Float32 Processor Ready** | 1 | 10 | ScalarProcessorOfFloating<T> + 100 migrations + 50 Tests |
+| **M2: CGa API Extended** | 2 | 16 | Hybrid API complete, 120 Integration Tests pass |
+| **M3: Float32 & Symbolic Validated** | 2 | 16 | Both workflows production-ready |
+| **M4: Float64 Refactored** | 3 | 24 | **All 162 Baseline-Tests pass** after wrapper refactoring |
+| **M5: Production Ready** | 3 | 24-31 | Performance ≤5% overhead, Visualizer strategy implemented, Release |
 
 ---
 
-## Phase 1: ScalarProcessorOfFloating<T> (1 Woche)
+## Phase 1: ScalarProcessorOfFloating<T> (2-3 Wochen)
 
 ### Ziele
 
@@ -1095,18 +1112,19 @@ dotnet run -c Release
 
 | Risiko | Wahrscheinlichkeit | Impact | Mitigation |
 |--------|-------------------|--------|------------|
-| **Performance-Ziel verfehlt** (Float32 <90%) | LOW | HIGH | Benchmark early (Woche 3), Optimization-Loop |
-| **162 Tests fail** (Float64 Wrapper - korrigiert von 507) | MEDIUM | HIGH | Incremental migration, Test-Driven |
+| **Performance-Ziel verfehlt** (Float32 <60%) | MEDIUM | HIGH | Phase 0b PoC MANDATORY, GO/NO-GO gate |
+| **162 Tests fail** (Float64 Wrapper) | MEDIUM | HIGH | Incremental migration, Test-Driven |
 | **API Breaking Changes** | LOW | CRITICAL | Public API dokumentieren, Contract Tests |
 | **Symbolic Workflow breaks** | LOW | MEDIUM | MetaContext Tests früh (Woche 6) |
 | **Scope Creep** | MEDIUM | MEDIUM | Striktes Scope-Management, nur CGa |
 
 ### Mitigation-Strategien
 
-1. **Early Benchmarking:** Woche 3 (nicht erst Woche 9!)
-2. **Incremental Testing:** Nach jedem Encoder/Decoder
-3. **Contract Tests:** Public API signatures testen
-4. **Rollback Plan:** Git Branches pro Phase, easy Rollback
+1. **Early Benchmarking:** Phase 0b Week 4-5 (Float32 PoC Validation) - MANDATORY!
+2. **GO/NO-GO Gate:** If Float32 <60% → Abort Float32 workflow
+3. **Incremental Testing:** After each Encoder/Decoder wrapper
+4. **Contract Tests:** Public API signatures test (backward compatibility)
+5. **Rollback Plan:** Git branches per phase, documented rollback procedures
 
 ---
 
@@ -1116,28 +1134,32 @@ dotnet run -c Release
 
 | Phase | Wochen | Stunden (40h/Woche) | Deliverables |
 |-------|--------|---------------------|--------------|
-| **Phase 0** | 2-3 | ~80-120 | **Test-Baseline (162 Tests) + Infrastructure** |
-| **Phase 1** | 1 | ~40 | ScalarProcessorOfFloating<T> + 50 Tests |
-| **Phase 2** | 4-6 | ~160-240 | CGa Generic API + 120 Tests |
-| **Phase 3** | 6-7 | ~240-280 | Float64 Wrapper (25k LOC!) + Validation |
-| **Buffer** | 2-3 | ~80-120 | Unvorhergesehenes, Bugfixes |
-| **GESAMT** | **15-20** | **~600-800h** | **Production Ready!** |
+| **Phase 0** | 7-8 | ~280-320 | **Test-Baseline + Float32 PoC + Performance Validation** |
+| **Phase 1** | 2-3 | ~80-120 | ScalarProcessorOfFloating<T> + Migration (100 usages) + 50 Tests |
+| **Phase 2** | 4-6 | ~160-240 | CGa Generic API Extensions + 120 Tests |
+| **Phase 3** | 11-14 | ~440-560 | Float64 Wrapper (28k → 16-19k LOC) + Visualizer + Regression |
+| **GESAMT** | **24-31** | **~960-1240h** | **Production Ready!** |
+| **Conservative** | **32-40** | **~1280-1600h** | **With 30% buffer for unknowns** |
 
 ### Success Criteria
 
 ✅ **ScalarProcessorOfFloating<T>** funktioniert für float, double, Half
-✅ **Performance:** Float32 ~90%, Float64 Wrapper <2% overhead
+✅ **Performance (Validated):**
+   - Float32 ≥60% realistic workloads (Target: 60-75%, Optimistic: 75-85%)
+   - Float32 ≥85% microbenchmarks (Target: ~90%)
+   - Float64 Wrapper ≤5% overhead (Target: <2%)
 ✅ **CGa Workflows:** Float32 GPU + Symbolic funktionieren
-✅ **Tests:** Alle **162** CGa Tests passen
-✅ **Backward Compatibility:** Float64 API 100% kompatibel
-✅ **Documentation:** Komplett und aktuell
+✅ **Tests:** Alle **162** CGa Regression Tests passen (100%)
+✅ **Backward Compatibility:** Float64 API compatible (zero breaking changes)
+✅ **Documentation:** Complete and up-to-date
+✅ **Visualizer:** Strategy decided and implemented (Float64-only OR Generic)
 
 ---
 
 ## Nächste Schritte
 
 1. **Review dieser Roadmap** mit Stakeholdern
-2. **Phase 1 starten:** ScalarProcessorOfFloating<T> Implementation
+2. **Phase 0 starten:** Test-Baseline & Float32 PoC (7-8 weeks CRITICAL!)
 3. **Weiter lesen:**
    - [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md) - Für User-Perspektive
    - [TESTING_STRATEGY.md](./TESTING_STRATEGY.md) - Detaillierte Test-Pläne

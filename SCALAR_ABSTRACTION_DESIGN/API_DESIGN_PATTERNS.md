@@ -481,11 +481,13 @@ private CGaBlade<T> PointCore(T x, T y, T z)
         )
     ).ScalarValue;  // Unwrap zu T!
 
-    // ✅ KORREKT: ScalarProcessor.Times() mit ScalarFromNumber()
-    // Das ist das RICHTIGE Pattern für generic code!
-    var half = ScalarProcessor.ScalarFromNumber(0.5);
-    var term = ScalarProcessor.Times(half, pNormSquared);
+    // ✅ KORREKT: Numeric literals in generic code
+    // Must unwrap ScalarFromNumber() result to get raw T value
+    var halfValue = ScalarProcessor.ScalarFromNumber(0.5).ScalarValue;  // Unwrap to T
+    var termValue = ScalarProcessor.Times(halfValue, pNormSquared).ScalarValue;  // T × T → Scalar<T> → T
 
+    // Now create the final kVector (using Scalar<T> * CGaBlade<T> operator)
+    var term = ScalarProcessor.ScalarFromValue(termValue);  // Wrap back to Scalar<T> for operator
     var kVector = GeometricSpace.EoVector +
                   p +
                   term * GeometricSpace.EiVector;
