@@ -238,9 +238,18 @@ public static class PGaEncodePGaElementUtils
 
 **Validierung:** ✅ PGa nutzt ähnliches Pattern, aber OHNE T + Scalar<T> Überladungen. Wir erweitern für CGa!
 
-### CGa Layer (Modeling) - Implementation Target
+### CGa Layer (Modeling) - ⚠️ SOLL (Phase 2 Implementation Target)
 
-**Current (Generic):**
+**Current (Generic) - IST-Zustand:**
+```csharp
+// Aktuell NUR IScalar<T> API:
+public CGaBlade<T> Circle(IScalar<T> radiusSquared, IScalar<T> centerX, IScalar<T> centerY)
+{
+    // Nur diese Überladung existiert
+}
+```
+
+**Planned (Generic) - SOLL-Zustand nach Phase 2:**
 ```csharp
 // Datei: CGa/Generic/Encoding/CGaIpnsRoundEncoder.cs
 public class CGaIpnsRoundEncoder<T> : CGaEncoderBase<T>
@@ -355,7 +364,7 @@ public class CGaFloat64IpnsRoundEncoder : CGaFloat64EncoderBase
 }
 ```
 
-**Validierung:** ✅ Pattern konsistent mit XGa/PGa, erweitert um T + Scalar<T>!
+**Validierung (SOLL):** Pattern wird konsistent mit XGa/PGa sein, erweitert um T + Scalar<T>!
 
 ---
 

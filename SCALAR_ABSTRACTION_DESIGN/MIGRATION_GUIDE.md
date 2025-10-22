@@ -77,7 +77,13 @@ var space = CGaGeometricSpace5D<double>.Create(processor);
 
 ---
 
-## Float32 GPU Workflow
+## Float32 GPU Workflow [⚠️ SOLL - Nach Phase 1+2]
+
+> **⚠️ Implementation Status:**
+> - **Verfügbarkeit:** Nach Phase 1+2 Completion (~11-15 Wochen)
+> - **APIs existieren NICHT:** `ScalarProcessorOfFloating<float>`, `CGaGeometricSpace5D<float>.Create()`
+> - **Convenience-Überladungen fehlen:** `Circle(float, float, float)` APIs müssen erst implementiert werden
+> - **Aktueller Workaround:** Verwendung von IScalar<T> Wrapping erforderlich
 
 ### Setup
 
@@ -143,7 +149,13 @@ for (int i = 0; i < 100_000; i++)
 
 ---
 
-## Symbolischer Workflow
+## Symbolischer Workflow [⚠️ SOLL - Nach Phase 2]
+
+> **⚠️ Implementation Status:**
+> - **Verfügbarkeit:** Nach Phase 2 Completion (~10-13 Wochen)
+> - **Aktueller Zustand:** IScalar<T> API funktioniert (mit Wrapping)
+> - **SOLL-Zustand:** Convenience-Überladungen für direktere API
+> - **Current Workaround:** Alle Parameter müssen explizit zu IScalar<T> gewrapped werden
 
 ### Setup
 

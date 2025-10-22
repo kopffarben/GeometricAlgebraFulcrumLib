@@ -1,5 +1,5 @@
 # GA-FUL Implementation Roadmap
-## 4-Phasen Plan: 15-20 Wochen
+## 4-Phasen Plan: 19-25 Wochen
 
 **Teil von:** [SCALAR_ABSTRACTION_DESIGN.md](./SCALAR_ABSTRACTION_DESIGN.md)
 **Version:** 3.0
@@ -13,7 +13,7 @@
 2. [Phase 0: Test-Baseline & Infrastructure (2-3 Wochen)](#phase-0-test-baseline--infrastructure-2-3-wochen)
 3. [Phase 1: ScalarProcessorOfFloating<T> (1 Woche)](#phase-1-scalarprocessoroffloatingt-1-woche)
 4. [Phase 2: CGa Generic API Extensions (4-6 Wochen)](#phase-2-cga-generic-api-extensions-4-6-wochen)
-5. [Phase 3: CGa Float64 Wrapper Refactoring (6-7 Wochen)](#phase-3-cga-float64-wrapper-refactoring-6-7-wochen)
+5. [Phase 3: CGa Float64 Wrapper Refactoring (9-11 Wochen)](#phase-3-cga-float64-wrapper-refactoring-9-11-wochen)
 6. [Qualitätssicherung & Testing](#qualitätssicherung--testing)
 7. [Risiko-Mitigation](#risiko-mitigation)
 
@@ -52,20 +52,21 @@ PHASE 2 (4-6 Wochen): CGa Generic API Extensions
 ├── Woche 7-8: Integration Tests (120 neue Tests)
 └── Woche 9: Float32 & Symbolic Validation
 
-PHASE 3 (6-7 Wochen): Float64 Wrapper (28k → 3-5k LOC!)
+PHASE 3 (9-11 Wochen): Float64 Wrapper (24k → 11-14k LOC!)
 │
 ├── Woche 10-12: Encoder/Decoder Wrappers (83 files!)
-├── Woche 13-14: Operations & Elements Wrappers
-├── Woche 15: Regressions-Testing (162 Tests MÜSSEN passen)
-├── Woche 16: Performance Validation (<2% overhead)
-└── Woche 17: Documentation & Release Prep
+├── Woche 13-15: Operations Wrappers
+├── Woche 16-18: Elements Wrappers (9k LOC Complexity!)
+├── Woche 19: Regressions-Testing (162 Tests MÜSSEN passen)
+├── Woche 20: Performance Validation (<5% overhead)
+└── Woche 21: Documentation & Release Prep
 
-GESAMT: 15-20 Wochen (realistisch mit Buffer)
+GESAMT: 19-25 Wochen (realistisch mit Buffer)
 - Phase 0: 2-3 Wochen (NEU - CRITICAL!)
 - Phase 1: 1 Woche
 - Phase 2: 4-6 Wochen
-- Phase 3: 6-7 Wochen (KORRIGIERT: 25k LOC nicht 15k!)
-- Buffer: 2-3 Wochen für Unvorhergesehenes
+- Phase 3: 9-11 Wochen (Elements: 9k LOC, Visualizer: 4.4k LOC)
+- Buffer: 3-4 Wochen für Unvorhergesehenes
 ```
 
 ### Milestones (REVIDIERT)
@@ -76,8 +77,8 @@ GESAMT: 15-20 Wochen (realistisch mit Buffer)
 | **M1: Float32 Processor Ready** | 1 | 3 | ScalarProcessorOfFloating<T> + 50 Tests + Benchmarks |
 | **M2: CGa API Extended** | 2 | 9 | Hybrid API komplett, 120 Integration Tests pass |
 | **M3: Float32 & Symbolic Validated** | 2 | 9 | Beide Workflows produktionsreif |
-| **M4: Float64 Refactored** | 3 | 15 | **Alle 162 Baseline-Tests passen** nach Wrapper-Refactoring |
-| **M5: Production Ready** | 3 | 17 | Performance ≤2% Overhead, Docs komplett, Release |
+| **M4: Float64 Refactored** | 3 | 19 | **Alle 162 Baseline-Tests passen** nach Wrapper-Refactoring |
+| **M5: Production Ready** | 3 | 21 | Performance ≤5% Overhead, Docs komplett, Release |
 
 ---
 
@@ -868,14 +869,14 @@ public CGaBlade<double> Float64_EncodePoint()
 
 ---
 
-## Phase 3: CGa Float64 Wrapper Refactoring (6-7 Wochen)
+## Phase 3: CGa Float64 Wrapper Refactoring (9-11 Wochen)
 
 ### Ziele
 
-1. Float64 zu dünnem Wrapper über Generic<double> umbauen (28k → 3-5k LOC)
+1. Float64 zu dünnem Wrapper über Generic<double> umbauen (24k → 11-14k LOC)
 2. Public API 100% beibehalten (Zero Breaking Changes!)
 3. Alle **162 Tests** müssen passen
-4. Performance <2% Overhead
+4. Performance <5% Overhead
 
 ### Woche 7: Wrapper Implementation
 

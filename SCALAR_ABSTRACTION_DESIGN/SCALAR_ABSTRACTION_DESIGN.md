@@ -33,19 +33,19 @@ Dieses Dokument beschreibt das finale Design für die Vereinheitlichung der Scal
 
 ### IST-Zustand (Current State - PROBLEME)
 
-**❌ HAUPTPROBLEM: CGa Code-Duplikation ~25,000 LOC**
+**❌ HAUPTPROBLEM: CGa Code-Duplikation ~19,600 LOC**
 ```
-CGa/Float64/     28,064 LOC (83 files) ← Eigenständige Implementation
-CGa/Generic/     23,020 LOC (77 files) ← Separate Implementation
-DUPLIKATION:     ~25,000 LOC (~90% Overlap)
+CGa/Float64/     24,026 LOC (83 files) ← Eigenständige Implementation
+CGa/Generic/     19,608 LOC (77 files) ← Separate Implementation
+DUPLIKATION:     ~19,608 LOC (~100% der Generic Implementation)
 ```
 **Dies ist das zu lösende Problem in Phase 3!**
 
 **✅ Positive Aspekte (Bereits implementiert):**
 - ✅ **XGa ist perfekt**: Vollständige `T` + `Scalar<T>` + `IScalar<T>` Hybrid-API
 - ✅ **CGaBlade hat Operatoren**: Keine Änderungen nötig
-- ✅ **Circle/Point haben Hybrid API**: T + double + float Overloads existieren
-- ✅ **ScalarProcessorOfFloat32** existiert (442 LOC)
+- ❌ **Circle/Point haben NUR IScalar<T> API**: Hybrid API (T + double + float) ist Phase 2 Ziel
+- ✅ **ScalarProcessorOfFloat32** existiert (364 LOC)
 - ✅ **Utilities & Euclidean sind sauber**: Keine Probleme
 
 **❌ Fehlende Komponenten:**
@@ -57,9 +57,9 @@ DUPLIKATION:     ~25,000 LOC (~90% Overlap)
 
 **✅ CGa Float64 als Thin Wrapper:**
 ```
-CGa/Float64/     3,000-5,000 LOC      ← Thin Wrapper (delegiert zu Generic<double>)
-CGa/Generic/    23,020 LOC (unverändert) ← Core Implementation
-ERSPARNIS:      ~23,000 LOC eliminated!
+CGa/Float64/     11,000-14,000 LOC    ← Thin Wrapper (delegiert zu Generic<double>)
+CGa/Generic/     19,608 LOC (unverändert) ← Core Implementation
+ERSPARNIS:       ~10,000-13,000 LOC eliminated!
 ```
 
 **✅ Test-Infrastruktur komplett:**
@@ -124,7 +124,11 @@ Dieses Design-Dokument ist in folgende Teildokumente aufgeteilt:
 
 ## Schnelleinstieg: Workflow-Beispiele
 
-### Float32 GPU Development
+### Float32 GPU Development [⚠️ SOLL - Nach Phase 1+2]
+
+> **Status:** APIs existieren NICHT im aktuellen Code - Kompiliert NICHT
+> **Verfügbar:** Nach Phase 1+2 Completion (~11-15 Wochen)
+
 ```csharp
 // Schritt 1: Float32 Processor erstellen
 var processor = ScalarProcessorOfFloating<float>.Instance;
@@ -142,7 +146,11 @@ float[] gpuData = circle.InternalKVector.GetMultivectorArray();
 // Direkt zu GPU übertragbar - kein Overhead!
 ```
 
-### Symbolische Optimierung
+### Symbolische Optimierung [⚠️ SOLL - Nach Phase 2]
+
+> **Status:** Convenience-APIs existieren NICHT - Erfordert IScalar<T> Wrapping aktuell
+> **Verfügbar:** Nach Phase 2 Completion (~10-13 Wochen)
+
 ```csharp
 // Schritt 1: Symbolischen Context erstellen
 var context = new MetaContext();
@@ -164,7 +172,11 @@ context.OptimizeContext(); // CSE, constant folding, algebraic simplification
 // Code-Gen-API siehe MIGRATION_GUIDE.md
 ```
 
-### Bestehender Float64 Code (unverändert!)
+### Bestehender Float64 Code [✅ IST + SOLL - Unverändert]
+
+> **Status:** Funktioniert JETZT und bleibt 100% kompatibel
+> **Breaking Changes:** KEINE
+
 ```csharp
 // Kein Code-Change nötig - 100% Backward Compatible!
 var space = CGaFloat64GeometricSpace5D.Instance;
@@ -199,7 +211,7 @@ var circle = space.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
 **Komponenten:**
 - 🔲 **ScalarProcessorOfFloating<T>** für float, double, Half
 - 🔲 **VGA Generic** Implementation (blockiert aktuell Float32 Workflows)
-- 🔲 **CGa Float64 Thin Wrapper** (IST: 28k LOC, SOLL: 3-5k LOC)
+- 🔲 **CGa Float64 Thin Wrapper** (IST: 24k LOC, SOLL: 11-14k LOC)
 
 ### ✅ Erfolgs-Kriterien nach Completion
 
@@ -211,10 +223,15 @@ var circle = space.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
 
 **Performance (zu validieren via Benchmarks):**
 - ✅ **Float32:** ≥85% von raw float (TARGET: ~90%, Minimum: 85%)
-- ✅ **Float64 Wrapper:** ≤2% Overhead (TARGET: <1%, Akzeptabel: ≤2%)
+- ✅ **Float64 Wrapper:** ≤5% Overhead (TARGET: <2%, Akzeptabel: ≤5%)
+
+> **⚠️ WICHTIG - Performance-Ziele Status:**
+> Alle Performance-Ziele (90% Float32, <5% Float64) sind **unvalidierte Predictions**.
+> ZERO Benchmarks existieren aktuell. Empirische Validation erforderlich in Phase 0.
+> Siehe [PERFORMANCE_ANALYSIS.md](./PERFORMANCE_ANALYSIS.md) für Details.
 
 **Code-Qualität:**
-- ✅ **Code-Duplikation eliminiert:** 28k → 3-5k LOC in Float64 (~23k saved)
+- ✅ **Code-Duplikation eliminiert:** 24k → 11-14k LOC in Float64 (~10-13k saved)
 - ✅ **API Konsistenz:** Alle Encoder mit vollständiger Hybrid API
 
 ---
@@ -246,19 +263,19 @@ var circle = space.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
 - Hybrid API für alle CGa Encoders/Decoders
 - 120 Integration Tests (Float32 + Symbolic)
 
-### Phase 3: Float64 Wrapper Refactoring (6-7 Wochen)
+### Phase 3: Float64 Wrapper Refactoring (9-11 Wochen)
 
 **Deliverables:**
-- Float64 als thin wrapper (28k → 3-5k LOC)
+- Float64 als thin wrapper (24k → 11-14k LOC)
 - 100% Regression-Test Pass-Rate
-- Performance <2% Overhead
+- Performance <5% Overhead
 
-**Gesamte Timeline: 15-20 Wochen**
+**Gesamte Timeline: 19-25 Wochen**
 - Phase 0: 2-3 Wochen
 - Phase 1: 1 Woche
 - Phase 2: 4-6 Wochen
-- Phase 3: 6-7 Wochen (25k LOC, nicht 15-20k)
-- Buffer: 2-3 Wochen
+- Phase 3: 9-11 Wochen (Elements Complexity: 9k LOC, Visualizer: 4.4k LOC)
+- Buffer: 3-4 Wochen
 
 ---
 

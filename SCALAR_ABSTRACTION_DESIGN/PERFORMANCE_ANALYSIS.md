@@ -2,8 +2,20 @@
 ## Benchmarks und Performance-Anforderungen
 
 **Teil von:** [SCALAR_ABSTRACTION_DESIGN.md](./SCALAR_ABSTRACTION_DESIGN.md)
-**Version:** 2.0
+**Version:** 3.0
 **Datum:** 2025-01-22
+
+---
+
+> **⚠️ KRITISCHER HINWEIS - Unvalidierter Status**
+>
+> Alle Performance-Ziele und "Erwartete Ergebnisse" in diesem Dokument sind **unvalidierte Predictions**.
+> - ❌ ZERO Benchmarks implementiert
+> - ❌ ZERO empirische Messungen durchgeführt
+> - ❌ ZERO Baseline-Daten vorhanden
+>
+> **Validation erforderlich in Phase 0** bevor Implementation startet.
+> Siehe [IMPLEMENTATION_ROADMAP.md](./IMPLEMENTATION_ROADMAP.md) Phase 0: Test-Baseline.
 
 ---
 
@@ -11,9 +23,9 @@
 
 | Komponente | Baseline | Ziel | Rationale |
 |------------|----------|------|-----------|
-| **ScalarProcessorOfFloating<float>** | Raw float operations | ~90%+ | Float32 GPU Workflow |
-| **CGa Generic<float>** | Raw float GA operations | ~90%+ | Batch-Processing 100k Objects |
-| **Float64 Wrapper** | Alte CGaFloat64 Implementation | <2% overhead | Backward Compatibility (adjustiert von <1%) |
+| **ScalarProcessorOfFloating<float>** | Raw float operations | ~90%+ (unvalidiert) | Float32 GPU Workflow |
+| **CGa Generic<float>** | Raw float GA operations | ~90%+ (unvalidiert) | Batch-Processing 100k Objects |
+| **Float64 Wrapper** | Alte CGaFloat64 Implementation | <5% overhead (unvalidiert) | Backward Compatibility (realistisch: 3-8%) |
 | **Symbolic Workflow** | N/A (neue Feature) | Akzeptabel | Code-Gen Qualität wichtiger |
 
 ---

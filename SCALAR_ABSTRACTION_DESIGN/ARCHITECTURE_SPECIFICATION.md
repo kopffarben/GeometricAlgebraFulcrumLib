@@ -211,7 +211,7 @@ public sealed class ScalarProcessorOfFloat64 : IScalarProcessor<double>
 
 | System | Generic Version | Float64 Version | IST-Status (Problem) | SOLL-Status (Lösung) | Priorität |
 |--------|----------------|-----------------|----------------------|----------------------|-----------|
-| **CGa** (Conformal) | ✅ Circle/Point mit Hybrid API | ❌ **28,064 LOC separate Implementation** | **PROBLEM: ~25k LOC Duplikation** | **LÖSUNG: 3-5k LOC thin wrapper** | **P0** |
+| **CGa** (Conformal) | ❌ Circle/Point NUR IScalar<T> (Phase 2 Ziel: Hybrid API) | ❌ **24,026 LOC separate Implementation** | **PROBLEM: ~19.6k LOC Duplikation** | **LÖSUNG: 11-14k LOC thin wrapper** | **P0** |
 | **PGa** (Projective) | ✅ Hybrid API | ✅ Deprecated (commented out) | **ERFOLGSGESCHICHTE** (bereits thin wrapper) | - | - |
 | **VGa** (Vector/Euclidean) | ❌ **FEHLT KOMPLETT** | ✅ Float64-only (~200 LOC) | **BLOCKIERT Float32 Workflows** | **Generic implementieren** | **P0** |
 | **HGa** (Hyperbolic) | ✅ Generic-only (2 files) | ❌ Kein Float64 | OK (Nischen-Use-Case) | Optional: Float64 wrapper | P2 |
@@ -223,9 +223,9 @@ public sealed class ScalarProcessorOfFloat64 : IScalarProcessor<double>
 
 ```
 Modeling/Geometry/CGa/
-├── Generic/      23,020 LOC (77 files) ← Separate Implementation
+├── Generic/      19,608 LOC (77 files) ← Separate Implementation
 │   ├── Blades/ CGaBlade.cs (✅ Hat bereits Operatoren!)
-│   ├── Encoding/ (✅ Circle/Point haben Hybrid API: T+double+float+IScalar<T>)
+│   ├── Encoding/ (❌ Circle/Point haben NUR IScalar<T> - Hybrid API ist Phase 2 Ziel)
 │   │   ├── CGaIpnsRoundEncoder.cs
 │   │   ├── CGaIpnsFlatEncoder.cs
 │   │   ├── CGaOpnsRoundEncoder.cs
@@ -233,20 +233,20 @@ Modeling/Geometry/CGa/
 │   ├── Decoding/
 │   └── CGaGeometricSpace.cs
 │
-└── Float64/      28,064 LOC (83 files) ← ❌ EIGENSTÄNDIGE IMPLEMENTATION!
+└── Float64/      24,026 LOC (83 files) ← ❌ EIGENSTÄNDIGE IMPLEMENTATION!
     ├── Blades/ CGaFloat64Blade.cs
     ├── Encoding/
     │   ├── CGaFloat64IpnsRoundEncoder.cs (❌ Komplett separate Logik!)
     │   └── ... (ALLES DUPLIZIERT!)
     └── CGaFloat64GeometricSpace.cs
 
-PROBLEM: ~25,000 LOC CODE-DUPLIKATION (~90% Overlap)
+PROBLEM: ~19,608 LOC CODE-DUPLIKATION (~100% von Generic)
 ```
 
 **Problem-Analyse (IST):**
 
 1. **❌ Massive Code-Duplikation:** Generic und Float64 haben separate, duplizierte Implementations
-2. **✅ Hybrid API existiert** für Circle/Point (aber nicht überall konsistent)
+2. **❌ Hybrid API fehlt** für Circle/Point - nur IScalar<T> vorhanden (Phase 2 Ziel)
 3. **❌ Float64 wird aktiv genutzt** in Production (Refactoring blockiert ohne Tests)
 4. **❌ Tests fehlen:** IST: 8 Tests, BENÖTIGT: 162 Baseline + 190 neue = 352 total
 
@@ -254,16 +254,16 @@ PROBLEM: ~25,000 LOC CODE-DUPLIKATION (~90% Overlap)
 
 ```
 Modeling/Geometry/CGa/
-├── Generic/      23,020 LOC (unverändert) ← CORE IMPLEMENTATION (alle Logik)
+├── Generic/      19,608 LOC (unverändert) ← CORE IMPLEMENTATION (alle Logik)
 │   └── ... (vollständige Hybrid API für alle Encoder/Decoder)
 │
-└── Float64/      3,000-5,000 LOC ← THIN WRAPPER!
+└── Float64/      11,000-14,000 LOC ← THIN WRAPPER!
     ├── CGaFloat64GeometricSpace.cs (delegiert zu Generic<double>)
     ├── CGaFloat64Blade.cs (Wrapper)
     ├── CGaFloat64IpnsRoundEncoder.cs (delegiert zu Generic)
     └── ... (NUR Wrapping-Code)
 
-LÖSUNG: ~23,000 LOC EINGESPART!
+LÖSUNG: ~10,000-13,000 LOC EINGESPART!
 ```
 
 **CGa Generic Encoder (Current):**
@@ -581,7 +581,7 @@ Utilities.Structures/Dictionary/
 
 **Zeitersparnis:**
 - Ursprüngliche Schätzung: 8-13 Wochen
-- Revidierte Schätzung: **6-9 Wochen** (30% Reduktion!)
+- Revidierte Schätzung: **19-25 Wochen** (korrigiert nach Architekten-Review)
 
 ---
 
@@ -657,7 +657,7 @@ Float32 Workflow      Symbolic Workflow
          Public API 100%
            kompatibel
                  │
-        507 Tests + Apps
+        162 Tests + Apps
         (Keine Änderungen!)
 ```
 
