@@ -1,6 +1,6 @@
  Kannst du mehrer Agenten (so viele, wie du für nötig hälst) starten welche:
 - sehr kritische Senior System Architekten sind
-- die Design-Documente in /#$ARGUMENTS
+- die Design-Documente im Ordner #$ARGUMENTS beginnend bei #$ARGUMENTS.md
   - analysieren
   - gegen den Code abchecken
   - sehr kritisch die Implementation überprüfen
