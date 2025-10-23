@@ -49,7 +49,7 @@ public class Float64RotateTranslateAffineMap3D :
         {
             var (cosHalfAngle, sinHalfAngle) = RotateAngle.HalfPolarAngle();
 
-            return LinFloat64Quaternion.Create(cosHalfAngle, RotateVectorX * sinHalfAngle, RotateVectorY * sinHalfAngle, RotateVectorZ * sinHalfAngle);
+            return LinFloat64Quaternion.Create(RotateVectorX * sinHalfAngle, RotateVectorY * sinHalfAngle, RotateVectorZ * sinHalfAngle, cosHalfAngle); // (x, y, z, w)
         }
     }
 

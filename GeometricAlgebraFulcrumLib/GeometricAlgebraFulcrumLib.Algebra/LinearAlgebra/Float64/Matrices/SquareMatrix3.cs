@@ -1047,10 +1047,10 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             s = 0.5d / s;
 
             return LinFloat64Quaternion.Create(
-                w, 
-                (Scalar21 - Scalar12) * s, 
-                (Scalar02 - Scalar20) * s, 
-                (Scalar10 - Scalar01) * s
+                (Scalar21 - Scalar12) * s,  // x
+                (Scalar02 - Scalar20) * s,  // y
+                (Scalar10 - Scalar01) * s,  // z
+                w                            // w
             );
         }
         else
@@ -1071,7 +1071,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             q[j] = (this[j, i] + this[i, j]) * s;
             q[k] = (this[k, i] + this[i, k]) * s;
 
-            return LinFloat64Quaternion.Create(w, q[0], q[1], q[2]);
+            return LinFloat64Quaternion.Create(q[0], q[1], q[2], w); // (x, y, z, w)
         }
     }
 

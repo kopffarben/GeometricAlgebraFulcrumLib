@@ -22,7 +22,7 @@ public class LinFloat64QuaternionTests
     public void Quaternion_Construction_ShouldWork()
     {
         // Arrange & Act
-        var q = LinFloat64Quaternion.Create(1, 2, 3, 4);
+        var q = LinFloat64Quaternion.Create(2, 3, 4, 1); // (x, y, z, w)
 
         // Assert
         Assert.That(q, Is.Not.Null, "Quaternion should be created");
@@ -97,8 +97,8 @@ public class LinFloat64QuaternionTests
     public void Quaternion_Addition_ShouldWork()
     {
         // Arrange
-        var q1 = LinFloat64Quaternion.Create(1, 2, 3, 4);
-        var q2 = LinFloat64Quaternion.Create(5, 6, 7, 8);
+        var q1 = LinFloat64Quaternion.Create(2, 3, 4, 1); // (x, y, z, w) - (w=1, x=2, y=3, z=4)
+        var q2 = LinFloat64Quaternion.Create(6, 7, 8, 5); // (x, y, z, w) - (w=5, x=6, y=7, z=8)
 
         // Act
         var result = q1 + q2;
@@ -114,8 +114,8 @@ public class LinFloat64QuaternionTests
     public void Quaternion_Subtraction_ShouldWork()
     {
         // Arrange
-        var q1 = LinFloat64Quaternion.Create(10, 8, 6, 4);
-        var q2 = LinFloat64Quaternion.Create(1, 2, 3, 4);
+        var q1 = LinFloat64Quaternion.Create(8, 6, 4, 10); // (x, y, z, w) - (w=10, x=8, y=6, z=4)
+        var q2 = LinFloat64Quaternion.Create(2, 3, 4, 1); // (x, y, z, w) - (w=1, x=2, y=3, z=4)
 
         // Act
         var result = q1 - q2;
@@ -131,7 +131,7 @@ public class LinFloat64QuaternionTests
     public void Quaternion_ScalarMultiplication_ShouldWork()
     {
         // Arrange
-        var q = LinFloat64Quaternion.Create(1, 2, 3, 4);
+        var q = LinFloat64Quaternion.Create(2, 3, 4, 1); // (x, y, z, w)
 
         // Act
         var result = q * 2;
@@ -147,7 +147,7 @@ public class LinFloat64QuaternionTests
     public void Quaternion_Negation_ShouldWork()
     {
         // Arrange
-        var q = LinFloat64Quaternion.Create(1, -2, 3, -4);
+        var q = LinFloat64Quaternion.Create(-2, 3, -4, 1); // (x, y, z, w)
 
         // Act
         var result = -q;
@@ -167,8 +167,8 @@ public class LinFloat64QuaternionTests
     public void Quaternion_Multiplication_ShouldWork()
     {
         // Arrange
-        var q1 = LinFloat64Quaternion.Create(1, 2, 3, 4);
-        var q2 = LinFloat64Quaternion.Create(5, 6, 7, 8);
+        var q1 = LinFloat64Quaternion.Create(2, 3, 4, 1); // (x, y, z, w)
+        var q2 = LinFloat64Quaternion.Create(6, 7, 8, 5); // (x, y, z, w)
 
         // Act
         var result = q1 * q2;
@@ -181,7 +181,7 @@ public class LinFloat64QuaternionTests
     public void Quaternion_IdentityMultiplication_ShouldPreserveQuaternion()
     {
         // Arrange
-        var q = LinFloat64Quaternion.Create(2, 3, 4, 5);
+        var q = LinFloat64Quaternion.Create(3, 4, 5, 2); // (x, y, z, w)
         var identity = LinFloat64Quaternion.Identity;
 
         // Act
@@ -197,8 +197,8 @@ public class LinFloat64QuaternionTests
     public void Quaternion_MultiplicationIsNonCommutative_ShouldBeValid()
     {
         // Arrange
-        var q1 = LinFloat64Quaternion.Create(1, 1, 0, 0);
-        var q2 = LinFloat64Quaternion.Create(1, 0, 1, 0);
+        var q1 = LinFloat64Quaternion.Create(1, 0, 0, 1); // (x, y, z, w)
+        var q2 = LinFloat64Quaternion.Create(0, 1, 0, 1); // (x, y, z, w)
 
         // Act
         var result1 = q1 * q2;
@@ -218,7 +218,7 @@ public class LinFloat64QuaternionTests
     public void Quaternion_Conjugate_ShouldWork()
     {
         // Arrange
-        var q = LinFloat64Quaternion.Create(1, 2, 3, 4);
+        var q = LinFloat64Quaternion.Create(2, 3, 4, 1); // (x, y, z, w)
 
         // Act
         var conj = q.Conjugate();
@@ -253,7 +253,7 @@ public class LinFloat64QuaternionTests
     public void Quaternion_NormSquared_ShouldBeValid()
     {
         // Arrange
-        var q = LinFloat64Quaternion.Create(1, 2, 2, 0);
+        var q = LinFloat64Quaternion.Create(2, 2, 0, 1); // (x, y, z, w)
 
         // Act
         var normSquared = q.NormSquared();

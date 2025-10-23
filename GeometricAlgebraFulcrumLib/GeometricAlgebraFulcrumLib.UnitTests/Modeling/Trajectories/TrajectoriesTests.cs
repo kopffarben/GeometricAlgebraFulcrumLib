@@ -557,7 +557,7 @@ public class TrajectoriesTests
     public void QuaternionTrajectory_Constant_ShouldReturnSameValue()
     {
         // Arrange
-        var quat = LinFloat64Quaternion.Create(1, 0, 0, 0); // Identity quaternion
+        var quat = LinFloat64Quaternion.Create(0, 0, 0, 1); // Identity quaternion (x, y, z, w)
         var trajectory = ConstantParametricQuaternion.Create(quat);
 
         // Act
@@ -576,7 +576,7 @@ public class TrajectoriesTests
     {
         // Arrange
         var trajectory = ComputedParametricQuaternion.Create(
-            t => LinFloat64Quaternion.Create(Math.Cos(t), Math.Sin(t), 0, 0)
+            t => LinFloat64Quaternion.Create(Math.Sin(t), 0, 0, Math.Cos(t)) // (x, y, z, w)
         );
 
         // Act
@@ -594,7 +594,7 @@ public class TrajectoriesTests
     public void QuaternionTrajectory_IsValid_ShouldWork()
     {
         // Arrange
-        var quat = LinFloat64Quaternion.Create(1, 0, 0, 0);
+        var quat = LinFloat64Quaternion.Create(0, 0, 0, 1); // Identity quaternion (x, y, z, w)
         var trajectory = ConstantParametricQuaternion.Create(quat);
 
         // Act
@@ -608,7 +608,7 @@ public class TrajectoriesTests
     public void QuaternionTrajectory_TimeRange_ShouldBeAccessible()
     {
         // Arrange
-        var quat = LinFloat64Quaternion.Create(1, 0, 0, 0);
+        var quat = LinFloat64Quaternion.Create(0, 0, 0, 1); // Identity quaternion (x, y, z, w)
         var trajectory = ConstantParametricQuaternion.Create(quat);
 
         // Assert
@@ -619,7 +619,7 @@ public class TrajectoriesTests
     public void QuaternionTrajectory_GetQuaternion_ShouldWork()
     {
         // Arrange
-        var quat = LinFloat64Quaternion.Create(1, 0, 0, 0);
+        var quat = LinFloat64Quaternion.Create(0, 0, 0, 1); // Identity quaternion (x, y, z, w)
         var trajectory = ConstantParametricQuaternion.Create(quat);
 
         // Act

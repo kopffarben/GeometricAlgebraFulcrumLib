@@ -72,7 +72,7 @@ public class Float64RotateScaleTranslateAffineMap3D :
             var cosAngle = RotateAngle.Cos() / 2;
             var sinAngle = RotateAngle.Sin() / 2;
 
-            return LinFloat64Quaternion.Create(cosAngle, RotateVectorX * sinAngle, RotateVectorY * sinAngle, RotateVectorZ * sinAngle);
+            return LinFloat64Quaternion.Create(RotateVectorX * sinAngle, RotateVectorY * sinAngle, RotateVectorZ * sinAngle, cosAngle); // (x, y, z, w)
         }
     }
 

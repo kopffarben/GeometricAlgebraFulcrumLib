@@ -1398,7 +1398,7 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Quaternion ToLinVector4D()
     {
-        return LinFloat64Quaternion.Create(W, X, Y, Z);
+        return LinFloat64Quaternion.Create(X, Y, Z, W); // (x, y, z, w)
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

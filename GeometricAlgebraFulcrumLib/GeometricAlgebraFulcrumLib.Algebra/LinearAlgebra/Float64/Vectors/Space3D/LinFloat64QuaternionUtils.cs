@@ -12,10 +12,10 @@ public static class LinFloat64QuaternionUtils
     public static LinFloat64Quaternion ToQuaternion(this Quaternion quaternion)
     {
         return LinFloat64Quaternion.Create(
-            quaternion.W, 
-            -quaternion.X, 
-            -quaternion.Y, 
-            -quaternion.Z
+            -quaternion.X,  // i
+            -quaternion.Y,  // j
+            -quaternion.Z,  // k
+            quaternion.W    // scalar
         );
     }
     

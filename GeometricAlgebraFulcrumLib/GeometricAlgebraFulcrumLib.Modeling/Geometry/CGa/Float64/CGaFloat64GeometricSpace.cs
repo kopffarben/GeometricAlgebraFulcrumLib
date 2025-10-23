@@ -268,9 +268,9 @@ public class CGaFloat64GeometricSpace :
         E12 = new CGaFloat64Blade(this, ConformalProcessor.BivectorTerm(2, 3));
 
         Ie = new CGaFloat64Blade(
-            this, 
+            this,
             ConformalProcessor.KVectorTerm(
-                IndexSet.CreateDense(VSpaceDimensions - 2)
+                IndexSet.CreateDense(2, VSpaceDimensions - 2)  // Start at index 2 (VGA basis)
             )
         );
         IeInv = Ie.Inverse();

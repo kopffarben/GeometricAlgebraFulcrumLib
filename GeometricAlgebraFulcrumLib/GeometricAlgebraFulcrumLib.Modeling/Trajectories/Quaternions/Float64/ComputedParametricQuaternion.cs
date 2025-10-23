@@ -57,8 +57,8 @@ public class ComputedParametricQuaternion :
 
         return new ComputedParametricQuaternion(
             Float64ScalarRange.Infinite,
-            t => LinFloat64Quaternion.Create(wFunc.GetValue(t), xFunc.GetValue(t), yFunc.GetValue(t), zFunc.GetValue(t)),
-            t => LinFloat64Quaternion.Create(wDtFunc.GetValue(t), xDtFunc.GetValue(t), yDtFunc.GetValue(t), zDtFunc.GetValue(t))
+            t => LinFloat64Quaternion.Create(xFunc.GetValue(t), yFunc.GetValue(t), zFunc.GetValue(t), wFunc.GetValue(t)), // (x, y, z, w)
+            t => LinFloat64Quaternion.Create(xDtFunc.GetValue(t), yDtFunc.GetValue(t), zDtFunc.GetValue(t), wDtFunc.GetValue(t)) // (x, y, z, w)
         );
     }
 
@@ -67,8 +67,8 @@ public class ComputedParametricQuaternion :
     {
         return new ComputedParametricQuaternion(
             Float64ScalarRange.Infinite,
-            t => LinFloat64Quaternion.Create(wFunc(t), xFunc(t), yFunc(t), zFunc(t)),
-            t => LinFloat64Quaternion.Create(Differentiate.FirstDerivative(wFunc, t), Differentiate.FirstDerivative(xFunc, t), Differentiate.FirstDerivative(yFunc, t), Differentiate.FirstDerivative(zFunc, t))
+            t => LinFloat64Quaternion.Create(xFunc(t), yFunc(t), zFunc(t), wFunc(t)), // (x, y, z, w)
+            t => LinFloat64Quaternion.Create(Differentiate.FirstDerivative(xFunc, t), Differentiate.FirstDerivative(yFunc, t), Differentiate.FirstDerivative(zFunc, t), Differentiate.FirstDerivative(wFunc, t)) // (x, y, z, w)
         );
     }
 
