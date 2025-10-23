@@ -21,7 +21,7 @@ public sealed record LinFloat64Quaternion :
     ILinFloat64Multivector3D
 {
     public static LinFloat64Quaternion Identity { get; }
-        = new LinFloat64Quaternion(1, 0, 0, 0);
+        = new LinFloat64Quaternion(0, 0, 0, 1);
     
     public static LinFloat64Quaternion XyToXz { get; }
         = LinBasisVectorPair3D.PxPy.VectorPairToVectorPairRotationQuaternion(LinBasisVectorPair3D.PxPz);
@@ -44,33 +44,34 @@ public sealed record LinFloat64Quaternion :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Quaternion Create(Float64Scalar scalar, Float64Scalar iScalar, Float64Scalar jScalar, Float64Scalar kScalar)
+    public static LinFloat64Quaternion Create(Float64Scalar iScalar, Float64Scalar jScalar, Float64Scalar kScalar, Float64Scalar scalar)
     {
-        return new LinFloat64Quaternion(scalar, iScalar, jScalar, kScalar);
+        // FIXED: Parameter order now matches Generic implementation: (x, y, z, w) instead of (w, x, y, z)
+        return new LinFloat64Quaternion(iScalar, jScalar, kScalar, scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion Create(Float64Scalar scalar, LinFloat64Bivector3D bivectorPart)
     {
-        return new LinFloat64Quaternion(scalar, bivectorPart);
+        return new LinFloat64Quaternion(bivectorPart, scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion Create(Float64Scalar scalar)
     {
-        return new LinFloat64Quaternion(scalar, LinFloat64Bivector3D.Zero);
+        return new LinFloat64Quaternion(LinFloat64Bivector3D.Zero, scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion Create(LinFloat64Bivector3D bivectorPart)
     {
-        return new LinFloat64Quaternion(Float64Scalar.Zero, bivectorPart);
+        return new LinFloat64Quaternion(bivectorPart, Float64Scalar.Zero);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion Create(Quaternion v)
     {
-        return new LinFloat64Quaternion(v.W, -v.X, -v.Y, -v.Z);
+        return new LinFloat64Quaternion(v.X, v.Y, v.Z, v.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -80,7 +81,7 @@ public sealed record LinFloat64Quaternion :
 
         var bivectorPart = bivector * (halfAngleSin / bivector.Norm());
 
-        return new LinFloat64Quaternion(halfAngleCos, bivectorPart);
+        return new LinFloat64Quaternion(bivectorPart, halfAngleCos);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -90,7 +91,7 @@ public sealed record LinFloat64Quaternion :
 
         var vector = axis.ToLinVector3D(-halfAngleSin);
 
-        return new LinFloat64Quaternion(halfAngleCos, vector.X, vector.Y, vector.Z);
+        return new LinFloat64Quaternion(vector.X, vector.Y, vector.Z, halfAngleCos);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -100,7 +101,7 @@ public sealed record LinFloat64Quaternion :
 
         var vector = axis.SetLength(-halfAngleSin);
 
-        return new LinFloat64Quaternion(halfAngleCos, vector.X, vector.Y, vector.Z);
+        return new LinFloat64Quaternion(vector.X, vector.Y, vector.Z, halfAngleCos);
     }
 
     /// <summary>
@@ -117,7 +118,7 @@ public sealed record LinFloat64Quaternion :
             var s = Math.Sqrt(trace + 1d);
             var invS = 0.5d / s;
 
-            return new LinFloat64Quaternion(s * 0.5f, (matrix.M23 - matrix.M32) * invS, (matrix.M31 - matrix.M13) * invS, (matrix.M12 - matrix.M21) * invS);
+            return new LinFloat64Quaternion((matrix.M23 - matrix.M32) * invS, (matrix.M31 - matrix.M13) * invS, (matrix.M12 - matrix.M21) * invS, s * 0.5f);
         }
 
         if (matrix.M11 >= matrix.M22 && matrix.M11 >= matrix.M33)
@@ -125,7 +126,7 @@ public sealed record LinFloat64Quaternion :
             var s = Math.Sqrt(1d + matrix.M11 - matrix.M22 - matrix.M33);
             var invS = 0.5d / s;
 
-            return new LinFloat64Quaternion((matrix.M23 - matrix.M32) * invS, 0.5d * s, (matrix.M12 + matrix.M21) * invS, (matrix.M13 + matrix.M31) * invS);
+            return new LinFloat64Quaternion(0.5d * s, (matrix.M12 + matrix.M21) * invS, (matrix.M13 + matrix.M31) * invS, (matrix.M23 - matrix.M32) * invS);
         }
 
         if (matrix.M22 > matrix.M33)
@@ -133,14 +134,14 @@ public sealed record LinFloat64Quaternion :
             var s = Math.Sqrt(1d + matrix.M22 - matrix.M11 - matrix.M33);
             var invS = 0.5d / s;
 
-            return new LinFloat64Quaternion((matrix.M31 - matrix.M13) * invS, (matrix.M21 + matrix.M12) * invS, 0.5d * s, (matrix.M32 + matrix.M23) * invS);
+            return new LinFloat64Quaternion((matrix.M21 + matrix.M12) * invS, 0.5d * s, (matrix.M32 + matrix.M23) * invS, (matrix.M31 - matrix.M13) * invS);
         }
         else
         {
             var s = Math.Sqrt(1d + matrix.M33 - matrix.M11 - matrix.M22);
             var invS = 0.5d / s;
 
-            return new LinFloat64Quaternion((matrix.M12 - matrix.M21) * invS, (matrix.M31 + matrix.M13) * invS, (matrix.M32 + matrix.M23) * invS, 0.5d * s);
+            return new LinFloat64Quaternion((matrix.M31 + matrix.M13) * invS, (matrix.M32 + matrix.M23) * invS, 0.5d * s, (matrix.M12 - matrix.M21) * invS);
         }
     }
 
@@ -167,38 +168,38 @@ public sealed record LinFloat64Quaternion :
         var sy = Math.Sin(halfYaw);
         var cy = Math.Cos(halfYaw);
 
-        return new LinFloat64Quaternion(cy * cp * cr + sy * sp * sr, cy * sp * cr + sy * cp * sr, sy * cp * cr - cy * sp * sr, cy * cp * sr - sy * sp * cr);
+        return new LinFloat64Quaternion(cy * sp * cr + sy * cp * sr, sy * cp * cr - cy * sp * sr, cy * cp * sr - sy * sp * cr, cy * cp * cr + sy * sp * sr);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion operator -(LinFloat64Quaternion v1)
     {
-        return new LinFloat64Quaternion(-v1.Scalar, -v1.ScalarI, -v1.ScalarJ, -v1.ScalarK);
+        return new LinFloat64Quaternion(-v1.ScalarI, -v1.ScalarJ, -v1.ScalarK, -v1.Scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion operator +(LinFloat64Quaternion v1, LinFloat64Quaternion v2)
     {
-        return new LinFloat64Quaternion(v1.Scalar + v2.Scalar, v1.ScalarI + v2.ScalarI, v1.ScalarJ + v2.ScalarJ, v1.ScalarK + v2.ScalarK);
+        return new LinFloat64Quaternion(v1.ScalarI + v2.ScalarI, v1.ScalarJ + v2.ScalarJ, v1.ScalarK + v2.ScalarK, v1.Scalar + v2.Scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion operator -(LinFloat64Quaternion v1, LinFloat64Quaternion v2)
     {
-        return new LinFloat64Quaternion(v1.Scalar - v2.Scalar, v1.ScalarI - v2.ScalarI, v1.ScalarJ - v2.ScalarJ, v1.ScalarK - v2.ScalarK);
+        return new LinFloat64Quaternion(v1.ScalarI - v2.ScalarI, v1.ScalarJ - v2.ScalarJ, v1.ScalarK - v2.ScalarK, v1.Scalar - v2.Scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion operator *(LinFloat64Quaternion v1, double s)
     {
-        return new LinFloat64Quaternion(v1.Scalar * s, v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s);
+        return new LinFloat64Quaternion(v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s, v1.Scalar * s);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion operator *(double s, LinFloat64Quaternion v1)
     {
-        return new LinFloat64Quaternion(v1.Scalar * s, v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s);
+        return new LinFloat64Quaternion(v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s, v1.Scalar * s);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -207,7 +208,7 @@ public sealed record LinFloat64Quaternion :
         Debug.Assert(!s.IsNearZero());
 
         s = 1.0d / s;
-        return new LinFloat64Quaternion(v1.Scalar * s, v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s);
+        return new LinFloat64Quaternion(v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s, v1.Scalar * s);
     }
 
     /// <summary>
@@ -235,7 +236,7 @@ public sealed record LinFloat64Quaternion :
 
         var dot = q1X * q2X + q1Y * q2Y + q1Z * q2Z;
 
-        return new LinFloat64Quaternion(q1W * q2W - dot, q1X * q2W + q2X * q1W + cx, q1Y * q2W + q2Y * q1W + cy, q1Z * q2W + q2Z * q1W + cz);
+        return new LinFloat64Quaternion(q1X * q2W + q2X * q1W + cx, q1Y * q2W + q2Y * q1W + cy, q1Z * q2W + q2Z * q1W + cz, q1W * q2W - dot);
     }
 
     /// <summary>
@@ -273,7 +274,7 @@ public sealed record LinFloat64Quaternion :
 
         var dot = q1X * q2X + q1Y * q2Y + q1Z * q2Z;
 
-        return new LinFloat64Quaternion(q1W * q2W - dot, q1X * q2W + q2X * q1W + cx, q1Y * q2W + q2Y * q1W + cy, q1Z * q2W + q2Z * q1W + cz);
+        return new LinFloat64Quaternion(q1X * q2W + q2X * q1W + cx, q1Y * q2W + q2Y * q1W + cy, q1Z * q2W + q2Z * q1W + cz, q1W * q2W - dot);
     }
 
 
@@ -373,7 +374,7 @@ public sealed record LinFloat64Quaternion :
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinFloat64Quaternion(Float64Scalar scalar, Float64Scalar iScalar, Float64Scalar jScalar, Float64Scalar kScalar)
+    private LinFloat64Quaternion(Float64Scalar iScalar, Float64Scalar jScalar, Float64Scalar kScalar, Float64Scalar scalar)
     {
         ScalarI = iScalar;
         ScalarJ = jScalar;
@@ -382,7 +383,7 @@ public sealed record LinFloat64Quaternion :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinFloat64Quaternion(Float64Scalar scalar, LinFloat64Bivector3D bivectorPart)
+    private LinFloat64Quaternion(LinFloat64Bivector3D bivectorPart, Float64Scalar scalar)
     {
         ScalarI = -bivectorPart.Scalar23;
         ScalarJ = bivectorPart.Scalar13;
@@ -537,7 +538,7 @@ public sealed record LinFloat64Quaternion :
             ScalarJ * q2.ScalarJ +
             ScalarK * q2.ScalarK;
 
-        return new LinFloat64Quaternion(Scalar * q2.Scalar - dot, ScalarI * q2.Scalar + q2.ScalarI * Scalar + cx, ScalarJ * q2.Scalar + q2.ScalarJ * Scalar + cy, ScalarK * q2.Scalar + q2.ScalarK * Scalar + cz);
+        return new LinFloat64Quaternion(ScalarI * q2.Scalar + q2.ScalarI * Scalar + cx, ScalarJ * q2.Scalar + q2.ScalarJ * Scalar + cy, ScalarK * q2.Scalar + q2.ScalarK * Scalar + cz, Scalar * q2.Scalar - dot);
     }
 
     /// <summary>
@@ -566,20 +567,20 @@ public sealed record LinFloat64Quaternion :
 
         var dot = ScalarI * q2X + ScalarJ * q2Y + ScalarK * q2Z;
 
-        return new LinFloat64Quaternion(Scalar * q2W - dot, ScalarI * q2W + q2X * Scalar + cx, ScalarJ * q2W + q2Y * Scalar + cy, ScalarK * q2W + q2Z * Scalar + cz);
+        return new LinFloat64Quaternion(ScalarI * q2W + q2X * Scalar + cx, ScalarJ * q2W + q2Y * Scalar + cy, ScalarK * q2W + q2Z * Scalar + cz, Scalar * q2W - dot);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Quaternion Conjugate()
     {
-        return new LinFloat64Quaternion(Scalar, -ScalarI, -ScalarJ, -ScalarK);
+        return new LinFloat64Quaternion(-ScalarI, -ScalarJ, -ScalarK, Scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Quaternion Reverse()
     {
-        return new LinFloat64Quaternion(Scalar, -ScalarI, -ScalarJ, -ScalarK);
+        return new LinFloat64Quaternion(-ScalarI, -ScalarJ, -ScalarK, Scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -590,7 +591,7 @@ public sealed record LinFloat64Quaternion :
         //       (  a^2 + |v|^2  ,  a^2 + |v|^2  )
         var invNormSquared = NormSquaredInverse();
 
-        return new LinFloat64Quaternion(Scalar * invNormSquared, -ScalarI * invNormSquared, -ScalarJ * invNormSquared, -ScalarK * invNormSquared);
+        return new LinFloat64Quaternion(-ScalarI * invNormSquared, -ScalarJ * invNormSquared, -ScalarK * invNormSquared, Scalar * invNormSquared);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -598,7 +599,7 @@ public sealed record LinFloat64Quaternion :
     {
         var invNorm = NormInverse();
 
-        return new LinFloat64Quaternion(Scalar * invNorm, ScalarI * invNorm, ScalarJ * invNorm, ScalarK * invNorm);
+        return new LinFloat64Quaternion(ScalarI * invNorm, ScalarJ * invNorm, ScalarK * invNorm, Scalar * invNorm);
     }
 
     public LinFloat64Quaternion Lerp(LinFloat64Quaternion q2, double t)
@@ -613,8 +614,8 @@ public sealed record LinFloat64Quaternion :
 
         var r =
             dot >= 0d
-                ? new LinFloat64Quaternion(t1 * Scalar + t * q2.Scalar, t1 * ScalarI + t * q2.ScalarI, t1 * ScalarJ + t * q2.ScalarJ, t1 * ScalarK + t * q2.ScalarK) :
-                new LinFloat64Quaternion(t1 * Scalar - t * q2.Scalar, t1 * ScalarI - t * q2.ScalarI, t1 * ScalarJ - t * q2.ScalarJ, t1 * ScalarK - t * q2.ScalarK);
+                ? new LinFloat64Quaternion(t1 * ScalarI + t * q2.ScalarI, t1 * ScalarJ + t * q2.ScalarJ, t1 * ScalarK + t * q2.ScalarK, t1 * Scalar + t * q2.Scalar) :
+                new LinFloat64Quaternion(t1 * ScalarI - t * q2.ScalarI, t1 * ScalarJ - t * q2.ScalarJ, t1 * ScalarK - t * q2.ScalarK, t1 * Scalar - t * q2.Scalar);
 
         // Normalize it.
         return r.Normalize();
@@ -655,7 +656,7 @@ public sealed record LinFloat64Quaternion :
                 : Math.Sin(t * omega) * invSinOmega;
         }
 
-        return new LinFloat64Quaternion(s1 * Scalar + s2 * q2.Scalar, s1 * ScalarI + s2 * q2.ScalarI, s1 * ScalarJ + s2 * q2.ScalarJ, s1 * ScalarK + s2 * q2.ScalarK);
+        return new LinFloat64Quaternion(s1 * ScalarI + s2 * q2.ScalarI, s1 * ScalarJ + s2 * q2.ScalarJ, s1 * ScalarK + s2 * q2.ScalarK, s1 * Scalar + s2 * q2.Scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -675,10 +676,10 @@ public sealed record LinFloat64Quaternion :
             q2.ScalarK * ScalarK;
 
         return new LinFloat64Quaternion(
-            q2.Scalar * Scalar - dot, 
-            q2.ScalarI * Scalar + ScalarI * q2.Scalar + cx, 
-            q2.ScalarJ * Scalar + ScalarJ * q2.Scalar + cy, 
-            q2.ScalarK * Scalar + ScalarK * q2.Scalar + cz
+            q2.ScalarI * Scalar + ScalarI * q2.Scalar + cx,
+            q2.ScalarJ * Scalar + ScalarJ * q2.Scalar + cy,
+            q2.ScalarK * Scalar + ScalarK * q2.Scalar + cz,
+            q2.Scalar * Scalar - dot
         );
     }
 
@@ -877,7 +878,7 @@ public sealed record LinFloat64Quaternion :
             rotationMatrix * axis2.ToLinVector3D()
         );
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Pair<LinFloat64Vector3D> RotateVectors(LinBasisVectorPair3D axisPair)
     {
