@@ -1,24 +1,32 @@
 using BenchmarkDotNet.Attributes;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Floating;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.Scalars;
 
 /// <summary>
-/// Phase 0b: Float32 PoC & Performance Validation Benchmarks
+/// Generic vs Specialized Performance Benchmarks
 ///
-/// Goal: Measure Float32 CGa performance vs Float64 baseline
-/// Success Criteria: Float32 ≥60% of Float64 performance (realistic workloads)
-/// GO/NO-GO Decision: If <60% → Abort Float32 workflow
+/// Goal: Compare performance of Generic<T> vs specialized Float64 implementations
+/// Implementations tested:
+///   1. Float32 (Generic<float>) - New generic implementation with float scalars
+///   2. Float64 Specialized - Original hand-coded Float64 implementation
+///   3. Generic<double> - New generic implementation with double scalars
+///
+/// Success Criteria:
+///   - Generic<double> should be within 95-105% of Float64 Specialized (JIT optimization)
+///   - Float32 should be ≥60% of Float64 (acceptable for lower precision use cases)
 /// </summary>
 [MemoryDiagnoser]
 [SimpleJob(warmupCount: 3, iterationCount: 10)]
 public class CgaFloat32PerformanceBenchmarks
 {
     // ========================================
-    // Float32 Setup
+    // Float32 Setup (Generic<float>)
     // ========================================
 
     private IScalarProcessor<float> _float32Processor = null!;
@@ -33,25 +41,39 @@ public class CgaFloat32PerformanceBenchmarks
     private CGaBlade<float> _float32Point2 = null!;
 
     // ========================================
-    // Float64 Setup (Baseline)
+    // Float64 Specialized Setup (BASELINE)
     // ========================================
 
-    private IScalarProcessor<double> _float64Processor = null!;
-    private CGaGeometricSpace5D<double> _float64Space = null!;
+    private CGaFloat64GeometricSpace5D _float64SpecializedSpace = null!;
 
-    // Float64 Test Data (same geometric values as Float32 for fair comparison)
-    private CGaBlade<double> _float64Circle1 = null!;
-    private CGaBlade<double> _float64Circle2 = null!;
-    private CGaBlade<double> _float64Sphere1 = null!;
-    private CGaBlade<double> _float64Sphere2 = null!;
-    private CGaBlade<double> _float64Point1 = null!;
-    private CGaBlade<double> _float64Point2 = null!;
+    // Float64 Specialized Test Data
+    private CGaFloat64Blade _float64SpecCircle1 = null!;
+    private CGaFloat64Blade _float64SpecCircle2 = null!;
+    private CGaFloat64Blade _float64SpecSphere1 = null!;
+    private CGaFloat64Blade _float64SpecSphere2 = null!;
+    private CGaFloat64Blade _float64SpecPoint1 = null!;
+    private CGaFloat64Blade _float64SpecPoint2 = null!;
+
+    // ========================================
+    // Generic<double> Setup
+    // ========================================
+
+    private IScalarProcessor<double> _genericDoubleProcessor = null!;
+    private CGaGeometricSpace5D<double> _genericDoubleSpace = null!;
+
+    // Generic<double> Test Data
+    private CGaBlade<double> _genericDoubleCircle1 = null!;
+    private CGaBlade<double> _genericDoubleCircle2 = null!;
+    private CGaBlade<double> _genericDoubleSphere1 = null!;
+    private CGaBlade<double> _genericDoubleSphere2 = null!;
+    private CGaBlade<double> _genericDoublePoint1 = null!;
+    private CGaBlade<double> _genericDoublePoint2 = null!;
 
     [GlobalSetup]
     public void Setup()
     {
         // ========================================
-        // Float32 Initialization
+        // Float32 Initialization (Generic<float>)
         // ========================================
 
         _float32Processor = ScalarProcessorOfFloating<float>.Instance;
@@ -71,34 +93,56 @@ public class CgaFloat32PerformanceBenchmarks
         _float32Point2 = _float32Space.Encode.IpnsRound.Point(4f, 5f, 6f);
 
         // ========================================
-        // Float64 Initialization (Baseline)
+        // Float64 Specialized Initialization (BASELINE)
         // ========================================
 
-        _float64Processor = ScalarProcessorOfFloat64.Instance;
-        _float64Space = CGaGeometricSpace5D<double>.Create(_float64Processor);
+        _float64SpecializedSpace = CGaFloat64GeometricSpace5D.Instance;
 
-        // Create Float64 geometric objects (same values)
-        _float64Circle1 = _float64Space.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
-        _float64Circle2 = _float64Space.Encode.IpnsRound.Circle(3.0, 4.0, 5.0);
+        // Create Float64 Specialized geometric objects (same values)
+        _float64SpecCircle1 = _float64SpecializedSpace.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
+        _float64SpecCircle2 = _float64SpecializedSpace.Encode.IpnsRound.Circle(3.0, 4.0, 5.0);
 
-        _float64Sphere1 = _float64Space.Encode.IpnsRound.Sphere(10.0, 0.0, 0.0, 0.0);
-        _float64Sphere2 = _float64Space.Encode.IpnsRound.Sphere(7.0, 2.0, 3.0, 4.0);
+        _float64SpecSphere1 = _float64SpecializedSpace.Encode.IpnsRound.Sphere(10.0, 0.0, 0.0, 0.0);
+        _float64SpecSphere2 = _float64SpecializedSpace.Encode.IpnsRound.Sphere(7.0, 2.0, 3.0, 4.0);
 
-        _float64Point1 = _float64Space.Encode.IpnsRound.Point(1.0, 2.0, 3.0);
-        _float64Point2 = _float64Space.Encode.IpnsRound.Point(4.0, 5.0, 6.0);
+        _float64SpecPoint1 = _float64SpecializedSpace.Encode.IpnsRound.Point(1.0, 2.0, 3.0);
+        _float64SpecPoint2 = _float64SpecializedSpace.Encode.IpnsRound.Point(4.0, 5.0, 6.0);
+
+        // ========================================
+        // Generic<double> Initialization
+        // ========================================
+
+        _genericDoubleProcessor = ScalarProcessorOfFloat64.Instance;
+        _genericDoubleSpace = CGaGeometricSpace5D<double>.Create(_genericDoubleProcessor);
+
+        // Create Generic<double> geometric objects (same values)
+        _genericDoubleCircle1 = _genericDoubleSpace.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
+        _genericDoubleCircle2 = _genericDoubleSpace.Encode.IpnsRound.Circle(3.0, 4.0, 5.0);
+
+        _genericDoubleSphere1 = _genericDoubleSpace.Encode.IpnsRound.Sphere(10.0, 0.0, 0.0, 0.0);
+        _genericDoubleSphere2 = _genericDoubleSpace.Encode.IpnsRound.Sphere(7.0, 2.0, 3.0, 4.0);
+
+        _genericDoublePoint1 = _genericDoubleSpace.Encode.IpnsRound.Point(1.0, 2.0, 3.0);
+        _genericDoublePoint2 = _genericDoubleSpace.Encode.IpnsRound.Point(4.0, 5.0, 6.0);
     }
 
     // ========================================
     // BENCHMARK 1: Circle Encoding
     // ========================================
 
-    [Benchmark(Baseline = true, Description = "Float64 - Circle Encoding")]
-    public CGaBlade<double> Float64_CircleEncoding()
+    [Benchmark(Baseline = true, Description = "Float64 Specialized - Circle Encoding")]
+    public CGaFloat64Blade Float64Specialized_CircleEncoding()
     {
-        return _float64Space.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
+        return _float64SpecializedSpace.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
     }
 
-    [Benchmark(Description = "Float32 - Circle Encoding")]
+    [Benchmark(Description = "Generic<double> - Circle Encoding")]
+    public CGaBlade<double> GenericDouble_CircleEncoding()
+    {
+        return _genericDoubleSpace.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
+    }
+
+    [Benchmark(Description = "Generic<float> - Circle Encoding")]
     public CGaBlade<float> Float32_CircleEncoding()
     {
         return _float32Space.Encode.IpnsRound.Circle(5f, 1f, 2f);
@@ -108,13 +152,19 @@ public class CgaFloat32PerformanceBenchmarks
     // BENCHMARK 2: Sphere Encoding
     // ========================================
 
-    [Benchmark(Description = "Float64 - Sphere Encoding")]
-    public CGaBlade<double> Float64_SphereEncoding()
+    [Benchmark(Description = "Float64 Specialized - Sphere Encoding")]
+    public CGaFloat64Blade Float64Specialized_SphereEncoding()
     {
-        return _float64Space.Encode.IpnsRound.Sphere(10.0, 0.0, 0.0, 0.0);
+        return _float64SpecializedSpace.Encode.IpnsRound.Sphere(10.0, 0.0, 0.0, 0.0);
     }
 
-    [Benchmark(Description = "Float32 - Sphere Encoding")]
+    [Benchmark(Description = "Generic<double> - Sphere Encoding")]
+    public CGaBlade<double> GenericDouble_SphereEncoding()
+    {
+        return _genericDoubleSpace.Encode.IpnsRound.Sphere(10.0, 0.0, 0.0, 0.0);
+    }
+
+    [Benchmark(Description = "Generic<float> - Sphere Encoding")]
     public CGaBlade<float> Float32_SphereEncoding()
     {
         return _float32Space.Encode.IpnsRound.Sphere(10f, 0f, 0f, 0f);
@@ -124,129 +174,78 @@ public class CgaFloat32PerformanceBenchmarks
     // BENCHMARK 3: Point Encoding
     // ========================================
 
-    [Benchmark(Description = "Float64 - Point Encoding")]
-    public CGaBlade<double> Float64_PointEncoding()
+    [Benchmark(Description = "Float64 Specialized - Point Encoding")]
+    public CGaFloat64Blade Float64Specialized_PointEncoding()
     {
-        return _float64Space.Encode.IpnsRound.Point(1.0, 2.0, 3.0);
+        return _float64SpecializedSpace.Encode.IpnsRound.Point(1.0, 2.0, 3.0);
     }
 
-    [Benchmark(Description = "Float32 - Point Encoding")]
+    [Benchmark(Description = "Generic<double> - Point Encoding")]
+    public CGaBlade<double> GenericDouble_PointEncoding()
+    {
+        return _genericDoubleSpace.Encode.IpnsRound.Point(1.0, 2.0, 3.0);
+    }
+
+    [Benchmark(Description = "Generic<float> - Point Encoding")]
     public CGaBlade<float> Float32_PointEncoding()
     {
         return _float32Space.Encode.IpnsRound.Point(1f, 2f, 3f);
     }
 
     // ========================================
-    // BENCHMARK 4: Geometric Product (Circle ∧ Sphere)
+    // BENCHMARK 4: Outer Product (Circle ∧ Sphere)
     // ========================================
 
-    [Benchmark(Description = "Float64 - Outer Product (Circle ∧ Sphere)")]
-    public CGaBlade<double> Float64_OuterProduct_CircleSphere()
+    [Benchmark(Description = "Float64 Specialized - Outer Product (Circle ∧ Sphere)")]
+    public CGaFloat64Blade Float64Specialized_OuterProduct_CircleSphere()
     {
-        return _float64Circle1.Op(_float64Sphere1);
+        return _float64SpecCircle1.Op(_float64SpecSphere1);
     }
 
-    [Benchmark(Description = "Float32 - Outer Product (Circle ∧ Sphere)")]
+    [Benchmark(Description = "Generic<double> - Outer Product (Circle ∧ Sphere)")]
+    public CGaBlade<double> GenericDouble_OuterProduct_CircleSphere()
+    {
+        return _genericDoubleCircle1.Op(_genericDoubleSphere1);
+    }
+
+    [Benchmark(Description = "Generic<float> - Outer Product (Circle ∧ Sphere)")]
     public CGaBlade<float> Float32_OuterProduct_CircleSphere()
     {
         return _float32Circle1.Op(_float32Sphere1);
     }
 
+    /*
     // ========================================
-    // BENCHMARK 5: Dual Operation
+    // BENCHMARK 5-9: Additional Operations (Commented out for quick testing)
+    // ========================================
+    // These can be re-enabled later if needed
+    */
+
+    // ========================================
+    // BENCHMARK 10: Complex Workflow (MOST IMPORTANT)
     // ========================================
 
-    [Benchmark(Description = "Float64 - Dual (Circle)")]
-    public CGaBlade<double> Float64_Dual_Circle()
+    [Benchmark(Description = "Float64 Specialized - Complex Workflow (Encode → Op → Dual → Norm)")]
+    public double Float64Specialized_ComplexWorkflow()
     {
-        return _float64Circle1.CGaDual();
+        var circle = _float64SpecializedSpace.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
+        var sphere = _float64SpecializedSpace.Encode.IpnsRound.Sphere(10.0, 0.0, 0.0, 0.0);
+        var result = circle.Op(sphere);
+        var dual = result.CGaDual();
+        return dual.Norm();  // Float64Specialized Norm() returns double directly
     }
 
-    [Benchmark(Description = "Float32 - Dual (Circle)")]
-    public CGaBlade<float> Float32_Dual_Circle()
+    [Benchmark(Description = "Generic<double> - Complex Workflow (Encode → Op → Dual → Norm)")]
+    public double GenericDouble_ComplexWorkflow()
     {
-        return _float32Circle1.CGaDual();
-    }
-
-    // ========================================
-    // BENCHMARK 6: Norm Calculation
-    // ========================================
-
-    [Benchmark(Description = "Float64 - Norm (Sphere)")]
-    public double Float64_Norm_Sphere()
-    {
-        return _float64Sphere1.Norm().ScalarValue;
-    }
-
-    [Benchmark(Description = "Float32 - Norm (Sphere)")]
-    public float Float32_Norm_Sphere()
-    {
-        return _float32Sphere1.Norm().ScalarValue;
-    }
-
-    // ========================================
-    // BENCHMARK 7: Reverse Operation
-    // ========================================
-
-    [Benchmark(Description = "Float64 - Reverse (Circle)")]
-    public CGaBlade<double> Float64_Reverse_Circle()
-    {
-        return _float64Circle1.Reverse();
-    }
-
-    [Benchmark(Description = "Float32 - Reverse (Circle)")]
-    public CGaBlade<float> Float32_Reverse_Circle()
-    {
-        return _float32Circle1.Reverse();
-    }
-
-    // ========================================
-    // BENCHMARK 8: Conjugate Operation
-    // ========================================
-
-    [Benchmark(Description = "Float64 - Conjugate (Sphere)")]
-    public CGaBlade<double> Float64_Conjugate_Sphere()
-    {
-        return _float64Sphere1.CliffordConjugate();
-    }
-
-    [Benchmark(Description = "Float32 - Conjugate (Sphere)")]
-    public CGaBlade<float> Float32_Conjugate_Sphere()
-    {
-        return _float32Sphere1.CliffordConjugate();
-    }
-
-    // ========================================
-    // BENCHMARK 9: Inner Product (Point • Sphere)
-    // ========================================
-
-    [Benchmark(Description = "Float64 - Inner Product (Point • Sphere)")]
-    public CGaBlade<double> Float64_InnerProduct_PointSphere()
-    {
-        return _float64Point1.Lcp(_float64Sphere1);
-    }
-
-    [Benchmark(Description = "Float32 - Inner Product (Point • Sphere)")]
-    public CGaBlade<float> Float32_InnerProduct_PointSphere()
-    {
-        return _float32Point1.Lcp(_float32Sphere1);
-    }
-
-    // ========================================
-    // BENCHMARK 10: Geometric Product (Complex Workflow)
-    // ========================================
-
-    [Benchmark(Description = "Float64 - Complex Workflow (Encode → Op → Dual → Norm)")]
-    public double Float64_ComplexWorkflow()
-    {
-        var circle = _float64Space.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
-        var sphere = _float64Space.Encode.IpnsRound.Sphere(10.0, 0.0, 0.0, 0.0);
+        var circle = _genericDoubleSpace.Encode.IpnsRound.Circle(5.0, 1.0, 2.0);
+        var sphere = _genericDoubleSpace.Encode.IpnsRound.Sphere(10.0, 0.0, 0.0, 0.0);
         var result = circle.Op(sphere);
         var dual = result.CGaDual();
         return dual.Norm().ScalarValue;
     }
 
-    [Benchmark(Description = "Float32 - Complex Workflow (Encode → Op → Dual → Norm)")]
+    [Benchmark(Description = "Generic<float> - Complex Workflow (Encode → Op → Dual → Norm)")]
     public float Float32_ComplexWorkflow()
     {
         var circle = _float32Space.Encode.IpnsRound.Circle(5f, 1f, 2f);

@@ -519,7 +519,7 @@ public sealed class CGaIpnsTangentEncoder<T> :
 
         return new CGaBlade<T>(
             GeometricSpace,
-            normal.DivideByNorm() + distance * GeometricSpace.EiVector
+            normal.InternalVector.DivideByNorm() + distance * GeometricSpace.EiVector
         );
     }
 

@@ -152,9 +152,35 @@ public sealed partial class XGaVector<T> :
     {
         if (IsZero) return this;
 
-        var idScalarDictionary = 
-            _idScalarDictionary.Where(term => 
+        var idScalarDictionary =
+            _idScalarDictionary.Where(term =>
                 filterFunc(term.Key.FirstIndex)
+            ).ToDictionary();
+
+        return Processor.Vector(idScalarDictionary);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVector<T> GetVectorPart(Func<T, bool> filterFunc)
+    {
+        if (IsZero) return this;
+
+        var idScalarDictionary =
+            _idScalarDictionary.Where(term =>
+                filterFunc(term.Value)
+            ).ToDictionary();
+
+        return Processor.Vector(idScalarDictionary);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVector<T> GetVectorPart(Func<int, T, bool> filterFunc)
+    {
+        if (IsZero) return this;
+
+        var idScalarDictionary =
+            _idScalarDictionary.Where(term =>
+                filterFunc(term.Key.FirstIndex, term.Value)
             ).ToDictionary();
 
         return Processor.Vector(idScalarDictionary);

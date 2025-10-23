@@ -179,6 +179,18 @@ public sealed partial class XGaScalar<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVector<T> GetVectorPart(Func<T, bool> filterFunc)
+    {
+        return Processor.VectorZero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVector<T> GetVectorPart(Func<int, T, bool> filterFunc)
+    {
+        return Processor.VectorZero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaBivector<T> GetBivectorPart()
     {
         return Processor.BivectorZero;

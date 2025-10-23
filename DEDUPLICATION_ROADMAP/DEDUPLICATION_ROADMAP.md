@@ -10,6 +10,19 @@
 
 ---
 
+## ⚠️ DOCUMENTATION MAINTENANCE
+
+**CRITICAL:** The following files must be kept synchronized and up to date after any significant changes:
+1. **`DEDUPLICATION_ROADMAP.md`** (this file) - Overall roadmap and detailed phase descriptions
+2. **`NEXT_STEPS_ROADMAP.md`** - Immediate next steps and priorities
+3. **`_Status.md`** - Quick bullet-list overview (for fast status checks)
+
+After completing milestones, fixing bugs, or making architectural changes, update all three files to reflect current status.
+
+**Quick Status Check:** See [`_Status.md`](_Status.md) for a concise bullet-list overview.
+
+---
+
 ## 🎯 Strategy Overview
 
 ### **Phase 1: Feature Synchronization** ✅ COMPLETE!
@@ -358,6 +371,60 @@ public static class CGaFloat64GeometricSpace
 - ✅ **Maintainability:** Bug fixes apply to all scalar types automatically
 - ✅ **Code Quality:** Eliminates massive DRY violation
 - ✅ **Future-Proof:** Architecture ready for additional scalar types
+
+---
+
+## 🐛 Critical Bugs Found (From Complete API Analysis)
+
+During comprehensive API analysis (20 agents, 700+ files), **20 critical bugs** were identified across multiple components. These must be addressed before or during Phase 2.
+
+### P0 - CRITICAL (Must Fix Immediately)
+
+**Statistics (4 bugs):**
+1. **CDF.GetProbability()** - Line 67: Checks `DomainMinValue` instead of `DomainMaxValue`, returns 1.0 for wrong values
+2. **CDF.ProbabilityToValue()** - Line 129: Extra division `/ (p2 - p1)` causes result to always equal 1
+3. **QuantizedHistogram** - Lines 1078, 1104: Uses `Min()` instead of `Max()` for domain maximum
+4. **PMF.MapDomain()** - Line 492: Uses `+=` instead of `*=` for convolution (mathematical error)
+
+**Calculus (1 bug):**
+5. **UMath.Reciprocal()** - Functions/Normalized/UMath.cs:44: Condition `z is >= -1 or <= 1` is ALWAYS true (should be `and`), makes function body unreachable
+
+**Polynomials (1 bug):**
+6. **BSplineKnotVector<T>.AppendKnot()** - Generic implementation lacks knot ordering validation, can create invalid B-splines
+
+**XGa Linear Maps (1 bug):**
+7. **XGaPureRotor<T>.IsValid()** - Line 78: Inverted logic `return Multivector.IsEven(2)` should be `!IsEven`
+
+**LinearAlgebra (1 bug):**
+8. **LinBivector2D<T>.Rcp()** - Method completely missing in Generic implementation (exists in Float64)
+
+### P1 - HIGH (Fix Soon)
+
+**BasicShapes (2 bugs):**
+9. **Float64LinePair2D.Create()** - Should be `static`, currently instance method
+10. **Float64Beam3D.IsValid()** - Returns `NotImplementedException`
+
+**Trajectories (5 bugs):**
+11. **Trivectors3D.GetPoint()** - Line 62: `NotImplementedException`
+12. **Trivectors3D.GetTangent()** - Line 70: `NotImplementedException`
+13. **Colors.ToFinite()** - Line 50: `NotImplementedException`
+14. **Colors.ToPeriodic()** - Line 58: `NotImplementedException`
+15. **Bivectors3D** - Missing all derivative methods
+
+**Signals (1 bug):**
+16. **HarmonicSignalComposer** - Parameter order inconsistency: Float64 uses `(magnitude, harmonicFactor)`, Generic uses `(harmonicFactor, magnitude)`
+
+**ComplexAlgebra (1 bug):**
+17. **Determinant()** - Parameter naming suggests row-major but implementation is column-major
+
+**LinearAlgebra Generic (2 bugs):**
+18. **IsNearZero(epsilon)** - Missing in 15+ types (Vector2D, Vector3D, Bivector, Quaternion, etc.)
+19. **LinQuaternion<T>** - System.Numerics interop commented out, `CreateFromRotationMatrix()` disabled
+
+### P2 - MEDIUM (Lower Priority)
+
+**CGA Decoders (1 bug):**
+20. **IpnsFlat.GetVectorPart()** - Possible redundant double call (Generic implementation, needs investigation)
 
 ---
 

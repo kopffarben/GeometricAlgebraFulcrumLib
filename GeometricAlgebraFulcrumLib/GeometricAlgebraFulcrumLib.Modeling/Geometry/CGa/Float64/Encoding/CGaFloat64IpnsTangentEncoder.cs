@@ -420,7 +420,7 @@ public class CGaFloat64IpnsTangentEncoder :
 
         return new CGaFloat64Blade(
             GeometricSpace,
-            normal.DivideByNorm() + distance * GeometricSpace.EiVector
+            normal.InternalVector.DivideByNorm() + distance * GeometricSpace.EiVector
         );
     }
 
