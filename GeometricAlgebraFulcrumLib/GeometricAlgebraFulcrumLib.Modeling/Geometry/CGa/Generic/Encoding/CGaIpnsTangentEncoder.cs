@@ -511,11 +511,15 @@ public sealed class CGaIpnsTangentEncoder<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> HyperPlane(Scalar<T> distance, XGaVector<T> egaNormalVector)
     {
-        Debug.Assert(GeometricSpace.IsValidVGaElement(egaNormalVector));
+        // FIX: Check that vector is Euclidean (indices will be shifted by EncodeVGaVector)
+        Debug.Assert(egaNormalVector.Processor.IsEuclidean);
+
+        var normal =
+            egaNormalVector.EncodeVGaVector(GeometricSpace);
 
         return new CGaBlade<T>(
             GeometricSpace,
-            egaNormalVector/*.DivideByNorm()*/ + distance * GeometricSpace.EiVector
+            normal.DivideByNorm() + distance * GeometricSpace.EiVector
         );
     }
 
