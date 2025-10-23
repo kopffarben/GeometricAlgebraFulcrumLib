@@ -8,7 +8,14 @@
 
 **🟢 ENTSCHEIDUNG: GO - Float32 Implementation APPROVED**
 
-Float32 erreicht **97.9% der Float64 Performance** - weit über dem 60% Schwellenwert. Die Float32 Implementierung übertrifft alle Erwartungen und ist für Production-Einsatz geeignet.
+**🚀 WICHTIGE ERKENNTNIS: Generic Implementations übertreffen Float64 Specialized**
+
+Neue Benchmarks zeigen eine überraschende Entdeckung:
+- **Generic\<double\>**: **1.27x SCHNELLER** als Float64 Specialized (127% Performance)
+- **Generic\<float\>**: **1.24x SCHNELLER** als Float64 Specialized (124% Performance)
+- **Float64 Specialized**: Baseline (100%, aber die LANGSAMSTE Implementierung)
+
+Dies validiert die **Data-Oriented Programming (DOP)** Architektur mit generischer Scalar-Abstraktion als überlegene Lösung.
 
 ---
 
@@ -44,7 +51,31 @@ Float32 erreicht **97.9% der Float64 Performance** - weit über dem 60% Schwelle
 
 ---
 
-## Detaillierte Ergebnisse
+## Drei-Wege Vergleich: Float64 Specialized vs Generic\<double\> vs Generic\<float\>
+
+Basierend auf `CgaFloat32PerformanceBenchmarks.cs` (5 Szenarien):
+
+| Benchmark | Float64 Spec | Generic\<double\> | Generic\<float\> | Double Speedup | Float Speedup |
+|---|---|---|---|---|---|
+| **Circle Encoding** | 2,277 ns | **1,910 ns** | **1,963 ns** | **1.19x** ✅ | **1.16x** ✅ |
+| **Sphere Encoding** | 915 ns | **726 ns** | **776 ns** | **1.26x** ✅✅ | **1.18x** ✅ |
+| **Point Encoding** | 1,155 ns | **956 ns** | **972 ns** | **1.21x** ✅ | **1.19x** ✅ |
+| **Outer Product** | 835 ns | **566 ns** | **557 ns** | **1.48x** 🚀 | **1.50x** 🚀 |
+| **Complex Workflow** | 5,274 ns | **4,378 ns** | **4,476 ns** | **1.20x** ✅ | **1.18x** ✅ |
+
+**Durchschnittliche Speedups:**
+- **Generic\<double\>**: **1.27x schneller** als Float64 Specialized (27% Verbesserung)
+- **Generic\<float\>**: **1.24x schneller** als Float64 Specialized (24% Verbesserung)
+- **Memory**: Generic implementations verwenden **16-33% WENIGER Speicher**
+
+**Wichtigste Erkenntnis:**
+Die handgeschriebene Float64-Specialized-Implementierung ist die **langsamste** der drei Optionen. Der .NET JIT Compiler optimiert generische Implementierungen so gut, dass sie spezialisierten Code übertreffen.
+
+**Siehe auch:** [GENERIC_VS_SPECIALIZED_PERFORMANCE.md](../../GENERIC_VS_SPECIALIZED_PERFORMANCE.md) für vollständige Analyse.
+
+---
+
+## Detaillierte Ergebnisse (Float32 vs Float64 Specialized)
 
 ### 1. Encoding-Operationen
 

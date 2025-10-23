@@ -124,15 +124,39 @@ This hybrid approach allows:
 
 ## Performance Characteristics
 
-| Metric | Float32 | Float64 | Ratio |
-|--------|---------|---------|-------|
-| **Average Performance** | - | - | **97.9%** |
-| **Best Case (Reverse)** | 7.7 ns | 7.9 ns | **102%** 🚀 |
-| **Worst Case (Sphere Encoding)** | 804.3 ns | 743.8 ns | **92.5%** |
-| **Memory Usage** | - | - | **50%** less |
-| **SIMD Throughput** | 8 values/256-bit | 4 values/256-bit | **2x** |
+**🚀 KEY FINDING: Both Generic<float> and Generic<double> are FASTER than Float64 Specialized!**
 
-See [FLOAT32_PERFORMANCE_ANALYSIS.md](GeometricAlgebraFulcrumLib.Benchmarks/FLOAT32_PERFORMANCE_ANALYSIS.md) for detailed benchmarks.
+### Three-Way Performance Comparison
+
+| Implementation | Relative Performance | Memory Usage | Best Use Case |
+|---|---|---|---|
+| **Generic\<double\>** | **127%** (FASTEST!) 🚀 | 16-33% less than Specialized | High-precision computing |
+| **Generic\<float\>** | **124%** (2nd fastest!) ✅ | ~50% less than Generic\<double\> | Graphics, gaming, GPU |
+| **Float64 Specialized** | 100% (baseline) | Most memory | Legacy compatibility only |
+
+**All measurements relative to Float64 Specialized baseline.**
+
+### Detailed Benchmark Results (CGA Operations)
+
+| Benchmark | Float64 Spec | Generic\<double\> | Generic\<float\> | Double Speedup | Float Speedup |
+|---|---|---|---|---|---|
+| **Circle Encoding** | 2,277 ns | **1,910 ns** | **1,963 ns** | **1.19x** ✅ | **1.16x** ✅ |
+| **Sphere Encoding** | 915 ns | **726 ns** | **776 ns** | **1.26x** ✅ | **1.18x** ✅ |
+| **Point Encoding** | 1,155 ns | **956 ns** | **972 ns** | **1.21x** ✅ | **1.19x** ✅ |
+| **Outer Product** | 835 ns | **566 ns** | **557 ns** | **1.48x** 🚀 | **1.50x** 🚀 |
+| **Complex Workflow** | 5,274 ns | **4,378 ns** | **4,476 ns** | **1.20x** ✅ | **1.18x** ✅ |
+
+**Average Performance:**
+- **Generic\<double\>**: **1.27x faster** than Float64 Specialized
+- **Generic\<float\>**: **1.24x faster** than Float64 Specialized
+- **Memory**: Both generic implementations use **16-33% less memory**
+
+**Recommendation:**
+- **Default choice**: Generic\<double\> (fastest + high precision)
+- **Memory-constrained / GPU**: Generic\<float\> (nearly as fast + 50% memory savings)
+- **Avoid**: Float64 Specialized (slowest + most memory)
+
+See [FLOAT32_PERFORMANCE_ANALYSIS.md](GeometricAlgebraFulcrumLib.Benchmarks/FLOAT32_PERFORMANCE_ANALYSIS.md) and [GENERIC_VS_SPECIALIZED_PERFORMANCE.md](../GENERIC_VS_SPECIALIZED_PERFORMANCE.md) for detailed analysis.
 
 ## Architecture: Thin Wrapper Pattern
 

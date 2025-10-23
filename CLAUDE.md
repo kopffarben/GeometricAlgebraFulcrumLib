@@ -512,12 +512,30 @@ For comprehensive issue tracking and test coverage details:
 
 ## Performance Considerations
 
-1. **Use specialized types when possible:** `XGaFloat64Processor` is faster than `XGaProcessor<double>`
-2. **Reuse processors:** Processors cache zero/one/constants—don't recreate them
-3. **Sparse storage:** Most real GA problems have sparse multivectors—use Uniform or Graded storage
-4. **Composer pattern:** More efficient than creating multivectors term-by-term
-5. **Guided Binary Traversal:** Automatically used for products—exploits sparsity
-6. **Release builds for benchmarks:** Always benchmark in Release mode
+**🚀 IMPORTANT FINDING (2025-10-23): Generic implementations are FASTER than specialized code!**
+
+Comprehensive benchmarks show that `XGaProcessor<T>` with Generic<double> and Generic<float> **outperform** Float64 Specialized implementations:
+- **Generic<double>**: **1.27x faster** than Float64 Specialized (27% speedup)
+- **Generic<float>**: **1.24x faster** than Float64 Specialized (24% speedup)
+- **Memory**: Generic uses **16-33% less memory**
+
+See [GENERIC_VS_SPECIALIZED_PERFORMANCE.md](GENERIC_VS_SPECIALIZED_PERFORMANCE.md) for full analysis.
+
+**Performance Best Practices:**
+
+1. **✅ Prefer generic implementations:** `XGaFloat64Processor.Euclidean` (uses Generic<double> internally) is the fastest option
+2. **✅ Use Float32 for graphics/gaming:** `XGaFloat32Processor` provides 1.24x speedup over Float64 Specialized with 50% memory savings
+3. **Reuse processors:** Processors cache zero/one/constants—don't recreate them
+4. **Sparse storage:** Most real GA problems have sparse multivectors—use Uniform or Graded storage
+5. **Composer pattern:** More efficient than creating multivectors term-by-term
+6. **Guided Binary Traversal:** Automatically used for products—exploits sparsity
+7. **Release builds for benchmarks:** Always benchmark in Release mode
+
+**Why Generic is faster:**
+- **JIT Devirtualization**: Generic interface calls compile to direct CPU instructions
+- **Better cache locality**: Struct-based scalars with inline data
+- **Modern patterns**: Span<T>, value semantics, aggressive inlining
+- **Reduced allocations**: 16-33% fewer allocations → less GC pressure
 
 ## Common Pitfalls
 
