@@ -190,10 +190,18 @@ public sealed class CGaIpnsFlatEncoder<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> Line(double distance, double normalX, double normalY)
     {
+        // FIX: Create Euclidean vector using GeometricSpace.EuclideanProcessor
+        // The EncodeVGaBlade() in HyperPlane will shift indices {0,1} → {2,3}
         var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var egaNormalVector = GeometricSpace.EuclideanProcessor
+            .CreateVectorComposer()
+            .SetVectorTerm(0, scalarProcessor.ScalarFromNumber(normalX))  // Euclidean basis index 0
+            .SetVectorTerm(1, scalarProcessor.ScalarFromNumber(normalY))  // Euclidean basis index 1
+            .GetVector();
+
         return HyperPlane(
             scalarProcessor.ScalarFromNumber(distance),
-            LinVector2D<T>.Create(scalarProcessor.ScalarFromNumber(normalX), scalarProcessor.ScalarFromNumber(normalY)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+            egaNormalVector
         );
     }
 
@@ -353,10 +361,19 @@ public sealed class CGaIpnsFlatEncoder<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> Plane(double distance, double normalX, double normalY, double normalZ)
     {
+        // FIX: Create Euclidean vector using GeometricSpace.EuclideanProcessor
+        // The EncodeVGaBlade() in HyperPlane will shift indices {0,1,2} → {2,3,4}
         var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var egaNormalVector = GeometricSpace.EuclideanProcessor
+            .CreateVectorComposer()
+            .SetVectorTerm(0, scalarProcessor.ScalarFromNumber(normalX))  // Euclidean basis index 0
+            .SetVectorTerm(1, scalarProcessor.ScalarFromNumber(normalY))  // Euclidean basis index 1
+            .SetVectorTerm(2, scalarProcessor.ScalarFromNumber(normalZ))  // Euclidean basis index 2
+            .GetVector();
+
         return HyperPlane(
             scalarProcessor.ScalarFromNumber(distance),
-            LinVector3D<T>.Create(scalarProcessor.ScalarFromNumber(normalX), scalarProcessor.ScalarFromNumber(normalY), scalarProcessor.ScalarFromNumber(normalZ)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+            egaNormalVector
         );
     }
 
@@ -558,13 +575,14 @@ public sealed class CGaIpnsFlatEncoder<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> HyperPlane(Scalar<T> distance, XGaVector<T> egaNormalVector)
     {
-        Debug.Assert(GeometricSpace.IsValidVGaElement(egaNormalVector));
+        // FIX: Check that vector is Euclidean (indices will be shifted by EncodeVGaVector)
+        Debug.Assert(egaNormalVector.Processor.IsEuclidean);
 
         var normal =
             egaNormalVector.EncodeVGaVector(GeometricSpace);
 
         return normal
-            /*.DivideByNorm()*/
+            .DivideByNorm()
             .TranslateBy(normal.Times(distance))
             .Negative();
     }

@@ -117,10 +117,15 @@ public class CGaFloat64IpnsFlatEncoder :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade Line(double distance, double normalX, double normalY)
     {
-        return HyperPlane(
-            distance,
-            LinFloat64Vector2D.Create(normalX, normalY).ToXGaFloat64Vector()
-        );
+        // FIX: Create Euclidean vector using GeometricSpace.EuclideanProcessor
+        // The EncodeVGaBlade() in HyperPlane will shift indices {0,1} → {2,3}
+        var egaNormalVector = GeometricSpace.EuclideanProcessor
+            .CreateVectorComposer()
+            .SetVectorTerm(0, normalX)  // Euclidean basis index 0
+            .SetVectorTerm(1, normalY)  // Euclidean basis index 1
+            .GetVector();
+
+        return HyperPlane(distance, egaNormalVector);
     }
 
     /// <summary>
@@ -253,10 +258,16 @@ public class CGaFloat64IpnsFlatEncoder :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade Plane(double distance, double normalX, double normalY, double normalZ)
     {
-        return HyperPlane(
-            distance,
-            LinFloat64Vector3D.Create(normalX, normalY, normalZ).ToXGaFloat64Vector()
-        );
+        // FIX: Create Euclidean vector using GeometricSpace.EuclideanProcessor
+        // The EncodeVGaBlade() in HyperPlane will shift indices {0,1,2} → {2,3,4}
+        var egaNormalVector = GeometricSpace.EuclideanProcessor
+            .CreateVectorComposer()
+            .SetVectorTerm(0, normalX)  // Euclidean basis index 0
+            .SetVectorTerm(1, normalY)  // Euclidean basis index 1
+            .SetVectorTerm(2, normalZ)  // Euclidean basis index 2
+            .GetVector();
+
+        return HyperPlane(distance, egaNormalVector);
     }
 
     /// <summary>
@@ -451,7 +462,8 @@ public class CGaFloat64IpnsFlatEncoder :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade HyperPlane(double distance, XGaFloat64Vector egaNormalVector)
     {
-        Debug.Assert(GeometricSpace.IsValidVGaElement(egaNormalVector));
+        // FIX: Check that vector is Euclidean (indices will be shifted by EncodeVGaBlade)
+        Debug.Assert(egaNormalVector.Processor.IsEuclidean);
 
         var normal =
             egaNormalVector.EncodeVGaBlade(GeometricSpace);
