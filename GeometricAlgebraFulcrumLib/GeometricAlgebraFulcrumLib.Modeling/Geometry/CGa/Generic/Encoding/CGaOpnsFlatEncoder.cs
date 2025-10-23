@@ -258,7 +258,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding
             var directionOpEi =
                 egaDirection
                     .EncodeVGaVector(GeometricSpace)
-                    /*.DivideByNorm()*/
+                    .DivideByNorm()
                     .Op(GeometricSpace.Ei);
 
             return GeometricSpace.Eo.Op(directionOpEi).TranslateBy(egaPoint);
@@ -281,7 +281,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding
 
             var directionOpEi =
                 egaDirection
-                    /*.DivideByNorm()*/
+                    .DivideByNorm()
                     .Op(GeometricSpace.Ei);
 
             return GeometricSpace.Eo.Op(directionOpEi).TranslateBy(egaPoint);
@@ -459,7 +459,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding
             var directionOpEi =
                 egaDirection
                     .EncodeVGaBivector(GeometricSpace)
-                    /*.DivideByNorm()*/
+                    .DivideByNorm()
                     .Op(GeometricSpace.Ei);
 
             return GeometricSpace.Eo.Op(directionOpEi).TranslateBy(egaPoint);
