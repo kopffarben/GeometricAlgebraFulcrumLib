@@ -100,6 +100,12 @@ public interface IScalarProcessor<T>
 
     Scalar<T> ScalarFromText(string text);
 
+    /// <summary>
+    /// Wraps a raw scalar value into a Scalar{T} instance.
+    /// This is the primary method for creating Scalar{T} from T values.
+    /// </summary>
+    Scalar<T> Scalar(T value);
+
 
     Scalar<T> Add(T scalar1, T scalar2);
 

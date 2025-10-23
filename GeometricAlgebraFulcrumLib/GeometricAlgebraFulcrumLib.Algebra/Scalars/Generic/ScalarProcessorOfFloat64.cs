@@ -452,6 +452,13 @@ public class ScalarProcessorOfFloat64
     {
         return this.ScalarFromValue(minValue + (maxValue - minValue) * randomGenerator.NextDouble());
     }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<double> Scalar(double value)
+    {
+        return this.ScalarFromValue(value);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ToFloat64(double scalar)

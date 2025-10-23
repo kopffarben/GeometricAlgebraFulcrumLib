@@ -8,36 +8,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        //var benckmark = new ClarkeBenchmark()
-        //{
-        //    VSpaceDimensions = 48
-        //};
-
-        //benckmark.Setup();
-        //benckmark.Validate();
-
-
-        //BenchmarkRunner.Run<ClarkeBenchmark>();
-        //BenchmarkRunner.Run<DictionaryJoinBenchmarks>();
-        //BenchmarkRunner.Run<GenerationsBenchmarks>();
-        //BenchmarkRunner.Run<HansenProblemBenchmarks>();
-        //BenchmarkRunner.Run<SnelliusPothenotProblemBenchmarks>();
-        //BenchmarkRunner.Run<ScalarOperationsBenchmarks>();
-        //BenchmarkRunner.Run<GaalopComparisonsBenchmarks>();
-        //BenchmarkRunner.Run<IndexSetBenchmarks>();
-        //BenchmarkRunner.Run<BilinearProductsBenchmarks>();
-        //BenchmarkRunner.Run<MetricBenchmarks>();
-        
-        //MetricBenchmarks.Validate();
-        //IndexSetBenchmarks.Validate();
-        //UnaryOperationsBenchmarks.Validate();
-        //BilinearProductsBenchmarks.Validate();
-        //BilinearProductsBenchmarks.TestGrades(
-        //    "ECp",
-        //    (kv1, kv2) => kv1.ECp(kv2)
-        //);
-
-        BenchmarkRunner.Run<JacobiSymmetricEigenDecomposerBenchmarks>();
-        //JacobiSymmetricEigenDecomposerBenchmarks.Validate();
+        // Use BenchmarkSwitcher to support command-line filters
+        // e.g., dotnet run --filter "*CgaFloat32*"
+        BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
     }
 }

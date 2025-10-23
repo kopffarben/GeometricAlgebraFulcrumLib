@@ -434,6 +434,13 @@ public sealed class ScalarProcessorOfERational
     {
         return this.ScalarFromValue(minValue + (maxValue - minValue) * randomGenerator.NextDouble());
     }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<ERational> Scalar(ERational value)
+    {
+        return this.ScalarFromValue(value);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ToFloat64(ERational scalar)

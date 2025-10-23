@@ -429,6 +429,13 @@ public sealed class ScalarProcessorOfEFloat
     {
         return this.ScalarFromValue(minValue + (maxValue - minValue) * randomGenerator.NextDouble());
     }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<EFloat> Scalar(EFloat value)
+    {
+        return this.ScalarFromValue(value);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ToFloat64(EFloat scalar)

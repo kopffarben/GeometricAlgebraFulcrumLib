@@ -220,6 +220,32 @@ public sealed class CGaEncoder<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaVersor<T> Translation(T vectorX, T vectorY)
+    {
+        Debug.Assert(GeometricSpace.Is4D);
+
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var vector = LinVector2D<T>.Create(scalarProcessor.ScalarFromValue(vectorX), scalarProcessor.ScalarFromValue(vectorY));
+
+        return Translation(
+            GeometricSpace.EncodeVGa.VectorAsXGaVector(vector)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaVersor<T> Translation(double vectorX, double vectorY)
+    {
+        Debug.Assert(GeometricSpace.Is4D);
+
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var vector = LinVector2D<T>.Create(scalarProcessor.ScalarFromNumber(vectorX), scalarProcessor.ScalarFromNumber(vectorY));
+
+        return Translation(
+            GeometricSpace.EncodeVGa.VectorAsXGaVector(vector)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaVersor<T> Translation(LinVector2D<T> vector)
     {
         Debug.Assert(GeometricSpace.Is4D);
@@ -235,6 +261,32 @@ public sealed class CGaEncoder<T> :
         Debug.Assert(GeometricSpace.Is5D);
 
         var vector = LinVector3D<T>.Create(vectorX, vectorY, vectorZ);
+
+        return Translation(
+            GeometricSpace.EncodeVGa.VectorAsXGaVector(vector)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaVersor<T> Translation(T vectorX, T vectorY, T vectorZ)
+    {
+        Debug.Assert(GeometricSpace.Is5D);
+
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var vector = LinVector3D<T>.Create(scalarProcessor.ScalarFromValue(vectorX), scalarProcessor.ScalarFromValue(vectorY), scalarProcessor.ScalarFromValue(vectorZ));
+
+        return Translation(
+            GeometricSpace.EncodeVGa.VectorAsXGaVector(vector)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaVersor<T> Translation(double vectorX, double vectorY, double vectorZ)
+    {
+        Debug.Assert(GeometricSpace.Is5D);
+
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var vector = LinVector3D<T>.Create(scalarProcessor.ScalarFromNumber(vectorX), scalarProcessor.ScalarFromNumber(vectorY), scalarProcessor.ScalarFromNumber(vectorZ));
 
         return Translation(
             GeometricSpace.EncodeVGa.VectorAsXGaVector(vector)
@@ -263,14 +315,56 @@ public sealed class CGaEncoder<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaVersor<T> Scaling(T scalingFactor)
+    public CGaVersor<T> Scaling(double scalingFactor)
     {
         var scalarProcessor = GeometricSpace.ScalarProcessor;
-        var g = scalarProcessor.ScalarFromValue(scalingFactor).LogE().Divide(scalarProcessor.TwoValue);
+        return Scaling(scalarProcessor.ScalarFromNumber(scalingFactor));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaVersor<T> Scaling(Scalar<T> scalingFactor)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var g = scalingFactor.LogE().Divide(scalarProcessor.TwoValue);
 
         return (g.Cosh() + g.Sinh() * GeometricSpace.EoiBivector).ToConformalCGaVersor(GeometricSpace);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaVersor<T> Scaling(T scalingFactor)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return Scaling(scalarProcessor.ScalarFromValue(scalingFactor));
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaVersor<T> Rotation(LinAngle<T> angle, T pointX, T pointY)
+    {
+        Debug.Assert(GeometricSpace.Is4D);
+
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var egaAxisPoint = LinVector2D<T>.Create(
+            scalarProcessor.ScalarFromValue(pointX),
+            scalarProcessor.ScalarFromValue(pointY)
+        );
+
+        return Rotation(angle, egaAxisPoint);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaVersor<T> Rotation(LinAngle<T> angle, double pointX, double pointY)
+    {
+        Debug.Assert(GeometricSpace.Is4D);
+
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var egaAxisPoint = LinVector2D<T>.Create(
+            scalarProcessor.ScalarFromNumber(pointX),
+            scalarProcessor.ScalarFromNumber(pointY)
+        );
+
+        return Rotation(angle, egaAxisPoint);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaVersor<T> Rotation(LinAngle<T> angle, LinVector2D<T> egaAxisPoint)
@@ -286,6 +380,46 @@ public sealed class CGaEncoder<T> :
         //).InternalBivector;
 
         return Rotation(angle, bivector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaVersor<T> Rotation(LinAngle<T> angle, T pointX, T pointY, T pointZ, T vectorX, T vectorY, T vectorZ)
+    {
+        Debug.Assert(GeometricSpace.Is5D);
+
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var egaAxisPoint = LinVector3D<T>.Create(
+            scalarProcessor.ScalarFromValue(pointX),
+            scalarProcessor.ScalarFromValue(pointY),
+            scalarProcessor.ScalarFromValue(pointZ)
+        );
+        var egaAxisVector = LinVector3D<T>.Create(
+            scalarProcessor.ScalarFromValue(vectorX),
+            scalarProcessor.ScalarFromValue(vectorY),
+            scalarProcessor.ScalarFromValue(vectorZ)
+        );
+
+        return Rotation(angle, egaAxisPoint, egaAxisVector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaVersor<T> Rotation(LinAngle<T> angle, double pointX, double pointY, double pointZ, double vectorX, double vectorY, double vectorZ)
+    {
+        Debug.Assert(GeometricSpace.Is5D);
+
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        var egaAxisPoint = LinVector3D<T>.Create(
+            scalarProcessor.ScalarFromNumber(pointX),
+            scalarProcessor.ScalarFromNumber(pointY),
+            scalarProcessor.ScalarFromNumber(pointZ)
+        );
+        var egaAxisVector = LinVector3D<T>.Create(
+            scalarProcessor.ScalarFromNumber(vectorX),
+            scalarProcessor.ScalarFromNumber(vectorY),
+            scalarProcessor.ScalarFromNumber(vectorZ)
+        );
+
+        return Rotation(angle, egaAxisPoint, egaAxisVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -20,6 +20,30 @@ public sealed class CGaIpnsRoundEncoder<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Circle(T radiusSquared, T centerX, T centerY)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return Circle(
+            scalarProcessor.ScalarFromValue(radiusSquared),
+            scalarProcessor.ScalarFromValue(centerX),
+            scalarProcessor.ScalarFromValue(centerY)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Circle(double radiusSquared, double centerX, double centerY)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return Circle(
+            scalarProcessor.ScalarFromNumber(radiusSquared),
+            scalarProcessor.ScalarFromNumber(centerX),
+            scalarProcessor.ScalarFromNumber(centerY)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> Circle(IScalar<T> radiusSquared, IScalar<T> centerX, IScalar<T> centerY)
     {
         Debug.Assert(GeometricSpace.Is4D);
@@ -43,6 +67,30 @@ public sealed class CGaIpnsRoundEncoder<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> RealCircle(T radius, T centerX, T centerY)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return RealCircle(
+            scalarProcessor.ScalarFromValue(radius),
+            scalarProcessor.ScalarFromValue(centerX),
+            scalarProcessor.ScalarFromValue(centerY)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> RealCircle(double radius, double centerX, double centerY)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return RealCircle(
+            scalarProcessor.ScalarFromNumber(radius),
+            scalarProcessor.ScalarFromNumber(centerX),
+            scalarProcessor.ScalarFromNumber(centerY)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> RealCircle(IScalar<T> radius, IScalar<T> centerX, IScalar<T> centerY)
     {
         Debug.Assert(GeometricSpace.Is4D);
@@ -61,6 +109,30 @@ public sealed class CGaIpnsRoundEncoder<T> :
         return RealHyperSphere(
             radius,
             center.ToXGaVector(GeometricSpace.EuclideanProcessor)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> ImaginaryCircle(T radius, T centerX, T centerY)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return ImaginaryCircle(
+            scalarProcessor.ScalarFromValue(radius),
+            scalarProcessor.ScalarFromValue(centerX),
+            scalarProcessor.ScalarFromValue(centerY)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> ImaginaryCircle(double radius, double centerX, double centerY)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return ImaginaryCircle(
+            scalarProcessor.ScalarFromNumber(radius),
+            scalarProcessor.ScalarFromNumber(centerX),
+            scalarProcessor.ScalarFromNumber(centerY)
         );
     }
 
@@ -158,6 +230,32 @@ public sealed class CGaIpnsRoundEncoder<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Sphere(T radiusSquared, T centerX, T centerY, T centerZ)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return Sphere(
+            scalarProcessor.ScalarFromValue(radiusSquared),
+            scalarProcessor.ScalarFromValue(centerX),
+            scalarProcessor.ScalarFromValue(centerY),
+            scalarProcessor.ScalarFromValue(centerZ)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Sphere(double radiusSquared, double centerX, double centerY, double centerZ)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return Sphere(
+            scalarProcessor.ScalarFromNumber(radiusSquared),
+            scalarProcessor.ScalarFromNumber(centerX),
+            scalarProcessor.ScalarFromNumber(centerY),
+            scalarProcessor.ScalarFromNumber(centerZ)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> Sphere(IScalar<T> radiusSquared, IScalar<T> centerX, IScalar<T> centerY, IScalar<T> centerZ)
     {
         return HyperSphere(
@@ -178,6 +276,32 @@ public sealed class CGaIpnsRoundEncoder<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> RealSphere(T radius, T centerX, T centerY, T centerZ)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return RealSphere(
+            scalarProcessor.ScalarFromValue(radius),
+            scalarProcessor.ScalarFromValue(centerX),
+            scalarProcessor.ScalarFromValue(centerY),
+            scalarProcessor.ScalarFromValue(centerZ)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> RealSphere(double radius, double centerX, double centerY, double centerZ)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return RealSphere(
+            scalarProcessor.ScalarFromNumber(radius),
+            scalarProcessor.ScalarFromNumber(centerX),
+            scalarProcessor.ScalarFromNumber(centerY),
+            scalarProcessor.ScalarFromNumber(centerZ)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> RealSphere(string radius, string centerX, string centerY, string centerZ)
     {
         Debug.Assert(GeometricSpace.Is5D);
@@ -187,8 +311,8 @@ public sealed class CGaIpnsRoundEncoder<T> :
         return RealHyperSphere(
             sp.ScalarFromText(radius),
             LinVector3D<T>.Create(
-                sp.ScalarFromText(centerX), 
-                sp.ScalarFromText(centerY), 
+                sp.ScalarFromText(centerX),
+                sp.ScalarFromText(centerY),
                 sp.ScalarFromText(centerZ)
             ).ToXGaVector(GeometricSpace.EuclideanProcessor)
         );
@@ -213,6 +337,32 @@ public sealed class CGaIpnsRoundEncoder<T> :
         return RealHyperSphere(
             radius,
             center.ToXGaVector(GeometricSpace.EuclideanProcessor)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> ImaginarySphere(T radius, T centerX, T centerY, T centerZ)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return ImaginarySphere(
+            scalarProcessor.ScalarFromValue(radius),
+            scalarProcessor.ScalarFromValue(centerX),
+            scalarProcessor.ScalarFromValue(centerY),
+            scalarProcessor.ScalarFromValue(centerZ)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> ImaginarySphere(double radius, double centerX, double centerY, double centerZ)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+
+        return ImaginarySphere(
+            scalarProcessor.ScalarFromNumber(radius),
+            scalarProcessor.ScalarFromNumber(centerX),
+            scalarProcessor.ScalarFromNumber(centerY),
+            scalarProcessor.ScalarFromNumber(centerZ)
         );
     }
 

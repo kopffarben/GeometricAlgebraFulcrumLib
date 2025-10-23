@@ -43,7 +43,7 @@ public sealed class CGaVGaEncoder<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaVector<T> VectorAsXGaVector(T x, T y)
     {
-        Debug.Assert(GeometricSpace.Is5D);
+        Debug.Assert(GeometricSpace.Is4D);
 
         var zero = GeometricSpace.ScalarProcessor.ZeroValue;
 
@@ -283,6 +283,25 @@ public sealed class CGaVGaEncoder<T> :
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Vector(T x, T y)
+    {
+        return new CGaBlade<T>(
+            GeometricSpace,
+            VectorAsXGaVector(x, y)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Vector(double x, double y)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return new CGaBlade<T>(
+            GeometricSpace,
+            VectorAsXGaVector(scalarProcessor.ScalarFromNumber(x), scalarProcessor.ScalarFromNumber(y))
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> Vector(IScalar<T> x, IScalar<T> y)
     {
         return new CGaBlade<T>(
@@ -300,6 +319,15 @@ public sealed class CGaVGaEncoder<T> :
         );
     }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Vector(T x, T y, T z)
+    {
+        return new CGaBlade<T>(
+            GeometricSpace,
+            VectorAsXGaVector(x, y, z)
+        );
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> Vector(double x, double y, double z)
     {

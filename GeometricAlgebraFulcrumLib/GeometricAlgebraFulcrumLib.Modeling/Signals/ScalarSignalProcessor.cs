@@ -219,6 +219,13 @@ public sealed class ScalarSignalProcessor<T> :
         return scalarArray.ScalarFromValue(this);
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<IReadOnlyList<T>> Scalar(IReadOnlyList<T> value)
+    {
+        return this.ScalarFromValue(value);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Scalar<IReadOnlyList<T>> ScalarFromText(string text)
     {

@@ -394,6 +394,13 @@ public abstract class ScalarProcessorContainer<T> :
     {
         return ScalarProcessor.ScalarFromRandom(randomGenerator, minValue, maxValue);
     }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Scalar(T value)
+    {
+        return ScalarProcessor.Scalar(value);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ToFloat64(T scalar)

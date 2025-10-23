@@ -217,6 +217,13 @@ public sealed class ScalarProcessorOfFloat64NdArray :
         return this.ScalarFromValue(np.full(ScalarShape, scalar, np.Float64));
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<ndarray> Scalar(ndarray value)
+    {
+        return this.ScalarFromValue(value);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Scalar<ndarray> ScalarFromText(string text)
     {

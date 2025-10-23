@@ -30,6 +30,27 @@ public sealed class CGaPGaEncoder<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(T pointX, T pointY)
+    {
+        Debug.Assert(GeometricSpace.Is4D);
+
+        return Point(
+            GeometricSpace.EncodeVGa.VectorAsXGaVector(pointX, pointY)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(double pointX, double pointY)
+    {
+        Debug.Assert(GeometricSpace.Is4D);
+
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return Point(
+            GeometricSpace.EncodeVGa.VectorAsXGaVector(scalarProcessor.ScalarFromNumber(pointX), scalarProcessor.ScalarFromNumber(pointY))
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> Point(LinVector2D<T> point)
     {
         Debug.Assert(GeometricSpace.Is4D);
@@ -65,6 +86,26 @@ public sealed class CGaPGaEncoder<T> :
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> Point(Scalar<T> pointX, Scalar<T> pointY, Scalar<T> pointZ)
+    {
+        Debug.Assert(GeometricSpace.Is5D);
+
+        return Point(
+            GeometricSpace.EncodeVGa.VectorAsXGaVector(pointX, pointY, pointZ)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(T pointX, T pointY, T pointZ)
+    {
+        Debug.Assert(GeometricSpace.Is5D);
+
+        return Point(
+            GeometricSpace.EncodeVGa.VectorAsXGaVector(pointX, pointY, pointZ)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(double pointX, double pointY, double pointZ)
     {
         Debug.Assert(GeometricSpace.Is5D);
 

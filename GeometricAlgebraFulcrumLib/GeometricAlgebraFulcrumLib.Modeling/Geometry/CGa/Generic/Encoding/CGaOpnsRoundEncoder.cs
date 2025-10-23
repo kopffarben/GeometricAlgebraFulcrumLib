@@ -19,9 +19,33 @@ public sealed class CGaOpnsRoundEncoder<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(T egaPointX, T egaPointY)
+    {
+        return GeometricSpace.EncodeIpnsRound.Point(egaPointX, egaPointY).CGaUnDual();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(double egaPointX, double egaPointY)
+    {
+        return GeometricSpace.EncodeIpnsRound.Point(egaPointX, egaPointY).CGaUnDual();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> Point(Scalar<T> egaPointX, Scalar<T> egaPointY)
     {
         return GeometricSpace.EncodeIpnsRound.Point(egaPointX, egaPointY).CGaUnDual();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(T egaPointX, T egaPointY, T egaPointZ)
+    {
+        return GeometricSpace.EncodeIpnsRound.Point(egaPointX, egaPointY, egaPointZ).CGaUnDual();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(double egaPointX, double egaPointY, double egaPointZ)
+    {
+        return GeometricSpace.EncodeIpnsRound.Point(egaPointX, egaPointY, egaPointZ).CGaUnDual();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

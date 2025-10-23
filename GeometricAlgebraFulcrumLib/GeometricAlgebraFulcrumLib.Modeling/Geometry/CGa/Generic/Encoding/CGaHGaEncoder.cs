@@ -1,6 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -18,10 +19,58 @@ public sealed class CGaHGaEncoder<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(T x, T y)
+    {
+        return Point(
+            GeometricSpace.EncodeVGa.Vector(x, y)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(double x, double y)
+    {
+        return Point(
+            GeometricSpace.EncodeVGa.Vector(x, y)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(IScalar<T> x, IScalar<T> y)
+    {
+        return Point(
+            GeometricSpace.EncodeVGa.Vector(x, y)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> Point(LinVector2D<T> egaPoint)
     {
         return Point(
             GeometricSpace.EncodeVGa.Vector(egaPoint)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(T x, T y, T z)
+    {
+        return Point(
+            GeometricSpace.EncodeVGa.Vector(x, y, z)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(double x, double y, double z)
+    {
+        return Point(
+            GeometricSpace.EncodeVGa.Vector(x, y, z)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(IScalar<T> x, IScalar<T> y, IScalar<T> z)
+    {
+        return Point(
+            GeometricSpace.EncodeVGa.Vector(x, y, z)
         );
     }
 

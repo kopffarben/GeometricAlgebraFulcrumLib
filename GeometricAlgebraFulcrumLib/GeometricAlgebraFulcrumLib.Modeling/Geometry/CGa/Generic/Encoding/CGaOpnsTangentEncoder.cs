@@ -36,6 +36,36 @@ public sealed class CGaOpnsTangentEncoder<T> :
     /// <summary>
     /// Convert a 2D Euclidean point into a CGA IPNS flat point
     /// </summary>
+    /// <param name="pointX"></param>
+    /// <param name="pointY"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(T pointX, T pointY)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return Point(
+            LinVector2D<T>.Create(scalarProcessor.ScalarFromValue(pointX), scalarProcessor.ScalarFromValue(pointY)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+        );
+    }
+
+    /// <summary>
+    /// Convert a 2D Euclidean point into a CGA IPNS flat point
+    /// </summary>
+    /// <param name="pointX"></param>
+    /// <param name="pointY"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(double pointX, double pointY)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return Point(
+            LinVector2D<T>.Create(scalarProcessor.ScalarFromNumber(pointX), scalarProcessor.ScalarFromNumber(pointY)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+        );
+    }
+
+    /// <summary>
+    /// Convert a 2D Euclidean point into a CGA IPNS flat point
+    /// </summary>
     /// <param name="egaPoint"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -58,6 +88,38 @@ public sealed class CGaOpnsTangentEncoder<T> :
     {
         return Point(
             LinVector3D<T>.Create(pointX, pointY, pointZ).ToXGaVector(GeometricSpace.EuclideanProcessor)
+        );
+    }
+
+    /// <summary>
+    /// Convert a 3D Euclidean point into a CGA IPNS flat point
+    /// </summary>
+    /// <param name="pointX"></param>
+    /// <param name="pointY"></param>
+    /// <param name="pointZ"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(T pointX, T pointY, T pointZ)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return Point(
+            LinVector3D<T>.Create(scalarProcessor.ScalarFromValue(pointX), scalarProcessor.ScalarFromValue(pointY), scalarProcessor.ScalarFromValue(pointZ)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+        );
+    }
+
+    /// <summary>
+    /// Convert a 3D Euclidean point into a CGA IPNS flat point
+    /// </summary>
+    /// <param name="pointX"></param>
+    /// <param name="pointY"></param>
+    /// <param name="pointZ"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Point(double pointX, double pointY, double pointZ)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return Point(
+            LinVector3D<T>.Create(scalarProcessor.ScalarFromNumber(pointX), scalarProcessor.ScalarFromNumber(pointY), scalarProcessor.ScalarFromNumber(pointZ)).ToXGaVector(GeometricSpace.EuclideanProcessor)
         );
     }
 
@@ -113,6 +175,40 @@ public sealed class CGaOpnsTangentEncoder<T> :
         return HyperPlane(
             distance,
             LinVector2D<T>.Create(normalX, normalY).ToXGaVector(GeometricSpace.EuclideanProcessor)
+        );
+    }
+
+    /// <summary>
+    /// Convert a 2D egaNormalVector vector and distance to origin into a CGA IPNS flat line
+    /// </summary>
+    /// <param name="distance"></param>
+    /// <param name="normalX"></param>
+    /// <param name="normalY"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Line(T distance, T normalX, T normalY)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return HyperPlane(
+            scalarProcessor.ScalarFromValue(distance),
+            LinVector2D<T>.Create(scalarProcessor.ScalarFromValue(normalX), scalarProcessor.ScalarFromValue(normalY)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+        );
+    }
+
+    /// <summary>
+    /// Convert a 2D egaNormalVector vector and distance to origin into a CGA IPNS flat line
+    /// </summary>
+    /// <param name="distance"></param>
+    /// <param name="normalX"></param>
+    /// <param name="normalY"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Line(double distance, double normalX, double normalY)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return HyperPlane(
+            scalarProcessor.ScalarFromNumber(distance),
+            LinVector2D<T>.Create(scalarProcessor.ScalarFromNumber(normalX), scalarProcessor.ScalarFromNumber(normalY)).ToXGaVector(GeometricSpace.EuclideanProcessor)
         );
     }
 
@@ -239,6 +335,42 @@ public sealed class CGaOpnsTangentEncoder<T> :
         return HyperPlane(
             distance,
             LinVector3D<T>.Create(normalX, normalY, normalZ).ToXGaVector(GeometricSpace.EuclideanProcessor)
+        );
+    }
+
+    /// <summary>
+    /// Convert a 3D egaNormalVector vector and distance to origin into a CGA IPNS flat plane
+    /// </summary>
+    /// <param name="distance"></param>
+    /// <param name="normalX"></param>
+    /// <param name="normalY"></param>
+    /// <param name="normalZ"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Plane(T distance, T normalX, T normalY, T normalZ)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return HyperPlane(
+            scalarProcessor.ScalarFromValue(distance),
+            LinVector3D<T>.Create(scalarProcessor.ScalarFromValue(normalX), scalarProcessor.ScalarFromValue(normalY), scalarProcessor.ScalarFromValue(normalZ)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+        );
+    }
+
+    /// <summary>
+    /// Convert a 3D egaNormalVector vector and distance to origin into a CGA IPNS flat plane
+    /// </summary>
+    /// <param name="distance"></param>
+    /// <param name="normalX"></param>
+    /// <param name="normalY"></param>
+    /// <param name="normalZ"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> Plane(double distance, double normalX, double normalY, double normalZ)
+    {
+        var scalarProcessor = GeometricSpace.ScalarProcessor;
+        return HyperPlane(
+            scalarProcessor.ScalarFromNumber(distance),
+            LinVector3D<T>.Create(scalarProcessor.ScalarFromNumber(normalX), scalarProcessor.ScalarFromNumber(normalY), scalarProcessor.ScalarFromNumber(normalZ)).ToXGaVector(GeometricSpace.EuclideanProcessor)
         );
     }
 

@@ -240,6 +240,13 @@ public sealed class ScalarProcessorOfFloat64Signal :
         return Float64SampledTimeSignal.Create(SamplingRate, scalarArray, false).ScalarFromValue(this);
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<Float64SampledTimeSignal> Scalar(Float64SampledTimeSignal value)
+    {
+        return this.ScalarFromValue(value);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Scalar<Float64SampledTimeSignal> ScalarFromText(string text)
     {

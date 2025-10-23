@@ -429,6 +429,13 @@ public sealed class ScalarProcessorOfEDecimal
     {
         return this.ScalarFromValue(EDecimal.FromDouble(minValue + (maxValue - minValue) * randomGenerator.NextDouble()));
     }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<EDecimal> Scalar(EDecimal value)
+    {
+        return this.ScalarFromValue(value);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ToFloat64(EDecimal scalar)

@@ -26,6 +26,36 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding
         /// <param name="pointY"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CGaBlade<T> Point(T pointX, T pointY)
+        {
+            var scalarProcessor = GeometricSpace.ScalarProcessor;
+            return Point(
+                LinVector2D<T>.Create(scalarProcessor.ScalarFromValue(pointX), scalarProcessor.ScalarFromValue(pointY)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+            );
+        }
+
+        /// <summary>
+        /// Convert a 2D Euclidean point into a CGA OPNS flat point
+        /// </summary>
+        /// <param name="pointX"></param>
+        /// <param name="pointY"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CGaBlade<T> Point(double pointX, double pointY)
+        {
+            var scalarProcessor = GeometricSpace.ScalarProcessor;
+            return Point(
+                LinVector2D<T>.Create(scalarProcessor.ScalarFromNumber(pointX), scalarProcessor.ScalarFromNumber(pointY)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+            );
+        }
+
+        /// <summary>
+        /// Convert a 2D Euclidean point into a CGA OPNS flat point
+        /// </summary>
+        /// <param name="pointX"></param>
+        /// <param name="pointY"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public CGaBlade<T> Point(Scalar<T> pointX, Scalar<T> pointY)
         {
             return Point(
@@ -50,7 +80,41 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding
         /// <summary>
         /// Convert a 3D Euclidean point into a CGA OPNS flat point
         /// </summary>
-        /// 
+        ///
+        /// <param name="pointX"></param>
+        /// <param name="pointY"></param>
+        /// <param name="pointZ"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CGaBlade<T> Point(T pointX, T pointY, T pointZ)
+        {
+            var scalarProcessor = GeometricSpace.ScalarProcessor;
+            return Point(
+                LinVector3D<T>.Create(scalarProcessor.ScalarFromValue(pointX), scalarProcessor.ScalarFromValue(pointY), scalarProcessor.ScalarFromValue(pointZ)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+            );
+        }
+
+        /// <summary>
+        /// Convert a 3D Euclidean point into a CGA OPNS flat point
+        /// </summary>
+        ///
+        /// <param name="pointX"></param>
+        /// <param name="pointY"></param>
+        /// <param name="pointZ"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public CGaBlade<T> Point(double pointX, double pointY, double pointZ)
+        {
+            var scalarProcessor = GeometricSpace.ScalarProcessor;
+            return Point(
+                LinVector3D<T>.Create(scalarProcessor.ScalarFromNumber(pointX), scalarProcessor.ScalarFromNumber(pointY), scalarProcessor.ScalarFromNumber(pointZ)).ToXGaVector(GeometricSpace.EuclideanProcessor)
+            );
+        }
+
+        /// <summary>
+        /// Convert a 3D Euclidean point into a CGA OPNS flat point
+        /// </summary>
+        ///
         /// <param name="pointX"></param>
         /// <param name="pointY"></param>
         /// <param name="pointZ"></param>

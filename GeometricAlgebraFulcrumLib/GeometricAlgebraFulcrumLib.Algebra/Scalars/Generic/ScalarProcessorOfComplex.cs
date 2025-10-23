@@ -424,6 +424,13 @@ public sealed class ScalarProcessorOfComplex
 
         return this.ScalarFromValue(Complex.FromPolarCoordinates(magnitude, angle));
     }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<Complex> Scalar(Complex value)
+    {
+        return this.ScalarFromValue(value);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ToFloat64(Complex scalar)
