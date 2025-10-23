@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float32;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float32;
@@ -11,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float32;
 /// </summary>
 public static class XGaFloat32Processor
 {
-    private static readonly IScalarProcessor<float> ScalarProcessor =
+    private static readonly ScalarProcessorOfFloat32 ScalarProcessor =
         ScalarProcessorOfFloat32.Instance;
 
     /// <summary>

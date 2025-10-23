@@ -60,6 +60,27 @@ var plane = cga5D.EncodeOpns.Plane(0f, 0f, 1f, 2f);  // Normal (0,0,1), distance
 var intersection = sphere.Op(plane);
 ```
 
+### PGA (Projective Geometric Algebra)
+
+```csharp
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.PGa.Float32;
+
+// Create PGA geometric spaces
+var pga4D = PGaFloat32GeometricSpace.Space4D;  // 4D PGA for 3D Euclidean geometry
+var pga5D = PGaFloat32GeometricSpace.Space5D;  // 5D PGA for 4D Euclidean geometry
+var pgaCustom = PGaFloat32GeometricSpace.Create(vSpaceDimensions: 5);  // Custom
+
+// PGA uses homogeneous coordinates for geometric objects
+// Example: Working with 3D geometry in 4D PGA
+var processor = pga4D.ProjectiveProcessor;
+var point3D = processor.CreateVectorComposer()
+    .SetVectorTerm(0, 1f)   // x
+    .SetVectorTerm(1, 2f)   // y
+    .SetVectorTerm(2, 3f)   // z
+    .SetVectorTerm(3, 1f)   // w (homogeneous coordinate)
+    .GetVector();
+```
+
 ## Hybrid API: Seamless Type Conversion
 
 All encoder methods support **three overload types** for maximum flexibility:
@@ -163,6 +184,15 @@ All business logic resides in the generic `XGaProcessor<T>` implementation. The 
 **Static Methods:**
 - `CGaGeometricSpace<float> Create(int vSpaceDimensions)` - Custom dimensions (≥ 4)
 
+### PGaFloat32GeometricSpace
+
+**Static Properties:**
+- `PGaGeometricSpace3D<float> Space4D` - 4D PGA for 3D Euclidean geometry
+- `PGaGeometricSpace4D<float> Space5D` - 5D PGA for 4D Euclidean geometry
+
+**Static Methods:**
+- `PGaGeometricSpace<float> Create(int vSpaceDimensions)` - Custom dimensions (≥ 3)
+
 ### Encoder Hybrid API
 
 All encoder classes support `T`, `double`, and `IScalar<T>` overloads:
@@ -206,8 +236,11 @@ var v = processor.CreateVectorComposer()
 **Migration Checklist:**
 1. Change `using` statement: `Float64` → `Float32`
 2. Change processor class: `XGaFloat64Processor` → `XGaFloat32Processor`
-3. Change space class: `CGaFloat64GeometricSpace` → `CGaFloat32GeometricSpace`
+3. Change space classes:
+   - `CGaFloat64GeometricSpace` → `CGaFloat32GeometricSpace`
+   - `PGaFloat64GeometricSpace` → `PGaFloat32GeometricSpace` (if used)
 4. Update numeric literals: `1.0` → `1f` (optional, works with `double` too via hybrid API)
+5. **Note:** Linear Maps (`XGaPureRotor`, `XGaReflector`, etc.) are already generic - just use with `XGaFloat32Processor`
 
 ## Testing
 
@@ -237,9 +270,11 @@ cd GeometricAlgebraFulcrumLib.Benchmarks/bin/Release/net8.0
 
 ## Future Work
 
+**Completed in Phase 2:**
+- ✅ PGa (Projective Geometric Algebra) Float32 wrapper - `PGaFloat32GeometricSpace`
+- ✅ Linear Maps - Already fully generic (`XGaPureRotor<T>`, `XGaReflector<T>`, etc.) - **No wrapper needed**
+
 **Phase 3 (Next Steps):**
-- PGa (Projective Geometric Algebra) Float32 wrapper
-- Linear Maps (Rotors, Reflectors, Outermorphisms) Float32 wrapper
 - GPU interop examples (ILGPU, ComputeSharp)
 
 **Potential Enhancements:**

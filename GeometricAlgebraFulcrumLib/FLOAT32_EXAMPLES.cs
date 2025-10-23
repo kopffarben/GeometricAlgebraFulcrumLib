@@ -3,6 +3,7 @@
 
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float32;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float32;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.PGa.Float32;
 
 namespace GeometricAlgebraFulcrumLib.Examples;
 
@@ -227,6 +228,77 @@ public static class CGaFloat32Examples
         var intersectionPoints = circle.Op(line);
 
         Console.WriteLine($"Intersection points grade: {intersectionPoints.Grade}");
+    }
+}
+
+/// <summary>
+/// Examples for PGA (Projective Geometric Algebra) with Float32
+/// </summary>
+public static class PGaFloat32Examples
+{
+    /// <summary>
+    /// Example 1: Basic PGA space creation
+    /// </summary>
+    public static void Example1_PGASpaceCreation()
+    {
+        // 4D PGA for 3D Euclidean geometry
+        var pga = PGaFloat32GeometricSpace.Space4D;
+
+        Console.WriteLine($"PGA Space Dimensions: {pga.VSpaceDimensions}");
+        Console.WriteLine($"Is 3D Euclidean: {pga.Is3D}");
+        Console.WriteLine($"Projective Processor: {pga.ProjectiveProcessor}");
+    }
+
+    /// <summary>
+    /// Example 2: Working with homogeneous coordinates
+    /// </summary>
+    public static void Example2_HomogeneousCoordinates()
+    {
+        var pga = PGaFloat32GeometricSpace.Space4D;
+        var processor = pga.ProjectiveProcessor;
+
+        // Point in 3D space using homogeneous coordinates
+        // Format: (x, y, z, w) where actual point = (x/w, y/w, z/w)
+        var point1 = processor.CreateVectorComposer()
+            .SetVectorTerm(0, 2f)   // x
+            .SetVectorTerm(1, 4f)   // y
+            .SetVectorTerm(2, 6f)   // z
+            .SetVectorTerm(3, 2f)   // w (homogeneous coordinate)
+            .GetVector();
+        // This represents the point (1, 2, 3) in 3D
+
+        // Point at infinity (direction vector)
+        var directionAtInfinity = processor.CreateVectorComposer()
+            .SetVectorTerm(0, 1f)
+            .SetVectorTerm(1, 0f)
+            .SetVectorTerm(2, 0f)
+            .SetVectorTerm(3, 0f)   // w = 0 means point at infinity
+            .GetVector();
+
+        Console.WriteLine($"Point1 created: {point1}");
+        Console.WriteLine($"Direction at infinity: {directionAtInfinity}");
+    }
+
+    /// <summary>
+    /// Example 3: 2D geometry in 3D PGA (Space4D actually represents 3D projective, not 2D)
+    /// Corrected to show 3D transformations
+    /// </summary>
+    public static void Example3_3DTransformations()
+    {
+        var pga = PGaFloat32GeometricSpace.Space4D;
+        var processor = pga.ProjectiveProcessor;
+
+        // Create a 3D point
+        var point = processor.CreateVectorComposer()
+            .SetVectorTerm(0, 1f)   // x
+            .SetVectorTerm(1, 2f)   // y
+            .SetVectorTerm(2, 3f)   // z
+            .SetVectorTerm(3, 1f)   // w = 1 for finite point
+            .GetVector();
+
+        // Geometric operations in PGA
+        var pointNorm = point.Norm();
+        Console.WriteLine($"Point norm: {pointNorm}");
     }
 }
 

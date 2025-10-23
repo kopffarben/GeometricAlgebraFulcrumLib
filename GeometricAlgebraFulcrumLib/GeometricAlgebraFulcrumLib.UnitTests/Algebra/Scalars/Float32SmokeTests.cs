@@ -1,5 +1,6 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float32;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float32;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.PGa.Float32;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Algebra.Scalars;
@@ -155,5 +156,40 @@ public class Float32SmokeTests
 
         // Assert
         Assert.That(vector, Is.Not.Null);
+    }
+
+    [Test]
+    public void PGaFloat32GeometricSpace_Space4D_ShouldNotBeNull()
+    {
+        // Arrange & Act
+        var space = PGaFloat32GeometricSpace.Space4D;
+
+        // Assert
+        Assert.That(space, Is.Not.Null);
+        Assert.That(space.Is3D, Is.True);
+        Assert.That(space.ScalarProcessor, Is.Not.Null);
+    }
+
+    [Test]
+    public void PGaFloat32GeometricSpace_Space5D_ShouldNotBeNull()
+    {
+        // Arrange & Act
+        var space = PGaFloat32GeometricSpace.Space5D;
+
+        // Assert
+        Assert.That(space, Is.Not.Null);
+        Assert.That(space.Is4D, Is.True);
+        Assert.That(space.ScalarProcessor, Is.Not.Null);
+    }
+
+    [Test]
+    public void PGaFloat32GeometricSpace_Create_ShouldWorkWithCustomDimensions()
+    {
+        // Arrange & Act
+        var space = PGaFloat32GeometricSpace.Create(vSpaceDimensions: 5);
+
+        // Assert
+        Assert.That(space, Is.Not.Null);
+        Assert.That(space.VSpaceDimensions, Is.EqualTo(5));
     }
 }
