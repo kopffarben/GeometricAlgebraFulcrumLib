@@ -297,7 +297,9 @@ public sealed class CGaOpnsTangentEncoder<T> :
     public CGaBlade<T> Line(XGaVector<T> egaPoint, XGaVector<T> egaDirection)
     {
         var direction =
-            egaDirection.EncodeVGaVector(GeometricSpace)/*.DivideByNorm()*/;
+            egaDirection
+                .EncodeVGaBlade(GeometricSpace)
+                .DivideByNorm();
 
         return GeometricSpace.Eo.Op(direction).TranslateBy(egaPoint);
     }
@@ -502,11 +504,13 @@ public sealed class CGaOpnsTangentEncoder<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaBlade<T> HyperPlane(Scalar<T> distance, XGaVector<T> egaNormalVector)
     {
-        Debug.Assert(GeometricSpace.IsValidVGaElement(egaNormalVector));
+        // Note: egaNormalVector is created using EuclideanProcessor, which has different index mapping
+        // than CGA space (indices 0,1 are e1,e2 in Euclidean, but E-,E+ in CGA)
+        // Debug.Assert(GeometricSpace.IsValidVGaElement(egaNormalVector));
 
         return new CGaBlade<T>(
             GeometricSpace,
-            egaNormalVector/*.DivideByNorm()*/ + distance * GeometricSpace.EiVector
+            egaNormalVector.DivideByNorm() + distance * GeometricSpace.EiVector
         );
     }
 

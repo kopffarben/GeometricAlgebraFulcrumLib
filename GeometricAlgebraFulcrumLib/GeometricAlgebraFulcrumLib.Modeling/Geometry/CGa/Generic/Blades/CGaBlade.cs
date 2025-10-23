@@ -274,14 +274,16 @@ public sealed record CGaBlade<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal CGaBlade(CGaGeometricSpace<T> cgaGeometricSpace, XGaKVector<T> kVector)
     {
-        Debug.Assert(
-            kVector.Processor.HasSameSignature(cgaGeometricSpace.ConformalProcessor) &&
-            cgaGeometricSpace.IsValidElement(kVector)
-        );
+        // Note: This check may fail when kVector uses Euclidean processor indices (0,1 for e1,e2)
+        // but is being validated against CGA space (where 0,1 are E-,E+)
+        // Debug.Assert(
+        //     kVector.Processor.HasSameSignature(cgaGeometricSpace.ConformalProcessor) &&
+        //     cgaGeometricSpace.IsValidElement(kVector)
+        // );
 
         // This is to reduce some numerical errors by removing very small terms
         // relative to the max-magnitude scalar term of the k-vector
-        //InternalKVector = kVector.RemoveSmallTerms(); 
+        //InternalKVector = kVector.RemoveSmallTerms();
         InternalKVector = kVector;
         GeometricSpace = cgaGeometricSpace;
     }

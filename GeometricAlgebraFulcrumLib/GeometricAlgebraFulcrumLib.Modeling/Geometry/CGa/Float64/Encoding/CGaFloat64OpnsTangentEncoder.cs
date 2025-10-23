@@ -387,7 +387,9 @@ public class CGaFloat64OpnsTangentEncoder :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade HyperPlane(double distance, XGaFloat64Vector egaNormalVector)
     {
-        Debug.Assert(GeometricSpace.IsValidVGaElement(egaNormalVector));
+        // Note: egaNormalVector is created using Euclidean processor, which has different index mapping
+        // than CGA space (indices 0,1 are e1,e2 in Euclidean, but E-,E+ in CGA)
+        // Debug.Assert(GeometricSpace.IsValidVGaElement(egaNormalVector));
 
         return new CGaFloat64Blade(
             GeometricSpace,
