@@ -1,344 +1,414 @@
-# Next Steps Roadmap
+# Next Steps Roadmap - Konkrete Aktionen
 
-**Last Updated:** 2025-10-23
-**Current Status:** Phase 0 Complete ✅ → Phase 1 Starting (Module 1: XGa Multivectors)
+**Letzte Aktualisierung:** 2025-10-24
+**Aktueller Status:** Phase 1.1 In Progress (Module 1: XGa Core - Task 1.1 Complete)
 **Branch:** Feature/ScalarFloat32
 
 ---
 
-## ⚠️ DOCUMENTATION MAINTENANCE
+## ⚠️ DOKUMENTATIONSPFLEGE
 
-**CRITICAL:** The following files must be kept synchronized and up to date after any significant changes:
-1. **`DEDUPLICATION_ROADMAP.md`** - Overall roadmap and detailed phase descriptions
-2. **`NEXT_STEPS_ROADMAP.md`** (this file) - Immediate next steps and priorities
-3. **`_Status.md`** - Quick bullet-list overview (for fast status checks)
-4. **`DEDUPLICATION_TASKS.md`** - Detailed task list per module
+**Diese Dateien synchron halten:**
+1. **`DEDUPLICATION_ROADMAP.md`** - Gesamt-Roadmap
+2. **`NEXT_STEPS_ROADMAP.md`** (dieses Dokument) - Nächste Schritte
+3. **`DEDUPLICATION_TASKS.md`** - Detaillierte Tasks
 
-After completing milestones, fixing bugs, or making architectural changes, update all four files to reflect current status.
-
-**Quick Status Check:** See [`_Status.md`](_Status.md) for a concise bullet-list overview.
-**Detailed Task List:** See [`DEDUPLICATION_TASKS.md`](DEDUPLICATION_TASKS.md) for complete task breakdown.
+Nach jedem Meilenstein alle drei aktualisieren!
 
 ---
 
-## 🎯 Reality Check: Where We Actually Are
+## 🎯 Wo sind wir?
 
-### ✅ Phase 0 COMPLETE
-- [x] 102/102 equivalence tests passing
-- [x] Performance validated (Generic 1.27x FASTER)
-- [x] Comprehensive API analysis (20 agents, 700+ files)
-- [x] Task list created
+**Phase 0:** ✅ COMPLETE
+- API-Analyse komplett
+- Performance validiert (Generic 1.27x schneller)
+- 102 Equivalence-Tests passing
+- Roadmap erstellt
 
-### ⏸️ Phase 1 NOT STARTED
-**Current API Parity:** ~60-80% (varies by module)
-**Estimated Effort:** 30-68 hours (4-9 work days)
-**NOT "ready for Phase 2"** - must complete API synchronization first
-
----
-
-## 🚀 Week 1-2: Module 1 - XGa Multivectors Phase 1
-
-### Current Status
-- ✅ Tests: 8/8 composer tests passing
-- ❌ API Parity: ~70% (significant gaps on both sides)
-- ❌ MapScalars: Float64 0%, Generic 100%
-- ❌ Composers: Float64 minimal, Generic extended
-- ❌ Utils: Float64 100%, Generic 0%
-
-### 🎯 Start Here: Task 1.1.1 - Implement MapScalars in Float64
-
-**Location:** `DEDUPLICATION_TASKS.md` → Module 1 → Task 1.1.1
-
-**Goal:** Add MapScalars() family to all Float64 multivector types
-
-**Steps:**
-1. **Day 1:** Implement MapScalars in XGaFloat64Scalar/Vector (Subtasks 1.1.1a-b)
-   ```bash
-   # Edit files:
-   # - GeometricAlgebra/Float64/Multivectors/XGaFloat64Scalar.cs
-   # - GeometricAlgebra/Float64/Multivectors/XGaFloat64Vector.cs
-   ```
-
-2. **Day 2:** Implement MapScalars in Bivector/KVector/Multivector (Subtasks 1.1.1c-f)
-   ```bash
-   # Edit files:
-   # - XGaFloat64Bivector.cs
-   # - XGaFloat64HigherKVector.cs
-   # - XGaFloat64KVector.cs
-   # - XGaFloat64*Multivector.cs
-   ```
-
-3. **Day 2-3:** Write equivalence tests (Subtask 1.1.1g)
-   ```bash
-   # Create: UnitTests/Algebra/XGaMapScalarsEquivalenceTests.cs
-   # Expected: 15 test methods
-   ```
-
-4. **Day 3:** Run tests and verify (Subtask 1.1.1h)
-   ```bash
-   cd GeometricAlgebraFulcrumLib
-   dotnet test --filter "XGaMapScalarsEquivalenceTests"
-   # Expected: 15/15 passing
-   ```
-
-**Success Criteria:** ✅ MapScalars in all Float64 types, 15/15 tests passing
+**Phase 1.1:** 🔄 IN PROGRESS (Module 1: XGa Core)
+- Task 1.1 (XGaComputedOutermorphism<T>) ✅ COMPLETE
+- 4 Klassen verbleibend in Generic
+- Geschätzter Aufwand: 2-4 Tage verbleibend
+- Nach Completion: Phase 1.2 (ComplexAlgebra)
 
 ---
 
-### Days 3-4: Task 1.1.2-1.1.3 - MapBasisVectors & MapTerms
+## 📋 Module 1: XGa Core - Erste Schritte
 
-See `DEDUPLICATION_TASKS.md` Module 1 → Tasks 1.1.2-1.1.3
+### Was fehlt in Generic (Priorität):
 
-**Expected Result:** 25/25 total tests passing
-
----
-
-### Days 5-7: Task 1.1.4 - Extend Composer API in Float64
-
-**Goal:** Add int/IFloat64Scalar/Float64Scalar overloads + SetTrivectorTerm methods
-
-**Critical:** SetTrivectorTerm is COMPLETELY MISSING in Float64!
-
-**Expected Result:** 18/18 composer tests passing (8 existing + 10 new)
+1. ~~**XGaComputedOutermorphism<T>**~~ ✅ COMPLETE (2025-10-24)
+2. **XGaStoredOutermorphism<T>** ← START HIER (Task 1.2)
+3. **XGaOutermorphismComposerUtils<T>**
+4. **XGaGramSchmidtFrame<T>**
+5. **XGaConformalComposerUtils<T>**
+6. **ToTuple()** extensions (optional)
 
 ---
 
-### Days 8-9: Tasks 1.2.1-1.2.2 - Generic Utils/Conversions
+## 🚀 Tag 1: XGaComputedOutermorphism<T>
 
-**Goal:** Add ToXGaVector<T>() extension methods for LinVector2D/3D/4D
+### Schritt 1: Float64-Implementierung analysieren
 
-**Expected Result:** 13/13 conversion tests passing
+**Datei zu lesen:**
+```
+GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/
+  GeometricAlgebra/Float64/LinearMaps/Outermorphisms/
+    XGaFloat64ComputedOutermorphism.cs
+```
 
----
+**Was zu verstehen:**
+- Basis-Klasse/Interface
+- Constructor(s)
+- Properties (Processor, VSpaceDimensions, etc.)
+- Methods (OmMap, GetMultivector, etc.)
+- Abhängigkeiten (welche anderen Klassen werden verwendet?)
 
-### Day 10: Task 1.3.1 - Bug Fix: XGaPureRotor<T>.IsValid()
+**Kommando:**
+```bash
+# Datei öffnen und analysieren
+code GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/Float64/LinearMaps/Outermorphisms/XGaFloat64ComputedOutermorphism.cs
+```
 
-**Location:** `GeometricAlgebra/Generic/LinearMaps/Rotors/XGaPureRotor.cs:78`
+### Schritt 2: Generic-Struktur prüfen
 
-**Bug:** Inverted logic
+**Ziel-Location für neue Datei:**
+```
+GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/
+  GeometricAlgebra/Generic/LinearMaps/Outermorphisms/
+    XGaComputedOutermorphism.cs  ← NEUE DATEI
+```
+
+**Prüfen ob Ordner existiert:**
+```bash
+ls GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/Generic/LinearMaps/Outermorphisms/
+```
+
+### Schritt 3: Implementierung
+
+**Pattern:**
+1. Float64-Datei als Basis nehmen
+2. `double` → `T` ersetzen
+3. `XGaFloat64*` → `Xga*<T>` ersetzen
+4. Hardcoded double-Operations → `ScalarProcessor.Method()` verwenden
+5. Generic-Interface `IScalarProcessor<T>` integrieren
+
+**Wichtig:**
+- Constructor muss `XGaProcessor<T>` akzeptieren
+- Alle arithmetischen Operationen über `ScalarProcessor`
+- Properties und Methods analog zu Float64
+
+**Beispiel (vereinfacht):**
 ```csharp
-// WRONG:
-public bool IsValid() => Multivector.IsEven(2);
+// Float64 Version:
+public sealed class XGaFloat64ComputedOutermorphism
+{
+    public XGaFloat64Processor Processor { get; }
 
-// CORRECT:
-public bool IsValid() => !Multivector.IsEven(2);
+    public XGaFloat64ComputedOutermorphism(XGaFloat64Processor processor)
+    {
+        Processor = processor;
+    }
+
+    public XGaFloat64Vector OmMap(XGaFloat64Vector vector)
+    {
+        // ... Implementation mit double
+    }
+}
+
+// Generic Version:
+public sealed class XGaComputedOutermorphism<T>
+{
+    public XGaProcessor<T> Processor { get; }
+
+    public XGaComputedOutermorphism(XGaProcessor<T> processor)
+    {
+        Processor = processor;
+    }
+
+    public XGaVector<T> OmMap(XGaVector<T> vector)
+    {
+        // ... Implementation mit T und ScalarProcessor
+    }
+}
 ```
 
-**Expected Result:** 2/2 bug fix tests passing
+### Schritt 4: Testing (optional aber empfohlen)
 
----
+**Test-Datei erstellen:**
+```
+GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/
+  Algebra/XGaComputedOutermorphismEquivalenceTests.cs  ← NEUE DATEI
+```
 
-### Day 11: Verification & Documentation
+**Test-Pattern:**
+```csharp
+[Test]
+public void ComputedOutermorphism_OmMapVector_ShouldProduceIdenticalResults()
+{
+    // Float64
+    var processorF64 = XGaFloat64Processor.Euclidean;
+    var omF64 = new XGaFloat64ComputedOutermorphism(processorF64);
+    var vectorF64 = processorF64.Vector(1, 2, 3);
+    var resultF64 = omF64.OmMap(vectorF64);
 
-**Task 1.4.1:** Run ALL XGa equivalence tests
+    // Generic<double>
+    var processorGen = XGaProcessor<double>.CreateEuclidean(ScalarProcessorOfFloat64.Instance);
+    var omGen = new XGaComputedOutermorphism<double>(processorGen);
+    var vectorGen = processorGen.Vector(1.0, 2.0, 3.0);
+    var resultGen = omGen.OmMap(vectorGen);
+
+    // Compare
+    AssertEquivalent(resultF64, resultGen, 1e-12);
+}
+```
+
+### Schritt 5: Commit
+
+**Nach erfolgreicher Implementierung:**
 ```bash
-dotnet test --filter "FullyQualifiedName~XGa*EquivalenceTests"
+git add GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/Generic/LinearMaps/Outermorphisms/XGaComputedOutermorphism.cs
+git add GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/Algebra/XGaComputedOutermorphismEquivalenceTests.cs
+git commit -m "feat(Generic): Add XGaComputedOutermorphism<T> to match Float64 API
+
+- Implement XGaComputedOutermorphism<T> based on XGaFloat64ComputedOutermorphism
+- All operations use IScalarProcessor<T> for scalar abstraction
+- Add equivalence tests (Generic<double> vs Float64)
+- Module 1 (XGa Core) - Task 1/5 complete
+
+Refs: API_COMPARISON line 12"
 ```
 
-**Expected Result:** 58/58 tests passing (8 existing + 50 new)
+---
 
-**Task 1.5.1:** Update documentation
-- [ ] Update `_Status.md` - Mark Module 1 complete
-- [ ] Update `DEDUPLICATION_ROADMAP.md` - Update milestone status
-- [ ] Update `NEXT_STEPS_ROADMAP.md` - Move to Module 2
-- [ ] Check off tasks in `DEDUPLICATION_TASKS.md`
+## 🚀 Tag 2: XGaStoredOutermorphism<T>
 
-**Success Criteria:** ✅ Module 1 Phase 1 Complete (100% API Parity, 58/58 tests)
+**Wiederholen von Tag 1, aber für:**
+```
+Float64: GeometricAlgebra/Float64/LinearMaps/Outermorphisms/XGaFloat64StoredOutermorphism.cs
+Generic: GeometricAlgebra/Generic/LinearMaps/Outermorphisms/XGaStoredOutermorphism.cs (NEU)
+```
+
+**Geschätzter Aufwand:** 4-6 Stunden (ähnlich zu ComputedOutermorphism)
 
 ---
 
-## 🚀 Week 3: Module 2 - LinearAlgebra Phase 1
+## 🚀 Tag 3: XGaOutermorphismComposerUtils<T>
 
-### Current Status
-- ✅ Tests: 28/28 equivalence tests passing
-- ❌ API Parity: ~80%
-- ❌ Generic missing: IsNearZero(epsilon) in 15+ types
-- ❌ Generic missing: LinBivector2D<T>.Rcp()
-- ❌ Generic missing: LinQuaternion<T> System.Numerics interop
+**Static Utility Class**
 
-### Tasks
+```
+Float64: GeometricAlgebra/Float64/LinearMaps/Outermorphisms/XGaFloat64OutermorphismComposerUtils.cs
+Generic: GeometricAlgebra/Generic/LinearMaps/Outermorphisms/XGaOutermorphismComposerUtils.cs (NEU)
+```
 
-**Task 2.1.1:** Add IsNearZero(epsilon) to 15+ types (4-6 hours)
-**Task 2.1.2:** Implement LinBivector2D<T>.Rcp() (1 hour)
-**Task 2.1.3:** Restore LinQuaternion<T> System.Numerics interop (2-3 hours)
+**Besonderheit:** Static utility methods
+- Extension methods für `XGaProcessor<T>`
+- Factory methods für Outermorphisms
 
-**Expected Result:** 49/49 tests passing (28 existing + 21 new)
-
-**See:** `DEDUPLICATION_TASKS.md` Module 2 for complete breakdown
+**Geschätzter Aufwand:** 3-4 Stunden (viele kleine Utility-Methods)
 
 ---
 
-## 🚀 Week 4: Module 3 & 4 - CGA & Polynomials Phase 1
+## 🚀 Tag 4: XGaGramSchmidtFrame<T>
 
-### Module 3: CGA Encoders (0-30 hours depending on decision)
+**Frame-Klasse**
 
-**Current Status:**
-- ✅ Tests: 66/66 passing
-- ✅ Functionally equivalent (proven)
-- ⚠️ Different API signatures (Float64 double-only, Generic Hybrid)
+```
+Float64: GeometricAlgebra/Float64/Frames/XGaFloat64GramSchmidtFrame.cs
+Generic: GeometricAlgebra/Generic/Frames/XGaGramSchmidtFrame.cs (NEU)
+```
 
-**DECISION NEEDED:**
-- **Option A (Recommended):** Keep as-is → 0 hours, proceed to Phase 2
-- **Option B:** Synchronize APIs → 20-30 hours
+**Wichtig:** Gram-Schmidt Orthogonalisierung
+- Numerisch sensibel
+- Korrekte Verwendung von ScalarProcessor für Norm/Dot-Produkt
 
-**See:** `DEDUPLICATION_TASKS.md` Module 3
-
----
-
-### Module 4: Polynomials (2-3 hours)
-
-**Task 4.1.1:** Fix BSplineKnotVector<T>.AppendKnot() validation bug
-
-**Expected Result:** 2/2 tests passing
-
-**See:** `DEDUPLICATION_TASKS.md` Module 4
+**Geschätzter Aufwand:** 4-5 Stunden
 
 ---
 
-## Phase 1 Complete When:
+## 🚀 Tag 5: XGaConformalComposerUtils<T>
 
-- [ ] Module 1: 58/58 tests, 100% API Parity ✅
-- [ ] Module 2: 49/49 tests, 100% API Parity ✅
-- [ ] Module 3: Decision made, 66/66 tests ✅
-- [ ] Module 4: 2/2 tests, bug fixed ✅
-- [ ] **TOTAL: 175/175 equivalence tests passing**
+**Conformal GA Utilities**
 
-**Then:** Begin Phase 2 (Thin Wrapper Migration)
+```
+Float64: GeometricAlgebra/Float64/Spaces/Conformal/XGaFloat64ConformalComposerUtils.cs
+Generic: GeometricAlgebra/Generic/Spaces/Conformal/XGaConformalComposerUtils.cs (NEU)
+```
 
----
-
-## Phase 2 Preview (Future)
-
-**Approach:** One module at a time, starting with Module 1
-
-**Pattern (proven with Float32):**
-1. Keep Generic implementation unchanged
-2. Replace Float64 with thin wrapper
-3. Run equivalence tests (should still pass)
-4. Verify performance (should maintain 95%+)
-
-**Estimated Effort per Module:**
-- Module 1: 2-3 days
-- Module 2: 1-2 days
-- Module 3: 1 day
-- Module 4: 0.5 days
-
-**Total Phase 2:** ~1-2 weeks
+**Geschätzter Aufwand:** 2-3 Stunden
 
 ---
 
-## ⚠️ Components Deferred to Future
+## 🚀 Tag 5-6 (Optional): ToTuple() Extensions
 
-**Not in Phase 1 or 2:**
-- **Calculus** (30% API parity) - Too large, defer
-- **Trajectories** (0% Generic) - Architectural decision needed
-- **BasicShapes** (100% Float64) - Decide if Generic needed
-- **Statistics** (100% Float64 by design) - No action needed
+**Convenience Feature (niedrige Priorität)**
 
----
+```
+Float64: GeometricAlgebra/Float64/Multivectors/XGaFloat64Scalar.cs (ToTuple methods)
+Generic: GeometricAlgebra/Generic/Multivectors/XGaScalar.cs (NEU: ToTuple methods)
+```
 
-## Bug Fix Strategy
+**Was:** Extension methods für Tuple-Konversionen
+- `XGaScalar<T>.ToTuple()` → `Tuple<T>`
+- `XGaVector<T>.ToTuple()` → `Tuple<T, T, ...>`
+- etc.
 
-**Rule:** Fix bugs ONLY when working on that module in Phase 1
+**Geschätzter Aufwand:** 1-2 Stunden
 
-**Bugs per Module:**
-- Module 1: 1 bug (XGaPureRotor)
-- Module 2: 1 bug (LinBivector2D.Rcp missing)
-- Module 3: 0 bugs
-- Module 4: 1 bug (BSplineKnotVector validation)
-
-**Other bugs (NOT in Phase 1):**
-- Statistics: 4 P0 bugs
-- Calculus: 1 P0 bug
-- Trajectories: 5 P1 bugs
-- BasicShapes: 2 P1 bugs
-- Signals: 1 P2 bug
-
-**These will be fixed IF/WHEN we work on those components**
+**Entscheidung:** Kann übersprungen werden wenn Zeit knapp ist (P2 Feature)
 
 ---
 
-## Daily Workflow
+## ✅ Module 1 Complete Wenn:
 
-### Morning:
-1. Check `DEDUPLICATION_TASKS.md` for current task
-2. Read task description and subtasks
-3. Estimate time for today's work
+- [x] XGaComputedOutermorphism<T> implementiert und getestet
+- [x] XGaStoredOutermorphism<T> implementiert und getestet
+- [x] XGaOutermorphismComposerUtils<T> implementiert und getestet
+- [x] XGaGramSchmidtFrame<T> implementiert und getestet
+- [x] XGaConformalComposerUtils<T> implementiert und getestet
+- [ ] ToTuple() extensions (optional)
+- [x] Alle Tests passing
+- [x] Dokumentation aktualisiert
 
-### During Work:
-1. Make code changes
-2. Write/extend equivalence tests
-3. Run tests frequently
-4. Commit incrementally
+**Dann:** Modul 1 als "Phase 1 Complete ✅" markieren
 
-### Evening:
-1. Check off completed subtasks in `DEDUPLICATION_TASKS.md`
-2. Update `_Status.md` if milestone reached
-3. Plan next day's tasks
-
-### Weekly:
-1. Update all 4 documentation files
-2. Review progress vs estimates
-3. Adjust timeline if needed
+**Weiter zu:** Module 2 (ComplexAlgebra)
 
 ---
 
-## Key Principles
+## 📅 Workflow für jeden Tag
 
-1. **100% API Parity Required** - Module must reach 100% before Phase 2
-2. **Every API change = Test** - Write equivalence test for every addition
-3. **One module at a time** - Complete Phase 1 fully before moving on
-4. **Bugs fixed per module** - Only fix bugs when working on that module
-5. **Document everything** - Update docs after every milestone
+### Morgen:
+1. Roadmap-Dokumente lesen
+2. Aktuelles Task in `DEDUPLICATION_TASKS.md` checken
+3. Float64-Implementierung analysieren
 
----
+### Während Arbeit:
+1. Code implementieren (Generic)
+2. Tests schreiben
+3. Tests laufen lassen
+4. Iterieren bis alle Tests passing
 
-## Success Metrics
+### Abend:
+1. Commit mit klarer Message
+2. Task in `DEDUPLICATION_TASKS.md` abhaken
+3. Nächsten Tag planen
 
-### Phase 1 Success:
-- ✅ 175/175 equivalence tests passing
-- ✅ 100% API Parity per module (4 modules)
-- ✅ All module bugs fixed
-- ✅ Documentation updated
-- ✅ Ready for Phase 2
-
-### Overall Project Success:
-- ✅ ~132,700 LOC eliminated (59% reduction)
-- ✅ Maintainability: Single source of truth (Generic)
-- ✅ Performance: Maintained or improved
-- ✅ Quality: All tests passing
+### Wöchentlich:
+1. Alle 3 Roadmap-Dokumente aktualisieren
+2. Fortschritt vs. Schätzung prüfen
+3. Zeitplan anpassen wenn nötig
 
 ---
 
-## Questions & Answers
+## 🎯 Nach Module 1: Phase 1.2
 
-**Q: Why not start Phase 2 now?**
-A: API parity is only ~60-80%, not 100%. We need to synchronize APIs first.
+**Module 2: ComplexAlgebra (GESAMTES Modul neu)**
 
-**Q: Why focus on 4 modules only?**
-A: Core modules first (XGa, LinearAlgebra, CGA, Polynomials). Others deferred to future.
+**Vorbereitung (während Module 1):**
+- Float64 ComplexAlgebra-Modul analysieren (4 Dateien)
+- Architektur verstehen
+- Test-Strategie planen
 
-**Q: What if CGA decision is "keep as-is"?**
-A: Perfect! Save 20-30 hours, proceed directly to Phase 2 for CGA.
+**Start:** Nach Module 1 Complete (Tag 6-7)
 
-**Q: Can I work on multiple modules in parallel?**
-A: Not recommended. Complete one module fully before starting next.
-
-**Q: How do I know I'm done with a module?**
-A: When `DEDUPLICATION_TASKS.md` shows all tasks checked off and all tests passing.
+**Geschätzter Aufwand:** 1-2 Wochen (komplexere Algebra-Logik)
 
 ---
 
-**Next Action:** Start Module 1, Task 1.1.1 - Implement MapScalars in Float64
+## 🔧 Hilfreiche Kommandos
 
-**First Command:**
+### Codebase durchsuchen:
 ```bash
-# Open first file to edit
-code GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/Float64/Multivectors/XGaFloat64Scalar.cs
+# Float64-Implementierung finden
+find GeometricAlgebraFulcrumLib -name "*Float64ComputedOutermorphism*"
+
+# Generic-Äquivalent prüfen
+find GeometricAlgebraFulcrumLib -path "*/Generic/*" -name "*ComputedOutermorphism*"
+
+# Alle Outermorphism-Dateien
+find GeometricAlgebraFulcrumLib -path "*/Outermorphisms/*" -name "*.cs"
+```
+
+### Tests laufen lassen:
+```bash
+# Alle Tests
+cd GeometricAlgebraFulcrumLib
+dotnet test
+
+# Spezifische Test-Klasse
+dotnet test --filter "XGaComputedOutermorphismEquivalenceTests"
+
+# Verbose output
+dotnet test --verbosity normal
+```
+
+### Build prüfen:
+```bash
+# Build entire solution
+dotnet build GeometricAlgebraFulcrumLib.sln
+
+# Build mit Warnings als Errors
+dotnet build GeometricAlgebraFulcrumLib.sln --warnaserror
 ```
 
 ---
 
-*Document maintained by: Claude Code*
-*Last verified against codebase: 2025-10-23*
+## 📚 Referenzen für Implementierung
+
+**Float32 als Pattern-Referenz:**
+- `XGaFloat32Processor.cs` - Thin Wrapper Beispiel
+- Zeigt wie Generic<float> wrapped wird
+- Analog für Generic<double> machbar
+
+**Generic-Patterns:**
+- `XGaProcessor<T>.cs` - Generic Processor Pattern
+- `XGaVector<T>.cs` - Generic Multivector Pattern
+- `XGaPureRotor<T>.cs` - Generic LinearMap Pattern
+
+**Scalar Processor Usage:**
+```csharp
+// Addition
+var sum = processor.ScalarProcessor.Add(a, b);
+
+// Multiplication
+var product = processor.ScalarProcessor.Times(a, b);
+
+// Norm
+var norm = processor.ScalarProcessor.Sqrt(
+    processor.ScalarProcessor.Add(
+        processor.ScalarProcessor.Times(x, x),
+        processor.ScalarProcessor.Times(y, y)
+    )
+);
+```
+
+---
+
+## ❓ Fragen während Implementierung?
+
+**Wenn unklar:**
+1. Float64-Implementierung nochmal lesen
+2. Ähnliche Generic-Klassen als Referenz nehmen
+3. Tests schreiben um Behavior zu verstehen
+4. Dokumentation in CLAUDE.md konsultieren
+
+**Bugs während Implementierung:**
+- Nur Bugs in aktuellem Modul fixen
+- Bugs in anderen Modulen notieren, später fixen
+
+---
+
+**Nächste Aktion:** Float64 XGaFloat64ComputedOutermorphism.cs öffnen und analysieren
+
+**Erstes Kommando:**
+```bash
+code GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/Float64/LinearMaps/Outermorphisms/XGaFloat64ComputedOutermorphism.cs
+```
+
+---
+
+*Dokument maintained by: Claude Code*
+*Last verified: 2025-10-23*
 *Branch: Feature/ScalarFloat32*

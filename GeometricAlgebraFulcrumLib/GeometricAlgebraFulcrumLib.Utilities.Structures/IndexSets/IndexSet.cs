@@ -784,30 +784,30 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         }
     
         public IEnumerable<IndexSet> GetSubsets()
+    {
+        if (IsUInt64Set)
         {
-            if (IsUInt64Set)
-            {
-                foreach (var i in _bitPattern.GetSubBitPatterns()) 
-                    yield return new IndexSet(i);
-            }
-            else
-            {
-                var n = _indexArray.Length;
-
-                yield return EmptySet;
-
-                for (var k = 1; k < n; k++)
-                {
-                    var subSets = 
-                        GenerateCombinations(_indexArray, k);
-
-                    foreach (var subset in subSets)
-                        yield return Create(subset);
-                }
-
-                yield return this;
-            }
+            foreach (var i in _bitPattern.GetSubBitPatterns()) 
+                yield return i == 0 ? EmptySet : new IndexSet(i);
         }
+        else
+        {
+            var n = _indexArray.Length;
+
+            yield return EmptySet;
+
+            for (var k = 1; k < n; k++)
+            {
+                var subSets = 
+                    GenerateCombinations(_indexArray, k);
+
+                foreach (var subset in subSets)
+                    yield return Create(subset);
+            }
+
+            yield return this;
+        }
+    }
     
         public IEnumerable<IndexSet> GetSubsetsOfSize(int size)
         {
