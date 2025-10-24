@@ -5,7 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Required Tools
 
 Always use:
-- **serena** for semantic code retrieval and editing tools
+- mcp__serena__initial_instructions
+- **serena** für die Codesuche, arbeite immer mit Symbolen, also im namespace und nicht im Filespace, editiere den c# code immer auf symbolebene, 
+- benutze immer zuerst **serena** 
 - **context7** for up-to-date documentation on third party code
 - **sequential thinking** for any decision making
 

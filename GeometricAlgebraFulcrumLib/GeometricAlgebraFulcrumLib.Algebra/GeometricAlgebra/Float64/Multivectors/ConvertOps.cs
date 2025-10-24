@@ -706,7 +706,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             var termList =
                 IdScalarPairs
-                    .Where(term => term.Key.Count == 1)
+                    .Where(term => term.Key.Count == 2)
                     .Select(
                         term => new KeyValuePair<IndexSet, double>(
                             term.Key,

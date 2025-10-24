@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
@@ -1855,5 +1857,45 @@ public static class LinFloat64AngleUtils
         return (t * angle2.DegreesValue).DegreesToDirectedAngle();
     }
 
-    
+
+    /// <summary>
+    /// Creates a unit vector in the specified basis plane (index1, index2)
+    /// from this angle. The vector is: cos(angle)*e_index1 + sin(angle)*e_index2
+    /// </summary>
+    /// <param name="angle">The angle</param>
+    /// <param name="index1">The first basis vector index (for cosine component)</param>
+    /// <param name="index2">The second basis vector index (for sine component)</param>
+    /// <param name="processor">The geometric algebra processor</param>
+    /// <returns>A unit XGa vector in the specified plane</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64Vector CreateUnitVector(this LinFloat64Angle angle, int index1, int index2, XGaFloat64Processor processor)
+    {
+        return processor
+            .CreateVectorComposer()
+            .SetVectorTerm(index1, angle.Cos())
+            .SetVectorTerm(index2, angle.Sin())
+            .GetVector();
+    }
+
+    /// <summary>
+    /// Creates a scaled vector (phasor) in the specified basis plane (index1, index2)
+    /// from this angle and magnitude. The vector is: magnitude * (cos(angle)*e_index1 + sin(angle)*e_index2)
+    /// </summary>
+    /// <param name="angle">The angle</param>
+    /// <param name="magnitude">The magnitude (scaling factor)</param>
+    /// <param name="index1">The first basis vector index (for cosine component)</param>
+    /// <param name="index2">The second basis vector index (for sine component)</param>
+    /// <param name="processor">The geometric algebra processor</param>
+    /// <returns>A scaled XGa vector (phasor) in the specified plane</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64Vector CreatePhasor(this LinFloat64Angle angle, double magnitude, int index1, int index2, XGaFloat64Processor processor)
+    {
+        return processor
+            .CreateVectorComposer()
+            .SetVectorTerm(index1, magnitude * angle.Cos())
+            .SetVectorTerm(index2, magnitude * angle.Sin())
+            .GetVector();
+    }
+
+
 }
