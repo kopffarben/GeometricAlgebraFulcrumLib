@@ -1130,4 +1130,37 @@ public sealed record LinQuaternion<T> :
     {
         return $"'{Scalar}'<> + '{ScalarK}'<1,2> + '{ScalarI}'<2,3> + '{ScalarJ}'<3,1>";
     }
+
+
+    #region API Parity Aliases for Float64 Compatibility
+
+    /// <summary>
+    /// Alias for CreateFromNormalAndAngle() to match LinFloat64Quaternion API
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinQuaternion<T> CreateFromAxisAngle(LinBasisVector axis, LinPolarAngle<T> angle)
+    {
+        return CreateFromNormalAndAngle(axis, angle);
+    }
+
+    /// <summary>
+    /// Alias for CreateFromNormalAndAngle() to match LinFloat64Quaternion API
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinQuaternion<T> CreateFromAxisAngle(LinVector3D<T> axis, LinPolarAngle<T> angle)
+    {
+        return CreateFromNormalAndAngle(axis, angle);
+    }
+
+    /// <summary>
+    /// Alias for CreateFromPlaneAndAngle() to match LinFloat64Quaternion API
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinQuaternion<T> CreateFromPlaneAngle(LinBivector3D<T> bivector, LinPolarAngle<T> angle)
+    {
+        return CreateFromPlaneAndAngle(bivector, angle);
+    }
+
+    #endregion
+
 }
