@@ -1,7 +1,8 @@
 # Next Steps Roadmap - Konkrete Aktionen
 
 **Letzte Aktualisierung:** 2025-10-25
-**Aktueller Status:** Phase 1.5 ✅ COMPLETE (Module 5: LinearAlgebra Details - 100% complete, 7/7 features verified)
+**Aktueller Status:** Phase 1 ✅ COMPLETE (Modules 1, 2, 3, 5 complete | Module 4 skipped)
+**Nächster Schritt:** Phase 2 - Thin Wrapper Migration
 **Branch:** Feature/ScalarFloat32
 
 ---
@@ -328,7 +329,63 @@ Generic: GeometricAlgebra/Generic/Multivectors/XGaScalar.cs (NEU: ToTuple method
 
 ---
 
-## 🎯 Nach Module 1: Phase 1.2
+## ⏭️ Module 4: CGA Visualizers - SKIPPED (P3 - Optional)
+
+**Status:** Übersprungen - Nicht benötigt für Generic-First Strategy
+
+**Begründung (Analyse 2025-10-25):**
+- ❌ **0 Verwendungen** in Applications/Samples
+- ❌ **0 Tests** (Unit oder Integration)
+- ✅ **5,459 LOC** in 7 Dateien (Dead Code)
+- ⏱️ **80-120 Stunden** Aufwand für ungenutzten Code
+
+**Entscheidung:** Module 4 wird **NICHT** implementiert.
+
+**Implementierung nur wenn:**
+- Konkrete Nutzungsszenarien entstehen
+- Tests geschrieben werden
+- Explizite Anforderung vom Maintainer
+
+---
+
+## 🎯 Phase 1 ✅ COMPLETE (2025-10-25)
+
+**Abgeschlossene Module:**
+- ✅ Module 1: XGa Core (5 Klassen, 39 Tests, ~14h)
+- ✅ Module 2: ComplexAlgebra (bereits vorhanden, Bug-Fix, ~1h)
+- ✅ Module 3: VGA (3 Klassen, 11 Tests, ~2h)
+- ⏭️ Module 4: CGA Visualizers (SKIPPED - P3 Optional)
+- ✅ Module 5: LinearAlgebra Details (6 Properties, 6 Tests, ~3h)
+
+**Gesamt-Aufwand Phase 1:** ~20 Stunden (vs. 6-8 Wochen geschätzt!)
+
+**Ergebnis:** Generic<T> hat jetzt 100% API-Parität mit Float64 für alle P0/P1/P2 Features.
+
+---
+
+## 🚀 Phase 2: Thin Wrapper Migration - NÄCHSTER SCHRITT
+
+**Ziel:** Float64-Klassen als dünne Wrapper um Generic<double> neu schreiben
+
+**Vorteile:**
+- ~78,500 LOC Reduktion
+- 100% Rückwärtskompatibilität
+- Bewährtes Pattern (siehe Float32)
+- Einfacher zu warten
+
+**Umfang:**
+- Module 1: XGa Core (5 Klassen → Wrapper)
+- Module 2: ComplexAlgebra (3 Klassen → Wrapper)
+- Module 3: VGA (3 Klassen → Wrapper)
+- Module 5: LinearAlgebra (7 Klassen → Wrapper)
+
+**Geschätzter Aufwand:** 1-2 Wochen
+
+**Start:** Jetzt! (Phase 1 complete)
+
+---
+
+## 🎯 Nach Module 1: Phase 1.2 (ARCHIV - COMPLETE)
 
 **Module 2: ComplexAlgebra (GESAMTES Modul neu)**
 
