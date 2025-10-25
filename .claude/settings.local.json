@@ -31,6 +31,20 @@
   "enabledMcpjsonServers": [
     "context7",
     "serena",
-    "sequential-thinking"
-  ]
+    "sequential-thinking",
+    "mcp-lsp-bridge"
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [ -f ./setup-hook.sh ]; then bash ./setup-hook.sh; elif [ -f ./setup-hook.ps1 ]; then pwsh ./setup-hook.ps1; fi'",
+            "timeout": 300
+          }
+        ]
+      }
+    ]
+  }
 }

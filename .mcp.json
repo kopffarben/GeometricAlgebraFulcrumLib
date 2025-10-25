@@ -1,10 +1,8 @@
 {
   "mcpServers": {
     "context7": {
-      "command": "cmd",
+      "command": "npx",
       "args": [
-        "/c",
-        "npx",
         "-y",
         "@upstash/context7-mcp"
       ]
@@ -21,12 +19,19 @@
       ]
     },
     "sequential-thinking": {
-      "command": "cmd",
+      "command": "npx",
       "args": [
-        "/c",
-        "npx",
         "-y",
         "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "mcp-lsp-bridge": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-lsp-bridge",
+        "--",
+        "csharp-ls"
       ]
     }
   }
