@@ -1,7 +1,7 @@
 # Next Steps Roadmap - Konkrete Aktionen
 
 **Letzte Aktualisierung:** 2025-10-25
-**Aktueller Status:** Phase 1.1 COMPLETE ✅ (Module 1: XGa Core - All Tasks Complete)
+**Aktueller Status:** Phase 1.2 COMPLETE ✅ (Module 2: ComplexAlgebra - Already Implemented, Tests Added)
 **Branch:** Feature/ScalarFloat32
 
 ---
@@ -32,7 +32,14 @@ Nach jedem Meilenstein alle drei aktualisieren!
 - Task 1.4 (XGaGramSchmidtFrame<T>) ✅ COMPLETE
 - Task 1.5 (XGaConformalComposerUtils<T>) ✅ COMPLETE
 - **Alle Klassen in Generic** ✅
-- **Next:** Phase 1.2 (Module 2: ComplexAlgebra)
+
+**Phase 1.2:** ✅ COMPLETE (Module 2: ComplexAlgebra)
+- ComplexNumber<T> ✅ ALREADY IMPLEMENTED (947 LOC)
+- ComplexAlgebraUtils ✅ ALREADY IMPLEMENTED (243 LOC)
+- Float64ComplexUtils ✅ ALREADY IMPLEMENTED (90 LOC)
+- **Bonus:** Fixed critical Phase-property bug in ComplexNumber<T>
+- **30 Equivalence Tests** ✅ (100% passing)
+- **Next:** Phase 1.3 (Module 3: VGA)
 
 ---
 

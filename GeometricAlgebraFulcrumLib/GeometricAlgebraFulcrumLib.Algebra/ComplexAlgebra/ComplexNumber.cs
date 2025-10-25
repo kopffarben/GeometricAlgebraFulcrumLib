@@ -810,7 +810,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra
         {
             get
             {
-                var r = MagnitudeSquaredValue;
+                var r = MagnitudeValue;
                 return ScalarProcessor.CreatePolarAngle(
                     ScalarProcessor.Divide(RealValue, r).ScalarValue,
                     ScalarProcessor.Divide(ImaginaryValue, r).ScalarValue
