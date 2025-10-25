@@ -1,6 +1,9 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
@@ -27,5 +30,18 @@ public static class XGaOutermorphismComposerUtils
         IReadOnlyDictionary<IndexSet, XGaKVector<T>> basisMapDictionary)
     {
         return new XGaStoredOutermorphism<T>(basisMapDictionary, processor);
+    }
+
+    /// <summary>
+    /// Create a linear map outermorphism from a matrix where columns represent mapped basis vectors.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaLinearMapOutermorphism<T> ColumnsToOutermorphism<T>(
+        this T[,] vectorMapMatrix,
+        XGaProcessor<T> processor)
+    {
+        var linearMap = vectorMapMatrix.ColumnsToLinVectors(processor.ScalarProcessor).ToLinUnilinearMap(processor.ScalarProcessor);
+
+        return new XGaLinearMapOutermorphism<T>(processor, linearMap);
     }
 }

@@ -89,7 +89,9 @@
       "Bash(Select-String -Pattern \"(Test run|Passed|Failed|Total tests|XGaMapScalarsEquivalenceTests)\")",
       "Bash(Select-String -Pattern \"(Passed|Failed|Total tests|error CS|Test Name:)\")",
       "Bash(Select-String -Pattern \"(Passed|Failed|Skipped|Total)\")",
-      "Bash(Select-String -Pattern \"(Passed|Failed|Total tests|Test run)\")"
+      "Bash(Select-String -Pattern \"(Passed|Failed|Total tests|Test run)\")",
+      "Bash(git reset:*)",
+      "Bash(git restore:*)"
     ]
   },
   "enabledMcpjsonServers": [

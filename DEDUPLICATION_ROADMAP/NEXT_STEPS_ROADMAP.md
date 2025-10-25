@@ -1,7 +1,7 @@
 # Next Steps Roadmap - Konkrete Aktionen
 
 **Letzte Aktualisierung:** 2025-10-25
-**Aktueller Status:** Phase 1.1 In Progress (Module 1: XGa Core - Tasks 1.1 & 1.2 Complete)
+**Aktueller Status:** Phase 1.1 In Progress (Module 1: XGa Core - Tasks 1.1, 1.2 & 1.3 Complete)
 **Branch:** Feature/ScalarFloat32
 
 ---
@@ -28,8 +28,9 @@ Nach jedem Meilenstein alle drei aktualisieren!
 **Phase 1.1:** 🔄 IN PROGRESS (Module 1: XGa Core)
 - Task 1.1 (XGaComputedOutermorphism<T>) ✅ COMPLETE
 - Task 1.2 (XGaStoredOutermorphism<T>) ✅ COMPLETE
-- 3 Klassen verbleibend in Generic
-- Geschätzter Aufwand: 1-3 Tage verbleibend
+- Task 1.3 (XGaOutermorphismComposerUtils<T>) ✅ COMPLETE
+- 2 Klassen verbleibend in Generic
+- Geschätzter Aufwand: 1-2 Tage verbleibend
 - Nach Completion: Phase 1.2 (ComplexAlgebra)
 
 ---
@@ -40,8 +41,8 @@ Nach jedem Meilenstein alle drei aktualisieren!
 
 1. ~~**XGaComputedOutermorphism<T>**~~ ✅ COMPLETE (2025-10-24)
 2. ~~**XGaStoredOutermorphism<T>**~~ ✅ COMPLETE (2025-10-25)
-3. **XGaOutermorphismComposerUtils<T>** ← START HIER (Task 1.3)
-4. **XGaGramSchmidtFrame<T>**
+3. ~~**XGaOutermorphismComposerUtils<T>**~~ ✅ COMPLETE (2025-10-25)
+4. **XGaGramSchmidtFrame<T>** ← START HIER (Task 1.4)
 5. **XGaConformalComposerUtils<T>**
 6. **ToTuple()** extensions (optional)
 
@@ -197,20 +198,19 @@ Refs: API_COMPARISON line 12"
 
 ---
 
-## 🚀 Tag 3: XGaOutermorphismComposerUtils<T>
+## ✅ Tag 3: XGaOutermorphismComposerUtils<T> - COMPLETE (2025-10-25)
 
-**Static Utility Class**
+**Implementiert:**
+- Extended XGaOutermorphismComposerUtils<T> with ColumnsToOutermorphism<T>
+- Adds matrix-to-outermorphism conversion functionality
+- 6 Equivalence Tests (100% passing)
 
-```
-Float64: GeometricAlgebra/Float64/LinearMaps/Outermorphisms/XGaFloat64OutermorphismComposerUtils.cs
-Generic: GeometricAlgebra/Generic/LinearMaps/Outermorphisms/XGaOutermorphismComposerUtils.cs (NEU)
-```
+**Methods:**
+- CreateComputedOutermorphism<T> (already existed)
+- CreateStoredOutermorphism<T> (added in Task 1.2)
+- ColumnsToOutermorphism<T> (added in Task 1.3) ← NEW
 
-**Besonderheit:** Static utility methods
-- Extension methods für `XGaProcessor<T>`
-- Factory methods für Outermorphisms
-
-**Geschätzter Aufwand:** 3-4 Stunden (viele kleine Utility-Methods)
+**Tatsächlicher Aufwand:** ~2 Stunden
 
 ---
 
@@ -268,8 +268,8 @@ Generic: GeometricAlgebra/Generic/Multivectors/XGaScalar.cs (NEU: ToTuple method
 
 - [x] XGaComputedOutermorphism<T> implementiert und getestet ✅
 - [x] XGaStoredOutermorphism<T> implementiert und getestet ✅
-- [ ] XGaOutermorphismComposerUtils<T> implementiert und getestet ← NEXT
-- [ ] XGaGramSchmidtFrame<T> implementiert und getestet
+- [x] XGaOutermorphismComposerUtils<T> implementiert und getestet ✅
+- [ ] XGaGramSchmidtFrame<T> implementiert und getestet ← NEXT
 - [ ] XGaConformalComposerUtils<T> implementiert und getestet
 - [ ] ToTuple() extensions (optional)
 - [x] Alle Tests passing ✅
