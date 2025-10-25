@@ -358,13 +358,21 @@ Based on current findings, we expect:
 
 ### Immediate Actions (Do First)
 
-1. ✅ Create `XGaProductOperationsBenchmark.cs` - Most common operations
-2. ✅ Expand `CgaGeometricOperationsBenchmark.cs` - Important for 3D graphics
+1. ⏸️ **BLOCKED**: XGa benchmarks require deeper API research
+   - **Issue**: XGa Generic<T> API differs significantly from Float64 Specialized
+   - **Examples**: `CreatePureRotor`, `VectorENorm`, `GetComposerCombine` have different signatures
+   - **Next Steps**: Study existing BilinearProductsBenchmarks.cs, research generic XGa API patterns
 
-### Short-Term (Within 1-2 weeks)
+2. ✅ **COMPLETED**: CGa benchmarks work well (see `CgaFloat32PerformanceBenchmarks.cs`)
+   - Successfully demonstrates Generic<float> vs Float64 Specialized comparison
+   - Validated 24% performance improvement for Generic<float>
 
-3. ⏳ Create `XGaLinearMapsBenchmark.cs` - Rotors/reflectors
-4. ⏳ Create `XGaNormalizationBenchmark.cs` - Frequent operation
+### Recommended Alternative Approach
+
+Since low-level XGa benchmarks are blocked on API research, focus on **higher-level benchmarks** using CGa/PGa:
+
+3. ⏳ Expand `CgaGeometricOperationsBenchmark.cs` - Add more geometric operations
+4. ⏳ Create `PgaTransformationsBenchmark.cs` - Projective transformations
 
 ### Long-Term (Future work)
 
@@ -374,6 +382,34 @@ Based on current findings, we expect:
 
 ---
 
-**Generated:** 2025-10-25
+## API Research Findings (2025-10-26)
+
+### XGa Generic<T> API Complexity
+
+Initial attempt to create XGa benchmarks comparing Generic<float> vs Float64 Specialized revealed significant API differences:
+
+#### Issues Discovered
+
+1. **Missing Extension Methods**
+   - `XGaProcessor<T>.CreateVector(params)` doesn't exist
+   - Must use `CreateVectorComposer().SetVectorTerm(...).GetVector()` pattern
+
+2. **Rotor API Differences**
+   - `CreatePureRotor()` expects `LinBasisVector` not `XGaVector<T>` for generic types
+   - `GetComposerCombine()` method signature differs between Float64 and Generic<T>
+
+3. **Normalization API Differences**
+   - `VectorENorm()` and `VectorENormSquared()` extension methods not available for Generic<T>
+   - Alternative approaches needed
+
+#### Recommendations
+
+- **Use CGa/PGa for benchmarks** - Higher-level APIs have better Generic<T> support
+- **Study existing benchmarks** - `BilinearProductsBenchmarks.cs` shows working XGaFloat64 patterns
+- **API documentation needed** - Generic<T> XGa API patterns need comprehensive documentation
+
+---
+
+**Generated:** 2025-10-25 (Updated: 2025-10-26)
 **Author:** Claude Code
 **Context:** Performance Benchmark Roadmap
