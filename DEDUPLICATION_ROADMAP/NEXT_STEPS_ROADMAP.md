@@ -1,7 +1,7 @@
 # Next Steps Roadmap - Konkrete Aktionen
 
-**Letzte Aktualisierung:** 2025-10-24
-**Aktueller Status:** Phase 1.1 In Progress (Module 1: XGa Core - Task 1.1 Complete)
+**Letzte Aktualisierung:** 2025-10-25
+**Aktueller Status:** Phase 1.1 In Progress (Module 1: XGa Core - Tasks 1.1 & 1.2 Complete)
 **Branch:** Feature/ScalarFloat32
 
 ---
@@ -27,8 +27,9 @@ Nach jedem Meilenstein alle drei aktualisieren!
 
 **Phase 1.1:** 🔄 IN PROGRESS (Module 1: XGa Core)
 - Task 1.1 (XGaComputedOutermorphism<T>) ✅ COMPLETE
-- 4 Klassen verbleibend in Generic
-- Geschätzter Aufwand: 2-4 Tage verbleibend
+- Task 1.2 (XGaStoredOutermorphism<T>) ✅ COMPLETE
+- 3 Klassen verbleibend in Generic
+- Geschätzter Aufwand: 1-3 Tage verbleibend
 - Nach Completion: Phase 1.2 (ComplexAlgebra)
 
 ---
@@ -38,8 +39,8 @@ Nach jedem Meilenstein alle drei aktualisieren!
 ### Was fehlt in Generic (Priorität):
 
 1. ~~**XGaComputedOutermorphism<T>**~~ ✅ COMPLETE (2025-10-24)
-2. **XGaStoredOutermorphism<T>** ← START HIER (Task 1.2)
-3. **XGaOutermorphismComposerUtils<T>**
+2. ~~**XGaStoredOutermorphism<T>**~~ ✅ COMPLETE (2025-10-25)
+3. **XGaOutermorphismComposerUtils<T>** ← START HIER (Task 1.3)
 4. **XGaGramSchmidtFrame<T>**
 5. **XGaConformalComposerUtils<T>**
 6. **ToTuple()** extensions (optional)
@@ -181,15 +182,18 @@ Refs: API_COMPARISON line 12"
 
 ---
 
-## 🚀 Tag 2: XGaStoredOutermorphism<T>
+## ✅ Tag 2: XGaStoredOutermorphism<T> - COMPLETE (2025-10-25)
 
-**Wiederholen von Tag 1, aber für:**
-```
-Float64: GeometricAlgebra/Float64/LinearMaps/Outermorphisms/XGaFloat64StoredOutermorphism.cs
-Generic: GeometricAlgebra/Generic/LinearMaps/Outermorphisms/XGaStoredOutermorphism.cs (NEU)
-```
+**Implementiert:**
+- XGaStoredOutermorphism<T> in Generic
+- Factory-Methoden für Generic und Float64
+- 9 Equivalence Tests (100% passing)
 
-**Geschätzter Aufwand:** 4-6 Stunden (ähnlich zu ComputedOutermorphism)
+**Bugs gefixt:**
+- CRITICAL: OmMapBasisBlade() returned vector part instead of full kVector
+- CRITICAL: OmMapBasisBivector() had inverted index-order logic
+
+**Tatsächlicher Aufwand:** ~4 Stunden (inkl. Bug-Fixes)
 
 ---
 
@@ -262,14 +266,14 @@ Generic: GeometricAlgebra/Generic/Multivectors/XGaScalar.cs (NEU: ToTuple method
 
 ## ✅ Module 1 Complete Wenn:
 
-- [x] XGaComputedOutermorphism<T> implementiert und getestet
-- [x] XGaStoredOutermorphism<T> implementiert und getestet
-- [x] XGaOutermorphismComposerUtils<T> implementiert und getestet
-- [x] XGaGramSchmidtFrame<T> implementiert und getestet
-- [x] XGaConformalComposerUtils<T> implementiert und getestet
+- [x] XGaComputedOutermorphism<T> implementiert und getestet ✅
+- [x] XGaStoredOutermorphism<T> implementiert und getestet ✅
+- [ ] XGaOutermorphismComposerUtils<T> implementiert und getestet ← NEXT
+- [ ] XGaGramSchmidtFrame<T> implementiert und getestet
+- [ ] XGaConformalComposerUtils<T> implementiert und getestet
 - [ ] ToTuple() extensions (optional)
-- [x] Alle Tests passing
-- [x] Dokumentation aktualisiert
+- [x] Alle Tests passing ✅
+- [x] Dokumentation aktualisiert ✅
 
 **Dann:** Modul 1 als "Phase 1 Complete ✅" markieren
 
@@ -410,5 +414,5 @@ code GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/GeometricAlge
 ---
 
 *Dokument maintained by: Claude Code*
-*Last verified: 2025-10-23*
+*Last verified: 2025-10-25*
 *Branch: Feature/ScalarFloat32*

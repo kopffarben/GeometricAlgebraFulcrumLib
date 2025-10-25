@@ -1,7 +1,8 @@
 # Deduplication Tasks - Detaillierte Checkliste
 
 **Erstellt:** 2025-10-23
-**Status:** Phase 1.1 In Progress (Module 1: XGa Core - Task 1.1 Complete)
+**Letzte Aktualisierung:** 2025-10-25
+**Status:** Phase 1.1 In Progress (Module 1: XGa Core - Tasks 1.1 & 1.2 Complete)
 **Prinzip:** Generic-First - NUR Generic wird erweitert
 
 ---
@@ -43,26 +44,32 @@
 - [x] Equivalence-Tests schreiben (`XGaComputedOutermorphismEquivalenceTests.cs` - 6 Tests)
 - [x] Alle Tests laufen lassen → 6/6 passing ✅
 - [x] **BONUS:** IndexSet.GetSubsets() Bug gefunden und gefixt (EmptySet singleton issue)
-- [ ] Git commit mit Message: "feat(Generic): Add XGaComputedOutermorphism<T> + fix IndexSet bug"
+- [x] Git commit mit Message: "feat(Generic): Add XGaComputedOutermorphism<T> + fix IndexSet bug"
 
 ---
 
-### Task 1.2: XGaStoredOutermorphism<T>
+### Task 1.2: XGaStoredOutermorphism<T> ✅ COMPLETE
 
-- [ ] **Implementierung: XGaStoredOutermorphism<T>**
+- [x] **Implementierung: XGaStoredOutermorphism<T>**
   - **Namespace:** `GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms`
   - **Referenz:** `GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms.XGaFloat64StoredOutermorphism`
   - **Datei:** `GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/Generic/LinearMaps/Outermorphisms/XGaStoredOutermorphism.cs`
   - **Estimated:** 4-6 Stunden
+  - **Actual:** ~4 Stunden (inkl. Bug-Fixes)
 
-- [ ] Float64-Datei lesen und analysieren
-- [ ] Generic-Datei erstellen
-- [ ] Constructor implementieren
-- [ ] Storage-Logic implementieren (multivector storage mit `Dictionary<IIndexSet, T>`)
-- [ ] OmMap-Methods implementieren
-- [ ] Unit-Tests + Equivalence-Tests schreiben
-- [ ] Tests laufen lassen → passing
-- [ ] Git commit mit Message: "feat(Generic): Add XGaStoredOutermorphism<T>"
+- [x] Float64-Datei lesen und analysieren
+- [x] Generic-Datei erstellen
+- [x] Constructor implementieren
+- [x] Storage-Logic implementieren (multivector storage mit `Dictionary<IndexSet, XGaKVector<T>>`)
+- [x] OmMap-Methods implementieren
+- [x] Factory-Methoden hinzugefügt (`CreateStoredOutermorphism()` für Generic & Float64)
+- [x] Unit-Tests + Equivalence-Tests schreiben (`XGaStoredOutermorphismEquivalenceTests.cs` - 9 Tests)
+- [x] Tests laufen lassen → 9/9 passing ✅
+- [x] **BONUS:** 2 CRITICAL Float64 bugs gefunden und gefixt:
+  - OmMapBasisBlade() returned kVector.GetVectorPart() instead of kVector
+  - OmMapBasisBivector() had inverted index-order logic (index1 > index2 → index1 < index2)
+- [x] Dokumentation aktualisiert (alle 3 Roadmap-Docs)
+- [x] Git commit mit Message: "feat(Generic): Add XGaStoredOutermorphism<T> + fix critical Float64 bugs"
 
 ---
 

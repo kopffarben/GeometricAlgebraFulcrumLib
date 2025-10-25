@@ -1,28 +1,28 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
-namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
+namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 
-public sealed class XGaFloat64StoredOutermorphism :
-    XGaFloat64OutermorphismBase
+public sealed class XGaStoredOutermorphism<T> :
+    XGaOutermorphismBase<T>
 {
-    private readonly IReadOnlyDictionary<IndexSet, XGaFloat64KVector> _basisMapDictionary;
+    private readonly IReadOnlyDictionary<IndexSet, XGaKVector<T>> _basisMapDictionary;
 
-    public override XGaFloat64Processor Processor { get; }
+    public override XGaProcessor<T> Processor { get; }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaFloat64StoredOutermorphism(IReadOnlyDictionary<IndexSet, XGaFloat64KVector> basisMapDictionary, XGaFloat64Processor processor)
+    internal XGaStoredOutermorphism(IReadOnlyDictionary<IndexSet, XGaKVector<T>> basisMapDictionary, XGaProcessor<T> processor)
     {
         _basisMapDictionary = basisMapDictionary;
         Processor = processor;
     }
 
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool IsValid()
     {
@@ -32,23 +32,23 @@ public sealed class XGaFloat64StoredOutermorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
+    public override IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return _basisMapDictionary
-            .Where(p => 
+            .Where(p =>
                 p.Key.VSpaceDimensions() <= vSpaceDimensions
-            ).Select(p => 
-                new KeyValuePair<IndexSet, XGaFloat64Multivector>(p.Key, p.Value)
+            ).Select(p =>
+                new KeyValuePair<IndexSet, XGaMultivector<T>>(p.Key, p.Value)
             );
     }
 
-    public override IXGaFloat64Outermorphism GetOmAdjoint()
+    public override IXGaOutermorphism<T> GetOmAdjoint()
     {
         throw new NotImplementedException();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Vector OmMapBasisVector(int index)
+    public override XGaVector<T> OmMapBasisVector(int index)
     {
         var id = index.ToUnitIndexSet();
 
@@ -58,7 +58,7 @@ public sealed class XGaFloat64StoredOutermorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Bivector OmMapBasisBivector(int index1, int index2)
+    public override XGaBivector<T> OmMapBasisBivector(int index1, int index2)
     {
         if (index1 == index2) return Processor.BivectorZero;
 
@@ -83,7 +83,7 @@ public sealed class XGaFloat64StoredOutermorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64KVector OmMapBasisBlade(IndexSet id)
+    public override XGaKVector<T> OmMapBasisBlade(IndexSet id)
     {
         return _basisMapDictionary.TryGetValue(id, out var kVector)
             ? kVector
@@ -91,7 +91,7 @@ public sealed class XGaFloat64StoredOutermorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Vector OmMap(XGaFloat64Vector vector)
+    public override XGaVector<T> OmMap(XGaVector<T> vector)
     {
         var composer = Processor.CreateVectorComposer();
 
@@ -102,7 +102,7 @@ public sealed class XGaFloat64StoredOutermorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Bivector OmMap(XGaFloat64Bivector bivector)
+    public override XGaBivector<T> OmMap(XGaBivector<T> bivector)
     {
         var composer = Processor.CreateBivectorComposer();
 
@@ -113,7 +113,7 @@ public sealed class XGaFloat64StoredOutermorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64HigherKVector OmMap(XGaFloat64HigherKVector kVector)
+    public override XGaHigherKVector<T> OmMap(XGaHigherKVector<T> kVector)
     {
         var composer = Processor.CreateKVectorComposer(kVector.Grade);
 
@@ -122,9 +122,9 @@ public sealed class XGaFloat64StoredOutermorphism :
 
         return composer.GetHigherKVector();
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Multivector OmMap(XGaFloat64Multivector multivector)
+    public override XGaMultivector<T> OmMap(XGaMultivector<T> multivector)
     {
         var composer = Processor.CreateMultivectorComposer();
 
@@ -135,20 +135,20 @@ public sealed class XGaFloat64StoredOutermorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    public override IEnumerable<KeyValuePair<IndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
     {
         return vSpaceDimensions.GetRange(index =>
-            new KeyValuePair<int, XGaFloat64Vector>(
-                index, 
+            new KeyValuePair<int, XGaVector<T>>(
+                index,
                 OmMapBasisVector(index)
             )
         ).Where(p => !p.Value.IsZero)
-        .Select(p => 
-            new KeyValuePair<IndexSet, XGaFloat64Vector>(
+        .Select(p =>
+            new KeyValuePair<IndexSet, XGaVector<T>>(
                 p.Key.ToUnitIndexSet(),
                 p.Value
             )
         );
     }
-    
+
 }

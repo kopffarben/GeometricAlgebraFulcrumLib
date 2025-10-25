@@ -2,9 +2,9 @@
 
 **Ziel:** Generic-Implementierung auf 100% Float64-Kompatibilität bringen, dann Float64 → Thin Wrapper migrieren.
 
-**Status:** Phase 0 Complete ✅ → Phase 1.1 In Progress (Module 1: XGa Core - Task 1.1 Complete)
+**Status:** Phase 1.1 In Progress (Module 1: XGa Core - Tasks 1.1 & 1.2 Complete)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-24
+**Letzte Aktualisierung:** 2025-10-25
 **Geschätzte Dauer:** 8-11 Wochen (6-8 Wochen Phase 1 + 2-3 Wochen Phase 2)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
 
@@ -69,8 +69,8 @@ Phase 2 (pro Modul): Thin Wrapper Migration
 
 ### Module 1: XGa Core 🔄 IN PROGRESS
 **Priorität:** P0 (Fundament)
-**Status:** ~97% complete, 4 Klassen + Utils verbleibend
-**Aufwand:** 2-4 Tage verbleibend
+**Status:** ~60% complete, 3 Klassen verbleibend
+**Aufwand:** 1-3 Tage verbleibend
 
 #### Was fehlt in Generic (aus Spalte 2):
 
@@ -81,14 +81,16 @@ Phase 2 (pro Modul): Thin Wrapper Migration
    - Includes: 6 Equivalence Tests (all passing)
    - **BONUS:** Fixed critical IndexSet.GetSubsets() bug (EmptySet singleton issue)
 
-2. **XGaStoredOutermorphism<T>** class ← NEXT (Task 1.2)
+2. ~~**XGaStoredOutermorphism<T>** class~~ ✅ COMPLETE (2025-10-25)
    - Float64: `XGaFloat64StoredOutermorphism` existiert
-   - Generic: Fehlt komplett
+   - Generic: **IMPLEMENTIERT** in Task 1.2
    - Zeile 24 in API_COMPARISON
+   - Includes: 9 Equivalence Tests (all passing)
+   - **BONUS:** Fixed 2 critical Float64 bugs (OmMapBasisBlade, OmMapBasisBivector)
 
-3. **XGaOutermorphismComposerUtils<T>** static class
+3. **XGaOutermorphismComposerUtils<T>** static class ← NEXT (Task 1.3)
    - Float64: `XGaFloat64OutermorphismComposerUtils` existiert
-   - Generic: Fehlt komplett
+   - Generic: **TEILWEISE VORHANDEN** (nur CreateComputedOutermorphism)
    - Zeile 25 in API_COMPARISON
 
 4. **XGaGramSchmidtFrame<T>** class
@@ -104,10 +106,11 @@ Phase 2 (pro Modul): Thin Wrapper Migration
 6. **ToTuple()** extension methods (optional - convenience feature)
    - Zeile 13 in API_COMPARISON
 
-#### Bugs zu fixen (wenn wir an Modul 1 arbeiten):
-- Keine P0-Bugs identifiziert für XGa Core
+#### Bugs gefunden & gefixt in Task 1.2:
+- ✅ **CRITICAL**: XGaFloat64StoredOutermorphism.OmMapBasisBlade() returned kVector.GetVectorPart() instead of kVector
+- ✅ **CRITICAL**: XGaFloat64StoredOutermorphism.OmMapBasisBivector() had inverted index-order logic
 
-#### Geschätzter Aufwand: 3-5 Tage (5 Klassen + Utils)
+#### Geschätzter Aufwand verbleibend: 1-3 Tage (3 Klassen)
 
 ---
 
@@ -479,7 +482,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 3.0 (Komplette Neustrukturierung)
-**Letzte Aktualisierung:** 2025-10-23
-**Status:** Phase 0 Complete ✅ → Phase 1.1 Starting (XGa Core)
+**Dokument Version:** 3.1 (Task 1.2 Complete)
+**Letzte Aktualisierung:** 2025-10-25
+**Status:** Phase 1.1 In Progress (Module 1: XGa Core - 2/5 tasks complete)
 **Nächste Review:** Nach Completion von Module 1

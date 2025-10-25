@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 
@@ -17,6 +18,17 @@ public static class XGaFloat64OutermorphismComposerUtils
         Func<int, XGaFloat64Vector> basisMapFunc)
     {
         return new XGaFloat64ComputedOutermorphism(basisMapFunc, processor);
+    }
+
+    /// <summary>
+    /// Create a stored outermorphism from a dictionary that maps basis blade IDs to k-vectors.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64StoredOutermorphism CreateStoredOutermorphism(
+        this XGaFloat64Processor processor,
+        IReadOnlyDictionary<IndexSet, XGaFloat64KVector> basisMapDictionary)
+    {
+        return new XGaFloat64StoredOutermorphism(basisMapDictionary, processor);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
