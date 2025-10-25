@@ -353,4 +353,36 @@ public static class LinVector2DUtils
             );
     }
 
+
+    #region API Parity Aliases for Float64 Compatibility
+
+    /// <summary>
+    /// Alias for VectorDivideByNorm() to match LinFloat64Vector2D API
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector2D<T> ToUnitLinVector2D<T>(this IPair<Scalar<T>> vector)
+    {
+        return vector.VectorDivideByNorm();
+    }
+
+    /// <summary>
+    /// Alias for VectorIsNearUnit() to match LinFloat64Vector2D API
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNearUnit<T>(this IPair<Scalar<T>> vector)
+    {
+        return vector.VectorIsNearUnit();
+    }
+
+    /// <summary>
+    /// Alias for VectorIsNearOrthogonalTo() to match LinFloat64Vector2D API
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNearOrthogonalTo<T>(this IPair<Scalar<T>> vector1, IPair<Scalar<T>> vector2)
+    {
+        return vector1.VectorIsNearOrthogonalTo(vector2);
+    }
+
+    #endregion
+
 }

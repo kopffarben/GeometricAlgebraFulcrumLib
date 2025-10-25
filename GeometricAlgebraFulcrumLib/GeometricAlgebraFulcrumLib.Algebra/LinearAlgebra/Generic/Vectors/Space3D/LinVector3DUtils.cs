@@ -1038,4 +1038,19 @@ public static class LinVector3DUtils
             vector.Item3.Imaginary
         );
     }
+
+
+    #region API Parity Aliases for Float64 Compatibility
+
+    /// <summary>
+    /// Alias for ToUnitVector() to match LinFloat64Vector3D API
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector3D<T> ToUnitLinVector3D<T>(this ITriplet<Scalar<T>> vector)
+    {
+        return vector.ToUnitVector();
+    }
+
+    #endregion
+
 }
