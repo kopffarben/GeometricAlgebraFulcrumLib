@@ -28,6 +28,43 @@ public sealed record LinQuaternion<T> :
             scalarProcessor.Zero, 
             scalarProcessor.One
         );
+
+
+    public static LinQuaternion<T> XyToXz(IScalarProcessor<T> scalarProcessor)
+    {
+        // sqrt(2)/2 ≈ -0.7071067811865476
+        return Create(scalarProcessor, -0.7071067811865476, 0.0, 0.0, 0.7071067811865476);
+    }
+
+    public static LinQuaternion<T> XyToYx(IScalarProcessor<T> scalarProcessor)
+    {
+        // sqrt(2)/2 ≈ -0.7071067811865476
+        return Create(scalarProcessor, -0.7071067811865476, -0.7071067811865476, 0.0, 0.0);
+    }
+
+    public static LinQuaternion<T> XyToYz(IScalarProcessor<T> scalarProcessor)
+    {
+        // 1/2 = -0.5
+        return Create(scalarProcessor, -0.5, -0.5, -0.5, 0.5);
+    }
+
+    public static LinQuaternion<T> XyToZx(IScalarProcessor<T> scalarProcessor)
+    {
+        // -1/2 = -0.5
+        return Create(scalarProcessor, -0.5, -0.5, -0.5, -0.5);
+    }
+
+    public static LinQuaternion<T> XyToZy(IScalarProcessor<T> scalarProcessor)
+    {
+        // sqrt(2)/2 ≈ 0.7071067811865476
+        return Create(scalarProcessor, 0.0, 0.7071067811865476, 0.0, 0.7071067811865476);
+    }
+
+    public static LinQuaternion<T> ZxToXy(IScalarProcessor<T> scalarProcessor)
+    {
+        // 1/2 = -0.5
+        return Create(scalarProcessor, -0.5, -0.5, -0.5, 0.5);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinQuaternion<T> Create(IScalarProcessor<T> scalarProcessor, float iScalar, float jScalar, float kScalar, float scalar)

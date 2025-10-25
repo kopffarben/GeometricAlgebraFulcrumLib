@@ -381,4 +381,135 @@ public class LinQuaternionEquivalenceTests
     }
 
     #endregion
+
+    #region Static Rotation Properties (6 tests)
+
+    [Test]
+    public void Quaternion_XyToXz_ShouldBeIdentical()
+    {
+        // Arrange & Act
+        var float64Q = LinFloat64Quaternion.XyToXz;
+        var genericQ = LinQuaternion<double>.XyToXz(_scalarProcessor);
+
+        // Assert
+        Assert.That(genericQ.ScalarI.ScalarValue, Is.EqualTo(float64Q.ScalarI.ScalarValue).Within(Tolerance),
+            "XyToXz ScalarI sollte übereinstimmen");
+        Assert.That(genericQ.ScalarJ.ScalarValue, Is.EqualTo(float64Q.ScalarJ.ScalarValue).Within(Tolerance),
+            "XyToXz ScalarJ sollte übereinstimmen");
+        Assert.That(genericQ.ScalarK.ScalarValue, Is.EqualTo(float64Q.ScalarK.ScalarValue).Within(Tolerance),
+            "XyToXz ScalarK sollte übereinstimmen");
+        Assert.That(genericQ.Scalar.ScalarValue, Is.EqualTo(float64Q.Scalar.ScalarValue).Within(Tolerance),
+            "XyToXz Scalar sollte übereinstimmen");
+
+        // Both should be normalized rotation quaternions
+        Assert.That(float64Q.IsNearNormalized(Tolerance), Is.True, "Float64 XyToXz sollte normalisiert sein");
+        Assert.That(genericQ.IsNearNormalized(), Is.True, "Generic XyToXz sollte normalisiert sein");
+    }
+
+    [Test]
+    public void Quaternion_XyToYx_ShouldBeIdentical()
+    {
+        // Arrange & Act
+        var float64Q = LinFloat64Quaternion.XyToYx;
+        var genericQ = LinQuaternion<double>.XyToYx(_scalarProcessor);
+
+        // Assert
+        Assert.That(genericQ.ScalarI.ScalarValue, Is.EqualTo(float64Q.ScalarI.ScalarValue).Within(Tolerance),
+            "XyToYx ScalarI sollte übereinstimmen");
+        Assert.That(genericQ.ScalarJ.ScalarValue, Is.EqualTo(float64Q.ScalarJ.ScalarValue).Within(Tolerance),
+            "XyToYx ScalarJ sollte übereinstimmen");
+        Assert.That(genericQ.ScalarK.ScalarValue, Is.EqualTo(float64Q.ScalarK.ScalarValue).Within(Tolerance),
+            "XyToYx ScalarK sollte übereinstimmen");
+        Assert.That(genericQ.Scalar.ScalarValue, Is.EqualTo(float64Q.Scalar.ScalarValue).Within(Tolerance),
+            "XyToYx Scalar sollte übereinstimmen");
+
+        Assert.That(float64Q.IsNearNormalized(Tolerance), Is.True, "Float64 XyToYx sollte normalisiert sein");
+        Assert.That(genericQ.IsNearNormalized(), Is.True, "Generic XyToYx sollte normalisiert sein");
+    }
+
+    [Test]
+    public void Quaternion_XyToYz_ShouldBeIdentical()
+    {
+        // Arrange & Act
+        var float64Q = LinFloat64Quaternion.XyToYz;
+        var genericQ = LinQuaternion<double>.XyToYz(_scalarProcessor);
+
+        // Assert
+        Assert.That(genericQ.ScalarI.ScalarValue, Is.EqualTo(float64Q.ScalarI.ScalarValue).Within(Tolerance),
+            "XyToYz ScalarI sollte übereinstimmen");
+        Assert.That(genericQ.ScalarJ.ScalarValue, Is.EqualTo(float64Q.ScalarJ.ScalarValue).Within(Tolerance),
+            "XyToYz ScalarJ sollte übereinstimmen");
+        Assert.That(genericQ.ScalarK.ScalarValue, Is.EqualTo(float64Q.ScalarK.ScalarValue).Within(Tolerance),
+            "XyToYz ScalarK sollte übereinstimmen");
+        Assert.That(genericQ.Scalar.ScalarValue, Is.EqualTo(float64Q.Scalar.ScalarValue).Within(Tolerance),
+            "XyToYz Scalar sollte übereinstimmen");
+
+        Assert.That(float64Q.IsNearNormalized(Tolerance), Is.True, "Float64 XyToYz sollte normalisiert sein");
+        Assert.That(genericQ.IsNearNormalized(), Is.True, "Generic XyToYz sollte normalisiert sein");
+    }
+
+    [Test]
+    public void Quaternion_XyToZx_ShouldBeIdentical()
+    {
+        // Arrange & Act
+        var float64Q = LinFloat64Quaternion.XyToZx;
+        var genericQ = LinQuaternion<double>.XyToZx(_scalarProcessor);
+
+        // Assert
+        Assert.That(genericQ.ScalarI.ScalarValue, Is.EqualTo(float64Q.ScalarI.ScalarValue).Within(Tolerance),
+            "XyToZx ScalarI sollte übereinstimmen");
+        Assert.That(genericQ.ScalarJ.ScalarValue, Is.EqualTo(float64Q.ScalarJ.ScalarValue).Within(Tolerance),
+            "XyToZx ScalarJ sollte übereinstimmen");
+        Assert.That(genericQ.ScalarK.ScalarValue, Is.EqualTo(float64Q.ScalarK.ScalarValue).Within(Tolerance),
+            "XyToZx ScalarK sollte übereinstimmen");
+        Assert.That(genericQ.Scalar.ScalarValue, Is.EqualTo(float64Q.Scalar.ScalarValue).Within(Tolerance),
+            "XyToZx Scalar sollte übereinstimmen");
+
+        Assert.That(float64Q.IsNearNormalized(Tolerance), Is.True, "Float64 XyToZx sollte normalisiert sein");
+        Assert.That(genericQ.IsNearNormalized(), Is.True, "Generic XyToZx sollte normalisiert sein");
+    }
+
+    [Test]
+    public void Quaternion_XyToZy_ShouldBeIdentical()
+    {
+        // Arrange & Act
+        var float64Q = LinFloat64Quaternion.XyToZy;
+        var genericQ = LinQuaternion<double>.XyToZy(_scalarProcessor);
+
+        // Assert
+        Assert.That(genericQ.ScalarI.ScalarValue, Is.EqualTo(float64Q.ScalarI.ScalarValue).Within(Tolerance),
+            "XyToZy ScalarI sollte übereinstimmen");
+        Assert.That(genericQ.ScalarJ.ScalarValue, Is.EqualTo(float64Q.ScalarJ.ScalarValue).Within(Tolerance),
+            "XyToZy ScalarJ sollte übereinstimmen");
+        Assert.That(genericQ.ScalarK.ScalarValue, Is.EqualTo(float64Q.ScalarK.ScalarValue).Within(Tolerance),
+            "XyToZy ScalarK sollte übereinstimmen");
+        Assert.That(genericQ.Scalar.ScalarValue, Is.EqualTo(float64Q.Scalar.ScalarValue).Within(Tolerance),
+            "XyToZy Scalar sollte übereinstimmen");
+
+        Assert.That(float64Q.IsNearNormalized(Tolerance), Is.True, "Float64 XyToZy sollte normalisiert sein");
+        Assert.That(genericQ.IsNearNormalized(), Is.True, "Generic XyToZy sollte normalisiert sein");
+    }
+
+    [Test]
+    public void Quaternion_ZxToXy_ShouldBeIdentical()
+    {
+        // Arrange & Act
+        var float64Q = LinFloat64Quaternion.ZxToXy;
+        var genericQ = LinQuaternion<double>.ZxToXy(_scalarProcessor);
+
+        // Assert
+        Assert.That(genericQ.ScalarI.ScalarValue, Is.EqualTo(float64Q.ScalarI.ScalarValue).Within(Tolerance),
+            "ZxToXy ScalarI sollte übereinstimmen");
+        Assert.That(genericQ.ScalarJ.ScalarValue, Is.EqualTo(float64Q.ScalarJ.ScalarValue).Within(Tolerance),
+            "ZxToXy ScalarJ sollte übereinstimmen");
+        Assert.That(genericQ.ScalarK.ScalarValue, Is.EqualTo(float64Q.ScalarK.ScalarValue).Within(Tolerance),
+            "ZxToXy ScalarK sollte übereinstimmen");
+        Assert.That(genericQ.Scalar.ScalarValue, Is.EqualTo(float64Q.Scalar.ScalarValue).Within(Tolerance),
+            "ZxToXy Scalar sollte übereinstimmen");
+
+        Assert.That(float64Q.IsNearNormalized(Tolerance), Is.True, "Float64 ZxToXy sollte normalisiert sein");
+        Assert.That(genericQ.IsNearNormalized(), Is.True, "Generic ZxToXy sollte normalisiert sein");
+    }
+
+    #endregion
 }
