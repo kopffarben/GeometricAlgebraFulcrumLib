@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
@@ -421,6 +422,14 @@ public sealed record LinBivector2D<T> :
             .CreateBivectorComposer()
             .SetBivectorTerm(0, 1, Xy)
             .GetBivector();
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinBivector3D<T> ToXyBivector3D()
+    {
+        var zero = ScalarProcessor.Zero;
+        return LinBivector3D<T>.Create(Xy, zero, zero);
     }
 
 

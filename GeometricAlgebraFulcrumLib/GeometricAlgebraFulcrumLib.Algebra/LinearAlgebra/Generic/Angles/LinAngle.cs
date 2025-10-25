@@ -5,6 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -798,6 +799,25 @@ public abstract record LinAngle<T> :
             normal.ToUnitVector(),
             ToPolarAngle()
         );
+    }
+
+
+    // NOTE: This method is not implemented for Generic<T> because it requires
+    // comparison and rounding operations (Ceiling, Truncate) that are not available
+    // in IScalarProcessor<T>. The Float64 version uses direct double comparisons and Math functions.
+    // For Generic<T>, users should convert to Float64, apply the method, then convert back if needed.
+    public LinPolarAngle<T> ToPolarAngleInPeriodicRange(Scalar<T> maxRadians)
+    {
+        throw new NotImplementedException(
+            "ToPolarAngleInPeriodicRange is not implemented for Generic<T>. " +
+            "Convert to LinFloat64Angle, apply the method, then convert back to Generic<T> if needed."
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public SquareMatrix2<T> ToSquareMatrix2()
+    {
+        return SquareMatrix2<T>.CreateRotationMatrix2D(this);
     }
 
 }

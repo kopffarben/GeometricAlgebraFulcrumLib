@@ -907,6 +907,45 @@ public sealed record LinQuaternion<T> :
         };
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public SquareMatrix4<T> ToSquareMatrix4()
+    {
+        var normSquared = NormSquared();
+
+        if (normSquared.IsNearZero())
+            throw new InvalidOperationException();
+
+        var s = 2d / normSquared;
+
+        return new SquareMatrix4<T>(ScalarProcessor)
+        {
+            Scalar00 = 1d - s * (ScalarJ * ScalarJ + ScalarK * ScalarK),
+            Scalar10 = s * (ScalarI * ScalarJ - Scalar * ScalarK),
+            Scalar20 = s * (ScalarI * ScalarK + Scalar * ScalarJ),
+
+            Scalar01 = s * (ScalarI * ScalarJ + Scalar * ScalarK),
+            Scalar11 = 1d - s * (ScalarI * ScalarI + ScalarK * ScalarK),
+            Scalar21 = s * (ScalarJ * ScalarK - Scalar * ScalarI),
+
+            Scalar02 = s * (ScalarI * ScalarK - Scalar * ScalarJ),
+            Scalar12 = s * (ScalarJ * ScalarK + Scalar * ScalarI),
+            Scalar22 = 1d - s * (ScalarI * ScalarI + ScalarJ * ScalarJ),
+
+            Scalar33 = ScalarProcessor.One
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Quaternion ToSystemNumericsQuaternion()
+    {
+        return new Quaternion(
+            (float)Convert.ToDouble(ScalarI.ScalarValue),
+            (float)Convert.ToDouble(ScalarJ.ScalarValue),
+            (float)Convert.ToDouble(ScalarK.ScalarValue),
+            (float)Convert.ToDouble(Scalar.ScalarValue)
+        );
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Triplet<LinVector3D<T>> RotateBasisVectors()
