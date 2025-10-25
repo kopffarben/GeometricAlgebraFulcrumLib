@@ -1,7 +1,7 @@
 # Next Steps Roadmap - Konkrete Aktionen
 
 **Letzte Aktualisierung:** 2025-10-25
-**Aktueller Status:** Phase 1.1 In Progress (Module 1: XGa Core - Tasks 1.1, 1.2 & 1.3 Complete)
+**Aktueller Status:** Phase 1.1 In Progress (Module 1: XGa Core - Tasks 1.1-1.4 Complete)
 **Branch:** Feature/ScalarFloat32
 
 ---
@@ -29,8 +29,9 @@ Nach jedem Meilenstein alle drei aktualisieren!
 - Task 1.1 (XGaComputedOutermorphism<T>) ✅ COMPLETE
 - Task 1.2 (XGaStoredOutermorphism<T>) ✅ COMPLETE
 - Task 1.3 (XGaOutermorphismComposerUtils<T>) ✅ COMPLETE
-- 2 Klassen verbleibend in Generic
-- Geschätzter Aufwand: 1-2 Tage verbleibend
+- Task 1.4 (XGaGramSchmidtFrame<T>) ✅ COMPLETE
+- 1 Klasse verbleibend in Generic
+- Geschätzter Aufwand: < 1 Tag verbleibend
 - Nach Completion: Phase 1.2 (ComplexAlgebra)
 
 ---
@@ -42,8 +43,8 @@ Nach jedem Meilenstein alle drei aktualisieren!
 1. ~~**XGaComputedOutermorphism<T>**~~ ✅ COMPLETE (2025-10-24)
 2. ~~**XGaStoredOutermorphism<T>**~~ ✅ COMPLETE (2025-10-25)
 3. ~~**XGaOutermorphismComposerUtils<T>**~~ ✅ COMPLETE (2025-10-25)
-4. **XGaGramSchmidtFrame<T>** ← START HIER (Task 1.4)
-5. **XGaConformalComposerUtils<T>**
+4. ~~**XGaGramSchmidtFrame<T>**~~ ✅ COMPLETE (2025-10-25)
+5. **XGaConformalComposerUtils<T>** ← START HIER (Task 1.5)
 6. **ToTuple()** extensions (optional)
 
 ---
@@ -214,20 +215,25 @@ Refs: API_COMPARISON line 12"
 
 ---
 
-## 🚀 Tag 4: XGaGramSchmidtFrame<T>
+## ✅ Tag 4: XGaGramSchmidtFrame<T> - COMPLETE (2025-10-25)
 
-**Frame-Klasse**
+**Implementiert:**
+- XGaGramSchmidtFrame<T> using classical modified Gram-Schmidt algorithm
+- Fully generic implementation with IScalarProcessor<T> (no MathNet.Numerics dependency)
+- Works with ANY scalar type (double, float, rational, symbolic, etc.)
+- 9 Equivalence Tests (100% passing)
 
-```
-Float64: GeometricAlgebra/Float64/Frames/XGaFloat64GramSchmidtFrame.cs
-Generic: GeometricAlgebra/Generic/Frames/XGaGramSchmidtFrame.cs (NEU)
-```
+**Key Design Decisions:**
+- **Algorithm:** Classical modified Gram-Schmidt (not QR decomposition)
+  - Float64 uses MathNet.Numerics QR (only works with double)
+  - Generic uses direct orthogonalization (works with all T)
+- **Universality:** No external dependencies, pure Generic<T> implementation
+- **Methods:** Create(), GetDirection(), GetCurvature(), GetDarbouxBlade(), GetDarbouxBivector(), CleanNorms()
 
-**Wichtig:** Gram-Schmidt Orthogonalisierung
-- Numerisch sensibel
-- Korrekte Verwendung von ScalarProcessor für Norm/Dot-Produkt
+**Tatsächlicher Aufwand:** ~4 Stunden (inkl. Algorithm-Implementierung)
 
-**Geschätzter Aufwand:** 4-5 Stunden
+**Bugs fixed during implementation:**
+- None - clean implementation on first try after fixing Scalar<T> conversion issues
 
 ---
 
@@ -269,8 +275,8 @@ Generic: GeometricAlgebra/Generic/Multivectors/XGaScalar.cs (NEU: ToTuple method
 - [x] XGaComputedOutermorphism<T> implementiert und getestet ✅
 - [x] XGaStoredOutermorphism<T> implementiert und getestet ✅
 - [x] XGaOutermorphismComposerUtils<T> implementiert und getestet ✅
-- [ ] XGaGramSchmidtFrame<T> implementiert und getestet ← NEXT
-- [ ] XGaConformalComposerUtils<T> implementiert und getestet
+- [x] XGaGramSchmidtFrame<T> implementiert und getestet ✅
+- [ ] XGaConformalComposerUtils<T> implementiert und getestet ← NEXT
 - [ ] ToTuple() extensions (optional)
 - [x] Alle Tests passing ✅
 - [x] Dokumentation aktualisiert ✅

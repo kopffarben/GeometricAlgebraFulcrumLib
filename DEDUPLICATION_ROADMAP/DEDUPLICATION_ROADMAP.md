@@ -2,7 +2,7 @@
 
 **Ziel:** Generic-Implementierung auf 100% Float64-Kompatibilität bringen, dann Float64 → Thin Wrapper migrieren.
 
-**Status:** Phase 1.1 In Progress (Module 1: XGa Core - Tasks 1.1, 1.2 & 1.3 Complete)
+**Status:** Phase 1.1 In Progress (Module 1: XGa Core - Tasks 1.1-1.4 Complete)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
 **Letzte Aktualisierung:** 2025-10-25
 **Geschätzte Dauer:** 8-11 Wochen (6-8 Wochen Phase 1 + 2-3 Wochen Phase 2)
@@ -69,8 +69,8 @@ Phase 2 (pro Modul): Thin Wrapper Migration
 
 ### Module 1: XGa Core 🔄 IN PROGRESS
 **Priorität:** P0 (Fundament)
-**Status:** ~80% complete, 2 Klassen verbleibend
-**Aufwand:** 1-2 Tage verbleibend
+**Status:** ~80% complete, 1 Klasse verbleibend
+**Aufwand:** < 1 Tag verbleibend
 
 #### Was fehlt in Generic (aus Spalte 2):
 
@@ -94,10 +94,12 @@ Phase 2 (pro Modul): Thin Wrapper Migration
    - Zeile 25 in API_COMPARISON
    - Includes: 6 Equivalence Tests for ColumnsToOutermorphism (all passing)
 
-4. **XGaGramSchmidtFrame<T>** class
-   - Float64: `XGaFloat64GramSchmidtFrame` existiert
-   - Generic: Fehlt komplett
+4. ~~**XGaGramSchmidtFrame<T>** class~~ ✅ COMPLETE (2025-10-25)
+   - Float64: `XGaFloat64GramSchmidtFrame` existiert (uses MathNet.Numerics QR)
+   - Generic: **IMPLEMENTIERT** in Task 1.4 (classical modified Gram-Schmidt algorithm)
    - Zeile 27 in API_COMPARISON
+   - Includes: 9 Equivalence Tests (all passing)
+   - **Key:** Fully generic implementation with no external dependencies
 
 5. **XGaConformalComposerUtils<T>** static class
    - Float64: `XGaFloat64ConformalComposerUtils` existiert
@@ -111,7 +113,7 @@ Phase 2 (pro Modul): Thin Wrapper Migration
 - ✅ **CRITICAL**: XGaFloat64StoredOutermorphism.OmMapBasisBlade() returned kVector.GetVectorPart() instead of kVector
 - ✅ **CRITICAL**: XGaFloat64StoredOutermorphism.OmMapBasisBivector() had inverted index-order logic
 
-#### Geschätzter Aufwand verbleibend: 1-3 Tage (3 Klassen)
+#### Geschätzter Aufwand verbleibend: < 1 Tag (1-2 Klassen)
 
 ---
 
