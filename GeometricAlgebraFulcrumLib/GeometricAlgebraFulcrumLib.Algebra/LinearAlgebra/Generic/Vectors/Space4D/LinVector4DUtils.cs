@@ -1307,6 +1307,97 @@ public static class LinVector4DUtils
         );
     }
 
+
+    #region Extension Methods for IQuad<Scalar<T>> (4D Vector Operations)
+
+    /// <summary>
+    /// The Euclidean length of this 4D vector
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Scalar<T> VectorENorm<T>(this IQuad<Scalar<T>> vector)
+    {
+        return (vector.Item1 * vector.Item1 + 
+                vector.Item2 * vector.Item2 + 
+                vector.Item3 * vector.Item3 + 
+                vector.Item4 * vector.Item4).Sqrt();
+    }
+
+    /// <summary>
+    /// The Euclidean squared length of this 4D vector
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Scalar<T> VectorENormSquared<T>(this IQuad<Scalar<T>> vector)
+    {
+        return vector.Item1 * vector.Item1 + 
+               vector.Item2 * vector.Item2 + 
+               vector.Item3 * vector.Item3 + 
+               vector.Item4 * vector.Item4;
+    }
+
+    /// <summary>
+    /// The Euclidean dot product between two 4D vectors
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Scalar<T> VectorESp<T>(this IQuad<Scalar<T>> v1, IQuad<Scalar<T>> v2)
+    {
+        return v1.Item1 * v2.Item1 + 
+               v1.Item2 * v2.Item2 + 
+               v1.Item3 * v2.Item3 + 
+               v1.Item4 * v2.Item4;
+    }
+
+    /// <summary>
+    /// Divide the vector by its Euclidean norm to get a unit vector
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector4D<T> VectorDivideByNorm<T>(this IQuad<Scalar<T>> vector)
+    {
+        var norm = vector.VectorENorm();
+
+        return norm.IsZero()
+            ? LinVector4D<T>.Create(vector.Item1, vector.Item2, vector.Item3, vector.Item4)
+            : LinVector4D<T>.Create(
+                vector.Item1 / norm,
+                vector.Item2 / norm,
+                vector.Item3 / norm,
+                vector.Item4 / norm
+            );
+    }
+
+    /// <summary>
+    /// True if the Euclidean squared length of this 4D vector is near unity
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool VectorIsNearUnit<T>(this IQuad<Scalar<T>> vector)
+    {
+        return vector.VectorENormSquared().IsNearOne();
+    }
+
+    /// <summary>
+    /// True if the Euclidean dot product of two 4D vectors is near zero
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool VectorIsNearOrthogonalTo<T>(this IQuad<Scalar<T>> vector1, IQuad<Scalar<T>> vector2)
+    {
+        return vector1.VectorESp(vector2).IsNearZero();
+    }
+
+    #endregion
+
+
+    #region API Parity Aliases for Float64 Compatibility
+
+    /// <summary>
+    /// Alias for VectorDivideByNorm() to match LinFloat64Vector4D API
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector4D<T> ToUnitLinVector4D<T>(this IQuad<Scalar<T>> vector)
+    {
+        return vector.VectorDivideByNorm();
+    }
+
+    #endregion
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector4D<T> RotateToUnitVector<T>(this IQuad<Scalar<T>> vector1, IQuad<Scalar<T>> unitVector, LinAngle<T> angle)
     {
