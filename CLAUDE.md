@@ -548,6 +548,16 @@ See [PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md](PERFORMANCE_BENCHMARK_RECOMMENDAT
 - **Modern patterns**: Span<T>, value semantics, aggressive inlining
 - **Reduced allocations**: 16-33% fewer allocations → less GC pressure
 
+**Recent Optimizations (2025-10-27):**
+- **Scalar Product (Sp) Phase 1**: K-Vector Sp optimized with type-specific fast-paths + local accumulator pattern
+  - Conformal Sp overhead reduced: 33% → 14% (19 percentage point improvement)
+  - Implementation: `ScalarComposerOperations.cs` lines 186-342
+- **Architectural Lesson from Phase 2B**: Attempted graded multivector Sp optimization caused 30% regression
+  - Root cause: Bypassed efficient grade-based dispatcher architecture
+  - Correctly reverted to preserve structural optimization
+  - **Key Insight**: Respect architectural patterns - grade-based decomposition is a performance feature, not just organization
+  - Details: See [SP_OPTIMIZATION_ANALYSIS.md](SP_OPTIMIZATION_ANALYSIS.md)
+
 ## Common Pitfalls
 
 ### General Programming Pitfalls

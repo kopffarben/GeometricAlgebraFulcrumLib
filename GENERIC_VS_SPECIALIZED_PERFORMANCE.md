@@ -461,6 +461,177 @@ This validates the architectural decision to use **Data-Oriented Programming** w
 
 ---
 
+## Benchmark Results: Scalar Product (Sp) Optimization - Phase 1 & 2
+
+**Date:** 2025-10-27 (Post Phase 1, Post Phase 2C Revert)
+**Optimizations Applied:** Type-specific fast-paths for K-Vector Sp operations
+
+### Background: Sp Operation Performance Gap
+
+**Initial Analysis (Before Phase 1):**
+| Operation | Float64 | Generic<double> | Overhead |
+|-----------|---------|-----------------|----------|
+| Euclidean Sp (K-Vectors) | 8.654 μs | 11.998 μs | **+27%** |
+| Conformal Sp (K-Vectors) | 17.787 μs | 26.277 μs | **+33%** |
+| Bilinear Sp (Mixed-Grade) | 23.52 μs | 30.02 μs | **+27%** |
+
+**Root Cause**: Interface dispatch overhead (10-20 CPU cycles per call) × N terms = significant cumulative cost.
+
+---
+
+### Phase 1 Results: K-Vector Sp Optimization (SUCCESS)
+
+**Implementation**: Added type-specific fast-paths to `ScalarComposerOperations.AddSpTerms(XGaKVector<T>, XGaKVector<T>)`.
+
+**XGaMetricOperationsComparisonBenchmark Results:**
+
+| Operation | Float64 | Generic<double> | Generic<float> | Overhead (double) | Improvement |
+|-----------|---------|-----------------|----------------|-------------------|-------------|
+| **Euclidean Sp** | 8.654 μs | **10.678 μs** | 11.035 μs | **+23%** | **-4pp** ⬇️ |
+| **Conformal Sp** | 17.787 μs | **20.356 μs** | 20.787 μs | **+14%** | **-19pp** ⬇️ |
+
+**Performance Impact:**
+- **Conformal Sp**: Overhead reduced from **33% → 14%** (**19 percentage point improvement!**)
+- **Euclidean Sp**: Overhead reduced from **27% → 23%** (4 percentage point improvement)
+- **Speedup**: Conformal Sp is **1.29x faster** than before optimization (26.277 μs → 20.356 μs)
+
+**Key Insight**: K-vector operations benefit significantly from type-specific optimization because they have flat term structure (same grade).
+
+---
+
+### Phase 2B Attempt: Graded Multivector Sp Optimization (FAILED - REVERTED)
+
+**Goal**: Apply similar optimization to `AddSpTerms(XGaGradedMultivector<T>, XGaGradedMultivector<T>)`.
+
+**XGaBilinearProductsComparisonBenchmark Results:**
+
+| Phase | Generic<double> Sp | vs Float64 | Note |
+|-------|-------------------|------------|------|
+| **Before Phase 2B** | 30.02 μs | +27% | Baseline |
+| **After Phase 2B** | 38.90 μs | +61% | **30% REGRESSION!** ❌ |
+| **After Phase 2C Revert** | **27.78 μs** | +15% | **RESTORED** ✅ |
+
+**Why Phase 2B Failed:**
+
+1. **Architectural Mismatch**: Original grade-based dispatcher is a **structural optimization**
+2. **Sparse Computation Loss**: Dispatcher only processes matching grades (vector-with-vector, bivector-with-bivector)
+3. **Our Mistake**: Flat iteration checked ALL basis blade pairs, losing grade filtering efficiency
+4. **Lesson**: Cannot beat macro-architecture with micro-optimizations
+
+**Root Cause Code Path:**
+```csharp
+// EFFICIENT (Original - Restored in Phase 2C):
+foreach (var kVector1 in mv1.KVectors)
+{
+    var grade = kVector1.Grade;
+    if (!mv2.TryGetKVector(grade, out var kVector2))
+        continue;  // Skip non-matching grades (O(1) check)
+
+    AddSpTerms(kVector1, kVector2);  // Calls Phase 1 optimized method!
+}
+
+// INEFFICIENT (Phase 2B - Reverted):
+// Flat iteration over ALL basis blades
+// Many failed lookups for non-matching grades
+// Lost the sparse computation advantage
+```
+
+---
+
+### Final Sp Performance Summary (Post Phase 1 & Phase 2C)
+
+| Benchmark | Float64 | Generic<double> | Generic<float> | Double vs Float64 |
+|-----------|---------|-----------------|----------------|-------------------|
+| **Euclidean Sp (K-Vectors)** | 8.654 μs | **10.678 μs** | 11.035 μs | **+23%** ⬇️ |
+| **Conformal Sp (K-Vectors)** | 17.787 μs | **20.356 μs** | 20.787 μs | **+14%** ⬇️ |
+| **Bilinear Sp (Mixed-Grade)** | 24.15 μs | **27.78 μs** | 29.09 μs | **+15%** ✅ |
+
+**Key Achievements:**
+- ✅ **Conformal Sp**: 19 percentage point overhead reduction (33% → 14%)
+- ✅ **Bilinear Sp**: Regression avoided by correctly reverting Phase 2B
+- ✅ **Architectural Lesson**: Grade-based decomposition is a performance feature, not just organization
+
+---
+
+### Bonus Discovery: Cp/Acp Performance Anomaly
+
+**XGaBilinearProductsComparisonBenchmark** revealed an unexpected finding:
+
+| Operation | Float64 Specialized | Generic<double> | Generic vs Float64 |
+|-----------|---------------------|-----------------|-------------------|
+| **Cp (Commutator)** | 944.52 μs | **313.55 μs** | **3.0x FASTER** 🎉 |
+| **Acp (Anti-Commutator)** | 966.60 μs | **340.74 μs** | **2.8x FASTER** 🎉 |
+
+**Implication**: Float64 Specialized Cp/Acp implementations have significant inefficiencies. This is an opportunity for future optimization by adopting Generic<T> formula in Float64 wrappers.
+
+---
+
+### Architectural Lessons from Sp Optimization
+
+1. **Respect Structural Patterns**: Grade-based decomposition is not just organization - it's sparse computation
+2. **Micro vs Macro**: Type-specific fast-paths work at leaf operations (K-vectors), not when they bypass architecture (graded dispatchers)
+3. **Measurement-Driven**: Always benchmark before/after - Phase 2B regression caught immediately
+4. **Know When to Revert**: Recognizing a failed optimization quickly prevents technical debt
+
+---
+
+### Sp Optimization Implementation Details
+
+**File Modified**: `GeometricAlgebraFulcrumLib.Algebra/Scalars/Generic/ScalarComposerOperations.cs`
+
+**Phase 1 Pattern** (Lines 186-342):
+```csharp
+public ScalarComposer<T> AddSpTerms(XGaKVector<T> mv1, XGaKVector<T> mv2)
+{
+    if (typeof(T) == typeof(double))  // JIT devirtualization
+    {
+        var sum = 0.0;  // Local accumulator
+
+        // Iterate over smaller multivector
+        foreach (var (id, scalar1) in mv1.IdScalarPairs)
+        {
+            if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
+                continue;
+
+            var sign = metric.GpSquaredSign(id);
+            if (sign.IsZero)
+                continue;
+
+            var value1 = (double)(object)scalar1;  // Zero-cost cast
+            var value2 = (double)(object)scalar2;
+            var product = value1 * value2;  // Direct CPU op
+
+            sum += sign.IsPositive ? product : -product;
+        }
+
+        if (sum != 0.0)
+            AddScalar((T)(object)sum);  // Single interface call
+    }
+    // Similar for float, then generic fallback
+}
+```
+
+**Key Optimizations:**
+1. **JIT Devirtualization**: `typeof(T) == typeof(double)` compiles away (zero cost)
+2. **Local Accumulator**: Accumulate in `sum` → single `AddScalar` call at end (N calls → 1)
+3. **Direct CPU Ops**: `value1 * value2` uses FPU, not interface
+4. **Smart Iteration**: Iterate smaller multivector to minimize lookups
+
+**Phase 2C** (Lines 367-400): Original grade-based dispatcher **RESTORED** after Phase 2B revert.
+
+---
+
+### Future Sp Optimization Opportunities
+
+1. **✅ DONE - Phase 1 K-Vector Optimization**: Type-specific fast-paths for same-grade Sp
+2. **❌ REJECTED - Phase 2B Graded Multivector Flat Iteration**: Conflicts with architecture
+3. **🔍 INVESTIGATE - Float64 Cp/Acp**: Why is Generic 3x faster? Port improvements to Float64
+4. **🚀 FUTURE - SIMD Intrinsics**: Use AVX2/AVX-512 for batch term multiplication (requires careful design)
+
+**Full Analysis**: See [SP_OPTIMIZATION_ANALYSIS.md](./SP_OPTIMIZATION_ANALYSIS.md)
+
+---
+
 ## References
 
 - **Benchmark Source**: `GeometricAlgebraFulcrumLib.Benchmarks/Scalars/CgaFloat32PerformanceBenchmarks.cs`

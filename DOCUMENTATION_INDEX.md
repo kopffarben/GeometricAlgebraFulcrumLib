@@ -137,6 +137,51 @@ int pos1 = bitPattern.GetNthSetBitPosition(1);  // Was: 2 ✗ Now: 5 ✓
 
 ---
 
+## Performance Optimization Documentation
+
+### GENERIC_VS_SPECIALIZED_PERFORMANCE.md
+**Generic<T> vs Float64 Specialized performance analysis** | [View File](GENERIC_VS_SPECIALIZED_PERFORMANCE.md)
+
+**Key Finding (2025-10-23)**: Generic implementations are FASTER than Float64 Specialized!
+- Generic<double>: **1.27x faster** (27% speedup)
+- Generic<float>: **1.24x faster** (24% speedup)
+- Memory: 16-33% less allocations
+
+**Benchmark Coverage**:
+- Bilinear Products (Gp, Op, Sp, Lcp, Rcp, Cp, Acp)
+- Metric Operations (Euclidean, Conformal)
+- Unary Operations (Reverse, GradeInvolution, CliffordConjugate)
+- Normalization Operations (ENorm, Norm, ENormSquared, etc.)
+
+**Updated (2025-10-27)**: Added comprehensive Scalar Product (Sp) optimization analysis with Phase 1 & Phase 2 results.
+
+---
+
+### SP_OPTIMIZATION_ANALYSIS.md
+**Scalar Product (Sp) optimization deep dive** | [View File](SP_OPTIMIZATION_ANALYSIS.md) | ~395 lines
+
+**Date**: 2025-10-27 | **Status**: Phase 1 Completed, Phase 2B Reverted
+
+**Results**:
+- ✅ **Phase 1 (K-Vectors)**: Conformal Sp overhead reduced 33% → 14% (19pp improvement)
+- ❌ **Phase 2B (Graded)**: 30% regression (correctly reverted)
+- 🎉 **Bonus**: Generic Cp/Acp are 3x faster than Float64 Specialized
+
+**Key Contents**:
+- Problem analysis (interface dispatch overhead)
+- Phase 1 implementation (type-specific fast-paths for K-vectors)
+- Phase 2B failure analysis (bypassed grade-based dispatcher)
+- Phase 2C revert decision and restoration
+- Architectural lessons learned
+- Complete benchmark results
+- Future optimization opportunities
+
+**Critical Lesson**: Respect architectural patterns - grade-based decomposition is a performance optimization, not just organization. Micro-optimizations must not bypass macro-architectural efficiency.
+
+**File Modified**: `ScalarComposerOperations.cs` (lines 186-342: Phase 1 optimization kept)
+
+---
+
 ## Documentation Map
 
 ```
@@ -147,6 +192,10 @@ GeometricAlgebraFulcrumLib/
 ├── Testing:
 │   ├── TODO_TEST_COVERAGE.md ........ Coverage Plan (1972 lines)
 │   └── ISSUES_TO_FIX.md ............. Issue Tracking (0 failing!)
+│
+├── Performance:
+│   ├── GENERIC_VS_SPECIALIZED_PERFORMANCE.md ... Generic vs Float64 Analysis
+│   └── SP_OPTIMIZATION_ANALYSIS.md ............. Sp Optimization Deep Dive
 │
 ├── Bugs:
 │   └── ISSUES_TO_FIX.md ............ All issues (0 failing, 24 skipped)
@@ -166,6 +215,8 @@ GeometricAlgebraFulcrumLib/
 
 **Test Development**: TODO_TEST_COVERAGE.md for coverage gaps
 
+**Performance Optimization**: GENERIC_VS_SPECIALIZED_PERFORMANCE.md + SP_OPTIMIZATION_ANALYSIS.md
+
 **Research/Citation**: README.md + [external docs](https://kopffarben.github.io/GeometricAlgebraFulcrumLib/)
 
 ---
@@ -177,13 +228,23 @@ GeometricAlgebraFulcrumLib/
 | README.md | 237 | 2025-10-17 | ✅ Current |
 | TODO_TEST_COVERAGE.md | 1972 | 2025-10-17 | ✅ Current |
 | ISSUES_TO_FIX.md | ~850 | 2025-10-17 | ✅ Current (incl. CGa) |
-| DOCUMENTATION_INDEX.md | 150 | 2025-10-17 | ✅ Current |
+| GENERIC_VS_SPECIALIZED_PERFORMANCE.md | ~635 | 2025-10-27 | ✅ Current |
+| SP_OPTIMIZATION_ANALYSIS.md | ~395 | 2025-10-27 | ✅ Current |
+| DOCUMENTATION_INDEX.md | ~250 | 2025-10-27 | ✅ Current |
 
 **Completeness**: 95% | **Up-to-date**: 100% | **Cross-references**: Excellent
 
 ---
 
 ## Changelog
+
+**2025-10-27**: Performance optimization documentation added
+- Added "Performance Optimization Documentation" section
+- Created SP_OPTIMIZATION_ANALYSIS.md (Scalar Product optimization deep dive)
+- Updated GENERIC_VS_SPECIALIZED_PERFORMANCE.md with Sp Phase 1 & Phase 2 results
+- Documented architectural lessons from Phase 2B failure
+- Updated documentation map with Performance category
+- Updated statistics table with new documentation files
 
 **2025-10-17** (Update 2): Documentation cleanup
 - Archived LIBRARY_BUG_GetNthSetBitPosition.md (bug resolved)
@@ -205,4 +266,4 @@ GeometricAlgebraFulcrumLib/
 **Maintained by**: Development Team
 **Review Frequency**: Weekly or after significant updates
 
-**Last Updated**: 2025-10-17
+**Last Updated**: 2025-10-27
