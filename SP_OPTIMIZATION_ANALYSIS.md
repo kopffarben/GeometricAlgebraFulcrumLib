@@ -12,6 +12,7 @@ This document details the systematic optimization of the Scalar Product (Sp) ope
 - **✅ Phase 1 (K-Vectors)**: Conformal Sp overhead reduced from 33% → 14% (19 percentage point improvement)
 - **❌ Phase 2B (Graded Multivectors)**: Attempted optimization caused 30% regression (correctly reverted)
 - **🎉 Bonus Discovery**: Generic Cp/Acp are 3x faster than Float64 Specialized implementations
+- **✅ Phase 2D Follow-up (Lcp/Rcp)**: Successfully applied Phase 1 pattern to contraction products - see [LCP_OPTIMIZATION_ANALYSIS.md](LCP_OPTIMIZATION_ANALYSIS.md)
 
 ---
 

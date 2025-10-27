@@ -557,6 +557,13 @@ See [PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md](PERFORMANCE_BENCHMARK_RECOMMENDAT
   - Correctly reverted to preserve structural optimization
   - **Key Insight**: Respect architectural patterns - grade-based decomposition is a performance feature, not just organization
   - Details: See [SP_OPTIMIZATION_ANALYSIS.md](SP_OPTIMIZATION_ANALYSIS.md)
+- **Left/Right Contraction (Lcp/Rcp) Phase 2D**: Successfully applied Phase 1 pattern to contraction products
+  - Lcp overhead reduced: 9% → 5.2% (3.8 percentage point improvement)
+  - Rcp overhead reduced: ~9% → 6.0% (bonus - same method optimized)
+  - Both operations now in "Excellent" category (<10% overhead)
+  - Implementation: `ProductGp.cs` lines 289-379 (`AddEuclideanProductTerms` with type-specific fast-paths)
+  - **Success Factor**: Optimized LOW-LEVEL method without bypassing architectural patterns (learned from Phase 2B)
+  - Details: See [LCP_OPTIMIZATION_ANALYSIS.md](LCP_OPTIMIZATION_ANALYSIS.md)
 
 ## Common Pitfalls
 

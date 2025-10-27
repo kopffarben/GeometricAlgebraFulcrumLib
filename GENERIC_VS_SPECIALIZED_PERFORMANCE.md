@@ -1,6 +1,6 @@
 # Generic vs Specialized Implementation: Performance Comparison
 
-**Date:** 2025-10-23 (Updated: 2025-10-27 with XGa Phase 1 Results)
+**Date:** 2025-10-23 (Updated: 2025-10-27 with XGa Phase 1 & Phase 2D Results)
 **Branch:** Feature/ScalarFloat32
 **Test System:** Intel Core i7-10700 CPU 2.90GHz, .NET 8.0.21, Windows 11
 
@@ -22,9 +22,15 @@ After Phase 1 Quick Win Optimizations (2025-10-27), the generic implementation `
 - **Vector Norm² (3D)**: Generic<double> **2.31x faster** (16.0ns vs 37.0ns)
 - **Multivector Norm**: Generic<double> **1.39x faster** (63.9ns vs 88.7ns)
 
-**Phase 1 Optimizations:**
+**Optimization Phases:**
+1. **Phase 1 (Sp K-Vectors)**: Conformal Sp overhead 33% → 14% (type-specific fast-paths)
+2. **Phase 2D (Lcp/Rcp)**: Lcp overhead 9% → 5.2%, Rcp 6.0% (AddEuclideanProductTerms optimization)
+
+**Phase 1 & Phase 2D Techniques:**
 1. Lambda-overhead elimination (10% gain)
 2. Type-specific fast-paths for double/float (70-80% gain)
+3. Local accumulator pattern (reduces N interface calls → 1)
+4. Direct CPU operations instead of interface dispatch
 
 This validates the **Data-Oriented Programming (DOP)** design with generic scalar abstraction as a **zero-cost (actually negative-cost!) abstraction**.
 
@@ -566,7 +572,76 @@ foreach (var kVector1 in mv1.KVectors)
 
 ---
 
-### Architectural Lessons from Sp Optimization
+## Benchmark Results: Lcp/Rcp Optimization - Phase 2D
+
+**Date**: 2025-10-27
+**Status**: ✅ Successfully Completed
+**Optimization Target**: Left Contraction (Lcp) and Right Contraction (Rcp) operations
+
+### Phase 2D Implementation Strategy
+
+**Method Optimized**: `AddEuclideanProductTerms` in `ProductGp.cs` (lines 289-379)
+
+**Pattern Applied**: Type-specific fast-paths with local accumulator (proven in Phase 1 Sp)
+
+**Key Optimizations**:
+1. **JIT Devirtualization**: `typeof(T) == typeof(double)` compiles away at runtime
+2. **Local Dictionary Accumulator**: Accumulate all values → only ONE `AddTerm` call per basis blade
+3. **Direct CPU Operations**: `value1 * value2` uses native FPU instead of interface
+4. **Zero-Cost Casts**: `(double)(object)scalar` eliminated by JIT optimizer
+
+### Phase 2D Performance Results
+
+**XGaBilinearProductsComparisonBenchmark** (Mixed-Grade Multivectors in 5D space):
+
+| Operation | Float64 | Generic<double> | Generic<float> | Double vs Float64 |
+|-----------|---------|-----------------|----------------|-------------------|
+| **Lcp (Left Contraction)** | 213.07 μs | **224.05 μs** | 239.72 μs | **+5.2%** ✅ |
+| **Rcp (Right Contraction)** | 213.29 μs | **226.09 μs** | 242.70 μs | **+6.0%** ✅ |
+
+**Memory Efficiency**:
+- Lcp: 558.59 KB vs 545.31 KB (Float64) - **1.02x** ratio
+- Rcp: 570.31 KB vs 557.03 KB (Float64) - **1.02x** ratio
+
+### Phase 2D Success Analysis
+
+**Before Optimization**:
+- Lcp overhead: ~9%
+- Rcp overhead: ~9%
+
+**After Optimization**:
+- Lcp overhead: **5.2%** (3.8 percentage point improvement)
+- Rcp overhead: **6.0%** (3.0 percentage point improvement)
+- Both operations now in "excellent" category (<10% overhead)
+
+**Why Phase 2D Succeeded** (vs Phase 2B Failure):
+- ✅ Optimized LOW-LEVEL method (`AddEuclideanProductTerms`)
+- ✅ Did NOT bypass architectural patterns (no dispatcher bypassed)
+- ✅ Reused proven Phase 1 pattern
+- ✅ Respects macro-architecture while applying micro-optimizations
+
+**Bonus**: Rcp also benefited from same optimization (uses `AddEuclideanProductTerms` internally)
+
+### Complete Bilinear Products Performance Summary (Post Phase 2D)
+
+| Operation | Float64 | Generic<double> | Generic<float> | Double vs Float64 | Category |
+|-----------|---------|-----------------|----------------|-------------------|----------|
+| **Gp** | 387.47 μs | 398.05 μs | 433.36 μs | **+2.7%** | Excellent |
+| **Op** | 387.25 μs | 397.96 μs | 402.45 μs | **+2.8%** | Excellent |
+| **Sp** | 23.68 μs | 30.02 μs | 30.72 μs | **+26.7%** | Acceptable |
+| **Lcp** | 213.07 μs | **224.05 μs** | 239.72 μs | **+5.2%** | Excellent ✅ |
+| **Rcp** | 213.29 μs | **226.09 μs** | 242.70 μs | **+6.0%** | Excellent ✅ |
+| **Cp** | 951.08 μs | **320.10 μs** | 321.63 μs | **-66% (3x faster!)** | Outstanding 🎉 |
+| **Acp** | 958.73 μs | **340.04 μs** | 343.88 μs | **-65% (2.8x faster!)** | Outstanding 🎉 |
+
+**Performance Categories**:
+- **Excellent**: <10% overhead (Gp, Op, Lcp, Rcp)
+- **Acceptable**: 10-30% overhead (Sp - architectural constraint)
+- **Outstanding**: Generic FASTER than Float64 (Cp, Acp)
+
+---
+
+### Architectural Lessons from Sp & Lcp/Rcp Optimizations
 
 1. **Respect Structural Patterns**: Grade-based decomposition is not just organization - it's sparse computation
 2. **Micro vs Macro**: Type-specific fast-paths work at leaf operations (K-vectors), not when they bypass architecture (graded dispatchers)

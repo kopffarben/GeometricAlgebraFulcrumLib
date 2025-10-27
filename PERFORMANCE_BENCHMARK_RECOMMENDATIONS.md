@@ -548,7 +548,93 @@ XGa and CGa now show **consistent** performance advantages for Generic<T>:
 
 ---
 
-## Recommendations (Updated 2025-10-26)
+## ✅ Phase 2D: Lcp/Rcp Optimization (COMPLETED 2025-10-27)
+
+**Status:** ✅ **SUCCESSFULLY COMPLETED** - Lcp/Rcp overhead reduced to <10% (Excellent category)
+
+### Problem Identified
+
+After Phase 1 Sp optimization, Lcp and Rcp operations still had ~9% overhead in Generic<T> vs Float64 Specialized.
+
+**Root Cause:**
+- `AddEuclideanProductTerms` method lacked type-specific fast-paths
+- Every term multiplication used interface dispatch
+- No local accumulation → N terms = ~3N interface calls
+
+### Solution Implemented (2025-10-27)
+
+**File:** `ProductGp.cs` (Lines 289-379)
+**Method:** `AddEuclideanProductTerms`
+**Pattern:** Type-specific fast-paths with local accumulator (reused from Phase 1 Sp)
+
+**Key Optimizations:**
+1. **JIT Devirtualization**: `typeof(T) == typeof(double)` compile-time checks
+2. **Local Dictionary Accumulator**: Reduces N interface calls → 1 per unique basis blade
+3. **Direct CPU Operations**: `value1 * value2` uses native FPU instead of interface
+4. **Zero-Cost Casts**: `(double)(object)scalar` pattern optimized away by JIT
+5. **Generic Fallback Preserved**: Symbolic scalar types (AngouriMath) still work
+
+### Performance Results: Phase 2D
+
+**XGaBilinearProductsComparisonBenchmark (2025-10-27):**
+
+| Operation | Float64 Spec | Generic<double> | Overhead BEFORE | Overhead AFTER | Improvement |
+|-----------|--------------|-----------------|-----------------|----------------|-------------|
+| **Lcp** | 213.07 μs | **224.05 μs** | ~9% | **5.2%** ✅ | **3.8pp reduction** |
+| **Rcp** | 213.29 μs | **226.09 μs** | ~9% | **6.0%** ✅ | **~3pp reduction** |
+
+**Status:** Both operations now in "Excellent" category (<10% overhead)
+
+**Memory Impact:** Minimal increase (~2.4%), acceptable for performance gain.
+
+### Architectural Lessons from Phase 2B Failure
+
+**Why Phase 2D Succeeded vs Phase 2B (GradedMultivector Sp) Failure:**
+
+**Phase 2B (FAILED):**
+- ❌ Tried to bypass grade-based dispatcher
+- ❌ Flattened efficient architecture → 30% regression
+- ❌ Lesson: Don't bypass macro-architectural patterns
+
+**Phase 2D (SUCCESS):**
+- ✅ Optimized LOW-LEVEL method (`AddEuclideanProductTerms`)
+- ✅ Preserved all architectural structures
+- ✅ Micro-optimization WITHIN architectural pattern
+
+**Analogy:** Phase 2D optimized the "node comparison function" in a B-tree, not the B-tree structure itself.
+
+### Complete Bilinear Products Summary (Post Phase 2D)
+
+| Operation | Float64 | Generic<double> | Overhead | Category |
+|-----------|---------|-----------------|----------|----------|
+| **Gp** | 387.47 μs | 398.05 μs | **+2.7%** | Excellent ✅ |
+| **Op** | 387.25 μs | 397.96 μs | **+2.8%** | Excellent ✅ |
+| **Sp** | 23.68 μs | 30.02 μs | **+26.7%** | Acceptable ⚠️ |
+| **Lcp** | 213.07 μs | **224.05 μs** | **+5.2%** | Excellent ✅ |
+| **Rcp** | 213.29 μs | **226.09 μs** | **+6.0%** | Excellent ✅ |
+| **Cp** | 951.08 μs | **320.10 μs** | **-66%** | Outstanding 🎉 |
+| **Acp** | 958.73 μs | **340.04 μs** | **-65%** | Outstanding 🎉 |
+
+### Pattern Validation
+
+**Phase 1 Sp Pattern Successfully Reused:**
+- Type-specific fast-paths (`typeof(T) == typeof(double)`)
+- Local accumulator (Dictionary)
+- Direct CPU operations
+- Single batch add
+- Generic fallback
+
+**Value:** Proven patterns reduce risk and accelerate optimization work.
+
+### References
+
+**Detailed Analysis:** [LCP_OPTIMIZATION_ANALYSIS.md](LCP_OPTIMIZATION_ANALYSIS.md)
+**Complete Performance Data:** [GENERIC_VS_SPECIALIZED_PERFORMANCE.md](GENERIC_VS_SPECIALIZED_PERFORMANCE.md)
+**Phase 1 Sp Optimization:** [SP_OPTIMIZATION_ANALYSIS.md](SP_OPTIMIZATION_ANALYSIS.md)
+
+---
+
+## Recommendations (Updated 2025-10-27)
 
 **Previous Recommendations:**
 - ~~Use CGa/PGa for benchmarks~~ ✅ DONE
