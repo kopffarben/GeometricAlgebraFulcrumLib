@@ -189,30 +189,157 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic
             if (mv1.Grade != mv2.Grade || mv1.IsZero || mv2.IsZero)
                 return this;
 
-            var processor = mv1.Processor;
+            var metric = mv1.Metric;
 
-            if (mv1.Count <= mv2.Count)
+            // PHASE 1 OPTIMIZATION: Type-specific fast-paths for double/float
+            // Bypasses IScalarProcessor<T> interface overhead for hot path
+            if (typeof(T) == typeof(double))
             {
-                foreach (var (id, scalar1) in mv1.IdScalarPairs)
-                {
-                    if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
-                        continue;
+                var sum = 0.0;
 
-                    AddGpTerm(processor, id, scalar1, scalar2);
+                if (mv1.Count <= mv2.Count)
+                {
+                    foreach (var (id, scalar1) in mv1.IdScalarPairs)
+                    {
+                        if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
+                            continue;
+
+                        var sign = metric.GpSquaredSign(id);
+                        if (sign.IsZero)
+                            continue;
+
+                        var value1 = (double)(object)scalar1;
+                        var value2 = (double)(object)scalar2;
+                        var product = value1 * value2;
+
+                        sum += sign.IsPositive ? product : -product;
+                    }
                 }
+                else
+                {
+                    foreach (var (id, scalar2) in mv2.IdScalarPairs)
+                    {
+                        if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
+                            continue;
+
+                        var sign = metric.GpSquaredSign(id);
+                        if (sign.IsZero)
+                            continue;
+
+                        var value1 = (double)(object)scalar1;
+                        var value2 = (double)(object)scalar2;
+                        var product = value1 * value2;
+
+                        sum += sign.IsPositive ? product : -product;
+                    }
+                }
+
+                if (sum != 0.0)
+                    AddScalar((T)(object)sum);
+
+                return this;
             }
-            else
+
+            if (typeof(T) == typeof(float))
             {
-                foreach (var (id, scalar2) in mv2.IdScalarPairs)
-                {
-                    if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
-                        continue;
+                var sum = 0.0f;
 
-                    AddGpTerm(processor, id, scalar1, scalar2);
+                if (mv1.Count <= mv2.Count)
+                {
+                    foreach (var (id, scalar1) in mv1.IdScalarPairs)
+                    {
+                        if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
+                            continue;
+
+                        var sign = metric.GpSquaredSign(id);
+                        if (sign.IsZero)
+                            continue;
+
+                        var value1 = (float)(object)scalar1;
+                        var value2 = (float)(object)scalar2;
+                        var product = value1 * value2;
+
+                        sum += sign.IsPositive ? product : -product;
+                    }
                 }
+                else
+                {
+                    foreach (var (id, scalar2) in mv2.IdScalarPairs)
+                    {
+                        if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
+                            continue;
+
+                        var sign = metric.GpSquaredSign(id);
+                        if (sign.IsZero)
+                            continue;
+
+                        var value1 = (float)(object)scalar1;
+                        var value2 = (float)(object)scalar2;
+                        var product = value1 * value2;
+
+                        sum += sign.IsPositive ? product : -product;
+                    }
+                }
+
+                if (sum != 0.0f)
+                    AddScalar((T)(object)sum);
+
+                return this;
             }
 
-            return this;
+            // GENERIC FALLBACK: For symbolic types and other non-primitive types
+            {
+                var sp = ScalarProcessor;  // Cache the interface reference
+                T accumulator = sp.Zero.ScalarValue;
+                bool hasValue = false;
+
+                if (mv1.Count <= mv2.Count)
+                {
+                    foreach (var (id, scalar1) in mv1.IdScalarPairs)
+                    {
+                        if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
+                            continue;
+
+                        var sign = metric.GpSquaredSign(id);
+
+                        if (sign.IsZero)
+                            continue;
+
+                        // Inline the multiplication and accumulation
+                        var term = sp.Times(scalar1, scalar2).ScalarValue;
+                        accumulator = sign.IsPositive
+                            ? sp.Add(accumulator, term).ScalarValue
+                            : sp.Subtract(accumulator, term).ScalarValue;
+                        hasValue = true;
+                    }
+                }
+                else
+                {
+                    foreach (var (id, scalar2) in mv2.IdScalarPairs)
+                    {
+                        if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
+                            continue;
+
+                        var sign = metric.GpSquaredSign(id);
+
+                        if (sign.IsZero)
+                            continue;
+
+                        // Inline the multiplication and accumulation
+                        var term = sp.Times(scalar1, scalar2).ScalarValue;
+                        accumulator = sign.IsPositive
+                            ? sp.Add(accumulator, term).ScalarValue
+                            : sp.Subtract(accumulator, term).ScalarValue;
+                        hasValue = true;
+                    }
+                }
+
+                // Single scalar addition at the end (not N additions!)
+                if (hasValue)
+                    AddScalar(accumulator);
+
+                return this;
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
