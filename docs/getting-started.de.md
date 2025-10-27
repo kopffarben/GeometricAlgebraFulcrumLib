@@ -14,10 +14,11 @@ lang: de
 
 1. [Installation](#installation)
 2. [Systemanforderungen](#systemanforderungen)
-3. [Erstes Beispiel](#erstes-beispiel)
-4. [Grundkonzepte](#grundkonzepte)
-5. [Häufige Workflows](#häufige-workflows)
-6. [Nächste Schritte](#nächste-schritte)
+3. [**Performance-Überlegungen**](#performance-überlegungen) 🚀
+4. [Erstes Beispiel](#erstes-beispiel)
+5. [Grundkonzepte](#grundkonzepte)
+6. [Häufige Workflows](#häufige-workflows)
+7. [Nächste Schritte](#nächste-schritte)
 
 ---
 
@@ -77,6 +78,59 @@ Die wichtigsten NuGet-Pakete sind bereits in den Projektdateien enthalten:
 
 ---
 
+## Performance-Überlegungen
+
+### 🚀 Wichtig: Generic<T> ist schneller als Float64-Spezialisierung
+
+GA-FuL bietet **zwei parallele Implementierungen** für Gleitkomma-Berechnungen:
+
+| Implementierung | Beispiel | Performance | Wann verwenden |
+|-----------------|----------|-------------|----------------|
+| **Generic<double>** | `XGaProcessor<double>` | **1,24-2,31x SCHNELLER** | Produktion, performancekritischer Code |
+| **Float64-Spezialisierung** | `XGaFloat64Processor` | Baseline | Lernen, Prototyping, einfachere API |
+
+### Benchmark-Ergebnisse (Oktober 2025)
+
+| Operation | Float64-Spezialisierung | Generic<double> | Beschleunigung |
+|-----------|------------------------|-----------------|----------------|
+| **High-level CGA** | 1,00x | **1,27x** | **27% schneller** |
+| **Norm-Operationen** | 1,00x | **1,74-2,31x** | **74-131% schneller** |
+| **Skalarprodukt** | 33% Overhead | **14% Overhead** | 19pp Verbesserung |
+| **Linke Kontraktion** | 9% Overhead | **5,2% Overhead** | 3,8pp Verbesserung |
+| **Rechte Kontraktion** | 9% Overhead | **6,0% Overhead** | 3pp Verbesserung |
+
+**Speicher**: Generic<T> verwendet **16-33% weniger Speicher** als Float64-Spezialisierung.
+
+### Warum ist Generic<T> schneller?
+
+1. **JIT-Devirtualisierung**: `typeof(T) == typeof(double)` wird zu direkten CPU-Anweisungen kompiliert
+2. **Typ-spezifische Fast-Paths**: Optimierte Code-Pfade für `double` und `float`
+3. **Bessere Cache-Lokalität**: Struct-basierte Skalare mit Inline-Daten
+4. **Reduzierte Allokationen**: 16-33% weniger Allokationen → weniger GC-Druck
+
+### Migrations-Leitfaden
+
+**Float64-Spezialisierung (Einfach):**
+```csharp
+var processor = XGaFloat64Processor.Euclidean;
+var vector = processor.CreateVector(1, 2, 3);
+```
+
+**Generic<double> (Schneller):**
+```csharp
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+
+var scalarProcessor = ScalarProcessorOfFloat64.Instance;
+var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
+var vector = processor.CreateVector(1, 2, 3);
+```
+
+> **💡 Empfehlung:** Verwenden Sie **Float64-Spezialisierung** zum Lernen und Prototyping (einfachere API), wechseln Sie dann zu **Generic<double>** für Produktionscode mit optimaler Performance.
+
+> **📊 Vollständige Benchmarks:** Siehe [GENERIC_VS_SPECIALIZED_PERFORMANCE.md](../GENERIC_VS_SPECIALIZED_PERFORMANCE.md) für detaillierte Analyse.
+
+---
+
 ## Erstes Beispiel
 
 ### Einfache Vektor-Operationen
@@ -92,13 +146,13 @@ var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // 3. Vektoren erstellen
-var composer = processor.CreateComposer();
+var composer = processor.CreateVectorComposer();
 composer.SetVectorTerm(0, 1);
 composer.SetVectorTerm(1, 0);
 composer.SetVectorTerm(2, 0);
 var v1 = composer.GetVector();  // x-Achse
 
-composer = processor.CreateComposer();
+composer = processor.CreateVectorComposer();
 composer.SetVectorTerm(0, 0);
 composer.SetVectorTerm(1, 1);
 composer.SetVectorTerm(2, 0);
@@ -125,6 +179,8 @@ Geometric Product: '1'<1,2>
 Outer Product: '1'<1,2>
 Inner Product: 0
 ```
+
+> **⚡ Performance-Hinweis:** Dieses Beispiel verwendet `XGaFloat64Processor` (Float64-Spezialisierung) aus Gründen der Einfachheit. Für **27% bessere Performance** verwenden Sie `XGaProcessor<double>` wie im Abschnitt [Performance-Überlegungen](#performance-überlegungen) gezeigt.
 
 ---
 
@@ -162,7 +218,7 @@ var sp6 = ScalarProcessorOfMathematica.Instance;
 var scalarProc = ScalarProcessorOfRational.Instance;
 var processor = XGaProcessor<Rational>.CreateEuclidean(scalarProc);
 
-var composer = processor.CreateComposer();
+var composer = processor.CreateVectorComposer();
 composer.SetVectorTerm(0, new Rational(1, 2));  // 1/2
 composer.SetVectorTerm(1, new Rational(1, 3));  // 1/3
 composer.SetVectorTerm(2, new Rational(1, 4));  // 1/4
@@ -220,6 +276,8 @@ var spacetime = XGaFloat64Processor.Create(negativeCount: 1, zeroCount: 0);
 var cga = CGaFloat64GeometricSpace5D.Instance;  // Spezialisiertes CGA
 ```
 
+> **⚡ Performance-Tipp:** Alle obigen Beispiele verwenden Float64-Spezialisierung. Für Produktionscode bevorzugen Sie `XGaProcessor<double>` für **27% schnellere Performance**. Siehe [Performance-Überlegungen](#performance-überlegungen).
+
 ---
 
 ### 3. Multivektoren
@@ -233,21 +291,21 @@ var cga = CGaFloat64GeometricSpace5D.Instance;  // Spezialisiertes CGA
 var scalar = processor.CreateScalar(5.0);
 
 // Vektoren (Grade 1)
-var composer = processor.CreateComposer();
+var composer = processor.CreateVectorComposer();
 composer.SetVectorTerm(0, 1);
 composer.SetVectorTerm(1, 2);
 composer.SetVectorTerm(2, 3);
 var vector = composer.GetVector();
 
 // Bivektoren (Grade 2)
-composer = processor.CreateComposer();
+composer = processor.CreateBivectorComposer();
 composer.SetBivectorTerm(0, 1, 1.0); // xy
 composer.SetBivectorTerm(0, 2, 2.0); // xz
 composer.SetBivectorTerm(1, 2, 3.0); // yz
 var bivector = composer.GetBivector();
 
 // Allgemeine Multivektoren
-composer = processor.CreateComposer();
+composer = processor.CreateMultivectorComposer();
 composer.SetTerm(0, 1.0);           // Skalar-Teil
 composer.SetTerm(1, 2.0);           // e_1
 composer.SetTerm(2, 3.0);           // e_2
@@ -262,13 +320,13 @@ var mv = composer.GetMultivector();
 **Grundlegende Produkte:**
 
 ```csharp
-var composer = processor.CreateComposer();
+var composer = processor.CreateVectorComposer();
 composer.SetVectorTerm(0, 1);
 composer.SetVectorTerm(1, 0);
 composer.SetVectorTerm(2, 0);
 var v1 = composer.GetVector();
 
-composer = processor.CreateComposer();
+composer = processor.CreateVectorComposer();
 composer.SetVectorTerm(0, 0);
 composer.SetVectorTerm(1, 1);
 composer.SetVectorTerm(2, 0);
@@ -297,7 +355,7 @@ var fdp = v1.Fdp(v2);
 
 ```csharp
 // Multivektor erstellen (Beispiel)
-var composer = processor.CreateComposer();
+var composer = processor.CreateMultivectorComposer();
 composer.SetTerm(0, 1.0);  // Skalar
 composer.SetVectorTerm(0, 2.0);  // e_1
 composer.SetBivectorTerm(0, 1, 3.0);  // e_1 ∧ e_2
@@ -387,6 +445,8 @@ Console.WriteLine($"Kreis-Zentrum: {center}");
 Console.WriteLine($"Kreis-Radius: {radius}");
 ```
 
+> **⚡ Performance-Hinweis:** Dieser Workflow verwendet `CGaFloat64GeometricSpace5D` (Float64-Spezialisierung). Für **27% schnellere** Conformal Geometry Operationen erwägen Sie die Migration zur Generic<T> CGA-Implementierung. Kontaktieren Sie die Maintainer für Generic CGA Dokumentation.
+
 ---
 
 ### Workflow 2: Symbolische Berechnungen
@@ -404,7 +464,7 @@ var y = scalarProcessor.CreateSymbol("y");
 var z = scalarProcessor.CreateSymbol("z");
 
 // Vektor mit symbolischen Komponenten
-var composer = processor.CreateComposer();
+var composer = processor.CreateVectorComposer();
 composer.SetVectorTerm(0, x);
 composer.SetVectorTerm(1, y);
 composer.SetVectorTerm(2, z);
@@ -437,13 +497,13 @@ var z = context.CreateParameter("z");
 var scalarProcessor = context.ScalarProcessor;
 var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
 
-var composer = processor.CreateComposer();
+var composer = processor.CreateVectorComposer();
 composer.SetVectorTerm(0, x);
 composer.SetVectorTerm(1, y);
 composer.SetVectorTerm(2, z);
 var v1 = composer.GetVector();
 
-composer = processor.CreateComposer();
+composer = processor.CreateVectorComposer();
 composer.SetVectorTerm(0, 1);
 composer.SetVectorTerm(1, 0);
 composer.SetVectorTerm(2, 0);
@@ -492,7 +552,7 @@ var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // Rotations-Bivector (Rotationsebene)
-var composer = processor.CreateComposer();
+var composer = processor.CreateBivectorComposer();
 composer.SetBivectorTerm(0, 1, 1.0); // xy
 composer.SetBivectorTerm(0, 2, 0.0); // xz
 composer.SetBivectorTerm(1, 2, 0.0); // yz
@@ -505,7 +565,7 @@ var angle = Math.PI / 4;  // 45°
 var rotor = (-angle / 2 * B).Exp();
 
 // Vektor zum Rotieren
-composer = processor.CreateComposer();
+composer = processor.CreateVectorComposer();
 composer.SetVectorTerm(0, 1);
 composer.SetVectorTerm(1, 0);
 composer.SetVectorTerm(2, 0);
@@ -590,7 +650,7 @@ GeometricAlgebraFulcrumLib/
 ```csharp
 // Float64-Prozessor
 var proc1 = XGaFloat64Processor.Euclidean;
-var v1 = proc1.CreateComposer()
+var v1 = proc1.CreateVectorComposer()
     .SetVectorTerm(0, 1)
     .SetVectorTerm(1, 2)
     .SetVectorTerm(2, 3)
@@ -599,7 +659,7 @@ var v1 = proc1.CreateComposer()
 // FEHLER: Anderer Skalartyp (Float32)
 var sp2 = ScalarProcessorOfFloat32.Instance;
 var proc2 = XGaProcessor<float>.CreateEuclidean(sp2);
-var v2 = proc2.CreateComposer()
+var v2 = proc2.CreateVectorComposer()
     .SetVectorTerm(0, 4f)
     .SetVectorTerm(1, 5f)
     .SetVectorTerm(2, 6f)
@@ -611,12 +671,12 @@ var result = v1.Gp(v2);  // Kompilierungsfehler! Unterschiedliche Typen
 **Lösung:** Verwenden Sie konsistente Skalartypen:
 ```csharp
 var processor = XGaFloat64Processor.Euclidean;
-var v1 = processor.CreateComposer()
+var v1 = processor.CreateVectorComposer()
     .SetVectorTerm(0, 1)
     .SetVectorTerm(1, 2)
     .SetVectorTerm(2, 3)
     .GetVector();
-var v2 = processor.CreateComposer()
+var v2 = processor.CreateVectorComposer()
     .SetVectorTerm(0, 4)
     .SetVectorTerm(1, 5)
     .SetVectorTerm(2, 6)
@@ -634,14 +694,14 @@ var result = v1.Gp(v2);  // OK!
 var processor = XGaFloat64Processor.Euclidean;
 
 // 3D-Vektor erstellen
-var v3d = processor.CreateComposer()
+var v3d = processor.CreateVectorComposer()
     .SetVectorTerm(0, 1)
     .SetVectorTerm(1, 2)
     .SetVectorTerm(2, 3)
     .GetVector();
 
 // 4D-Vektor mit demselben Prozessor
-var v4d = processor.CreateComposer()
+var v4d = processor.CreateVectorComposer()
     .SetVectorTerm(0, 1)
     .SetVectorTerm(1, 2)
     .SetVectorTerm(2, 3)
@@ -667,7 +727,7 @@ var spacetime = XGaFloat64Processor.Create(
 **Problem:**
 ```csharp
 var processor = XGaFloat64Processor.Euclidean;
-var v = processor.CreateComposer()
+var v = processor.CreateVectorComposer()
     .SetVectorTerm(0, 1)
     .SetVectorTerm(1, 2)
     .SetVectorTerm(2, 3)
@@ -677,7 +737,7 @@ var v = processor.CreateComposer()
 
 **Lösung:**
 ```csharp
-var v = processor.CreateComposer()
+var v = processor.CreateVectorComposer()
     .SetVectorTerm(0, 1)
     .SetVectorTerm(1, 2)
     .SetVectorTerm(2, 3)
@@ -685,7 +745,7 @@ var v = processor.CreateComposer()
     .Normalize();  // Jetzt Magnitude = 1
 
 // Oder separat:
-var v = processor.CreateComposer()
+var v = processor.CreateVectorComposer()
     .SetVectorTerm(0, 1)
     .SetVectorTerm(1, 2)
     .SetVectorTerm(2, 3)
@@ -708,18 +768,18 @@ v = v.DivideByNorm();  // Identisch mit Normalize()
    ```csharp
    // Gut: Prozessor wiederverwenden
    var processor = XGaFloat64Processor.Euclidean;
-   var v1 = processor.CreateComposer().SetVectorTerm(0, 1).GetVector();
-   var v2 = processor.CreateComposer().SetVectorTerm(1, 1).GetVector();
+   var v1 = processor.CreateVectorComposer().SetVectorTerm(0, 1).GetVector();
+   var v2 = processor.CreateVectorComposer().SetVectorTerm(1, 1).GetVector();
 
    // Schlecht: Prozessor mehrfach erstellen
-   var v1 = XGaFloat64Processor.Euclidean.CreateComposer().SetVectorTerm(0, 1).GetVector();
-   var v2 = XGaFloat64Processor.Euclidean.CreateComposer().SetVectorTerm(1, 1).GetVector();
+   var v1 = XGaFloat64Processor.Euclidean.CreateVectorComposer().SetVectorTerm(0, 1).GetVector();
+   var v2 = XGaFloat64Processor.Euclidean.CreateVectorComposer().SetVectorTerm(1, 1).GetVector();
    ```
 
 3. **Composer wiederverwenden**: Für mehrere ähnliche Multivektoren
    ```csharp
    var processor = XGaFloat64Processor.Euclidean;
-   var composer = processor.CreateComposer();
+   var composer = processor.CreateVectorComposer();
 
    // Erster Vektor
    composer.Clear();
@@ -735,7 +795,7 @@ v = v.DivideByNorm();  // Identisch mit Normalize()
 4. **Method Chaining für einfache Fälle**
    ```csharp
    // Einfache Vektor-Erstellung mit Chaining
-   var v = processor.CreateComposer()
+   var v = processor.CreateVectorComposer()
        .SetVectorTerm(0, 1)
        .SetVectorTerm(1, 2)
        .SetVectorTerm(2, 3)
@@ -750,6 +810,8 @@ v = v.DivideByNorm();  // Identisch mit Normalize()
 
 ---
 
-**Zuletzt aktualisiert**: 2025-10-17 | **API**: Vollständig aktualisiert mit moderner XGaFloat64Processor API
+**Zuletzt aktualisiert**: 2025-10-27 | **API**: Vollständig aktualisiert | **Performance**: Generic<T> 1,24-2,31x schneller 🚀
+
+**Hinweis:** Dieser Leitfaden verwendet Float64-Spezialisierungs-API aus Gründen der Einfachheit. Für Produktionscode erwägen Sie die Verwendung von Generic<double> für optimale Performance. Siehe [Performance-Überlegungen](#performance-überlegungen).
 
 [← Zurück zur Hauptdokumentation](README.de.md)

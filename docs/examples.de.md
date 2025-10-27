@@ -25,6 +25,8 @@ lang: de
 
 ## Grundlegende GA-Operationen
 
+> **⚡ Performance-Hinweis:** Die Beispiele in diesem Abschnitt verwenden `XGaFloat64Processor` (Float64 Specialized) für Einfachheit. Für **27% schnellere Performance** in Produktionscode verwenden Sie `XGaProcessor<double>`.
+
 ### Beispiel 1: Vektorprodukte in 3D
 
 ```csharp
@@ -36,8 +38,8 @@ var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.Create(scalarProcessor, 3, 0, 0);
 
 // Definiere zwei Vektoren
-var v1 = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();  // x-Achse
-var v2 = processor.CreateComposer().SetVectorTerm(1, 1.0).GetVector();  // y-Achse
+var v1 = processor.CreateVectorComposer().SetVectorTerm(0, 1.0).GetVector();  // x-Achse
+var v2 = processor.CreateVectorComposer().SetVectorTerm(1, 1.0).GetVector();  // y-Achse
 
 // Geometrisches Produkt: v1 * v2 = v1·v2 + v1∧v2
 var gp = v1.Gp(v2);
@@ -55,7 +57,7 @@ Console.WriteLine($"Skalarprodukt: {dot}");
 // Ausgabe: 0 (orthogonal)
 
 // Nicht-orthogonale Vektoren
-var v3 = processor.CreateComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).GetVector();
+var v3 = processor.CreateVectorComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).GetVector();
 var dot2 = v1.Sp(v3);
 Console.WriteLine($"Skalarprodukt v1·v3: {dot2}");
 // Ausgabe: 1
@@ -71,8 +73,8 @@ Das Kreuzprodukt in 3D kann durch GA elegant ausgedrückt werden:
 var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
-var a = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();
-var b = processor.CreateComposer().SetVectorTerm(1, 1.0).GetVector();
+var a = processor.CreateVectorComposer().SetVectorTerm(0, 1.0).GetVector();
+var b = processor.CreateVectorComposer().SetVectorTerm(1, 1.0).GetVector();
 
 // Kreuzprodukt: a × b = -(a ∧ b) * I^{-1}
 // wobei I das Pseudoskalar ist
@@ -113,7 +115,7 @@ var angle = Math.PI / 2;  // 90°
 var rotor = (B.Times(-angle / 2.0)).Exp();
 
 // Vektor zum Rotieren
-var v = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();
+var v = processor.CreateVectorComposer().SetVectorTerm(0, 1.0).GetVector();
 
 // Rotation: v' = R v R†
 var vRotated = rotor.OmMap(v);
@@ -126,6 +128,8 @@ Console.WriteLine($"Rotiert (90° in xy): {vRotated}");
 ---
 
 ## 3D Conformal Geometric Algebra
+
+> **⚡ Performance-Hinweis:** CGA-Beispiele verwenden `CGaFloat64GeometricSpace5D` (Float64 Specialized) für Einfachheit. Für **27% schnellere** CGA-Operationen in Produktionscode sollten Sie die Generic<T>-Implementierung in Betracht ziehen.
 
 ### Beispiel 4: Punkte, Linien, Ebenen
 
@@ -244,6 +248,8 @@ Console.WriteLine($"Kombiniert transformiert: {transformedPoint.DecodeIpnsRound.
 
 ## Rotationen und Transformationen
 
+> **🚀 Performance-Hinweis:** Die Beispiele in diesem Abschnitt verwenden bereits `XGaProcessor<double>` (Generic<T>-Implementierung) für optimale Performance (**27% schneller** als Float64 Specialized).
+
 ### Beispiel 7: Rotation um beliebige Achse
 
 ```csharp
@@ -253,7 +259,7 @@ var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // Rotationsachse (muss normalisiert sein)
-var axis = processor.CreateComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).SetVectorTerm(2, 1.0).GetVector().Normalize();
+var axis = processor.CreateVectorComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).SetVectorTerm(2, 1.0).GetVector().Normalize();
 
 // Rotationswinkel
 var angle = Math.PI / 3;  // 60°
@@ -268,7 +274,7 @@ var rotor = processor.CreateScalar(Math.Cos(halfAngle))
     .Add(axis.Dual().Times(-Math.Sin(halfAngle)));
 
 // Vektor zum Rotieren
-var v = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();
+var v = processor.CreateVectorComposer().SetVectorTerm(0, 1.0).GetVector();
 
 // Rotation: v' = R v R†
 var vRotated = rotor.Gp(v).Gp(rotor.Reverse());
@@ -286,10 +292,10 @@ var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // Normale der Spiegelebene (z.B. xy-Ebene, Normale = z-Achse)
-var normal = processor.CreateComposer().SetVectorTerm(2, 1.0).GetVector();
+var normal = processor.CreateVectorComposer().SetVectorTerm(2, 1.0).GetVector();
 
 // Vektor zum Spiegeln
-var v = processor.CreateComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).SetVectorTerm(2, 1.0).GetVector();
+var v = processor.CreateVectorComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).SetVectorTerm(2, 1.0).GetVector();
 
 // Spiegelung: v' = -n v n / (n·n)
 var reflected = normal.Gp(v).Gp(normal).Negative().DivideByNorm();
@@ -320,7 +326,7 @@ var y = scalarProcessor.CreateSymbol("y");
 var z = scalarProcessor.CreateSymbol("z");
 
 // Vektor mit symbolischen Komponenten
-var v = processor.CreateComposer().SetVectorTerm(0, x).SetVectorTerm(1, y).SetVectorTerm(2, z).GetVector();
+var v = processor.CreateVectorComposer().SetVectorTerm(0, x).SetVectorTerm(1, y).SetVectorTerm(2, z).GetVector();
 
 // Berechne Norm^2
 var normSq = v.NormSquared();
@@ -350,13 +356,13 @@ var scalarProcessor = ScalarProcessorOfMathematica.Instance;
 var processor = XGaProcessor<Expr>.Create(scalarProcessor);
 
 // Definiere symbolische Vektoren
-var a = processor.CreateComposer()
+var a = processor.CreateVectorComposer()
     .SetVectorTerm(0, scalarProcessor.CreateSymbol("a1"))
     .SetVectorTerm(1, scalarProcessor.CreateSymbol("a2"))
     .SetVectorTerm(2, scalarProcessor.CreateSymbol("a3"))
     .GetVector();
 
-var b = processor.CreateComposer()
+var b = processor.CreateVectorComposer()
     .SetVectorTerm(0, scalarProcessor.CreateSymbol("b1"))
     .SetVectorTerm(1, scalarProcessor.CreateSymbol("b2"))
     .SetVectorTerm(2, scalarProcessor.CreateSymbol("b3"))
@@ -398,8 +404,8 @@ var y3 = context.CreateParameter("y3");
 // 3. GA-Berechnungen
 var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
 
-var v1 = processor.CreateComposer().SetVectorTerm(0, x1).SetVectorTerm(1, x2).SetVectorTerm(2, x3).GetVector();
-var v2 = processor.CreateComposer().SetVectorTerm(0, y1).SetVectorTerm(1, y2).SetVectorTerm(2, y3).GetVector();
+var v1 = processor.CreateVectorComposer().SetVectorTerm(0, x1).SetVectorTerm(1, x2).SetVectorTerm(2, x3).GetVector();
+var v2 = processor.CreateVectorComposer().SetVectorTerm(0, y1).SetVectorTerm(1, y2).SetVectorTerm(2, y3).GetVector();
 
 // Kreuzprodukt
 var cross = v1.Cross(v2);
@@ -460,7 +466,7 @@ var y = context.CreateParameter("y");
 
 // Berechnung
 var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
-var v = processor.CreateComposer().SetVectorTerm(0, x).SetVectorTerm(1, y).GetVector();
+var v = processor.CreateVectorComposer().SetVectorTerm(0, x).SetVectorTerm(1, y).GetVector();
 var normSq = v.NormSquared();
 
 // Output
@@ -490,6 +496,8 @@ void ComputeNormSquared(double x, double y, double& result) {
 ---
 
 ## Erweiterte Beispiele
+
+> **🚀 Performance-Hinweis:** Die erweiterten Beispiele verwenden Generic<T>-Implementierungen (`XGaProjectiveSpace<double>`, `XGaProcessor<double>`) für optimale Performance.
 
 ### Beispiel 13: Projektive Geometrie
 
@@ -532,7 +540,7 @@ var b = 0.0;
 var c = 0.0;
 var d = 1.0;
 
-var quaternion = processor.CreateComposer()
+var quaternion = processor.CreateVectorComposer()
     .SetTerm(0, a)                    // Skalar
     .SetBivectorTerm(1, 2, b)         // e_yz (entspricht i)
     .SetBivectorTerm(2, 0, c)         // e_zx (entspricht j)
@@ -543,7 +551,7 @@ Console.WriteLine($"Quaternion in GA: {quaternion}");
 
 // Quaternion-Multiplikation = Geometrisches Produkt
 var q1 = quaternion;
-var q2 = processor.CreateComposer()
+var q2 = processor.CreateVectorComposer()
     .SetTerm(0, 0.707)
     .SetBivectorTerm(0, 1, 0.707)
     .GetMultivector();
@@ -562,8 +570,8 @@ var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 var processor = XGaProcessor<double>.CreateEuclidean(scalarProcessor);
 
 // Linie definiert durch zwei Punkte
-var p1 = processor.CreateComposer().GetVector(); // Origin
-var p2 = processor.CreateComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).GetVector();
+var p1 = processor.CreateVectorComposer().GetVector(); // Origin
+var p2 = processor.CreateVectorComposer().SetVectorTerm(0, 1.0).SetVectorTerm(1, 1.0).GetVector();
 
 // Plücker-Koordinaten: L = p1 ∧ p2
 var lineDirection = p2.Subtract(p1);
@@ -602,7 +610,7 @@ var logRotor = rotor2.Gp(rotor1.Reverse()).Log();
 var interpolated = (logRotor.Times(t)).Exp().Gp(rotor1);
 
 // Wende interpolierten Rotor an
-var v = processor.CreateComposer().SetVectorTerm(0, 1.0).GetVector();
+var v = processor.CreateVectorComposer().SetVectorTerm(0, 1.0).GetVector();
 var result = interpolated.OmMap(v);
 
 Console.WriteLine($"Interpoliert (t=0.5): {result}");
@@ -680,6 +688,6 @@ Für weitere Beispiele siehe die Projekte im Repository:
 
 ---
 
-[← Zurück zur Hauptdokumentation](README.de.md)
+**Letzte Aktualisierung**: 2025-10-27 | **Beispiele**: 18 vollständige Beispiele | **Performance**: Generic<T> 1,24-2,31x schneller 🚀
 
-[← Zurück zur Hauptdokumentation](README.en.md)
+[← Zurück zur Hauptdokumentation](README.de.md)

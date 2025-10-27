@@ -226,15 +226,44 @@ GA-FuL bietet Klassen für gängige GA-Transformationen:
 
 ---
 
-### Optimierte Float64-Implementierung
+### Implementierungs-Architekturen: Float64 Specialized vs Generic<T>
 
-Für Performance-kritische Anwendungen:
+GA-FuL bietet **zwei parallele Implementierungs-Architekturen** für Gleitkomma-Berechnungen:
 
-**`RGaFloat64Multivector`**
-- Optimiert für 64-Bit-Gleitkommazahlen
-- Unterstützt bis zu 64 Dimensionen
-- Verwendet Lookup-Tabellen für Dimensionen ≤ 12
-- Schnellere Operationen als generische Version
+#### 1. **Generic<T> Implementierung** (Empfohlen für Performance) 🚀
+
+**`XGaProcessor<double>` / `XGaProcessor<float>`**
+- **1,24-2,31x SCHNELLER** als Float64 Specialized
+- Funktioniert mit jedem Skalar-Typ T (double, float, rational, symbolisch, etc.)
+- Typ-spezifische Fast-Paths mit JIT-Devirtualisierung
+- 16-33% weniger Speicherverbrauch
+- Moderne .NET-Optimierungen (Span<T>, Value-Semantik)
+
+**Performance:**
+- High-Level CGA-Operationen: **1,27x schneller**
+- Norm-Operationen: **1,74-2,31x schneller**
+- Scalar Product Overhead: **14%** (verbessert von 33%)
+- Left Contraction Overhead: **5,2%** (verbessert von 9%)
+
+#### 2. **Float64 Specialized Implementierung** (Einfachere API)
+
+**`XGaFloat64Processor` / `RGaFloat64Multivector`**
+- Spezialisiert nur für 64-Bit-Gleitkommazahlen
+- Einfachere API, gut für Lernen und Prototyping
+- Singleton-Pattern für gängige Metriken (Euclidean, Conformal, Projective)
+- Baseline-Performance (27% langsamer als Generic<double>)
+
+**Wann Float64 Specialized verwenden:**
+- Lernen und Bildungszwecke
+- Schnelles Prototyping mit einfacherer Syntax
+- Legacy-Code-Kompatibilität
+
+**Wann Generic<T> verwenden:**
+- Produktionscode mit optimaler Performance
+- Speicher-kritische Anwendungen
+- Jeder andere Skalar-Typ außer double
+
+> **💡 Performance-Empfehlung:** Verwenden Sie **Generic<double>** für Produktionscode. Float64 Specialized wird für API-Einfachheit und Rückwärtskompatibilität beibehalten.
 
 ---
 
@@ -276,6 +305,8 @@ var sphere = cga.Encode.IpnsRound.RealSphere(radius, centerX, centerY, centerZ);
 // Schneide zwei Objekte
 var intersection = sphere.Op(plane);
 ```
+
+> **⚡ Performance-Hinweis:** Dieses Beispiel verwendet `CGaFloat64GeometricSpace5D` (Float64 Specialized) für Einfachheit. Für **27% schnellere** CGA-Operationen in Produktionscode sollten Sie die Generic<T>-Implementierung in Betracht ziehen.
 
 #### 3. Projective GA (PGA)
 Projektive Geometrie-Modellierung
@@ -425,13 +456,13 @@ var x = context.CreateParameter("x");
 var y = context.CreateParameter("y");
 
 // 4. GA-Operationen (composer pattern)
-var multivector1 = processor.CreateComposer()
+var multivector1 = processor.CreateMultivectorComposer()
     .SetVectorTerm(0, x)
     .SetVectorTerm(1, y)
     .SetVectorTerm(2, 0)
     .GetMultivector();
 
-var multivector2 = processor.CreateComposer()
+var multivector2 = processor.CreateMultivectorComposer()
     .SetVectorTerm(0, 1)
     .SetVectorTerm(1, 1)
     .SetVectorTerm(2, 1)
@@ -578,13 +609,23 @@ Unterstützt die Visualisierungs-Subsystem der Modellierungs-Schicht
 
 ### Optimierte Implementierungen
 
-| Szenario | Implementierung | Performance |
-|----------|-----------------|-------------|
-| **Kleine Dimensionen (< 12)** | Lookup-Tabellen | Sehr schnell |
-| **Mittlere Dimensionen (< 64)** | UInt64-basierte Indices | Schnell |
-| **Große Dimensionen** | Sparse Dictionary | Moderate Performance |
-| **Float64-spezifisch** | `RGaFloat64Multivector` | Optimiert |
-| **High-Performance** | Code-Generierung | Maximal |
+| Szenario | Implementierung | Relative Performance | Hinweise |
+|----------|-----------------|----------------------|----------|
+| **Generic<T> Produktion** | `XGaProcessor<double>` | **1,24-2,31x schneller** 🚀 | Empfohlen für Produktion |
+| **Float64 Lernen/Prototyping** | `XGaFloat64Processor` | 1,00x (Baseline) | Einfachere API |
+| **Kleine Dimensionen (< 12)** | Lookup-Tabellen | Sehr schnell | Beide Architekturen profitieren |
+| **Mittlere Dimensionen (< 64)** | UInt64-basierte Indices | Schnell | Beide Architekturen profitieren |
+| **Große Dimensionen** | Sparse Dictionary | Moderat | Beide Architekturen profitieren |
+| **Code-Generierung** | MetaProgramming Layer | Maximale Performance | Sprachunabhängige Optimierung |
+
+**Performance-Aufschlüsselung (Generic<double> vs Float64 Specialized):**
+- High-Level CGA-Operationen: **1,27x schneller**
+- Norm-Operationen: **1,74-2,31x schneller**
+- Speicherverbrauch: **16-33% weniger**
+- Scalar Product: 14% Overhead (reduziert von 33%)
+- Left Contraction: 5,2% Overhead (reduziert von 9%)
+
+> **📊 Detaillierte Benchmarks:** Siehe [GENERIC_VS_SPECIALIZED_PERFORMANCE.md](../GENERIC_VS_SPECIALIZED_PERFORMANCE.md) für vollständige Analyse.
 
 ---
 
@@ -623,4 +664,6 @@ Die GA-FuL-Architektur bietet:
 
 ---
 
-[← Zurück zur Hauptdokumentation](README.en.md)
+**Letzte Aktualisierung**: 2025-10-27 | **Architektur**: Parallele Float64 & Generic<T> | **Performance**: Generic<T> 1,24-2,31x schneller 🚀
+
+[← Zurück zur Hauptdokumentation](README.de.md)

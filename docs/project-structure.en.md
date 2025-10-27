@@ -486,4 +486,6 @@ The GA-FuL project structure:
 
 ---
 
+**Last Updated**: 2025-10-27 | **Structure**: Current | **Performance**: Generic<T> 1.24-2.31x faster 🚀
+
 [← Back to Main Documentation](README.en.md)

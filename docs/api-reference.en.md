@@ -203,7 +203,7 @@ public class XGaProcessor<T>
 XGaScalar<T> CreateScalar(T value);
 
 // Vectors (using composer)
-var vector = processor.CreateComposer()
+var vector = processor.CreateVectorComposer()
     .SetVectorTerm(0, x)
     .SetVectorTerm(1, y)
     .SetVectorTerm(2, z)
@@ -371,7 +371,7 @@ var scaled = 2.0 * mv1;
 **Usage:**
 
 ```csharp
-var composer = processor.CreateComposer();
+var composer = processor.CreateMultivectorComposer();
 
 // Add terms
 composer.SetTerm(indexSet, scalar);
@@ -591,7 +591,7 @@ var pi = context.CreateConstant("pi", Math.PI);
 // 4. Computations
 var scalarProcessor = context.ScalarProcessor;
 var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
-var v = processor.CreateComposer()
+var v = processor.CreateVectorComposer()
     .SetVectorTerm(0, x)
     .SetVectorTerm(1, y)
     .SetVectorTerm(2, 0)
@@ -786,6 +786,10 @@ This API reference provides an overview of the most important classes and method
 - **Architecture**: See [architecture.md](architecture.en.md)
 - **Getting Started**: See [getting-started.md](getting-started.en.md)
 
+> **💡 Performance Tip:** When choosing between `XGaFloat64Processor` and `XGaProcessor<double>`, prefer Generic<T> for **27% faster** performance. See [Getting Started Guide](getting-started.en.md#performance-considerations) for details.
+
 ---
 
-[← Back to main documentation](README.en.md)
+**Last Updated**: 2025-10-27 | **API**: Complete | **Performance**: Generic<T> 1.24-2.31x faster 🚀
+
+[← Back to Main Documentation](README.en.md)

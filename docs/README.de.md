@@ -9,9 +9,7 @@ lang: de
 **Autor:** Ahmad H. Eid
 **E-Mail:** ga.computing.eg@gmail.com
 
-⚠️ **Hinweis**: Die deutsche Version wird aktualisiert. Für aktuelle Informationen siehe **[English Version](README.en.md)**.
-
-**Status**: In Aktualisierung | **Letztes Update**: 2025-10-17
+**[🇬🇧 English Version](README.en.md)**
 
 ---
 
@@ -67,12 +65,23 @@ Der Name hat zwei Bedeutungsebenen:
   - Mehrdimensionale Arrays und Tensoren
   - Abgetastete Signale für Signalverarbeitung
 
-### 2. **Speichereffiziente Sparse-Multivektoren**
+### 2. **Hochleistungs-Generic-Implementierung** 🚀
+- **Generic<double> ist 1,24-2,31x SCHNELLER** als Float64-Spezialisierung
+- Aktuelle Optimierungen (2025-10):
+  - Norm-Operationen: **1,74-2,31x Beschleunigung**
+  - Skalarprodukt (Sp): Overhead reduziert von 33% → 14%
+  - Linke Kontraktion (Lcp): Overhead reduziert von 9% → 5,2%
+  - Rechte Kontraktion (Rcp): Overhead reduziert von 9% → 6,0%
+- **16-33% weniger Speicher** bei Verwendung von Generic<T>
+- Typ-spezifische Fast-Paths mit JIT-Devirtualisierung
+- Siehe [Performance-Dokumentation](../GENERIC_VS_SPECIALIZED_PERFORMANCE.md) für vollständige Analyse
+
+### 3. **Speichereffiziente Sparse-Multivektoren**
 - Optimierte Datenstrukturen für dünnbesetzte Multivektoren in hochdimensionalen GAs
 - Unterstützung für Räume mit bis zu 64 Dimensionen (optimiert)
 - Unterstützung für beliebige Dimensionen (generisch)
 
-### 3. **Metaprogrammierung-Fähigkeiten**
+### 4. **Metaprogrammierung-Fähigkeiten**
 - Automatische Code-Generierung aus GA-Ausdrücken
 - Optimierung durch:
   - Konstantenpropagierung
@@ -88,13 +97,13 @@ Der Name hat zwei Bedeutungsebenen:
   - MATLAB
   - CUDA (geplant)
 
-### 4. **Geschichtetes System-Design**
+### 5. **Geschichtetes System-Design**
 - **Algebra-Schicht:** Grundlegende GA-Operationen und Datenstrukturen
 - **Modellierungs-Schicht:** Geometrische Modellierung und Visualisierung
 - **Metaprogrammierungs-Schicht:** Code-Generierung und Optimierung
 - **System-Utilities-Schicht:** Hilfsdienste für Text, Code und Web-Grafiken
 
-### 5. **Data-Oriented Programming (DOP)**
+### 6. **Data-Oriented Programming (DOP)**
 - Trennung von Verhalten und Daten
 - Verwendung generischer Datenstrukturen
 - Unveränderliche Daten
@@ -147,6 +156,29 @@ Weitere Details finden Sie in der [Projektstruktur-Dokumentation](project-struct
 
 ---
 
+## Testing & Qualität
+
+**Status (2025-10-27)**: 🎉 **97,92% Tests bestehen!** 🎉
+
+- **Gesamt Tests**: 1.153
+- **Bestanden**: 1.129 (97,92%) ✅
+- **Fehlgeschlagen**: 0
+- **Übersprungen**: 24
+- **Code-Abdeckung**: ~52%
+
+**Test-Suites**:
+| Komponente | Tests | Erfolgsquote |
+|-----------|-------|--------------|
+| Algebra-Operationen | 133 | 100% 🎯 |
+| Lineare Abbildungen | 121 | 100% |
+| AutoDiff | 69 | 100% |
+| Modellierung (CGa/PGA) | 507 | 91% |
+| Utilities | 295 | 99,7% |
+
+Siehe [ISSUES_TO_FIX.md](https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/ISSUES_TO_FIX.md) für Details.
+
+---
+
 ## Erste Schritte
 
 Für eine schnelle Einführung in GA-FuL lesen Sie bitte die [Getting Started Guide](getting-started.en.md).
@@ -167,6 +199,8 @@ var point2 = cga.Encode.IpnsRound.Point(-2.1, 3.4, 5.0);
 // Führe GA-Operationen aus (vereinfachtes Beispiel)
 var result = point1.Op(point2);
 ```
+
+> **Performance-Hinweis:** Dieses Beispiel verwendet die Float64-Spezialisierungs-API aus Gründen der Einfachheit. Für bessere Performance (**27% schneller** im Durchschnitt, bis zu **2,31x schneller** für Norm-Operationen) sollten Sie die Generic<T>-Implementierung in Betracht ziehen. Siehe [Getting Started Guide](getting-started.en.md) für Generic<T>-Beispiele und [Performance-Dokumentation](../GENERIC_VS_SPECIALIZED_PERFORMANCE.md) für detaillierte Benchmarks.
 
 Weitere Beispiele finden Sie in der [Beispiele-Dokumentation](examples.en.md).
 
@@ -220,4 +254,23 @@ E-Mail: ga.computing.eg@gmail.com
 
 ---
 
-**Hinweis:** Diese Dokumentation ist in mehrere thematische Abschnitte unterteilt. Nutzen Sie das Inhaltsverzeichnis, um zu den gewünschten Themen zu navigieren.
+## Dokumentationsstruktur
+
+Diese Dokumentation ist in mehrere thematische Abschnitte unterteilt:
+
+- **[Getting Started](getting-started.en.md)** - Installation und erste Schritte
+- **[Architektur](architecture.en.md)** - System-Design und Komponentenschichten
+- **[Design-Prinzipien](design-principles.en.md)** - Kern-Design-Absichten und DOP-Prinzipien
+- **[Beispiele](examples.en.md)** - Umfassende Code-Beispiele
+- **[API-Referenz](api-reference.en.md)** - Detaillierte API-Dokumentation
+- **[Projektstruktur](project-structure.en.md)** - Modul-Organisation und Abhängigkeiten
+
+**Sprachoptionen:**
+- **English:** `.en.md` Dateien
+- **Deutsch:** `.de.md` Dateien
+
+---
+
+**Letzte Aktualisierung**: 2025-10-27 | **Status**: Aktiv | **Test-Erfolgsquote**: 97,92% ✅ | **Performance**: Generic<T> 1,24-2,31x schneller 🚀
+
+**Hinweis:** Diese Dokumentation bietet umfassende Informationen über GA-FuL. Nutzen Sie das Inhaltsverzeichnis, um zu den gewünschten Themen zu navigieren.

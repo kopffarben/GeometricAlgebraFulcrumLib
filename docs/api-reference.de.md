@@ -203,7 +203,7 @@ public class XGaProcessor<T>
 XGaScalar<T> CreateScalar(T value);
 
 // Vektoren (über Composer)
-var vector = processor.CreateComposer()
+var vector = processor.CreateVectorComposer()
     .SetVectorTerm(0, x)
     .SetVectorTerm(1, y)
     .SetVectorTerm(2, z)
@@ -371,7 +371,7 @@ var scaled = 2.0 * mv1;
 **Verwendung:**
 
 ```csharp
-var composer = processor.CreateComposer();
+var composer = processor.CreateMultivectorComposer();
 
 // Terme hinzufügen
 composer.SetTerm(indexSet, scalar);
@@ -591,7 +591,7 @@ var pi = context.CreateConstant("pi", Math.PI);
 // 4. Berechnungen
 var scalarProcessor = context.ScalarProcessor;
 var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
-var v = processor.CreateComposer()
+var v = processor.CreateVectorComposer()
     .SetVectorTerm(0, x)
     .SetVectorTerm(1, y)
     .SetVectorTerm(2, 0)
@@ -782,10 +782,14 @@ var result = composer.GenerateText();
 Diese API-Referenz bietet eine Übersicht über die wichtigsten Klassen und Methoden. Für:
 
 - **Vollständige API-Details**: Siehe IntelliSense und XML-Kommentare im Code
-- **Verwendungsbeispiele**: Siehe [examples.md](examples.en.md)
-- **Architektur**: Siehe [architecture.md](architecture.en.md)
-- **Getting Started**: Siehe [getting-started.md](getting-started.en.md)
+- **Verwendungsbeispiele**: Siehe [examples.md](examples.de.md)
+- **Architektur**: Siehe [architecture.md](architecture.de.md)
+- **Getting Started**: Siehe [getting-started.md](getting-started.de.md)
+
+> **💡 Performance-Tipp:** Wenn Sie zwischen `XGaFloat64Processor` und `XGaProcessor<double>` wählen, bevorzugen Sie Generic<T> für **27% schnellere** Performance.
 
 ---
 
-[← Zurück zur Hauptdokumentation](README.en.md)
+**Letzte Aktualisierung**: 2025-10-27 | **API**: Vollständig | **Performance**: Generic<T> 1,24-2,31x schneller 🚀
+
+[← Zurück zur Hauptdokumentation](README.de.md)

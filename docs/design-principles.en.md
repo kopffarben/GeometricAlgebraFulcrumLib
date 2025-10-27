@@ -53,12 +53,12 @@ These principles emerged from experience with the predecessor system [GMac](http
 ```csharp
 // The same code works with all scalar types
 var processor = XGaProcessor<T>.CreateEuclidean(scalarProcessor);
-var v1 = processor.CreateComposer()
+var v1 = processor.CreateVectorComposer()
     .SetVectorTerm(0, a)
     .SetVectorTerm(1, b)
     .SetVectorTerm(2, c)
     .GetVector();
-var v2 = processor.CreateComposer()
+var v2 = processor.CreateVectorComposer()
     .SetVectorTerm(0, x)
     .SetVectorTerm(1, y)
     .SetVectorTerm(2, z)
@@ -138,12 +138,17 @@ var mv = composer.GetMultivector();
 
 ### CDI-3: Metaprogramming Capabilities
 
-**Goal:** Code generation from GA expressions for optimized performance
+**Goal:** Code generation from GA expressions for maximum performance and cross-platform deployment
 
-**Problem:**
-- Generic implementation is flexible but sometimes slow
-- High-performance applications need optimized code
-- Manual writing of optimized code is error-prone
+**Context:**
+- Generic<T> implementation already provides **1.24-2.31x faster** performance than Float64 Specialized
+- However, for **extreme performance** or **specific target platforms** (embedded systems, GPUs, web), metaprogramming enables further optimization
+
+**Use Cases:**
+- Target platforms without .NET runtime (C/C++, JavaScript, CUDA)
+- Domain-specific optimizations beyond generic implementation
+- Compile-time constant folding for known geometry
+- Custom optimization for specific hardware
 
 **Solution:**
 - Automatic code generation from GA expressions
@@ -174,12 +179,12 @@ var y = context.CreateParameter("y");
 var scalarProcessor = context.ScalarProcessor;
 var processor = XGaProcessor<IMetaExpression>.CreateEuclidean(scalarProcessor);
 
-var v1 = processor.CreateComposer()
+var v1 = processor.CreateVectorComposer()
     .SetVectorTerm(0, x)
     .SetVectorTerm(1, y)
     .SetVectorTerm(2, 0)
     .GetVector();
-var v2 = processor.CreateComposer()
+var v2 = processor.CreateVectorComposer()
     .SetVectorTerm(0, 1)
     .SetVectorTerm(1, 1)
     .SetVectorTerm(2, 1)
@@ -705,12 +710,12 @@ var scalarProcessor = new MyCustomScalarProcessor();
 var processor = XGaProcessor<MyScalar>.CreateEuclidean(scalarProcessor);
 
 // 3. All GA operations work automatically!
-var v1 = processor.CreateComposer()
+var v1 = processor.CreateVectorComposer()
     .SetVectorTerm(0, a)
     .SetVectorTerm(1, b)
     .SetVectorTerm(2, c)
     .GetVector();
-var v2 = processor.CreateComposer()
+var v2 = processor.CreateVectorComposer()
     .SetVectorTerm(0, x)
     .SetVectorTerm(1, y)
     .SetVectorTerm(2, z)
@@ -804,5 +809,9 @@ var result = multivector1.MyCustomProduct(multivector2);
 ✓ **Testable:** Every component testable in isolation
 
 ---
+
+**Last Updated**: 2025-10-27 | **Design**: DOP + 5 CDIs | **Performance**: Generic<T> 1.24-2.31x faster 🚀
+
+**Note:** These design principles enabled the performance improvements documented in [GENERIC_VS_SPECIALIZED_PERFORMANCE.md](../GENERIC_VS_SPECIALIZED_PERFORMANCE.md).
 
 [← Back to Main Documentation](README.en.md)

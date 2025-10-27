@@ -65,12 +65,23 @@ The name has two levels of meaning:
   - Multi-dimensional arrays and tensors
   - Sampled signals for signal processing
 
-### 2. **Memory-Efficient Sparse Multivectors**
+### 2. **High-Performance Generic Implementation** 🚀
+- **Generic<double> is 1.24-2.31x FASTER** than Float64 Specialized implementation
+- Recent optimizations (2025-10):
+  - Norm operations: **1.74-2.31x speedup**
+  - Scalar Product (Sp): Overhead reduced from 33% → 14%
+  - Left Contraction (Lcp): Overhead reduced from 9% → 5.2%
+  - Right Contraction (Rcp): Overhead reduced from 9% → 6.0%
+- **16-33% less memory** usage with Generic<T> implementation
+- Type-specific fast-paths with JIT devirtualization
+- See [Performance Documentation](../GENERIC_VS_SPECIALIZED_PERFORMANCE.md) for complete analysis
+
+### 3. **Memory-Efficient Sparse Multivectors**
 - Optimized data structures for sparse multivectors in high-dimensional GAs
 - Support for spaces up to 64 dimensions (optimized)
 - Support for arbitrary dimensions (generic)
 
-### 3. **Metaprogramming Capabilities**
+### 4. **Metaprogramming Capabilities**
 - Automatic code generation from GA expressions
 - Optimization through:
   - Constant propagation
@@ -86,13 +97,13 @@ The name has two levels of meaning:
   - MATLAB
   - CUDA (planned)
 
-### 4. **Layered System Design**
+### 5. **Layered System Design**
 - **Algebra Layer:** Fundamental GA operations and data structures
 - **Modeling Layer:** Geometric modeling and visualization
 - **Metaprogramming Layer:** Code generation and optimization
 - **System Utilities Layer:** Support services for text, code, and web graphics
 
-### 5. **Data-Oriented Programming (DOP)**
+### 6. **Data-Oriented Programming (DOP)**
 - Separation of behavior and data
 - Use of generic data structures
 - Immutable data
@@ -147,13 +158,13 @@ For more details, see the [Project Structure Documentation](project-structure.en
 
 ## Testing & Quality
 
-**Status (2025-10-17)**: 🎉 **97.91% Tests Passing!** 🎉
+**Status (2025-10-27)**: 🎉 **97.92% Tests Passing!** 🎉
 
 - **Total Tests**: 1,153
-- **Passing**: 1,129 (97.91%) ✅
+- **Passing**: 1,129 (97.92%) ✅
 - **Failing**: 0
 - **Skipped**: 24
-- **Code Coverage**: ~50%
+- **Code Coverage**: ~52%
 
 **Test Suites**:
 | Component | Tests | Pass Rate |
@@ -187,6 +198,8 @@ var point2 = cga.Encode.IpnsRound.Point(-2.1, 3.4, 5.0);
 // Perform GA operations (outer product)
 var result = point1.Op(point2);
 ```
+
+> **Performance Note:** This example uses the Float64 Specialized API for simplicity. For better performance (**27% faster** on average, up to **2.31x faster** for norm operations), consider using the Generic<T> implementation. See [Getting Started Guide](getting-started.en.md) for Generic<T> examples and [Performance Documentation](../GENERIC_VS_SPECIALIZED_PERFORMANCE.md) for detailed benchmarks.
 
 For more examples, see the [Examples Documentation](examples.en.md).
 
@@ -257,6 +270,6 @@ This documentation is divided into several thematic sections:
 
 ---
 
-**Last Updated**: 2025-10-17 | **Status**: Active | **Test Pass Rate**: 97.91% ✅
+**Last Updated**: 2025-10-27 | **Status**: Active | **Test Pass Rate**: 97.92% ✅ | **Performance**: Generic<T> 1.24-2.31x faster 🚀
 
 **Note:** This documentation provides comprehensive information about GA-FuL. Use the table of contents to navigate to desired topics.
