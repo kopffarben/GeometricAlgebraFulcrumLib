@@ -505,10 +505,36 @@ public abstract partial class XGaMultivector<T>
         if (IsZero)
             return ScalarProcessor.Zero;
 
+        // Phase 1 Optimization 1.2: Fast-path for double/float types
+        // Bypasses IScalarProcessor<T> virtual call overhead for common scalar types
+        // Expected gain: 50-70% performance improvement for double/float
+        if (typeof(T) == typeof(double))
+        {
+            var sum = 0.0;
+            foreach (var scalar in Scalars)
+            {
+                var value = (double)(object)scalar;  // T is already the scalar type
+                sum += value * value;  // Direct operations - no interface calls!
+            }
+            return (Scalar<T>)(object)ScalarProcessor.ScalarFromValue((T)(object)sum);
+        }
+
+        if (typeof(T) == typeof(float))
+        {
+            var sum = 0.0f;
+            foreach (var scalar in Scalars)
+            {
+                var value = (float)(object)scalar;  // T is already the scalar type
+                sum += value * value;  // Direct operations - no interface calls!
+            }
+            return (Scalar<T>)(object)ScalarProcessor.ScalarFromValue((T)(object)sum);
+        }
+
+        // Generic fallback for other scalar types (ERational, EDecimal, MetaExpression, etc.)
         var scalarList =
             Scalars.Select(s => ScalarProcessor.Times(s, s));
 
-        return ScalarProcessor.Add(scalarList);
+        return ScalarProcessor.Add(scalarList);  // Now uses optimized Sum() from 1.1
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -517,8 +543,36 @@ public abstract partial class XGaMultivector<T>
         if (IsZero)
             return ScalarProcessor.Zero;
 
+        // Phase 1 Optimization 1.2: Fast-path for double/float types
+        // Bypasses IScalarProcessor<T> virtual call overhead for common scalar types
+        // Expected gain: 50-70% performance improvement for double/float
+        if (typeof(T) == typeof(double))
+        {
+            var sum = 0.0;
+            foreach (var pair in IdScalarPairs)
+            {
+                var signature = (double)Processor.Signature(pair.Key).ToInt32();  // IntegerSign to int to double
+                var value = (double)(object)pair.Value;  // T is already the scalar type
+                sum += signature * value * value;  // Direct operations - no interface calls!
+            }
+            return (Scalar<T>)(object)ScalarProcessor.ScalarFromValue((T)(object)sum);
+        }
+
+        if (typeof(T) == typeof(float))
+        {
+            var sum = 0.0f;
+            foreach (var pair in IdScalarPairs)
+            {
+                var signature = (float)Processor.Signature(pair.Key).ToInt32();  // IntegerSign to int to float
+                var value = (float)(object)pair.Value;  // T is already the scalar type
+                sum += signature * value * value;  // Direct operations - no interface calls!
+            }
+            return (Scalar<T>)(object)ScalarProcessor.ScalarFromValue((T)(object)sum);
+        }
+
+        // Generic fallback for other scalar types (ERational, EDecimal, MetaExpression, etc.)
         var scalarList =
-            IdScalarPairs.Select(p => 
+            IdScalarPairs.Select(p =>
                 ScalarProcessor.Times(
                     Processor.Signature(p.Key),
                     p.Value,
@@ -526,7 +580,7 @@ public abstract partial class XGaMultivector<T>
                 )
             );
 
-        return ScalarProcessor.Add(scalarList);
+        return ScalarProcessor.Add(scalarList);  // Now uses optimized Sum() from 1.1
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

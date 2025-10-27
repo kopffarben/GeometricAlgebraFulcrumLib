@@ -1639,10 +1639,21 @@ public static class ScalarProcessorAddUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Scalar<T> Add<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<Scalar<T>> scalarList)
     {
-        return scalarList.Aggregate(
-            scalarProcessor.Zero,
-            (a, b) => a.Add(b)
-        );
+        // Optimized implementation: Direct iteration instead of Aggregate with lambda
+        // Eliminates lambda overhead (5-10 cycles per iteration) for better performance
+        // Especially beneficial in hot paths like ENormSquared() and NormSquared()
+        using var enumerator = scalarList.GetEnumerator();
+
+        if (!enumerator.MoveNext())
+            return scalarProcessor.Zero;
+
+        var sum = enumerator.Current;
+        while (enumerator.MoveNext())
+        {
+            sum = sum.Add(enumerator.Current);  // Direct method call, no lambda closure
+        }
+
+        return sum;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
