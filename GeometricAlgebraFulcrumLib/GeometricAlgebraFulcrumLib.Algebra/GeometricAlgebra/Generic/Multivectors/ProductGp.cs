@@ -291,6 +291,85 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             if (mv1.IsZero || mv2.IsZero)
                 return this;
 
+            // Type-specific fast-path optimization for double
+            if (typeof(T) == typeof(double))
+            {
+                var accumulator = new Dictionary<IndexSet, double>();
+
+                foreach (var term1 in mv1.IdScalarPairs)
+                {
+                    foreach (var term2 in mv2.IdScalarPairs)
+                    {
+                        if (!filterFunc(term1.Key, term2.Key))
+                            continue;
+
+                        var egpTerm = Metric.EGp(term1.Key, term2.Key);
+                        var id = egpTerm.Id;
+
+                        var value1 = (double)(object)term1.Value!;
+                        var value2 = (double)(object)term2.Value!;
+                        var product = value1 * value2;  // Direct CPU operation
+
+                        if (!egpTerm.IsPositive)
+                            product = -product;
+
+                        if (accumulator.TryGetValue(id, out var existing))
+                            accumulator[id] = existing + product;
+                        else
+                            accumulator[id] = product;
+                    }
+                }
+
+                // Single batch add
+                foreach (var (id, scalar) in accumulator)
+                {
+                    if (scalar != 0.0)
+                        AddTerm(id, (T)(object)scalar);
+                }
+
+                return this;
+            }
+
+            // Type-specific fast-path optimization for float
+            if (typeof(T) == typeof(float))
+            {
+                var accumulator = new Dictionary<IndexSet, float>();
+
+                foreach (var term1 in mv1.IdScalarPairs)
+                {
+                    foreach (var term2 in mv2.IdScalarPairs)
+                    {
+                        if (!filterFunc(term1.Key, term2.Key))
+                            continue;
+
+                        var egpTerm = Metric.EGp(term1.Key, term2.Key);
+                        var id = egpTerm.Id;
+
+                        var value1 = (float)(object)term1.Value!;
+                        var value2 = (float)(object)term2.Value!;
+                        var product = value1 * value2;  // Direct CPU operation
+
+                        if (!egpTerm.IsPositive)
+                            product = -product;
+
+                        if (accumulator.TryGetValue(id, out var existing))
+                            accumulator[id] = existing + product;
+                        else
+                            accumulator[id] = product;
+                    }
+                }
+
+                // Single batch add
+                foreach (var (id, scalar) in accumulator)
+                {
+                    if (scalar != 0.0f)
+                        AddTerm(id, (T)(object)scalar);
+                }
+
+                return this;
+            }
+
+            // Generic fallback for symbolic types
             foreach (var term1 in mv1.IdScalarPairs)
                 foreach (var term2 in mv2.IdScalarPairs)
                     if (filterFunc(term1.Key, term2.Key))

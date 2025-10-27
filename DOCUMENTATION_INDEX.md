@@ -182,6 +182,29 @@ int pos1 = bitPattern.GetNthSetBitPosition(1);  // Was: 2 ✗ Now: 5 ✓
 
 ---
 
+### LCP_OPTIMIZATION_ANALYSIS.md
+**Lcp/Rcp (Left/Right Contraction) optimization analysis** | [View File](LCP_OPTIMIZATION_ANALYSIS.md) | ~520 lines
+
+**Date**: 2025-10-27 | **Status**: Successfully Completed (Phase 2D)
+
+**Results**:
+- ✅ **Lcp Optimization**: Overhead reduced from 9% → **5.2%** (3.8pp improvement)
+- ✅ **Rcp Optimization**: Achieved **6.0%** overhead (bonus - same method)
+
+**Key Contents**:
+- Problem analysis (AddEuclideanProductTerms bottleneck)
+- Implementation strategy (type-specific fast-paths for double + float)
+- Complete benchmark results (XGaBilinearProductsComparisonBenchmark)
+- Architectural context (relationship to Sp optimization phases)
+- Pattern validation (reused Phase 1 pattern successfully)
+- Future optimization opportunities
+
+**Critical Success Factor**: Optimized LOW-LEVEL method without bypassing architectural patterns (learned from Phase 2B failure).
+
+**File Modified**: `ProductGp.cs` (lines 289-379: AddEuclideanProductTerms with type-specific fast-paths)
+
+---
+
 ## Documentation Map
 
 ```
@@ -195,7 +218,8 @@ GeometricAlgebraFulcrumLib/
 │
 ├── Performance:
 │   ├── GENERIC_VS_SPECIALIZED_PERFORMANCE.md ... Generic vs Float64 Analysis
-│   └── SP_OPTIMIZATION_ANALYSIS.md ............. Sp Optimization Deep Dive
+│   ├── SP_OPTIMIZATION_ANALYSIS.md ............. Sp Optimization Deep Dive
+│   └── LCP_OPTIMIZATION_ANALYSIS.md ............ Lcp/Rcp Optimization Analysis
 │
 ├── Bugs:
 │   └── ISSUES_TO_FIX.md ............ All issues (0 failing, 24 skipped)
@@ -215,7 +239,7 @@ GeometricAlgebraFulcrumLib/
 
 **Test Development**: TODO_TEST_COVERAGE.md for coverage gaps
 
-**Performance Optimization**: GENERIC_VS_SPECIALIZED_PERFORMANCE.md + SP_OPTIMIZATION_ANALYSIS.md
+**Performance Optimization**: GENERIC_VS_SPECIALIZED_PERFORMANCE.md + SP_OPTIMIZATION_ANALYSIS.md + LCP_OPTIMIZATION_ANALYSIS.md
 
 **Research/Citation**: README.md + [external docs](https://kopffarben.github.io/GeometricAlgebraFulcrumLib/)
 
@@ -230,13 +254,21 @@ GeometricAlgebraFulcrumLib/
 | ISSUES_TO_FIX.md | ~850 | 2025-10-17 | ✅ Current (incl. CGa) |
 | GENERIC_VS_SPECIALIZED_PERFORMANCE.md | ~635 | 2025-10-27 | ✅ Current |
 | SP_OPTIMIZATION_ANALYSIS.md | ~395 | 2025-10-27 | ✅ Current |
-| DOCUMENTATION_INDEX.md | ~250 | 2025-10-27 | ✅ Current |
+| LCP_OPTIMIZATION_ANALYSIS.md | ~520 | 2025-10-27 | ✅ Current |
+| DOCUMENTATION_INDEX.md | ~280 | 2025-10-27 | ✅ Current |
 
 **Completeness**: 95% | **Up-to-date**: 100% | **Cross-references**: Excellent
 
 ---
 
 ## Changelog
+
+**2025-10-27** (Update 2): Lcp/Rcp optimization documentation added
+- Created LCP_OPTIMIZATION_ANALYSIS.md (Lcp/Rcp contraction product optimization)
+- Documented Phase 2D optimization success (9% → 5.2% overhead for Lcp)
+- Added Lcp/Rcp optimization to Performance category in documentation map
+- Updated "How to Use This Documentation" with comprehensive optimization references
+- Updated statistics table to include LCP_OPTIMIZATION_ANALYSIS.md
 
 **2025-10-27**: Performance optimization documentation added
 - Added "Performance Optimization Documentation" section
