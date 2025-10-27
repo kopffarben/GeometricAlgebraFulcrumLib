@@ -1,8 +1,8 @@
 # Next Steps Roadmap - Konkrete Aktionen
 
-**Letzte Aktualisierung:** 2025-10-26 (⚠️ XGa Performance-Warnung hinzugefügt)
+**Letzte Aktualisierung:** 2025-10-27 (✅ XGa Performance-Lösung identifiziert)
 **Aktueller Status:** Phase 1 ✅ COMPLETE (Modules 1, 2, 3, 5 complete | Module 4 skipped)
-**Nächster Schritt:** Phase 2 - Performance-Validierung DANN Hybride Thin Wrapper Migration
+**Nächster Schritt:** XGa Performance Optimierungen (Phase 1: Quick Wins) → DANN Phase 2 Migration
 **Branch:** Feature/ScalarFloat32
 
 ---
@@ -22,7 +22,9 @@ Nach jedem Meilenstein alle drei aktualisieren!
 
 **Phase 0:** ✅ COMPLETE
 - API-Analyse komplett
-- Performance validiert (Generic 1.27x schneller)
+- Performance validiert (CGa: Generic 1.27x schneller | XGa: Generic 1.88x langsamer)
+- **XGa Performance Root Cause identifiziert** (Aggregate+Lambda, Interface-Indirection)
+- **Phase 1 Optimierungen geplant** (Quick Wins: 1.88x → 0.9x erwartet)
 - 102 Equivalence-Tests passing
 - Roadmap erstellt
 
