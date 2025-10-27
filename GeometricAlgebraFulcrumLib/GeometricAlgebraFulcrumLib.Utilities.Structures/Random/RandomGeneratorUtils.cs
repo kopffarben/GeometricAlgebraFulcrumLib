@@ -177,6 +177,101 @@ public static class RandomGeneratorUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float GetFloat32(this System.Random randomGenerator)
+    {
+        return (float)randomGenerator.NextDouble();
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float GetFloat32(this System.Random randomGenerator, float maxValue)
+    {
+        return maxValue * (float)randomGenerator.NextDouble();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float GetFloat32(this System.Random randomGenerator, float minValue, float maxValue)
+    {
+        return (maxValue - minValue) * (float)randomGenerator.NextDouble() + minValue;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float GetScaledFloat32(this System.Random randomGenerator, float scalingFactor)
+    {
+        return scalingFactor * (float)randomGenerator.NextDouble();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float GetOffsetScaledFloat32(this System.Random randomGenerator, float offsetFactor, float scalingFactor)
+    {
+        return offsetFactor + scalingFactor * (float)randomGenerator.NextDouble();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float GetLinearMappedFloat32(this System.Random randomGenerator, float minValue, float maxValue)
+    {
+        return minValue + (maxValue - minValue) * (float)randomGenerator.NextDouble();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static T GetMappedFloat32<T>(this System.Random randomGenerator, Func<float, T> mappingFunc)
+    {
+        return mappingFunc((float)randomGenerator.NextDouble());
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<float> GetFloat32Numbers(this System.Random randomGenerator, int count)
+    {
+        while (count > 0)
+        {
+            yield return randomGenerator.GetFloat32();
+            count--;
+        }
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<float> GetFloat32Numbers(this System.Random randomGenerator, int count, float minValue, float maxValue)
+    {
+        while (count > 0)
+        {
+            yield return randomGenerator.GetFloat32(minValue, maxValue);
+            count--;
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<float> GetScaledFloat32Numbers(this System.Random randomGenerator, int count, float scalingFactor)
+    {
+        while (count > 0)
+        {
+            yield return randomGenerator.GetScaledFloat32(scalingFactor);
+            count--;
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<float> GetOffsetScaledFloat32Numbers(this System.Random randomGenerator, int count, float offsetFactor, float scalingFactor)
+    {
+        while (count > 0)
+        {
+            yield return randomGenerator.GetOffsetScaledFloat32(offsetFactor, scalingFactor);
+            count--;
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<float> GetLinearMappedFloat32Numbers(this System.Random randomGenerator, int count, float minValue, float maxValue)
+    {
+        while (count > 0)
+        {
+            yield return randomGenerator.GetLinearMappedFloat32(minValue, maxValue);
+            count--;
+        }
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double GetFloat64(this System.Random randomGenerator)
     {
         return randomGenerator.NextDouble();
