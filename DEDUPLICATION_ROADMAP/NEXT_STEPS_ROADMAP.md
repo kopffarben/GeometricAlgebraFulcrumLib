@@ -36,6 +36,16 @@ Nach jedem Meilenstein alle drei aktualisieren!
 - **Benchmarks validiert** ✅
 - **Phase 2 Migration vollständig UNBLOCKED** ✅
 
+**Weitere Performance-Optimierungen:** ✅ COMPLETE (2025-10-27)
+- **Sp Phase 1** (Scalar Product): K-Vector Sp optimiert (`ScalarComposerOperations.cs`)
+  - Conformal Sp: 33% → 14% Overhead (19pp Verbesserung) ✅
+  - Phase 2B: GradedMultivector Sp-Versuch verursachte 30% Regression → korrekt revertiert
+- **Phase 2D** (Lcp/Rcp): Contraction Products optimiert (`ProductGp.cs`)
+  - Lcp: 9% → 5.2% Overhead ✅
+  - Rcp: ~9% → 6.0% Overhead ✅
+- **Bewährtes Pattern validiert:** Type-spezifische Fast-Paths mit lokalem Akkumulator
+- **Details:** SP_OPTIMIZATION_ANALYSIS.md, LCP_OPTIMIZATION_ANALYSIS.md
+
 **Phase 1.1:** ✅ COMPLETE (Module 1: XGa Core)
 - Task 1.1 (XGaComputedOutermorphism<T>) ✅ COMPLETE
 - Task 1.2 (XGaStoredOutermorphism<T>) ✅ COMPLETE

@@ -58,6 +58,33 @@
 - ✅ **Keine Performance-Regression** bei Thin Wrapper Migration erwartet
 - ✅ **Phase 2 vollständig UNBLOCKED**
 
+### Weitere Performance-Optimierungen (2025-10-27) ✅
+
+**Nach Phase 1** wurden zusätzliche Optimierungen für Bilinear Products durchgeführt:
+
+**Sp Phase 1 (Scalar Product):**
+- **Problem:** K-Vector Sp hatte 27-33% Overhead
+- **Lösung:** Type-spezifische Fast-Paths in `ScalarComposerOperations.cs` (Zeilen 186-342)
+- **Ergebnis:** Conformal Sp: 33% → 14% Overhead (19pp Verbesserung) ✅
+- **Phase 2B Lektion:** Versuch bei GradedMultivector Sp verursachte 30% Regression → korrekt revertiert
+
+**Phase 2D (Lcp/Rcp):**
+- **Problem:** Lcp/Rcp hatten ~9% Overhead
+- **Lösung:** Type-spezifische Fast-Paths in `ProductGp.cs::AddEuclideanProductTerms` (Zeilen 289-379)
+- **Ergebnis:** Lcp 5.2%, Rcp 6.0% Overhead - beide in "Excellent" Kategorie ✅
+- **Pattern:** Lokaler Dictionary-Akkumulator + direkte CPU-Operationen (double + float)
+
+**Zusammenfassung aller Optimierungen:**
+
+| Operation | Datei | Overhead VORHER | Overhead NACHHER | Status |
+|-----------|-------|-----------------|------------------|--------|
+| Norm-Ops | `XGaMultivectorUnaryBinaryOps.cs` | 188-262% slower | **39-131% FASTER** | ✅ |
+| Sp (K-Vector) | `ScalarComposerOperations.cs` | 27-33% | **14-23%** | ✅ |
+| Lcp | `ProductGp.cs` | ~9% | **5.2%** | ✅ |
+| Rcp | `ProductGp.cs` | ~9% | **6.0%** | ✅ |
+
+**Details:** SP_OPTIMIZATION_ANALYSIS.md, LCP_OPTIMIZATION_ANALYSIS.md
+
 ### Nächste Schritte
 
 **Sofort (vor Phase 2):**

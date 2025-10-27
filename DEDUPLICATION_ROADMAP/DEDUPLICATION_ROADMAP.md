@@ -36,6 +36,52 @@ Details: `KNOWN_ISSUES_AND_SOLUTIONS.md` (Issue #8), `PERFORMANCE_BENCHMARK_RECO
 
 ---
 
+## 🚀 Weitere Performance-Optimierungen (2025-10-27)
+
+Nach den Quick Win Optimizations wurden weitere gezielte Optimierungen durchgeführt:
+
+### Sp (Scalar Product) Optimization - Phase 1
+
+**Problem:** K-Vector Sp hatte 27-33% Overhead in Generic<T> vs Float64 Specialized.
+
+**Lösung:** Type-spezifische Fast-Paths mit lokalem Akkumulator in `ScalarComposerOperations.cs` (Zeilen 186-342)
+
+**Ergebnis:**
+- Euclidean Sp: 27% → 23% Overhead (4pp Verbesserung)
+- Conformal Sp: 33% → 14% Overhead (19pp Verbesserung) ✅
+
+**Details:** [SP_OPTIMIZATION_ANALYSIS.md](../SP_OPTIMIZATION_ANALYSIS.md)
+
+### Lcp/Rcp (Contraction Products) Optimization - Phase 2D
+
+**Problem:** Lcp und Rcp hatten ~9% Overhead in Generic<T> vs Float64 Specialized.
+
+**Lösung:** Type-spezifische Fast-Paths in `ProductGp.cs::AddEuclideanProductTerms` (Zeilen 289-379)
+- Gleiche Pattern wie Sp Phase 1: Lokaler Dictionary-Akkumulator + direkte CPU-Operationen
+- Implementiert für double AND float
+
+**Ergebnis:**
+- Lcp: 9% → 5.2% Overhead (3.8pp Verbesserung) ✅
+- Rcp: ~9% → 6.0% Overhead (Bonus-Optimierung) ✅
+- Beide Operationen jetzt in "Excellent" Kategorie (<10% Overhead)
+
+**Architektur-Lektion:** Phase 2D optimierte LOW-LEVEL Methode ohne architektonische Muster zu umgehen (im Gegensatz zu Phase 2B Fehlversuch bei GradedMultivector Sp, der den grade-based dispatcher umging und 30% Regression verursachte).
+
+**Details:** [LCP_OPTIMIZATION_ANALYSIS.md](../LCP_OPTIMIZATION_ANALYSIS.md)
+
+### Zusammenfassung Performance-Optimierungen
+
+| Optimierung | Datei | Overhead VORHER | Overhead NACHHER | Status |
+|-------------|-------|-----------------|------------------|--------|
+| Norm-Ops | `XGaMultivectorUnaryBinaryOps.cs` | 188-262% slower | **39-131% FASTER** | ✅ |
+| Sp (K-Vector) | `ScalarComposerOperations.cs` | 27-33% | **14-23%** | ✅ |
+| Lcp | `ProductGp.cs` | ~9% | **5.2%** | ✅ |
+| Rcp | `ProductGp.cs` | ~9% | **6.0%** | ✅ |
+
+**Bewährtes Pattern:** Type-spezifische Fast-Paths (`typeof(T) == typeof(double)`) mit lokalem Akkumulator funktioniert durchweg erfolgreich.
+
+---
+
 ## ⚠️ WICHTIG: Dokumentationspflege
 
 **Diese Dateien müssen synchron gehalten werden:**
