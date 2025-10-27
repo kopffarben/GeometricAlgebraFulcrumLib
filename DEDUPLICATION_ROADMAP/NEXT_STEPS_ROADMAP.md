@@ -1,8 +1,8 @@
 # Next Steps Roadmap - Konkrete Aktionen
 
-**Letzte Aktualisierung:** 2025-10-25
+**Letzte Aktualisierung:** 2025-10-26 (⚠️ XGa Performance-Warnung hinzugefügt)
 **Aktueller Status:** Phase 1 ✅ COMPLETE (Modules 1, 2, 3, 5 complete | Module 4 skipped)
-**Nächster Schritt:** Phase 2 - Thin Wrapper Migration
+**Nächster Schritt:** Phase 2 - Performance-Validierung DANN Hybride Thin Wrapper Migration
 **Branch:** Feature/ScalarFloat32
 
 ---
@@ -363,25 +363,61 @@ Generic: GeometricAlgebra/Generic/Multivectors/XGaScalar.cs (NEU: ToTuple method
 
 ---
 
+## ⚠️ KRITISCHE WARNUNG: XGa Performance-Widerspruch (2025-10-26)
+
+**Status:** 🚨 **Phase 2 XGa Migration BLOCKIERT - Erfordert weitere Untersuchung**
+
+**Benchmark-Ergebnisse widersprechen CGa-Performance:**
+
+| Level | Float64 Spec | Generic<float> | Generic<double> | Fazit |
+|-------|--------------|----------------|-----------------|-------|
+| **CGa (High-Level)** | Baseline | **1.24x schneller** ✅ | **1.27x schneller** ✅ | Generic gewinnt! |
+| **XGa (Low-Level)** | Baseline | **1.85x langsamer** ⚠️ | **1.88x langsamer** ⚠️ | Float64 gewinnt! |
+
+**Kernaussage:**
+- CGa-Benchmarks zeigten: Generic ist **schneller** → Thin Wrapper sollte funktionieren
+- XGa-Benchmarks zeigen: Generic ist **1.15-2.62x LANGSAMER** → Thin Wrapper würde Performance verschlechtern!
+
+**Hypothese:** Low-Level XGa-Operationen leiden unter `IScalarProcessor<T>` Indirection-Overhead, während High-Level CGa-Operationen von besserer JIT-Optimierung profitieren.
+
+**Auswirkungen auf Phase 2:**
+1. ❌ **XGa Core (Module 1):** Thin Wrapper Migration NICHT empfohlen (1.15-2.62x Regression!)
+2. ✅ **CGa/PGa:** Thin Wrapper Migration weiterhin empfohlen (1.24-1.27x Speedup validiert)
+3. ⚠️ **ComplexAlgebra/VGA:** Performance-Validierung erforderlich vor Migration
+
+**Nächste Schritte (ZWINGEND vor Phase 2.1):**
+- [ ] XGa Float64 vs Generic<double> profilen (exakte Bottlenecks identifizieren)
+- [ ] Float64 XGa Source auf SIMD/AVX2-Usage prüfen
+- [ ] `IScalarProcessor<T>` Call-Overhead messen
+- [ ] Aggressive Inlining-Hints testen
+
+**Dokumentation:** Siehe `XGA_NORMALIZATION_BENCHMARK_RESULTS.md` für vollständige Analyse
+
+---
+
 ## 🚀 Phase 2: Thin Wrapper Migration - NÄCHSTER SCHRITT
 
-**Ziel:** Float64-Klassen als dünne Wrapper um Generic<double> neu schreiben
+**⚠️ STRATEGIE-ANPASSUNG ERFORDERLICH (siehe Warnung oben)**
 
-**Vorteile:**
+**Ursprüngliches Ziel:** Float64-Klassen als dünne Wrapper um Generic<double> neu schreiben
+
+**Vorteile (CGa/PGa validiert):**
 - ~78,500 LOC Reduktion
 - 100% Rückwärtskompatibilität
 - Bewährtes Pattern (siehe Float32)
 - Einfacher zu warten
+- **1.24-1.27x Performance-Vorteil** (CGa-Level)
 
-**Umfang:**
-- Module 1: XGa Core (5 Klassen → Wrapper)
-- Module 2: ComplexAlgebra (3 Klassen → Wrapper)
-- Module 3: VGA (3 Klassen → Wrapper)
-- Module 5: LinearAlgebra (7 Klassen → Wrapper)
+**Neue Strategie - Hybride Migration:**
+- Module 1: XGa Core → **SKIP (Performance-Regression)** ⏭️
+- Module 2: ComplexAlgebra → Performance-Validierung erforderlich ⚠️
+- Module 3: VGA → Performance-Validierung erforderlich ⚠️
+- Module 5: LinearAlgebra → Performance-Validierung erforderlich ⚠️
+- **CGa/PGa (nicht in Modules):** Thin Wrapper empfohlen ✅
 
-**Geschätzter Aufwand:** 1-2 Wochen
+**Geschätzter Aufwand:** 1-2 Wochen (angepasst nach Performance-Validierung)
 
-**Start:** Jetzt! (Phase 1 complete)
+**Start:** NACH Performance-Untersuchungen für XGa
 
 ---
 

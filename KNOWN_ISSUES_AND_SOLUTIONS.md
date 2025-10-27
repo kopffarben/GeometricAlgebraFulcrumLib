@@ -1,5 +1,5 @@
 # Known Issues & Solutions
-**Date:** 2025-10-25
+**Date:** 2025-10-26 (Updated with XGa Performance Issue)
 **Status:** Active Maintenance
 
 ## Priority Classification
@@ -8,6 +8,107 @@
 - 🟡 **Medium** - Workaround available, plan to fix
 - 🟢 **Low** - Minor issue, acceptable limitation
 - 📋 **Enhancement** - Not a bug, but could be improved
+
+---
+
+## Issue #8: XGa Generic<T> Performance Regression
+**Priority:** 🔴 Critical (Blocks Phase 2 XGa Migration)
+**Status:** Investigation Required
+**Affects:** Phase 2 Thin Wrapper Migration Strategy
+**Discovered:** 2025-10-26 (XGaNormalizationBenchmark.cs)
+
+### Description
+
+XGa (low-level) benchmarks reveal **performance contradiction** with CGa (high-level) benchmarks:
+
+**CGa Benchmarks (High-Level):**
+- Generic<double> is **1.27x faster** than Float64 Specialized ✅
+- Supported Phase 2 Thin Wrapper Migration strategy
+
+**XGa Benchmarks (Low-Level):**
+- Generic<double> is **1.15-2.62x SLOWER** than Float64 Specialized ⚠️
+- **Contradicts** Phase 2 migration assumptions!
+
+```csharp
+// XGa Performance Gap Examples
+Vector Norm (3D):          Float64 40.6ns  vs  Generic<double> 76.3ns  (1.88x slower)
+Multivector Norm (worst):  Float64 90.3ns  vs  Generic<double> 236.1ns (2.62x slower) ⚠️
+Batch Normalize (best):    Float64 331.6µs vs  Generic<double> 381.1µs (1.15x slower)
+```
+
+### Root Cause (Hypothesis)
+
+**Low-Level XGa Operations:**
+- Direct scalar operations (`ENorm().ScalarValue`)
+- `IScalarProcessor<T>` adds indirection overhead
+- Float64 may use SIMD/AVX2 intrinsics
+- Generic<T> cannot vectorize across generic types
+
+**High-Level CGa Operations:**
+- Complex multi-step operations
+- JIT optimizes across call boundaries better
+- Indirection overhead amortized over more computation
+
+### Impact on Phase 2
+
+**Original Plan:**
+- Migrate ALL Float64 to thin wrappers around Generic<double>
+- Expected: 1.27x performance improvement (based on CGa)
+
+**New Reality:**
+- ❌ **XGa Core migration would cause 1.15-2.62x REGRESSION**
+- ✅ **CGa/PGa migration still valid** (performance validated)
+- ⚠️ **Hybrid strategy required**
+
+### Workaround (Phase 2 Strategy Adjustment)
+
+**Recommended Approach:**
+
+1. ❌ **Skip XGa Core (Module 1) Thin Wrapper Migration**
+   - Keep Float64 Specialized for XGa low-level operations
+   - Avoids unacceptable performance regression
+
+2. ✅ **Proceed with CGa/PGa Thin Wrapper Migration**
+   - Performance advantage validated (1.24-1.27x faster)
+   - High-level operations benefit from Generic
+
+3. ⚠️ **Validate ComplexAlgebra/VGA Before Migration**
+   - Run benchmarks before migrating
+   - Ensure no performance regression
+
+### Solution (To Investigate)
+
+**Before Phase 2 XGa Migration, investigate:**
+
+1. **Profile XGa Float64 vs Generic<double>:**
+   - Identify exact bottlenecks
+   - Measure call overhead vs computation overhead
+
+2. **Check Float64 SIMD Usage:**
+   ```bash
+   grep -r "Vector256\|AVX2\|Intrinsics" GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/Float64/
+   ```
+
+3. **Measure IScalarProcessor<T> Overhead:**
+   - Benchmark virtual method call cost
+   - Test with struct-based processors (devirtualization)
+
+4. **Test Aggressive Inlining:**
+   - Add `[MethodImpl(MethodImplOptions.AggressiveInlining)]` to Generic methods
+   - Measure impact on performance
+
+**Potential Long-Term Optimizations:**
+- Implement SIMD paths for Generic<float> and Generic<double>
+- Specialized XGaScalarProcessor<T> with fast-paths for double/float
+- Consider compile-time specialization via source generators
+
+**Priority:** 🔴 Critical - MUST investigate before Phase 2 Module 1 migration
+
+**File to analyze:** `GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/Float64/Multivectors/XGaFloat64Multivector.cs`
+
+**Benchmark File:** `GeometricAlgebraFulcrumLib.Benchmarks/GeometricAlgebra/XGaNormalizationBenchmark.cs`
+
+**Full Analysis:** See `XGA_NORMALIZATION_BENCHMARK_RESULTS.md` (300+ lines)
 
 ---
 
@@ -274,6 +375,7 @@ public XGaFloat64Bivector GetBivector(int index)
 
 | # | Issue | Priority | Status | Action Required |
 |---|-------|----------|--------|-----------------|
+| 8 | **XGa Generic<T> Performance Regression** | 🔴 **Critical** | **Investigation** | **Profile before Phase 2** |
 | 1 | Antiparallel CreatePureRotor | 🟡 Medium | Workaround | Modify library code |
 | 2 | CGA Hybrid API | 🟢 Low | Documented | Update docs |
 | 3 | Float32 API Limitations | 🟢 Low | Limitation | Use wrappers |
