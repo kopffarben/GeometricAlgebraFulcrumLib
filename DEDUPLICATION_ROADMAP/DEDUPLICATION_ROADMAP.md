@@ -640,17 +640,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 4.2 (Phase 3A Module 6A - Circles & Harmonic Motion Complete)
+**Dokument Version:** 4.3 (Phase 3A Module 6A - Bezier Curves + Critical Bugfix Complete)
 **Letzte Aktualisierung:** 2025-10-28
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
-**Nächste Review:** Nach Completion von Module 6A (13/151 Klassen, 8.6% complete)
+**Nächste Review:** Nach Completion von Module 6A (15/151 Klassen, 9.9% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 13/151 Klassen complete (8.6%)
-**Aufwand bisher:** ~18 Stunden
-**Tests:** 77 Tests (100% passing ✅)
-**LOC:** ~1,822 LOC Implementation + ~2,380 LOC Tests
+**Status:** 15/151 Klassen complete (9.9%)
+**Aufwand bisher:** ~20 Stunden
+**Tests:** 99 Tests (100% passing ✅)
+**LOC:** ~2,500 LOC Implementation + ~3,100 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -676,8 +676,31 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **Tests:** 13 Tests ✅
     - **LOC:** 240 LOC Implementation + 390 LOC Tests
 
+#### ✅ Line Segments (Complete - 2025-10-28)
+12. **LineSegmentPath3D<T>** - Gerade Liniensegmente zwischen zwei Punkten
+    - Lineare Interpolation: `(1-t)*P1 + t*P2`
+    - Arc-length Parametrisierung
+    - Konstante Geschwindigkeit (Derivative1)
+    - Null-Beschleunigung (Derivative2)
+    - **Tests:** 12 Tests ✅
+    - **LOC:** 150 LOC Implementation + 353 LOC Tests
+
+#### ✅ Bezier Curves (Complete - 2025-10-28)
+13. **BezierPath3DUtils<T>** - Generic Bernstein-Basis-Funktionen & DeCasteljau
+    - Bernstein Basis Grad 0-3: B₀(t), B₁(t), B₂(t), B₃(t)
+    - DeCasteljau-Algorithmus für effiziente Evaluation
+    - **LOC:** 237 LOC
+    - **🐛 BUGFIX in Float64**: `Float64BezierPath3DUtils.cs:60` hatte `t * 3` statt `t * t` für B₂(t)
+
+14. **Bezier2Path3D<T>** - Quadratische Bezier-Kurven (3 Kontrollpunkte)
+    - Parametrische Form: `B(t) = (1-t)²P₁ + 2(1-t)tP₂ + t²P₃`
+    - Analytische Ableitungen (1. und 2. Ordnung)
+    - Konstante 2. Ableitung für quadratische Kurven
+    - **Tests:** 10 Tests ✅
+    - **LOC:** 240 LOC Implementation + 438 LOC Tests
+
 #### ✅ API Parity Improvements (Complete - 2025-10-28)
-12. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
+15. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
     - `SymmetricPi(processor)` → [-π, π]
     - `SymmetricOne(processor)` → [-1, 1]
     - `SymmetricHalfPi(processor)` → [-π/2, π/2]
@@ -689,13 +712,22 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 - `3b272743` - SimpleHarmonicPath3D<T> implementation (633 lines)
 - `0b104642` - ScalarRange<T> API parity improvements (23 lines added, 6 removed)
 - `3fd83a7b` - Documentation of 100% API parity goal (33 lines)
+- `9b174d48` - DEDUPLICATION_ROADMAP update (58 lines added, 4 removed)
+- `722b0df3` - Bezier2Path3D<T> + Critical Float64 bugfix (677 lines added)
+
+#### 🐛 Bugs Gefunden & Gefixt
+- **CRITICAL**: Float64BezierPath3DUtils.BernsteinBasis_2() hatte falsche Formel
+  - WAS: `return new Triplet<double>(s * s, 2 * s * t, t * 3);` ❌
+  - IST: `return new Triplet<double>(s * s, 2 * s * t, t * t);` ✅
+  - **Impact**: ALLE Float64 quadratischen Bezier-Kurven waren mathematisch FALSCH
+  - **Entdeckt durch**: Generic-Implementierung mit korrekter Mathematik
 
 #### ⏳ Nächste Schritte
-13. **ScalarTripletPath3D<T>** - Triplet-basierte Pfade (in progress)
-14. **SphericalPath3D<T>** - Sphärische Koordinaten
-15. **CubicBezier** Familie (4 Klassen)
-16. **Bézier** Familie (2 Klassen)
-17. **Hermite** Familie (2 Klassen)
+16. **Bezier0Path3D<T>** - Konstante Bezier (trivial, 1 Kontrollpunkt)
+17. **Bezier1Path3D<T>** - Lineare Bezier (2 Kontrollpunkte)
+18. **Bezier3Path3D<T>** - Kubische Bezier (4 Kontrollpunkte)
+19. **CatmullRomSpline**, **Hermite**, **Roulette** etc. (ohne ScalarSignal-Abhängigkeit)
+20. **ScalarSignal-Modul** (später) - Schaltet ScalarTripletPath3D & SphericalPath3D frei
 ...
 
 **Vollständige Task-Liste:** Siehe [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)
