@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: AffineMappedTimePath3D<T> - Time Remapping)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: CatmullRomSplinePath3D<T> - Catmull-Rom Splines)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -1064,19 +1064,25 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - Basiert auf http://www.cemyuksel.com/research/catmullrom_param/catmullrom.pdf
     - **LOC:** 244 LOC
 
-22. **CatmullRomSplinePath3D<T>** - Centripetal/Chordal/Uniform Catmull-Rom Splines
+22. **CatmullRomSplinePath3D<T>** - Centripetal/Chordal/Uniform Catmull-Rom Splines ✅ COMPLETE (2025-10-28)
     - Konstruktor mit Control Points, Spline Type, Closed/Open Curves
     - Binary Search für Knot-Intervalle (GetKnotIndexContaining)
     - GetValue, GetPointX/Y/Z Methoden
     - GetDerivative1Value, GetDerivative2Value (analytische Ableitungen)
     - Edge Case Handling mit linearer Interpolation an Grenzen
-    - **LIMITATION**: Centripetal/Chordal erfordern Math.Pow → nur Generic<double>
+    - **LIMITATION**: Centripetal/Chordal erfordern Math.Pow/Sqrt → nur Generic<double>
     - Uniform Type funktioniert mit beliebigem Generic<T>
     - Keine numerische Differentiation (muss innerhalb valider Knot-Intervalle bleiben)
+    - **Implementation Details:**
+      - ToLinVector() helper method für ILinVector3D<T> → LinVector3D<T> Konvertierung
+      - Manuelle Lerp-Implementierung (keine Extension verfügbar)
+      - Manual endpoint extrapolation für open curves
+      - Knot list initialization: _knotList[0] = Zero (wichtig für Scalar<T>[] arrays)
     - **Tests:** 17 Tests (17 passing ✅ - 100% success rate)
-    - **LOC:** 454 LOC Implementation + 507 LOC Tests
+    - **LOC:** 481 LOC Implementation + 465 LOC Tests
     - **BUGFIX**: Float64CatmullRomSplinePath3D.ctor public gemacht (war internal)
     - **BUGFIX**: Test assertions: Float64Scalar vs double Type-Mismatch behoben
+    - **BUGFIX**: Scalar<T>[] NullReferenceException - _knotList[0] initialization fehlte
     - **Status**: Complete ✅
 
 #### ✅ Constant Paths (Complete - 2025-10-28)

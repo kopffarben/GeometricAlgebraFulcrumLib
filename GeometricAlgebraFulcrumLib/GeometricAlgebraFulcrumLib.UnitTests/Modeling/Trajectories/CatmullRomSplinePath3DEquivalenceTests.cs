@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Basic;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Modeling.Trajectories;
@@ -77,8 +77,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var valueFloat64 = splineFloat64.GetValue(0.0);
@@ -105,8 +104,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var valueFloat64 = splineFloat64.GetValue(1.0);
@@ -133,8 +131,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var valueFloat64 = splineFloat64.GetValue(0.5);
@@ -161,8 +158,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var valueFloat64 = splineFloat64.GetValue(0.25);
@@ -189,8 +185,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var valueFloat64 = splineFloat64.GetValue(0.75);
@@ -217,8 +212,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Chordal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var valueFloat64 = splineFloat64.GetValue(0.5);
@@ -245,8 +239,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            true,
-            ScalarProcessor
+            true
         );
 
         var valueFloat64 = splineFloat64.GetValue(0.5);
@@ -273,8 +266,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var deriv1Float64 = splineFloat64.GetDerivative1Value(0.5);
@@ -301,8 +293,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var deriv1Float64 = splineFloat64.GetDerivative1Value(0.25);
@@ -329,8 +320,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var deriv2Float64 = splineFloat64.GetDerivative2Value(0.5);
@@ -357,8 +347,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var xFloat64 = splineFloat64.GetPointX(0.5);
@@ -383,8 +372,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var yFloat64 = splineFloat64.GetPointY(0.5);
@@ -409,8 +397,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         var zFloat64 = splineFloat64.GetPointZ(0.5);
@@ -427,8 +414,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         // Original 5 points + 2 control points (endPoint1 and endPoint2) = 7
@@ -443,8 +429,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         Assert.That(splineGeneric.IsValid(), Is.True);
@@ -458,8 +443,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            false,
-            ScalarProcessor
+            false
         );
 
         Assert.That(splineGeneric.CurveType, Is.EqualTo(CatmullRomSplineType.Centripetal));
@@ -473,8 +457,7 @@ public class CatmullRomSplinePath3DEquivalenceTests
             false,
             controlPointsGeneric,
             CatmullRomSplineType.Centripetal,
-            true,
-            ScalarProcessor
+            true
         );
 
         Assert.That(splineGeneric.IsClosed, Is.True);
