@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: CatmullRomSplinePath3D<T> - Catmull-Rom Splines)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: CosScalarSignal<T> + Float64 API Enhancement)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -647,10 +647,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 38/151 Klassen complete (25.2%)
-**Aufwand bisher:** ~42 Stunden
-**Tests:** 345 Tests (345 passing ✅ - 100% success rate!)
-**LOC:** ~7,269 LOC Implementation + ~11,720 LOC Tests
+**Status:** 39/151 Klassen complete (25.8%)
+**Aufwand bisher:** ~42.5 Stunden
+**Tests:** 358 Tests (358 passing ✅ - 100% success rate!)
+**LOC:** ~7,341 LOC Implementation + ~11,920 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -1149,15 +1149,41 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 271 LOC Implementation + ~400 LOC Tests
     - **Status**: Complete ✅
 
+28. **CosScalarSignal<T>** - Kosinus-Skalar-Signal ✅ COMPLETE (2025-10-28)
+    - Parametrische Form: `cos(t)`
+    - Time range: `[-π, π]` via ScalarRange<T>.SymmetricPi()
+    - Value range: `[-1, 1]`
+    - 2 Factory-Methoden: Finite(scalarProcessor), Periodic(scalarProcessor)
+    - **Analytische Ableitungen:**
+      - GetDerivative1Value: `-sin(t)` (erste Ableitung)
+      - GetDerivative2Value: `-cos(t)` (zweite Ableitung)
+    - ToFiniteSignal/ToPeriodicSignal Transformationen
+    - IsValid() gibt immer true zurück (trigonometrische Funktion ist immer gültig)
+    - **API Parity Improvement:** Float64ScalarCosSignal erweitert mit PUBLIC factory methods
+      - Added `Finite()` and `Periodic()` static methods to match Generic<T> API
+      - Internal singletons bleiben für Backward Compatibility
+      - Generic<T> pattern ist BESSER designed (requires ScalarProcessor parameter)
+    - **Tests:** 13 Tests (13 passing ✅ - 100% success rate)
+      - GetValue at 0, π/2, π, -π (boundary & key values)
+      - GetDerivative1Value at 0, π/2 (verify -sin behavior)
+      - GetDerivative2Value at 0, π (verify -cos behavior)
+      - ToFiniteSignal/ToPeriodicSignal conversions
+      - IsValid validation
+      - TimeRange verification ([-π, π])
+      - Periodic instance behavior
+    - **LOC:** 72 LOC Implementation + ~200 LOC Tests
+    - **Float64 Enhancement:** 2 public factory methods added (20 LOC) for API parity
+    - **Status**: Complete ✅
+
 **ScalarSignal Summary:**
-- Total: 3 Klassen (1 base + 2 concrete)
-- Total Tests: 16 Tests (16 passing ✅ - 100% success rate)
-- Total LOC: 457 LOC Implementation + ~600 LOC Tests
+- Total: 4 Klassen (1 base + 3 concrete)
+- Total Tests: 29 Tests (29 passing ✅ - 100% success rate)
+- Total LOC: 529 LOC Implementation + ~800 LOC Tests
 - **Architectural Decision**: Unified ConstantScalarSignal<T> statt separate Zero/One Klassen (DRY principle)
 - **Dependencies Unblocked**: ScalarTripletPath3D, HarmonicPath3D, SphericalPath3D können jetzt implementiert werden
 
 #### ✅ Signal-Based Paths (Complete - 2025-10-28)
-28. **ScalarTripletPath3D<T>** - 3D Path aus drei unabhängigen Skalar-Signalen
+29. **ScalarTripletPath3D<T>** - 3D Path aus drei unabhängigen Skalar-Signalen
     - Kombiniert 3 ScalarSignal<T> Instanzen für X, Y, Z Komponenten
     - 6 Factory-Methoden: Finite (2), Periodic (2), Create (2)
     - GetValue, GetDerivative1Value, GetDerivative2Value delegieren an Component-Signals
@@ -1167,7 +1193,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 198 LOC Implementation + ~350 LOC Tests
     - **Status**: Complete ✅
 
-29. **HarmonicScalarSignal<T>** - Harmonische (sinusförmige) Skalar-Signale
+30. **HarmonicScalarSignal<T>** - Harmonische (sinusförmige) Skalar-Signale
     - Formel: `Magnitude * cos(2πf * (t + TimeOffset))`
     - Properties: FrequencyHz, Frequency (= 2π * FrequencyHz), Magnitude, TimeOffset
     - 4 Factory-Methoden: Finite (2), Periodic (2)
@@ -1178,7 +1204,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 169 LOC Implementation
     - **Status**: Complete ✅
 
-30. **HarmonicPath3D<T>** - 3D Path aus drei harmonischen Signalen
+31. **HarmonicPath3D<T>** - 3D Path aus drei harmonischen Signalen
     - Kombiniert 3 HarmonicScalarSignal<T> für periodische/zyklische Bewegungen
     - Create Factory-Methode
     - Circular paths in XY-plane möglich (X = cos, Y = sin via offset)
@@ -1188,7 +1214,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 107 LOC Implementation + ~450 LOC Tests
     - **Status**: Complete ✅
 
-31. **SphericalPath3D<T>** - 3D Path in sphärischen Koordinaten
+32. **SphericalPath3D<T>** - 3D Path in sphärischen Koordinaten
     - Konvertiert (r, theta, phi) → (x, y, z) Cartesian
     - Formeln: `x = r*cos(θ)*cos(φ), y = r*cos(θ)*sin(φ), z = r*sin(θ)`
     - 2 Factory-Methoden: Finite, Periodic
@@ -1206,7 +1232,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 - **Use Cases**: HarmonicPath3D für periodische Bewegungen, SphericalPath3D für radial-symmetrische Pfade
 
 #### ⏳ Nächste Schritte
-32. **Weitere Circle/Line Variants**, **Hermite**, **Roulette** etc.
+33. **SinScalarSignal<T>**, **Weitere Circle/Line Variants**, **Hermite**, **Roulette** etc.
 ...
 
 **Vollständige Task-Liste:** Siehe [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)

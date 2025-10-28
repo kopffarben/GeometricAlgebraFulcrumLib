@@ -15,6 +15,19 @@ public sealed class Float64ScalarCosSignal :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64ScalarCosSignal Finite()
+    {
+        return FiniteInstance;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64ScalarCosSignal Periodic()
+    {
+        return PeriodicInstance;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Float64ScalarCosSignal(bool isPeriodic)
         : base(Float64ScalarRange.SymmetricPi, isPeriodic)
     {
