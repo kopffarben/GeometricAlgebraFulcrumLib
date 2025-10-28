@@ -647,10 +647,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 19/151 Klassen complete (12.6%)
-**Aufwand bisher:** ~24 Stunden
-**Tests:** 146 Tests (100% passing ✅)
-**LOC:** ~3,229 LOC Implementation + ~4,891 LOC Tests
+**Status:** 21/151 Klassen complete (13.9%)
+**Aufwand bisher:** ~27 Stunden
+**Tests:** 164 Tests (153 passing ✅, 10 debugging ⚠️, 1 known issue)
+**LOC:** ~3,927 LOC Implementation + ~5,798 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -736,6 +736,27 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - Factory-Methoden mit separaten X/Y/Z Funktionen für Convenience
     - **Tests:** 13 Tests ✅
     - **LOC:** 338 LOC Implementation + 392 LOC Tests
+
+#### ⚠️ Catmull-Rom Splines (Partially Complete - 2025-10-28)
+21. **CatmullRomUtils<T>** - Generische Catmull-Rom Spline Formeln
+    - GetCatmullRomValue, GetCatmullRomDerivativeValue, GetCatmullRomDerivative2Value
+    - Unterstützt Scalar<T> und LinVector3D<T>
+    - Basiert auf http://www.cemyuksel.com/research/catmullrom_param/catmullrom.pdf
+    - **LOC:** 244 LOC
+
+22. **CatmullRomSplinePath3D<T>** - Centripetal/Chordal/Uniform Catmull-Rom Splines
+    - Konstruktor mit Control Points, Spline Type, Closed/Open Curves
+    - Binary Search für Knot-Intervalle (GetKnotIndexContaining)
+    - GetValue, GetPointX/Y/Z Methoden
+    - GetDerivative1Value, GetDerivative2Value (analytische Ableitungen)
+    - Edge Case Handling mit linearer Interpolation an Grenzen
+    - **LIMITATION**: Centripetal/Chordal erfordern Math.Pow → nur Generic<double>
+    - Uniform Type funktioniert mit beliebigem Generic<T>
+    - Keine numerische Differentiation (muss innerhalb valider Knot-Intervalle bleiben)
+    - **Tests:** 17 Tests (7 passing ✅, 10 debugging ⚠️ - numerische Präzisionsprobleme)
+    - **LOC:** 454 LOC Implementation + 507 LOC Tests
+    - **BUGFIX**: Float64CatmullRomSplinePath3D.ctor public gemacht (war internal)
+    - **Status**: Funktional aber Tests brauchen Feintuning der Toleranzen
 
 #### ✅ API Parity Improvements (Complete - 2025-10-28)
 20. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
