@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: TimesPath3D<T> - Component-wise Path Multiplication)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: MappedTrajectoryPath3D<T, TIn> - Trajectory Mapping)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -640,17 +640,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 4.9 (Phase 3A Module 6A - TimesPath3D<T> Complete)
-**Letzte Aktualisierung:** 2025-10-28 (TimesPath3D<T> - Component-wise Path Multiplication)
+**Dokument Version:** 5.0 (Phase 3A Module 6A - MappedTrajectoryPath3D<T, TIn> Complete)
+**Letzte Aktualisierung:** 2025-10-28 (MappedTrajectoryPath3D<T, TIn> - Trajectory Mapping to 3D Paths)
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
-**Nächste Review:** Nach Completion von Module 6A (19/151 Klassen, 12.6% complete)
+**Nächste Review:** Nach Completion von Module 6A (33/151 Klassen, 21.9% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 32/151 Klassen complete (21.2%)
-**Aufwand bisher:** ~36 Stunden
-**Tests:** 269 Tests (269 passing ✅ - 100% success rate!)
-**LOC:** ~5,869 LOC Implementation + ~8,990 LOC Tests
+**Status:** 33/151 Klassen complete (21.9%)
+**Aufwand bisher:** ~37 Stunden
+**Tests:** 285 Tests (285 passing ✅ - 100% success rate!)
+**LOC:** ~5,979 LOC Implementation + ~9,395 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -820,8 +820,41 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 277 LOC Implementation + ~396 LOC Tests + 13 LOC VectorComponentTimes
     - **Status:** Complete ✅
 
+21. **MappedTrajectoryPath3D<T, TIn>** - Trajectory Mapping to 3D Paths ✅ COMPLETE (2025-10-28)
+    - Konvertiert `Trajectory<T, TIn>` → `ParametricPath3D<T>` mittels Mapping-Funktion
+    - **Generic Type Parameters:**
+      - `T`: Scalar type für Zeit-Parameter
+      - `TIn`: Input value type von Base-Trajectory (z.B. Scalar<T>, LinVector3D<T>)
+    - **Mapping Function:** `Func<TIn, LinVector3D<T>>` wandelt TIn-Werte zu 3D Vektoren
+    - Anwendungsfälle:
+      - Scalar-Trajektorien → 3D Pfade (z.B. `Scalar → (scalar, 0, 0)`)
+      - Vector-Trajektorien transformieren (scaling, rotation, permutation)
+      - Komponenten-Extraktion aus komplexen Trajektorien
+    - **Create Factory Method:** Statische Methode mit BaseTrajectory und ValueMap
+    - Time-Range & Periodicity: Übernommen von Base-Trajectory
+    - **Derivatives:** Return zero vector (cannot compute through arbitrary mapping)
+      - GetDerivative1Value → (0, 0, 0)
+      - GetDerivative2Value → (0, 0, 0)
+    - ToFinitePath/ToPeriodicPath: Wrapping der Base-Trajectory Conversion
+    - **Properties:**
+      - `BaseTrajectory` (readonly) - Die Quell-Trajectory
+      - `ValueMap` (readonly) - Die Mapping-Funktion
+    - **Tests:** 16 Tests ✅ (100% success rate)
+      - Map scalar to X-component, symmetric vector
+      - Map vector to scaled, permuted versions
+      - Identity mapping preservation
+      - Line segment mapping at t=0, 0.5, 1
+      - IsValid when base valid
+      - ToFinitePath/ToPeriodicPath conversions
+      - Derivatives return zero
+      - Time range preservation
+      - Complex mapping (scalar → circular path)
+      - BaseTrajectory and ValueMap property access
+    - **LOC:** 110 LOC Implementation + ~405 LOC Tests
+    - **Status:** Complete ✅
+
 #### ✅ Computed Paths (Complete - 2025-10-28)
-21. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
+22. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
     - Speichert `Func<Scalar<T>, LinVector3D<T>>` Delegates für Position und Ableitungen
     - 14 statische Factory-Methoden: Finite (5 Varianten), Periodic (5 Varianten), Create (4 Varianten)
     - ClampTime-Logik: Finite (Clamping zu [min,max]), Periodic (Wrapping via Math.Floor)
@@ -833,7 +866,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 338 LOC Implementation + 392 LOC Tests
 
 #### ✅ Catmull-Rom Splines (Complete - 2025-10-28)
-22. **CatmullRomUtils<T>** - Generische Catmull-Rom Spline Formeln
+23. **CatmullRomUtils<T>** - Generische Catmull-Rom Spline Formeln
     - GetCatmullRomValue, GetCatmullRomDerivativeValue, GetCatmullRomDerivative2Value
     - Unterstützt Scalar<T> und LinVector3D<T>
     - Basiert auf http://www.cemyuksel.com/research/catmullrom_param/catmullrom.pdf
