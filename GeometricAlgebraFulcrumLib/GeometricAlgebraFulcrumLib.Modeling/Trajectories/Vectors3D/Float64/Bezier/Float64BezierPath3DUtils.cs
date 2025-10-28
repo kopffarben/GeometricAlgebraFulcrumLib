@@ -57,7 +57,8 @@ public static class Float64BezierPath3DUtils
     {
         var s = 1 - t;
 
-        return new Triplet<double>(s * s, 2 * s * t, t * 3);
+        // BUGFIX: Was "t * 3", should be "t * t" for correct Bernstein basis B₂(t) = t²
+        return new Triplet<double>(s * s, 2 * s * t, t * t);
     }
 
 
