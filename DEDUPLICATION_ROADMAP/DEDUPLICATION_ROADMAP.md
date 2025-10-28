@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: Bezier3Path3D complete)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: ScalarTripletPath3D, HarmonicPath3D, SphericalPath3D complete)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -647,10 +647,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 25/151 Klassen complete (16.6%)
-**Aufwand bisher:** ~30 Stunden
-**Tests:** 189 Tests (189 passing ✅ - 100% success rate!)
-**LOC:** ~4,510 LOC Implementation + ~6,607 LOC Tests
+**Status:** 29/151 Klassen complete (19.2%)
+**Aufwand bisher:** ~32 Stunden
+**Tests:** 229 Tests (229 passing ✅ - 100% success rate!)
+**LOC:** ~5,117 LOC Implementation + ~7,811 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -830,11 +830,57 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 - **Architectural Decision**: Unified ConstantScalarSignal<T> statt separate Zero/One Klassen (DRY principle)
 - **Dependencies Unblocked**: ScalarTripletPath3D, HarmonicPath3D, SphericalPath3D können jetzt implementiert werden
 
+#### ✅ Signal-Based Paths (Complete - 2025-10-28)
+27. **ScalarTripletPath3D<T>** - 3D Path aus drei unabhängigen Skalar-Signalen
+    - Kombiniert 3 ScalarSignal<T> Instanzen für X, Y, Z Komponenten
+    - 6 Factory-Methoden: Finite (2), Periodic (2), Create (2)
+    - GetValue, GetDerivative1Value, GetDerivative2Value delegieren an Component-Signals
+    - GetScalarComponents() gibt Original-Signals zurück
+    - Wrapper-Pattern: Einfache Delegation an Komponenten
+    - **Tests:** 10 Tests (10 passing ✅ - 100% success rate)
+    - **LOC:** 198 LOC Implementation + ~350 LOC Tests
+    - **Status**: Complete ✅
+
+28. **HarmonicScalarSignal<T>** - Harmonische (sinusförmige) Skalar-Signale
+    - Formel: `Magnitude * cos(2πf * (t + TimeOffset))`
+    - Properties: FrequencyHz, Frequency (= 2π * FrequencyHz), Magnitude, TimeOffset
+    - 4 Factory-Methoden: Finite (2), Periodic (2)
+    - GetValue, GetDerivative1Value, GetDerivative2Value mit analytischen Formeln
+    - **LIMITATION**: Simplified IsValid() ohne IsFinite checks
+    - **LIMITATION**: Kein ClampTime() - funktioniert für alle t-Werte
+    - **Tests:** N/A (getestet via HarmonicPath3D Tests)
+    - **LOC:** 169 LOC Implementation
+    - **Status**: Complete ✅
+
+29. **HarmonicPath3D<T>** - 3D Path aus drei harmonischen Signalen
+    - Kombiniert 3 HarmonicScalarSignal<T> für periodische/zyklische Bewegungen
+    - Create Factory-Methode
+    - Circular paths in XY-plane möglich (X = cos, Y = sin via offset)
+    - GetDerivatives delegieren an Component-Signals
+    - ToFinitePath/ToPeriodicPath Transformationen
+    - **Tests:** 11 Tests (11 passing ✅ - 100% success rate)
+    - **LOC:** 107 LOC Implementation + ~450 LOC Tests
+    - **Status**: Complete ✅
+
+30. **SphericalPath3D<T>** - 3D Path in sphärischen Koordinaten
+    - Konvertiert (r, theta, phi) → (x, y, z) Cartesian
+    - Formeln: `x = r*cos(θ)*cos(φ), y = r*cos(θ)*sin(φ), z = r*sin(θ)`
+    - 2 Factory-Methoden: Finite, Periodic
+    - Komplexe analytische Ableitungen (Product Rule + Chain Rule)
+    - GetDerivative1Value, GetDerivative2Value mit vollständigen Formeln
+    - **LIMITATION**: Simplified IsValid() ohne Contains() checks (ScalarRange<T> hat kein Contains)
+    - **Tests:** 9 Tests (9 passing ✅ - 100% success rate)
+    - **LOC:** 233 LOC Implementation + ~350 LOC Tests
+    - **Status**: Complete ✅
+
+**Signal-Based Paths Summary:**
+- Total: 4 Klassen (1 signal + 3 paths)
+- Total Tests: 30 Tests (30 passing ✅ - 100% success rate)
+- Total LOC: 707 LOC Implementation + ~1,150 LOC Tests
+- **Use Cases**: HarmonicPath3D für periodische Bewegungen, SphericalPath3D für radial-symmetrische Pfade
+
 #### ⏳ Nächste Schritte
-27. **ScalarTripletPath3D<T>** (jetzt möglich mit ScalarSignal<T>)
-28. **HarmonicPath3D<T>** (jetzt möglich mit ScalarSignal<T>)
-29. **SphericalPath3D<T>** (jetzt möglich mit ScalarSignal<T>)
-30. **Weitere Circle/Line Variants**, **Hermite**, **Roulette** etc.
+31. **Weitere Circle/Line Variants**, **Hermite**, **Roulette** etc.
 ...
 
 **Vollständige Task-Liste:** Siehe [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)
