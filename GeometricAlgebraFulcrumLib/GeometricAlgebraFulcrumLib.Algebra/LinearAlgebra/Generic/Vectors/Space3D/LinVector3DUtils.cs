@@ -267,6 +267,16 @@ public static class LinVector3DUtils
         };
     }
 
+    /// <summary>
+    /// Alias for SelectNearestAxis() to match Float64 API naming
+    /// Selects the basis vector (±X, ±Y, or ±Z) nearest to the given unit vector
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinBasisVector SelectNearestBasisVector<T>(this ITriplet<Scalar<T>> unitVector)
+    {
+        return unitVector.SelectNearestAxis();
+    }
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static int GetIndex<T>(this LinUnitBasisVector3D axis)
     //{
