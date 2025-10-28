@@ -84,9 +84,9 @@ public class CatmullRomSplinePath3DEquivalenceTests
         var valueFloat64 = splineFloat64.GetValue(0.0);
         var valueGeneric = splineGeneric.GetValue(ScalarProcessor.Zero);
 
-        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X).Within(Tolerance));
-        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y).Within(Tolerance));
-        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z).Within(Tolerance));
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z.ScalarValue).Within(Tolerance));
     }
 
     [Test]
@@ -112,9 +112,9 @@ public class CatmullRomSplinePath3DEquivalenceTests
         var valueFloat64 = splineFloat64.GetValue(1.0);
         var valueGeneric = splineGeneric.GetValue(ScalarProcessor.One);
 
-        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X).Within(Tolerance));
-        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y).Within(Tolerance));
-        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z).Within(Tolerance));
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z.ScalarValue).Within(Tolerance));
     }
 
     [Test]
@@ -140,9 +140,9 @@ public class CatmullRomSplinePath3DEquivalenceTests
         var valueFloat64 = splineFloat64.GetValue(0.5);
         var valueGeneric = splineGeneric.GetValue(ScalarProcessor.ScalarFromNumber(0.5));
 
-        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X).Within(Tolerance));
-        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y).Within(Tolerance));
-        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z).Within(Tolerance));
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z.ScalarValue).Within(Tolerance));
     }
 
     [Test]
@@ -168,9 +168,9 @@ public class CatmullRomSplinePath3DEquivalenceTests
         var valueFloat64 = splineFloat64.GetValue(0.25);
         var valueGeneric = splineGeneric.GetValue(ScalarProcessor.ScalarFromNumber(0.25));
 
-        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X).Within(Tolerance));
-        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y).Within(Tolerance));
-        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z).Within(Tolerance));
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z.ScalarValue).Within(Tolerance));
     }
 
     [Test]
@@ -196,9 +196,9 @@ public class CatmullRomSplinePath3DEquivalenceTests
         var valueFloat64 = splineFloat64.GetValue(0.75);
         var valueGeneric = splineGeneric.GetValue(ScalarProcessor.ScalarFromNumber(0.75));
 
-        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X).Within(Tolerance));
-        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y).Within(Tolerance));
-        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z).Within(Tolerance));
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z.ScalarValue).Within(Tolerance));
     }
 
     [Test]
@@ -224,9 +224,9 @@ public class CatmullRomSplinePath3DEquivalenceTests
         var valueFloat64 = splineFloat64.GetValue(0.5);
         var valueGeneric = splineGeneric.GetValue(ScalarProcessor.ScalarFromNumber(0.5));
 
-        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X).Within(Tolerance));
-        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y).Within(Tolerance));
-        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z).Within(Tolerance));
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z.ScalarValue).Within(Tolerance));
     }
 
     [Test]
@@ -252,9 +252,9 @@ public class CatmullRomSplinePath3DEquivalenceTests
         var valueFloat64 = splineFloat64.GetValue(0.5);
         var valueGeneric = splineGeneric.GetValue(ScalarProcessor.ScalarFromNumber(0.5));
 
-        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X).Within(Tolerance));
-        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y).Within(Tolerance));
-        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z).Within(Tolerance));
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance));
+        Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z.ScalarValue).Within(Tolerance));
     }
 
     [Test]
@@ -280,9 +280,9 @@ public class CatmullRomSplinePath3DEquivalenceTests
         var deriv1Float64 = splineFloat64.GetDerivative1Value(0.5);
         var deriv1Generic = splineGeneric.GetDerivative1Value(ScalarProcessor.ScalarFromNumber(0.5));
 
-        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(deriv1Float64.X).Within(Tolerance));
-        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(deriv1Float64.Y).Within(Tolerance));
-        Assert.That(deriv1Generic.Z.ScalarValue, Is.EqualTo(deriv1Float64.Z).Within(Tolerance));
+        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(deriv1Float64.X.ScalarValue).Within(Tolerance));
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(deriv1Float64.Y.ScalarValue).Within(Tolerance));
+        Assert.That(deriv1Generic.Z.ScalarValue, Is.EqualTo(deriv1Float64.Z.ScalarValue).Within(Tolerance));
     }
 
     [Test]
@@ -308,9 +308,9 @@ public class CatmullRomSplinePath3DEquivalenceTests
         var deriv1Float64 = splineFloat64.GetDerivative1Value(0.25);
         var deriv1Generic = splineGeneric.GetDerivative1Value(ScalarProcessor.ScalarFromNumber(0.25));
 
-        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(deriv1Float64.X).Within(Tolerance));
-        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(deriv1Float64.Y).Within(Tolerance));
-        Assert.That(deriv1Generic.Z.ScalarValue, Is.EqualTo(deriv1Float64.Z).Within(Tolerance));
+        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(deriv1Float64.X.ScalarValue).Within(Tolerance));
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(deriv1Float64.Y.ScalarValue).Within(Tolerance));
+        Assert.That(deriv1Generic.Z.ScalarValue, Is.EqualTo(deriv1Float64.Z.ScalarValue).Within(Tolerance));
     }
 
     [Test]
@@ -336,9 +336,9 @@ public class CatmullRomSplinePath3DEquivalenceTests
         var deriv2Float64 = splineFloat64.GetDerivative2Value(0.5);
         var deriv2Generic = splineGeneric.GetDerivative2Value(ScalarProcessor.ScalarFromNumber(0.5));
 
-        Assert.That(deriv2Generic.X.ScalarValue, Is.EqualTo(deriv2Float64.X).Within(Tolerance));
-        Assert.That(deriv2Generic.Y.ScalarValue, Is.EqualTo(deriv2Float64.Y).Within(Tolerance));
-        Assert.That(deriv2Generic.Z.ScalarValue, Is.EqualTo(deriv2Float64.Z).Within(Tolerance));
+        Assert.That(deriv2Generic.X.ScalarValue, Is.EqualTo(deriv2Float64.X.ScalarValue).Within(Tolerance));
+        Assert.That(deriv2Generic.Y.ScalarValue, Is.EqualTo(deriv2Float64.Y.ScalarValue).Within(Tolerance));
+        Assert.That(deriv2Generic.Z.ScalarValue, Is.EqualTo(deriv2Float64.Z.ScalarValue).Within(Tolerance));
     }
 
     [Test]
