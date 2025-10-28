@@ -647,10 +647,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 18/151 Klassen complete (11.9%)
-**Aufwand bisher:** ~23 Stunden
-**Tests:** 133 Tests (100% passing ✅)
-**LOC:** ~2,891 LOC Implementation + ~4,499 LOC Tests
+**Status:** 19/151 Klassen complete (12.6%)
+**Aufwand bisher:** ~24 Stunden
+**Tests:** 146 Tests (100% passing ✅)
+**LOC:** ~3,229 LOC Implementation + ~4,891 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -725,8 +725,20 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **Tests:** 13 Tests ✅
     - **LOC:** 148 LOC Implementation + 575 LOC Tests
 
+#### ✅ Computed Paths (Complete - 2025-10-28)
+19. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
+    - Speichert `Func<Scalar<T>, LinVector3D<T>>` Delegates für Position und Ableitungen
+    - 14 statische Factory-Methoden: Finite (5 Varianten), Periodic (5 Varianten), Create (4 Varianten)
+    - ClampTime-Logik: Finite (Clamping zu [min,max]), Periodic (Wrapping via Math.Floor)
+    - **LIMITATION**: Numerical differentiation NICHT verfügbar (MathNet.Numerics hardcoded auf double)
+    - Wirft NotImplementedException wenn keine explizite Derivative-Function bereitgestellt
+    - Periodic Wrapping funktioniert nur für Generic<double> (requires Math.Floor)
+    - Factory-Methoden mit separaten X/Y/Z Funktionen für Convenience
+    - **Tests:** 13 Tests ✅
+    - **LOC:** 338 LOC Implementation + 392 LOC Tests
+
 #### ✅ API Parity Improvements (Complete - 2025-10-28)
-18. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
+20. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
     - `SymmetricPi(processor)` → [-π, π]
     - `SymmetricOne(processor)` → [-1, 1]
     - `SymmetricHalfPi(processor)` → [-π/2, π/2]
