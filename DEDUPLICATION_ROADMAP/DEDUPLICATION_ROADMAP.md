@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: MappedTrajectoryPath3D<T, TIn> - Trajectory Mapping)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: ScalarTripletPath3D<T> - Component-wise Scalar Signals)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -640,17 +640,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 5.0 (Phase 3A Module 6A - MappedTrajectoryPath3D<T, TIn> Complete)
-**Letzte Aktualisierung:** 2025-10-28 (MappedTrajectoryPath3D<T, TIn> - Trajectory Mapping to 3D Paths)
+**Dokument Version:** 5.1 (Phase 3A Module 6A - ScalarTripletPath3D<T> Complete)
+**Letzte Aktualisierung:** 2025-10-28 (ScalarTripletPath3D<T> - Component-wise Scalar Signals)
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
-**Nächste Review:** Nach Completion von Module 6A (33/151 Klassen, 21.9% complete)
+**Nächste Review:** Nach Completion von Module 6A (34/151 Klassen, 22.5% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 33/151 Klassen complete (21.9%)
-**Aufwand bisher:** ~37 Stunden
-**Tests:** 285 Tests (285 passing ✅ - 100% success rate!)
-**LOC:** ~5,979 LOC Implementation + ~9,395 LOC Tests
+**Status:** 34/151 Klassen complete (22.5%)
+**Aufwand bisher:** ~38 Stunden
+**Tests:** 295 Tests (295 passing ✅ - 100% success rate!)
+**LOC:** ~6,193 LOC Implementation + ~9,728 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -853,8 +853,41 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 110 LOC Implementation + ~405 LOC Tests
     - **Status:** Complete ✅
 
+22. **ScalarTripletPath3D<T>** - Component-wise Scalar Signal Path ✅ COMPLETE (2025-10-28)
+    - Konstruiert 3D parametrischen Pfad aus drei unabhängigen Scalar-Signalen
+    - **Komponenten:** `Item1` (X), `Item2` (Y), `Item3` (Z) - jeweils `ScalarSignal<T>`
+    - **Anwendungsfälle:**
+      - Unabhängige Komponenten-Variation (z.B. X sinusförmig, Y linear, Z konstant)
+      - Lissajous-Figuren (verschiedene Frequenzen pro Achse)
+      - Parametrische Kurven aus separaten Funktionen
+    - **Factory Methods:**
+      - `Finite(signal1, signal2, signal3)` - Time-Range aus intersection
+      - `Finite(timeRange, signal1, signal2, signal3)` - Explizite Time-Range
+      - `Periodic(signal1, signal2, signal3)` - Periodisch
+      - `Create(isPeriodic, signal1, signal2, signal3)` - Flexible Konstruktion
+    - **Time-Range:** Intersection von Item1.TimeRange und Item2.TimeRange
+    - **GetValue(t):** Kombiniert `(Item1(t), Item2(t), Item3(t))`
+    - **Derivatives:** Kombiniert component-wise Ableitungen
+      - `GetDerivative1Value(t)` → `(Item1'(t), Item2'(t), Item3'(t))`
+      - `GetDerivative2Value(t)` → `(Item1''(t), Item2''(t), Item3''(t))`
+    - **ITriplet<ScalarSignal<T>> Interface:** Ermöglicht Zugriff auf Komponenten
+    - **GetScalarComponents():** Gibt `Triplet<ScalarSignal<T>>` zurück
+    - **Tests:** 10 Tests ✅ (100% success rate)
+      - Finite/Periodic creation
+      - GetValue combines three components
+      - GetDerivative1Value/GetDerivative2Value combine derivatives
+      - IsValid validation
+      - ToFinitePath/ToPeriodicPath conversions
+      - Time range intersection
+      - GetScalarComponents returns triplet
+      - Explicit time range usage
+      - Item properties access
+      - Create method respects isPeriodic flag
+    - **LOC:** 214 LOC Implementation + ~333 LOC Tests
+    - **Status:** Complete ✅
+
 #### ✅ Computed Paths (Complete - 2025-10-28)
-22. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
+23. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
     - Speichert `Func<Scalar<T>, LinVector3D<T>>` Delegates für Position und Ableitungen
     - 14 statische Factory-Methoden: Finite (5 Varianten), Periodic (5 Varianten), Create (4 Varianten)
     - ClampTime-Logik: Finite (Clamping zu [min,max]), Periodic (Wrapping via Math.Floor)
@@ -866,7 +899,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 338 LOC Implementation + 392 LOC Tests
 
 #### ✅ Catmull-Rom Splines (Complete - 2025-10-28)
-23. **CatmullRomUtils<T>** - Generische Catmull-Rom Spline Formeln
+24. **CatmullRomUtils<T>** - Generische Catmull-Rom Spline Formeln
     - GetCatmullRomValue, GetCatmullRomDerivativeValue, GetCatmullRomDerivative2Value
     - Unterstützt Scalar<T> und LinVector3D<T>
     - Basiert auf http://www.cemyuksel.com/research/catmullrom_param/catmullrom.pdf
