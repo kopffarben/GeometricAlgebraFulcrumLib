@@ -14,6 +14,19 @@ public sealed class Float64ScalarSinSignal :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64ScalarSinSignal Finite()
+    {
+        return FiniteInstance;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64ScalarSinSignal Periodic()
+    {
+        return PeriodicInstance;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Float64ScalarSinSignal(bool isPeriodic)
         : base(Float64ScalarRange.SymmetricPi, isPeriodic)
     {
