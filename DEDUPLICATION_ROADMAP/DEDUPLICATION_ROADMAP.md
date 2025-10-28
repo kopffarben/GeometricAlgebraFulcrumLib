@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: HarmonicPath3D<T> - Harmonic Signal Paths)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: SphericalPath3D<T> - Spherical Coordinate Paths)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -647,10 +647,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 35/151 Klassen complete (23.2%)
-**Aufwand bisher:** ~39 Stunden
-**Tests:** 306 Tests (306 passing ✅ - 100% success rate!)
-**LOC:** ~6,326 LOC Implementation + ~10,090 LOC Tests
+**Status:** 36/151 Klassen complete (23.8%)
+**Aufwand bisher:** ~40 Stunden
+**Tests:** 315 Tests (315 passing ✅ - 100% success rate!)
+**LOC:** ~6,810 LOC Implementation + ~10,447 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -914,8 +914,40 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 133 LOC Implementation + ~362 LOC Tests
     - **Status:** Complete ✅
 
+24. **SphericalPath3D<T>** - Spherical Coordinate-based 3D Paths ✅ COMPLETE (2025-10-28)
+    - Konvertiert sphärische Koordinaten (r, θ, φ) zu kartesischen Koordinaten (x, y, z)
+    - **Komponenten:** `RCurve` (Radius), `ThetaCurve` (Polar-Winkel von Z-Achse), `PhiCurve` (Azimut-Winkel von X-Achse)
+    - **Anwendungsfälle:**
+      - Sphärische Bewegungen und Rotationen
+      - Astronomische und geographische Koordinaten-Pfade
+      - Kugelförmige Trajektorien mit variablem Radius
+    - **Spherical→Cartesian Conversion:**
+      - x = r · cos(θ) · cos(φ)
+      - y = r · cos(θ) · sin(φ)
+      - z = r · sin(θ)
+    - **Factory Methods:**
+      - `Finite(timeRange, rCurve, thetaCurve, phiCurve)` - Endlicher Pfad
+      - `Periodic(timeRange, rCurve, thetaCurve, phiCurve)` - Periodischer Pfad
+    - **GetValue(t):** Konvertiert Sphärische Koordinaten (r(t), θ(t), φ(t)) → Kartesisch
+    - **Analytical Derivatives:** Chain rule + product rule auf sphärischen Koordinaten
+      - `GetDerivative1Value(t)` → Geschwindigkeit (erste Ableitung, 8+ Terme)
+      - `GetDerivative2Value(t)` → Beschleunigung (zweite Ableitung, 24+ Terme)
+    - **ToFinitePath/ToPeriodicPath:** Konvertiert internen isPeriodic-Flag
+    - **IsValid:** Validiert TimeRange und alle drei ScalarSignal Komponenten
+    - **Tests:** 9 Tests ✅ (100% success rate)
+      - Constant coordinates → correct Cartesian points
+      - Various theta/phi combinations → correct axis directions
+      - Constant coordinates → zero derivatives
+      - Linear radius → radial movement
+      - Rotating phi → circular motion in XY-plane
+      - IsValid validation
+      - ToFinitePath/ToPeriodicPath conversions
+    - **LOC:** 484 LOC Implementation (with complex derivative formulas) + ~357 LOC Tests
+    - **Float64 Reference:** Float64SphericalPath3D.cs (191 LOC)
+    - **Status:** Complete ✅
+
 #### ✅ Computed Paths (Complete - 2025-10-28)
-24. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
+25. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
     - Speichert `Func<Scalar<T>, LinVector3D<T>>` Delegates für Position und Ableitungen
     - 14 statische Factory-Methoden: Finite (5 Varianten), Periodic (5 Varianten), Create (4 Varianten)
     - ClampTime-Logik: Finite (Clamping zu [min,max]), Periodic (Wrapping via Math.Floor)
