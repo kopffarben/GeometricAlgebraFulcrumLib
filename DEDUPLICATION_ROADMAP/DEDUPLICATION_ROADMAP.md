@@ -647,10 +647,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 22/151 Klassen complete (14.6%)
-**Aufwand bisher:** ~28 Stunden
-**Tests:** 173 Tests (172 passing ✅, 1 known issue)
-**LOC:** ~4,053 LOC Implementation + ~6,007 LOC Tests
+**Status:** 25/151 Klassen complete (16.6%)
+**Aufwand bisher:** ~30 Stunden
+**Tests:** 189 Tests (189 passing ✅ - 100% success rate!)
+**LOC:** ~4,510 LOC Implementation + ~6,607 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -793,9 +793,48 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
   - **Impact**: ALLE Float64 quadratischen Bezier-Kurven waren mathematisch FALSCH
   - **Entdeckt durch**: Generic-Implementierung mit korrekter Mathematik
 
+#### ✅ Scalar Signals (Complete - 2025-10-28)
+24. **ScalarSignal<T>** - Abstract base class für scalar-valued signals
+    - Extends Trajectory<T, Scalar<T>>
+    - Abstract methods: ToFiniteSignal(), ToPeriodicSignal()
+    - Virtual methods: GetDerivative1Value(), GetDerivative2Value()
+    - **SIMPLIFIED**: Keine Factory-Methoden, Operator overloading, oder numerische Differentiation vorerst
+    - ScalarProcessor Property für Zugriff auf IScalarProcessor<T>
+    - **Tests:** N/A (abstract base class)
+    - **LOC:** 72 LOC Implementation
+    - **Status**: Complete ✅
+
+25. **ConstantScalarSignal<T>** - Konstante Skalar-Signale
+    - Ersetzt Float64ScalarConstantZeroSignal & Float64ScalarConstantOneSignal
+    - Factory-Methoden: Finite (4 Varianten), Periodic (4 Varianten)
+    - GetValue gibt immer denselben konstanten Wert zurück
+    - GetDerivative1Value & GetDerivative2Value geben immer Zero zurück
+    - ToFiniteSignal/ToPeriodicSignal Transformationen
+    - **Tests:** 8 Tests (8 passing ✅ - 100% success rate)
+    - **LOC:** 114 LOC Implementation + ~200 LOC Tests
+    - **Status**: Complete ✅
+
+26. **ComputedScalarSignal<T>** - Funktions-basierte Skalar-Signale
+    - Speichert `Func<Scalar<T>, Scalar<T>>` Delegates für Value und Ableitungen
+    - 12 statische Factory-Methoden: Finite (6 Varianten), Periodic (6 Varianten)
+    - Optional derivatives (wirft NotSupportedException wenn nicht bereitgestellt)
+    - Keine ClampTime Logik (funktioniert für alle t-Werte)
+    - **Tests:** 8 Tests (8 passing ✅ - 100% success rate, including NotSupportedException tests)
+    - **LOC:** 271 LOC Implementation + ~400 LOC Tests
+    - **Status**: Complete ✅
+
+**ScalarSignal Summary:**
+- Total: 3 Klassen (1 base + 2 concrete)
+- Total Tests: 16 Tests (16 passing ✅ - 100% success rate)
+- Total LOC: 457 LOC Implementation + ~600 LOC Tests
+- **Architectural Decision**: Unified ConstantScalarSignal<T> statt separate Zero/One Klassen (DRY principle)
+- **Dependencies Unblocked**: ScalarTripletPath3D, HarmonicPath3D, SphericalPath3D können jetzt implementiert werden
+
 #### ⏳ Nächste Schritte
-19. **CatmullRomSpline**, **Hermite**, **Roulette** etc. (ohne ScalarSignal-Abhängigkeit)
-20. **ScalarSignal-Modul** (später) - Schaltet ScalarTripletPath3D & SphericalPath3D frei
+27. **ScalarTripletPath3D<T>** (jetzt möglich mit ScalarSignal<T>)
+28. **HarmonicPath3D<T>** (jetzt möglich mit ScalarSignal<T>)
+29. **SphericalPath3D<T>** (jetzt möglich mit ScalarSignal<T>)
+30. **Weitere Circle/Line Variants**, **Hermite**, **Roulette** etc.
 ...
 
 **Vollständige Task-Liste:** Siehe [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)
