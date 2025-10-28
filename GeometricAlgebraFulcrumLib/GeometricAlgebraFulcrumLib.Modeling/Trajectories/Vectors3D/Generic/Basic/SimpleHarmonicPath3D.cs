@@ -16,7 +16,7 @@ public sealed class SimpleHarmonicPath3D<T> :
     public static SimpleHarmonicPath3D<T> FiniteSymmetric(IScalarProcessor<T> scalarProcessor, int harmonicFactor, LinVector3D<T> magnitudeVector)
     {
         return new SimpleHarmonicPath3D<T>(
-            ScalarRange<T>.Create(-scalarProcessor.Pi, scalarProcessor.Pi),
+            ScalarRange<T>.SymmetricPi(scalarProcessor),
             false,
             harmonicFactor,
             magnitudeVector,
@@ -32,7 +32,7 @@ public sealed class SimpleHarmonicPath3D<T> :
     public static SimpleHarmonicPath3D<T> PeriodicSymmetric(IScalarProcessor<T> scalarProcessor, int harmonicFactor, LinVector3D<T> magnitudeVector)
     {
         return new SimpleHarmonicPath3D<T>(
-            ScalarRange<T>.Create(-scalarProcessor.Pi, scalarProcessor.Pi),
+            ScalarRange<T>.SymmetricPi(scalarProcessor),
             true,
             harmonicFactor,
             magnitudeVector,

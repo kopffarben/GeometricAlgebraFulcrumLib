@@ -43,6 +43,26 @@ public readonly struct ScalarRange<T> :
     public static ScalarRange<T> NegativeOneToOne(IScalarProcessor<T> scalarProcessor)
         => new ScalarRange<T>(scalarProcessor.MinusOne, scalarProcessor.One);
 
+    public static ScalarRange<T> SymmetricOne(IScalarProcessor<T> scalarProcessor)
+        => new ScalarRange<T>(scalarProcessor.MinusOne, scalarProcessor.One);
+
+    public static ScalarRange<T> SymmetricHalfPi(IScalarProcessor<T> scalarProcessor)
+        => new ScalarRange<T>(-scalarProcessor.PiOver2, scalarProcessor.PiOver2);
+
+    public static ScalarRange<T> SymmetricPi(IScalarProcessor<T> scalarProcessor)
+        => new ScalarRange<T>(-scalarProcessor.Pi, scalarProcessor.Pi);
+
+    public static ScalarRange<T> SymmetricTwoPi(IScalarProcessor<T> scalarProcessor)
+        => new ScalarRange<T>(-scalarProcessor.PiTimes2, scalarProcessor.PiTimes2);
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ScalarRange<T> CreateAroundZero(IScalarProcessor<T> scalarProcessor, Scalar<T> delta)
+    {
+        return !delta.IsNegative()
+            ? new ScalarRange<T>(-delta, delta)
+            : new ScalarRange<T>(delta, -delta);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ScalarRange<T> CreateAround(Scalar<T> center, Scalar<T> delta)

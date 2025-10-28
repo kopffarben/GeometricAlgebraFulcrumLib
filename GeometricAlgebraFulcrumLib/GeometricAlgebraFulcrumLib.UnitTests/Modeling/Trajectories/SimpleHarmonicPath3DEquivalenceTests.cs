@@ -355,10 +355,7 @@ public sealed class SimpleHarmonicPath3DEquivalenceTests
 
         var float64Path = Float64SimpleHarmonicPath3D.Finite(harmonicFactor, magnitude, timeOffset);
         var genericPath = SimpleHarmonicPath3D<double>.Finite(
-            ScalarRange<double>.Create(
-                ScalarProcessorOfFloat64.Instance.ScalarFromValue(-Math.PI),
-                ScalarProcessorOfFloat64.Instance.ScalarFromValue(Math.PI)
-            ),
+            ScalarRange<double>.SymmetricPi(ScalarProcessorOfFloat64.Instance),
             harmonicFactor,
             LinVector3D<double>.Create(
                 ScalarProcessorOfFloat64.Instance.One,
