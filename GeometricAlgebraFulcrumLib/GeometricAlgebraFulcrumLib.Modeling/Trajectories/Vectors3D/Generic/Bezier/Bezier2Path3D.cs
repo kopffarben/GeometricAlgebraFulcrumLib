@@ -57,6 +57,22 @@ public sealed class Bezier2Path3D<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Bezier1Path3D<T> GetDerivativeCurve()
+    {
+        // Derivative of quadratic Bezier curve is a linear Bezier (degree 1)
+        // with control points: 2(P₂-P₁), 2(P₃-P₂)
+        var processor = Point1.ScalarProcessor;
+        var two = processor.ScalarFromNumber(2);
+
+        return Bezier1Path3D<T>.Create(
+            TimeRange,
+            IsPeriodic,
+            two * (Point2 - Point1),
+            two * (Point3 - Point2)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override LinVector3D<T> GetValue(Scalar<T> t)
     {
         // Quadratic Bezier curve using Bernstein basis functions

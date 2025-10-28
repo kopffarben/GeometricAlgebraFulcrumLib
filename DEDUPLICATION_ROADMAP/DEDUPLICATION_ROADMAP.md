@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: Bezier0Path3D complete)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: Bezier3Path3D complete)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -640,17 +640,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 4.5 (Phase 3A Module 6A - Bezier1Path3D Complete)
+**Dokument Version:** 4.6 (Phase 3A Module 6A - Bezier3Path3D Complete)
 **Letzte Aktualisierung:** 2025-10-28
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
-**Nächste Review:** Nach Completion von Module 6A (17/151 Klassen, 11.3% complete)
+**Nächste Review:** Nach Completion von Module 6A (18/151 Klassen, 11.9% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 17/151 Klassen complete (11.3%)
-**Aufwand bisher:** ~22 Stunden
-**Tests:** 120 Tests (100% passing ✅)
-**LOC:** ~2,729 LOC Implementation + ~3,924 LOC Tests
+**Status:** 18/151 Klassen complete (11.9%)
+**Aufwand bisher:** ~23 Stunden
+**Tests:** 133 Tests (100% passing ✅)
+**LOC:** ~2,891 LOC Implementation + ~4,499 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -696,8 +696,9 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - Parametrische Form: `B(t) = (1-t)²P₁ + 2(1-t)tP₂ + t²P₃`
     - Analytische Ableitungen (1. und 2. Ordnung)
     - Konstante 2. Ableitung für quadratische Kurven
+    - GetDerivativeCurve() gibt Bezier1 zurück (hinzugefügt 2025-10-28)
     - **Tests:** 10 Tests ✅
-    - **LOC:** 240 LOC Implementation + 438 LOC Tests
+    - **LOC:** 254 LOC Implementation + 438 LOC Tests
 
 15. **Bezier0Path3D<T>** - Konstante Bezier-Kurven (1 Kontrollpunkt)
     - Parametrische Form: `B(t) = P₁` (trivial, konstant für alle t)
@@ -715,8 +716,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **Tests:** 11 Tests ✅
     - **LOC:** 129 LOC Implementation + 456 LOC Tests
 
+17. **Bezier3Path3D<T>** - Kubische Bezier-Kurven (4 Kontrollpunkte)
+    - Parametrische Form: `B(t) = (1-t)³P₁ + 3(1-t)²tP₂ + 3(1-t)t²P₃ + t³P₄`
+    - Analytische 1. Ableitung: `B'(t) = 3(1-t)²(P₂-P₁) + 6(1-t)t(P₃-P₂) + 3t²(P₄-P₃)`
+    - 2. Ableitung via Derivative Curve Chain
+    - GetDerivativeCurve() gibt Bezier2 zurück
+    - ToFinitePath/ToPeriodicPath Konvertierung
+    - **Tests:** 13 Tests ✅
+    - **LOC:** 148 LOC Implementation + 575 LOC Tests
+
 #### ✅ API Parity Improvements (Complete - 2025-10-28)
-17. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
+18. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
     - `SymmetricPi(processor)` → [-π, π]
     - `SymmetricOne(processor)` → [-1, 1]
     - `SymmetricHalfPi(processor)` → [-π/2, π/2]
@@ -739,7 +749,6 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
   - **Entdeckt durch**: Generic-Implementierung mit korrekter Mathematik
 
 #### ⏳ Nächste Schritte
-18. **Bezier3Path3D<T>** - Kubische Bezier (4 Kontrollpunkte)
 19. **CatmullRomSpline**, **Hermite**, **Roulette** etc. (ohne ScalarSignal-Abhängigkeit)
 20. **ScalarSignal-Modul** (später) - Schaltet ScalarTripletPath3D & SphericalPath3D frei
 ...
