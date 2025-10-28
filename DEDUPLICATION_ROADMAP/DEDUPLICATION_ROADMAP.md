@@ -640,17 +640,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 4.4 (Phase 3A Module 6A - Bezier0Path3D Complete)
+**Dokument Version:** 4.5 (Phase 3A Module 6A - Bezier1Path3D Complete)
 **Letzte Aktualisierung:** 2025-10-28
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
-**Nächste Review:** Nach Completion von Module 6A (16/151 Klassen, 10.6% complete)
+**Nächste Review:** Nach Completion von Module 6A (17/151 Klassen, 11.3% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 16/151 Klassen complete (10.6%)
-**Aufwand bisher:** ~21 Stunden
-**Tests:** 109 Tests (100% passing ✅)
-**LOC:** ~2,600 LOC Implementation + ~3,468 LOC Tests
+**Status:** 17/151 Klassen complete (11.3%)
+**Aufwand bisher:** ~22 Stunden
+**Tests:** 120 Tests (100% passing ✅)
+**LOC:** ~2,729 LOC Implementation + ~3,924 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -706,8 +706,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **Tests:** 10 Tests ✅
     - **LOC:** 100 LOC Implementation + 368 LOC Tests
 
+16. **Bezier1Path3D<T>** - Lineare Bezier-Kurven (2 Kontrollpunkte)
+    - Parametrische Form: `B(t) = (1-t)P₁ + tP₂` (lineare Interpolation/Lerp)
+    - Konstante 1. Ableitung: `B'(t) = P₂ - P₁` (konstante Geschwindigkeit)
+    - Null 2. Ableitung (keine Beschleunigung)
+    - GetDerivativeCurve() gibt Bezier0 zurück
+    - GetFrame() mit normalisiertem Tangent
+    - **Tests:** 11 Tests ✅
+    - **LOC:** 129 LOC Implementation + 456 LOC Tests
+
 #### ✅ API Parity Improvements (Complete - 2025-10-28)
-16. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
+17. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
     - `SymmetricPi(processor)` → [-π, π]
     - `SymmetricOne(processor)` → [-1, 1]
     - `SymmetricHalfPi(processor)` → [-π/2, π/2]
@@ -730,7 +739,6 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
   - **Entdeckt durch**: Generic-Implementierung mit korrekter Mathematik
 
 #### ⏳ Nächste Schritte
-17. **Bezier1Path3D<T>** - Lineare Bezier (2 Kontrollpunkte)
 18. **Bezier3Path3D<T>** - Kubische Bezier (4 Kontrollpunkte)
 19. **CatmullRomSpline**, **Hermite**, **Roulette** etc. (ohne ScalarSignal-Abhängigkeit)
 20. **ScalarSignal-Modul** (später) - Schaltet ScalarTripletPath3D & SphericalPath3D frei
