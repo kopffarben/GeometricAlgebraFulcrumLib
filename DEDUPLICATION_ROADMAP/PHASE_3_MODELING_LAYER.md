@@ -115,6 +115,166 @@ public void ParametricPath3D_GetPoint_ShouldProduceIdenticalResults()
 
 ---
 
+## 🔧 Implementation Decisions & Simplifications
+
+### ⚠️ Cross-Module Dependencies Problem
+
+**Problem:** Module haben Dependencies untereinander, die noch nicht existieren.
+
+**Beispiel (Module 6A: Trajectories Vectors3D):**
+
+| Dependency | Status | Kommt in Modul | Lösung |
+|------------|--------|----------------|--------|
+| `ScalarSignal<T>` | ❌ Fehlt | Module 8 (Signals) | **Vereinfachte Version** ohne `GetScalarComponents()` |
+| `MathNet.Numerics.Differentiate` | ⚠️ Hardcoded double | - | Nur für T=double implementieren |
+| `LinVector3D<T>` | ✅ Existiert | Already in Algebra | Kann verwendet werden |
+| `ScalarRange<T>` | ✅ Existiert | Already in Algebra | Kann verwendet werden |
+
+### 🔍 Deep Dependency Analysis (2025-10-28)
+
+**CRITICAL FINDING: Zirkuläre Dependency zwischen Module 6A und Module 8**
+
+Nach tiefer Code-Analyse der bestehenden Float64-Implementierungen wurde eine zirkuläre Dependency entdeckt:
+
+```
+ParametricPath3D<T>.GetScalarComponents()
+  → returns Triplet<ScalarSignal<T>>  (benötigt Module 8)
+     ↓
+ScalarSignal<T>
+  → inherits from Trajectory<T>  (benötigt Module 6A Basis-Klasse)
+     ↓
+ParametricPath3D<T>
+  → inherits from Trajectory<LinVector3D<T>>  (benötigt Module 6A Basis-Klasse)
+```
+
+**Warum ist diese Dependency ZIRKULÄR?**
+- `ParametricPath3D<T>` braucht `ScalarSignal<T>` für `GetScalarComponents()`
+- `ScalarSignal<T>` braucht `Trajectory<T>` als Base-Klasse
+- `ParametricPath3D<T>` ist Teil derselben Hierarchie wie `Trajectory<T>`
+- → **DEADLOCK:** Wir können nicht beide gleichzeitig implementieren!
+
+**Verifiziert in Code:**
+- `Float64Path3D.cs:45` - `GetScalarComponents()` returns `Triplet<Float64ScalarSignal>`
+- `Float64ScalarSignal.cs:8` - `Float64ScalarSignal` inherits from `Float64Trajectory<double>`
+- `Float64Path3D.cs:10` - `Float64Path3D` inherits from `Float64Trajectory<LinFloat64Vector3D>`
+
+**LÖSUNG: Phased Implementation (2-Step Approach)**
+
+```
+Phase 1 (JETZT - Module 6A Simplified):
+  ✅ Trajectory<T> implementieren (ohne Signal-Dependencies)
+  ✅ ParametricPath3D<T> implementieren (OHNE GetScalarComponents())
+  ✅ Alle 60 Trajectory-Subklassen implementieren (brauchen kein GetScalarComponents())
+     ↓
+Phase 2 (SPÄTER - Module 8):
+  ✅ ScalarSignal<T> implementieren (kann jetzt Trajectory<T> als Base verwenden)
+     ↓
+Phase 3 (EXTENSION - Module 6A Extended):
+  ✅ GetScalarComponents() zu ParametricPath3D<T> hinzufügen
+  ✅ FindValueRange() hinzufügen (braucht GetScalarComponents())
+```
+
+**WICHTIG:** Die Simplification betrifft NUR 2 Utility-Methoden:
+- ❌ `GetScalarComponents()` - nur intern für `FindValueRange()` verwendet
+- ❌ `FindValueRange()` - Utility-Funktion, nicht Teil der Core-API
+
+**Alle Core-Features KÖNNEN implementiert werden:**
+- ✅ `GetValue(t)` - Returns position at time t
+- ✅ `GetDerivative1Value(t)` - Returns velocity (1st derivative)
+- ✅ `GetDerivative2Value(t)` - Returns acceleration (2nd derivative)
+- ✅ `GetFrame(t)` - Returns local frame (tangent, normal, binormal)
+- ✅ ALL 60 Trajectory subclasses (ConstantPath3D, LineSegmentPath3D, CirclePath3D, BezierPath3D, etc.)
+
+**Verifiziert:** `Float64ConstantPath3D.cs`, `Float64LineSegmentPath3D.cs` - verwenden KEINE Signal-Dependencies!
+
+### 📊 Optimal Module Implementation Order (VERIFIED)
+
+Nach Analyse ALLER Module-Dependencies ist die optimale Reihenfolge:
+
+```
+Module 6A (Trajectories) - Simplified
+  ↓
+Module 7A (Calculus CORE: DfCos, DfSin, DfPlus, etc.)
+  ↓
+Module 8 (Signals: ScalarSignal<T>, SampledTimeSignal<T>)
+  ↓
+Module 7B (Calculus ADVANCED: Interpolators, DifferentialPath3D)
+  ↓
+Module 6A Extended (Add GetScalarComponents() back)
+```
+
+**Dependency-Matrix (verified in code):**
+
+| Modul | Abhängig von | Grund |
+|-------|--------------|-------|
+| **6A (Trajectories)** | ✅ Algebra only | `Trajectory<T>` braucht nur `ScalarRange<T>`, `LinVector3D<T>` |
+| **7A (Calculus CORE)** | ✅ Algebra only | `DfCos`, `DfSin`, `DfPlus` haben KEINE Signal-Dependencies |
+| **8 (Signals)** | ⚠️ 6A required | `ScalarSignal<T>` inherits from `Trajectory<T>` |
+| **7B (Calculus ADVANCED)** | ⚠️ 8 required | `DfFourierSignalInterpolator` braucht `SampledTimeSignal<T>` |
+| **6A Extended** | ⚠️ 8 required | `GetScalarComponents()` returns `ScalarSignal<T>[]` |
+
+**CRITICAL FINDINGS aus Code-Analyse:**
+
+1. **Module 7A (Calculus CORE) ist UNABHÄNGIG:**
+   - Verifiziert: `DifferentialFunction.cs` - KEINE Signal-Imports
+   - Kann PARALLEL zu Module 6A implementiert werden
+
+2. **Module 7B (Calculus ADVANCED) hat zirkuläre Usage-Dependency mit Module 8:**
+   - `DfFourierSignalInterpolator.cs:144` - `Create(Float64SampledTimeSignal signal, ...)`
+   - `Float64SampledTimeSignal.cs:1209` - `CreateFourierInterpolator()` returns Interpolator
+   - → Keine Compile-Time Circular Dependency (nur Usage-Pattern)
+   - → ABER: Module 7B MUSS nach Module 8 kommen
+
+3. **Module 6A Subklassen brauchen KEIN GetScalarComponents():**
+   - Alle 60 Subklassen verwenden nur Core-Methods
+   - Können sofort nach `ParametricPath3D<T>` implementiert werden
+
+**FAZIT: Die existierende Modul-Reihenfolge (6A → 7A → 8 → 7B) ist OPTIMAL! ✅**
+
+### 📋 Simplified Implementation Strategy (Module 6A)
+
+**Phase 3A Module 6A - Tag 1 (2025-10-28):**
+
+Wir implementieren **vereinfachte Versionen** der Trajectory-Klassen:
+
+**Was WIRD implementiert:**
+- ✅ `Trajectory<T>` - Generic Basis-Klasse mit TimeRange, IsPeriodic
+- ✅ `ParametricPath3D<T>` - Generic 3D Path mit GetValue(), GetDerivative1Value(), GetDerivative2Value()
+- ✅ Alle abstrakten Methods für Unterklassen
+- ✅ `GetFrame()` für Local Frames
+
+**Was TEMPORÄR FEHLT (wird später hinzugefügt):**
+- ❌ `GetScalarComponents()` → Braucht `ScalarSignal<T>` aus Module 8
+- ❌ `GetDerivative1ValueNumerical()` mit MathNet.Numerics → Nur für double
+- ❌ `FindValueRange()` → Braucht `ScalarSignal<T>` aus Module 8
+
+**Rationale:**
+1. **Funktionalität bewahren:** Unterklassen können GetDerivative1Value() selbst analytisch implementieren (oft präziser als numerisch)
+2. **Unabhängigkeit:** Module 6A kann OHNE Module 8 implementiert werden
+3. **Erweiterbarkeit:** Später können wir `ScalarSignal<T>`-basierte Features hinzufügen
+4. **Equivalence Tests möglich:** Float64 vs Generic<double> für Basis-Funktionalität testbar
+
+### 🔄 Extension Plan (Nach Module 8 Complete)
+
+**Wenn `ScalarSignal<T>` verfügbar (nach Module 8):**
+1. Add `GetScalarComponents()` zu `ParametricPath3D<T>`
+2. Add `FindValueRange()` mit Signal-basierter Value-Range Detection
+3. Update Equivalence Tests für erweiterte Features
+
+**Status-Tracking:**
+- [ ] Module 6A: Simplified ParametricPath3D<T> ← **JETZT**
+- [ ] Module 8: ScalarSignal<T> implementieren
+- [ ] Module 6A Extended: `GetScalarComponents()` + `FindValueRange()` hinzufügen
+
+### 🎯 Design-Prinzipien für Simplifications
+
+1. **Core-Funktionalität zuerst:** Basis-Features (GetValue, GetDerivative) sind wichtiger als Utility-Features
+2. **Analytisch > Numerisch:** Unterklassen sollen Derivationen analytisch implementieren (präziser)
+3. **Incremental Enhancement:** Simplifications können später erweitert werden ohne Breaking Changes
+4. **Test-Driven:** Jede Simplification ist testbar (Generic<double> = Float64 für implementierte Features)
+
+---
+
 ## 🗺️ Phase 3 Struktur
 
 Phase 3 wird in **4 Sub-Phasen** unterteilt, nach Priorität:

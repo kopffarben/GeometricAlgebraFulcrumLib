@@ -86,37 +86,60 @@ ParametricPath3D<T> (Basis)
 
 ### Task 6A.1: Basis-Klassen (Woche 1-2)
 
-- [ ] **ParametricPath3D<T>** - Basis-Klasse
+- [ ] **ParametricPath3D<T>** - Basis-Klasse ⚠️ **SIMPLIFIED VERSION**
   - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic`
   - **Referenz:** `Float64Path3D` (~200 LOC)
-  - **Estimated:** 8-12 Stunden
+  - **Estimated:** 6-8 Stunden (simplified)
+  - **⚠️ WICHTIG:** Vereinfachte Version ohne ScalarSignal<T>-Dependencies (siehe PHASE_3_MODELING_LAYER.md)
 
 **Implementation (WORKFLOW ZWINGEND EINHALTEN!):**
-- [ ] 1️⃣ **IMPLEMENTIERUNG:** Float64Path3D.cs analysieren und Generic<T> erstellen
-  - [ ] Generic<T> Basis-Klasse erstellen
-  - [ ] Properties implementieren:
-    - [ ] `IScalarProcessor<T> ScalarProcessor`
-    - [ ] `ScalarRange<T> TimeRange`
-    - [ ] `bool IsPeriodic`
-  - [ ] Methods implementieren:
-    - [ ] `GetPoint(T time)` → `LinVector3D<T>`
-    - [ ] `GetTangent(T time)` → `LinVector3D<T>`
-    - [ ] `GetUnitTangent(T time)` → `LinVector3D<T>`
-    - [ ] `GetLength()` → `T`
-    - [ ] `GetLength(T t1, T t2)` → `T`
+- [ ] 1️⃣ **IMPLEMENTIERUNG:** Simplified Generic<T> Version erstellen
+  - [ ] **Trajectory<T>** Basis-Klasse erstellen (NEU - benötigt für ParametricPath3D<T>)
+    - [ ] Properties: `TimeRange`, `IsPeriodic`, `IsFinite`, `MinTime`, `MaxTime`
+    - [ ] Abstract: `IsValid()`, `ToFinite()`, `ToPeriodic()`
+    - [ ] Abstract: `GetValue(T t)`
+  - [ ] **ParametricPath3D<T>** erstellen (erbt von Trajectory<LinVector3D<T>>)
+    - [ ] Properties implementieren (geerbt + neue):
+      - [ ] `IScalarProcessor<T> ScalarProcessor` (NEU)
+    - [ ] Abstract Methods definieren:
+      - [ ] `GetValue(T time)` → `LinVector3D<T>` (abstract - für Unterklassen)
+      - [ ] `GetDerivative1Value(T time)` → `LinVector3D<T>` (virtual - kann überschrieben werden)
+      - [ ] `GetDerivative2Value(T time)` → `LinVector3D<T>` (virtual - kann überschrieben werden)
+      - [ ] `ToFinitePath()` → `ParametricPath3D<T>` (abstract)
+      - [ ] `ToPeriodicPath()` → `ParametricPath3D<T>` (abstract)
+    - [ ] Concrete Methods implementieren:
+      - [ ] `GetFrame(T t)` → `Path3DLocalFrame<T>` (falls Frame-Klasse existiert, sonst weglassen)
+  - [ ] ⚠️ **NICHT implementieren (Dependencies fehlen):**
+    - [ ] ❌ `GetScalarComponents()` (braucht ScalarSignal<T> aus Module 8)
+    - [ ] ❌ `FindValueRange()` (braucht ScalarSignal<T> aus Module 8)
+    - [ ] ❌ `GetDerivative1ValueNumerical()` (MathNet.Numerics - nur für double)
+    - [ ] ❌ `GetDerivative2ValueNumerical()` (MathNet.Numerics - nur für double)
 
-- [ ] 2️⃣ **EQUIVALENCE TESTS:** Tests schreiben (Generic<double> vs Float64)
-  - [ ] Mindestens 10+ Tests schreiben
-  - [ ] Alle Public Methods testen
-  - [ ] Test-Pattern: Float64-Klasse vs Generic<double> vergleichen
+- [ ] 2️⃣ **EQUIVALENCE TESTS:** Tests für IMPLEMENTIERTE Features schreiben
+  - [ ] Mindestens 8+ Tests schreiben (simplified version hat weniger Methods)
+  - [ ] Test Coverage für:
+    - [ ] `GetValue(t)` - Basis-Funktionalität
+    - [ ] `GetDerivative1Value(t)` - für konkrete Unterklassen
+    - [ ] `ToFinitePath()` / `ToPeriodicPath()` - Conversion
+    - [ ] Properties: `TimeRange`, `IsPeriodic`, `MinTime`, `MaxTime`
+  - [ ] ⚠️ **NICHT testen** (noch nicht implementiert):
+    - [ ] ❌ `GetScalarComponents()` - kommt in Module 8
+    - [ ] ❌ `FindValueRange()` - kommt in Module 8
+    - [ ] ❌ Numerical Differentiation - kommt später
+  - [ ] Test-Pattern: Float64-Klasse vs Generic<double> für BASIS-Features vergleichen
 
 - [ ] 3️⃣ **VERIFICATION:** Alle Tests passing (100% Pass Rate)
   - [ ] `dotnet test --filter "ParametricPath3DEquivalenceTests"`
   - [ ] ALLE Tests grün ✅
 
-- [ ] 4️⃣ **COMMIT:** NUR wenn 100% Tests passing!
+- [ ] 4️⃣ **COMMIT:** NUR wenn 100% Tests passing UND Dokumentationen aktualisiert!
+  - [ ] **VOR Commit:** Alle DEDUPLICATION_ROADMAP Dokumente aktualisieren
+    - [ ] PHASE_3_MODELING_LAYER.md - Status-Tracking aktualisieren
+    - [ ] PHASE_3_DEDUPLICATION_TASKS.md - Task als complete markieren
+    - [ ] DEDUPLICATION_ROADMAP.md - Falls nötig aktualisieren
   - [ ] Git add + commit mit klarer Message
-  - [ ] Message-Format: "feat(Generic): Add ParametricPath3D<T> + 10 Equivalence Tests ✅"
+  - [ ] Message-Format: "feat(Generic): Add simplified ParametricPath3D<T> + Trajectory<T> + 8 Equivalence Tests ✅"
+  - [ ] Commit-Body muss Simplifications erklären (siehe Beispiel unten)
 
 ---
 

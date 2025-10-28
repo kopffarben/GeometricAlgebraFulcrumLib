@@ -1,9 +1,13 @@
 # Next Steps Roadmap - Konkrete Aktionen
 
-**Letzte Aktualisierung:** 2025-10-28 (📋 Phase 3 PLANNED - 257 Klassen in Modeling Layer)
-**Aktueller Status:** Phase 1 ✅ COMPLETE | Phase 2 ⏳ NEXT | Phase 3 📋 PLANNED
-**Nächster Schritt:** Phase 2 Thin Wrapper Migration → dann Phase 3 Modeling Layer
+**Letzte Aktualisierung:** 2025-10-28 (🚀 Phase 3 STARTED - Module 6A Trajectories)
+**Aktueller Status:** Phase 1 ✅ COMPLETE | Phase 2 ⏭️ SKIPPED | Phase 3 🚀 IN PROGRESS
+**Nächster Schritt:** Phase 3A Module 6A - Trajectory<T> + ParametricPath3D<T> (Simplified)
 **Branch:** Feature/ScalarFloat32
+
+⚠️ **DECISION (2025-10-28):** Phase 2 (Thin Wrapper) ÜBERSPRUNGEN → Direkt zu Phase 3 (Modeling Layer)
+- **Grund:** Modeling Layer hat höhere Priorität für produktive Nutzung
+- **Phase 2 kann später** erfolgen (Thin Wrapper ist nur Code-Reduktion, keine neue Funktionalität)
 
 ---
 
@@ -71,39 +75,90 @@ Nach jedem Meilenstein alle drei aktualisieren!
 - **Aufwand:** ~2 Stunden (vs. 35-45 Stunden geschätzt)
 - **Next:** Phase 1.4 (Module 4: CGA Visualizers)
 
-**Phase 2:** ⏳ NEXT (Thin Wrapper Migration)
+**Phase 2:** ⏭️ SKIPPED (Thin Wrapper Migration)
 - Thin Wrapper Pattern für Float64 → Generic<double>
 - ~78,500 LOC Reduktion möglich
 - Module 2 (ComplexAlgebra), Module 3 (VGA), Module 5 (LinearAlgebra) mit Performance-Validierung
 - CGa/PGa Thin Wrapper empfohlen (1.24-1.27x schneller validiert)
-- **Start:** Nach XGa Performance-Untersuchungen
-- **Geschätzter Aufwand:** 1-2 Wochen
+- **Status:** ÜBERSPRUNGEN - Kann später erfolgen (nur Code-Reduktion)
+- **Geschätzter Aufwand:** 1-2 Wochen (wenn später durchgeführt)
 
-**Phase 3:** 📋 PLANNED (Modeling Layer Generic Implementation)
+**Phase 3:** 🚀 IN PROGRESS (Modeling Layer Generic Implementation)
 - **KRITISCHER FUND:** 257 Float64-Klassen mit fast KEINEN Generic<T> Äquivalenten
 - 5 Module: Trajectories (151), Calculus (~107), Signals (11), Statistics (15), PropagatorNetworks (10)
 - 4 Sub-Phasen (3A-3D): Priorität-basiert (P0/P1/P2/P3)
 - **Geschätzte Dauer:** 28 Wochen für Core (3A+3B), 41 Wochen für ALLES
 - **Details:** [PHASE_3_MODELING_LAYER.md](PHASE_3_MODELING_LAYER.md)
 - **Tasks:** [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)
-- **Start:** Nach Phase 2 Complete
+- **Started:** 2025-10-28 (Module 6A: Trajectories)
+- **Optimal Module Order (verified):** 6A (simplified) → 7A → 8 → 7B → 6A (extended)
 
 ---
 
-## 📋 Module 1: XGa Core - Erste Schritte
+## 🚀 Phase 3A - Module 6A: Trajectories (CURRENT FOCUS)
 
-### Was fehlt in Generic (Priorität):
+### 📊 Dependency Analysis Result (2025-10-28)
+
+**VERIFIED:** Die vereinfachte Implementation ist NOTWENDIG wegen zirkulärer Dependencies:
+
+```
+ParametricPath3D<T>.GetScalarComponents() → ScalarSignal<T> (Module 8)
+                                               ↓
+                           ScalarSignal<T> inherits from Trajectory<T> (Module 6A)
+                                               ↓
+                           ParametricPath3D<T> inherits from Trajectory<...> (Module 6A)
+```
+
+**DEADLOCK:** Beide brauchen einander! Lösung = Phased Implementation.
+
+### 🎯 Was implementieren wir JETZT? (Phase 3A Module 6A - Simplified)
+
+**Basis-Klassen (Woche 1):**
+1. ✅ **Trajectory<T>** - Generic base class
+   - Properties: `TimeRange`, `IsPeriodic`, `MinTime`, `MaxTime`
+   - Abstract: `GetValue(T t)`, `IsValid()`, `ToFinite()`, `ToPeriodic()`
+
+2. ✅ **ParametricPath3D<T>** - Generic 3D trajectory (SIMPLIFIED)
+   - Inherits: `Trajectory<LinVector3D<T>>`
+   - Core methods: `GetValue()`, `GetDerivative1Value()`, `GetDerivative2Value()`, `GetFrame()`
+   - ❌ **SKIP:** `GetScalarComponents()`, `FindValueRange()` (brauchen ScalarSignal<T>)
+
+**Einfache Subklasse für Tests (Woche 1):**
+3. ✅ **ConstantPath3D<T>** - Constant trajectory
+   - Simplest possible subclass (verified in Float64ConstantPath3D.cs)
+   - Alle Core-Methods implementierbar
+
+**Tests (Woche 1):**
+4. ✅ **8+ Equivalence Tests**
+   - Generic<double> vs Float64 für GetValue(), GetDerivative1Value(), GetDerivative2Value(), GetFrame()
+   - 100% Pass Rate REQUIRED
+
+**Alle weiteren 59 Subklassen können DANACH implementiert werden:**
+- LineSegmentPath3D<T>, CirclePath3D<T>, BezierPath3D<T>, etc.
+- Verified: KEINE verwenden GetScalarComponents()!
+
+### 🔄 Was kommt SPÄTER? (Nach Module 8 Signals)
+
+**Phase 3B Module 8 → dann Phase 3A Extended:**
+- ScalarSignal<T> implementieren
+- GetScalarComponents() zu ParametricPath3D<T> hinzufügen
+- FindValueRange() hinzufügen
+
+---
+
+## 📋 Phase 1 Module 1: XGa Core - Historie (COMPLETE)
+
+### Was wurde implementiert:
 
 1. ~~**XGaComputedOutermorphism<T>**~~ ✅ COMPLETE (2025-10-24)
 2. ~~**XGaStoredOutermorphism<T>**~~ ✅ COMPLETE (2025-10-25)
 3. ~~**XGaOutermorphismComposerUtils<T>**~~ ✅ COMPLETE (2025-10-25)
 4. ~~**XGaGramSchmidtFrame<T>**~~ ✅ COMPLETE (2025-10-25)
-5. **XGaConformalComposerUtils<T>** ← START HIER (Task 1.5)
-6. **ToTuple()** extensions (optional)
+5. ~~**XGaConformalComposerUtils<T>**~~ ✅ COMPLETE (2025-10-26)
 
 ---
 
-## 🚀 Tag 1: XGaComputedOutermorphism<T>
+## 🚀 OLD: Tag 1: XGaComputedOutermorphism<T> (ARCHIV - COMPLETE)
 
 ### Schritt 1: Float64-Implementierung analysieren
 
