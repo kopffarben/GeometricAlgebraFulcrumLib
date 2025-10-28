@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: BezierNPath3D<T> + Critical Float64 DeCasteljau Bug Fix)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: PlusPath3D<T> - Path Addition/Sum of Multiple Paths)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -640,17 +640,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 4.7 (Phase 3A Module 6A - BezierNPath3D<T> Complete)
-**Letzte Aktualisierung:** 2025-10-28 (BezierNPath3D<T> + Critical Float64 Bug Fix)
+**Dokument Version:** 4.8 (Phase 3A Module 6A - PlusPath3D<T> Complete)
+**Letzte Aktualisierung:** 2025-10-28 (PlusPath3D<T> - Path Addition/Sum of Multiple Paths)
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
 **Nächste Review:** Nach Completion von Module 6A (18/151 Klassen, 11.9% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 30/151 Klassen complete (19.9%)
-**Aufwand bisher:** ~34 Stunden
-**Tests:** 242 Tests (242 passing ✅ - 100% success rate!)
-**LOC:** ~5,362 LOC Implementation + ~8,231 LOC Tests
+**Status:** 31/151 Klassen complete (20.5%)
+**Aufwand bisher:** ~35 Stunden
+**Tests:** 255 Tests (255 passing ✅ - 100% success rate!)
+**LOC:** ~5,579 LOC Implementation + ~8,594 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -760,8 +760,35 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
       - Generic<T> implementation has correct logic from the start
     - **Status:** Complete ✅
 
+19. **PlusPath3D<T>** - Path Addition (Sum of Multiple Paths) ✅ COMPLETE (2025-10-28)
+    - Parametrische Form: `(A + B + C + ...)(t) = A(t) + B(t) + C(t) + ...`
+    - Vector-Addition von beliebig vielen Basis-Pfaden
+    - **Recursive Flattening:** Verschachtelte PlusPath3D werden automatisch flachgemacht
+      - `((A+B)+C)` wird zu `[A, B, C]` statt nested structure
+      - Eliminiert unnötige Indirektionen und verbessert Performance
+    - **IReadOnlyList<ParametricPath3D<T>>** interface für Enumeration der Basis-Pfade
+    - Derivative Chaining: `d/dt[A+B] = dA/dt + dB/dt` und `d²/dt²[A+B] = d²A/dt² + d²B/dt²`
+    - Aggregate-Pattern für effiziente Summierung
+    - Factory-Methoden: Finite/Periodic mit 2+ Pfaden (multiple overloads)
+    - Time-Range: Min(alle MinTimes) bis Max(alle MaxTimes)
+    - Indexer und Count für direkten Zugriff auf Basis-Pfade
+    - **Tests:** 13 Tests ✅ (100% success rate)
+      - Two constant paths addition
+      - Two line segments addition
+      - Three paths addition
+      - Nested PlusPath3D flattening
+      - Derivative summing (1st and 2nd order)
+      - IsValid validation
+      - ToFinitePath/ToPeriodicPath conversions
+      - IReadOnlyList interface
+      - Time range calculation (Min/Max of components)
+      - Periodic path creation
+      - SimpleHarmonic + Constant addition
+    - **LOC:** 217 LOC Implementation + ~363 LOC Tests
+    - **Status:** Complete ✅
+
 #### ✅ Computed Paths (Complete - 2025-10-28)
-19. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
+20. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
     - Speichert `Func<Scalar<T>, LinVector3D<T>>` Delegates für Position und Ableitungen
     - 14 statische Factory-Methoden: Finite (5 Varianten), Periodic (5 Varianten), Create (4 Varianten)
     - ClampTime-Logik: Finite (Clamping zu [min,max]), Periodic (Wrapping via Math.Floor)
@@ -773,7 +800,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 338 LOC Implementation + 392 LOC Tests
 
 #### ✅ Catmull-Rom Splines (Complete - 2025-10-28)
-21. **CatmullRomUtils<T>** - Generische Catmull-Rom Spline Formeln
+22. **CatmullRomUtils<T>** - Generische Catmull-Rom Spline Formeln
     - GetCatmullRomValue, GetCatmullRomDerivativeValue, GetCatmullRomDerivative2Value
     - Unterstützt Scalar<T> und LinVector3D<T>
     - Basiert auf http://www.cemyuksel.com/research/catmullrom_param/catmullrom.pdf
@@ -806,7 +833,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **Status**: Complete ✅
 
 #### ✅ API Parity Improvements (Complete - 2025-10-28)
-20. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
+24. **ScalarRange<T>** Erweiterungen für 100% API-Gleichheit mit Float64
     - `SymmetricPi(processor)` → [-π, π]
     - `SymmetricOne(processor)` → [-1, 1]
     - `SymmetricHalfPi(processor)` → [-π/2, π/2]
@@ -829,7 +856,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
   - **Entdeckt durch**: Generic-Implementierung mit korrekter Mathematik
 
 #### ✅ Scalar Signals (Complete - 2025-10-28)
-24. **ScalarSignal<T>** - Abstract base class für scalar-valued signals
+25. **ScalarSignal<T>** - Abstract base class für scalar-valued signals
     - Extends Trajectory<T, Scalar<T>>
     - Abstract methods: ToFiniteSignal(), ToPeriodicSignal()
     - Virtual methods: GetDerivative1Value(), GetDerivative2Value()
@@ -839,7 +866,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 72 LOC Implementation
     - **Status**: Complete ✅
 
-25. **ConstantScalarSignal<T>** - Konstante Skalar-Signale
+26. **ConstantScalarSignal<T>** - Konstante Skalar-Signale
     - Ersetzt Float64ScalarConstantZeroSignal & Float64ScalarConstantOneSignal
     - Factory-Methoden: Finite (4 Varianten), Periodic (4 Varianten)
     - GetValue gibt immer denselben konstanten Wert zurück
@@ -849,7 +876,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 114 LOC Implementation + ~200 LOC Tests
     - **Status**: Complete ✅
 
-26. **ComputedScalarSignal<T>** - Funktions-basierte Skalar-Signale
+27. **ComputedScalarSignal<T>** - Funktions-basierte Skalar-Signale
     - Speichert `Func<Scalar<T>, Scalar<T>>` Delegates für Value und Ableitungen
     - 12 statische Factory-Methoden: Finite (6 Varianten), Periodic (6 Varianten)
     - Optional derivatives (wirft NotSupportedException wenn nicht bereitgestellt)
@@ -866,7 +893,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 - **Dependencies Unblocked**: ScalarTripletPath3D, HarmonicPath3D, SphericalPath3D können jetzt implementiert werden
 
 #### ✅ Signal-Based Paths (Complete - 2025-10-28)
-27. **ScalarTripletPath3D<T>** - 3D Path aus drei unabhängigen Skalar-Signalen
+28. **ScalarTripletPath3D<T>** - 3D Path aus drei unabhängigen Skalar-Signalen
     - Kombiniert 3 ScalarSignal<T> Instanzen für X, Y, Z Komponenten
     - 6 Factory-Methoden: Finite (2), Periodic (2), Create (2)
     - GetValue, GetDerivative1Value, GetDerivative2Value delegieren an Component-Signals
@@ -876,7 +903,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 198 LOC Implementation + ~350 LOC Tests
     - **Status**: Complete ✅
 
-28. **HarmonicScalarSignal<T>** - Harmonische (sinusförmige) Skalar-Signale
+29. **HarmonicScalarSignal<T>** - Harmonische (sinusförmige) Skalar-Signale
     - Formel: `Magnitude * cos(2πf * (t + TimeOffset))`
     - Properties: FrequencyHz, Frequency (= 2π * FrequencyHz), Magnitude, TimeOffset
     - 4 Factory-Methoden: Finite (2), Periodic (2)
@@ -887,7 +914,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 169 LOC Implementation
     - **Status**: Complete ✅
 
-29. **HarmonicPath3D<T>** - 3D Path aus drei harmonischen Signalen
+30. **HarmonicPath3D<T>** - 3D Path aus drei harmonischen Signalen
     - Kombiniert 3 HarmonicScalarSignal<T> für periodische/zyklische Bewegungen
     - Create Factory-Methode
     - Circular paths in XY-plane möglich (X = cos, Y = sin via offset)
@@ -897,7 +924,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 107 LOC Implementation + ~450 LOC Tests
     - **Status**: Complete ✅
 
-30. **SphericalPath3D<T>** - 3D Path in sphärischen Koordinaten
+31. **SphericalPath3D<T>** - 3D Path in sphärischen Koordinaten
     - Konvertiert (r, theta, phi) → (x, y, z) Cartesian
     - Formeln: `x = r*cos(θ)*cos(φ), y = r*cos(θ)*sin(φ), z = r*sin(θ)`
     - 2 Factory-Methoden: Finite, Periodic
@@ -915,7 +942,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 - **Use Cases**: HarmonicPath3D für periodische Bewegungen, SphericalPath3D für radial-symmetrische Pfade
 
 #### ⏳ Nächste Schritte
-31. **Weitere Circle/Line Variants**, **Hermite**, **Roulette** etc.
+32. **Weitere Circle/Line Variants**, **Hermite**, **Roulette** etc.
 ...
 
 **Vollständige Task-Liste:** Siehe [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)
