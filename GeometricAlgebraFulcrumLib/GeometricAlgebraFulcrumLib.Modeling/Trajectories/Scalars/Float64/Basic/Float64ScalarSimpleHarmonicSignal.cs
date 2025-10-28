@@ -7,19 +7,19 @@ public sealed class Float64ScalarSimpleHarmonicSignal :
     Float64ScalarSignal
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSimpleHarmonicSignal Finite(int harmonicFactor, double magnitude, double timeOffset = 0)
+    public static Float64ScalarSimpleHarmonicSignal Finite(int harmonicFactor, double magnitude, double timeOffset = 0)
     {
         return new Float64ScalarSimpleHarmonicSignal(false, harmonicFactor, magnitude, timeOffset);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSimpleHarmonicSignal Periodic(int harmonicFactor, double magnitude, double timeOffset = 0)
+    public static Float64ScalarSimpleHarmonicSignal Periodic(int harmonicFactor, double magnitude, double timeOffset = 0)
     {
         return new Float64ScalarSimpleHarmonicSignal(true, harmonicFactor, magnitude, timeOffset);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSimpleHarmonicSignal Create(bool isPeriodic, int harmonicFactor, double magnitude, double timeOffset = 0)
+    public static Float64ScalarSimpleHarmonicSignal Create(bool isPeriodic, int harmonicFactor, double magnitude, double timeOffset = 0)
     {
         return new Float64ScalarSimpleHarmonicSignal(isPeriodic, harmonicFactor, magnitude, timeOffset);
     }
