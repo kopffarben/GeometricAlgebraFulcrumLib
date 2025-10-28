@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: AffineMappedPath3D<T> - Affine Transformations)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: AffineMappedTimePath3D<T> - Time Remapping)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -647,10 +647,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 37/151 Klassen complete (24.5%)
-**Aufwand bisher:** ~41 Stunden
-**Tests:** 330 Tests (330 passing ✅ - 100% success rate!)
-**LOC:** ~6,958 LOC Implementation + ~11,022 LOC Tests
+**Status:** 38/151 Klassen complete (25.2%)
+**Aufwand bisher:** ~42 Stunden
+**Tests:** 345 Tests (345 passing ✅ - 100% success rate!)
+**LOC:** ~7,269 LOC Implementation + ~11,720 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -987,6 +987,62 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
       - TimeRange preservation
     - **LOC:** 148 LOC Implementation + ~575 LOC Tests
     - **Float64 Reference:** Float64AffineMappedPath3D.cs (87 LOC)
+    - **Status:** Complete ✅
+
+26. **AffineMappedTimePath3D<T>** - Affine Time Transformation Mapped 3D Paths ✅ COMPLETE (2025-10-28)
+    - Wendet affine Transformationen auf den Zeitparameter an (Zeit-Remapping)
+    - **Zeit-Transformation:** `t_new = scaling * t_old + offset`
+    - **Inverse Transformation:** `t_old = inverseScaling * t_new + inverseOffset`
+    - **Komponenten:**
+      - `BasePath` - Der zu transformierende Quellpfad
+      - `TimeMapScaling` - Skalierungsfaktor (Geschwindigkeitsmultiplikator, negativ kehrt Richtung um)
+      - `TimeMapOffset` - Zeitoffset (Translation)
+      - `InverseTimeMapScaling` - Inverse Skalierung: `1 / scaling`
+      - `InverseTimeMapOffset` - Inverse Offset: `-offset / scaling`
+    - **Anwendungsfälle:**
+      - Zeit-Stretching und Zeit-Kompression
+      - Zeit-Umkehr (negative Skalierung)
+      - Zeit-Verschiebung (Offset)
+      - Zeit-Bereichs-Remapping
+    - **Design Pattern:** Direkte Scalar<T> Parameter statt IAffineMap1D<T> (existiert nicht)
+      - Vermeidet Abhängigkeit von nicht-existierender Generic Infrastructure
+      - Berechnet Inverse intern für effiziente Evaluierung
+    - **Factory Methods:**
+      - `Create(basePath, scaling, offset)` - Volle affine Zeit-Transformation
+      - `CreateScaling(basePath, scaling)` - Nur Skalierung (Geschwindigkeit ändern)
+      - `CreateTranslation(basePath, offset)` - Nur Verschiebung (Zeit-Shift)
+      - `CreateFromRanges(basePath, inMin, inMax, outMin, outMax)` - Zeitbereich-Remapping
+    - **GetValue(t):** Evaluiert BasePath an transformierter Zeit: `BasePath.GetValue(InverseMap(t))`
+    - **GetDerivative1Value(t):** Chain Rule: `BasePath.Derivative1(t_remapped) * InverseScaling`
+    - **GetDerivative2Value(t):** Chain Rule²: `BasePath.Derivative2(t_remapped) * InverseScaling²`
+    - **GetFrame(t):** Evaluiert Frame an transformierter Zeit
+    - **TimeRange Computation:**
+      - Transformiert MinTime und MaxTime mit Forward-Map
+      - Handling für positive und negative Skalierung
+    - **Mathematical Correctness:**
+      - Forward: `t_out = scaling * t_in + offset`
+      - Inverse: `t_in = (t_out - offset) / scaling = (1/scaling) * t_out + (-offset/scaling)`
+      - Chain Rule korrekt angewendet für Ableitungen
+    - **ToFinitePath/ToPeriodicPath:** Propagiert Transformation auf konvertierte BasePath
+    - **IsValid:** Validiert BasePath und nicht-zero Scaling
+    - **Tests:** 15 Tests ✅ (100% success rate, ~698 LOC)
+      - Identity transform (scaling=1, offset=0)
+      - Scaling only (2x speed)
+      - Offset only (time shift)
+      - Combined scaling + offset
+      - Negative scaling (time reversal)
+      - CreateFromRanges (time range remapping)
+      - CreateScaling factory
+      - CreateTranslation factory
+      - GetDerivative1Value (chain rule)
+      - GetDerivative2Value (chain rule squared)
+      - GetFrame (time remapping)
+      - IsValid validation
+      - ToFinitePath/ToPeriodicPath
+      - Properties (correct storage)
+      - TimeRange transformation
+    - **LOC:** 311 LOC Implementation + ~698 LOC Tests
+    - **Float64 Reference:** Float64AffineMappedTimePath3D.cs (109 LOC)
     - **Status:** Complete ✅
 
 #### ✅ Computed Paths (Complete - 2025-10-28)
