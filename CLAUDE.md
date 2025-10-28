@@ -104,6 +104,39 @@ The library works with **any scalar type** through `IScalarProcessor<T>`:
 
 **Critical Pattern:** Never hardcode `double` operations. Always use `processor.ScalarProcessor.Add(a, b)` or the scalar's methods.
 
+**🎯 CRITICAL GOAL: 100% API Parity Between Float64 and Generic<T>**
+
+When implementing Generic<T> versions of Float64-specialized classes:
+
+1. **Identical Factory Methods**: Every static factory method in Float64 classes MUST have a Generic<T> equivalent
+   - Example: `Float64ScalarRange.SymmetricPi` → `ScalarRange<T>.SymmetricPi(processor)`
+   - Use the same naming conventions and parameter ordering
+
+2. **Identical Public API**: Public properties, methods, and constructors must match
+   - Same method names, same parameter names, same return types (Generic<T> equivalents)
+   - Only difference: Generic methods need `IScalarProcessor<T>` parameter
+
+3. **Why This Matters**:
+   - **Consistency**: Users can switch between Float64 and Generic<T> with minimal code changes
+   - **Maintainability**: Parallel APIs are easier to understand and test
+   - **Testability**: Equivalence tests directly compare Float64 vs Generic<T> outputs
+   - **Migration Path**: Existing Float64 code can be gradually migrated to Generic<T>
+
+4. **Implementation Pattern**:
+   ```csharp
+   // Float64 API
+   public static Float64ScalarRange SymmetricPi { get; }
+       = new Float64ScalarRange(-Math.PI, Math.PI);
+
+   // Generic<T> API (100% equivalent)
+   public static ScalarRange<T> SymmetricPi(IScalarProcessor<T> scalarProcessor)
+       => new ScalarRange<T>(-scalarProcessor.Pi, scalarProcessor.Pi);
+   ```
+
+5. **Verification**: Every Generic<T> implementation should have an equivalence test suite comparing it against the Float64 baseline at identical parameter values.
+
+**Recent Example (2025-10-28)**: Added `SymmetricPi`, `SymmetricOne`, `SymmetricHalfPi`, `SymmetricTwoPi`, `CreateAroundZero` to `ScalarRange<T>` to achieve 100% parity with `Float64ScalarRange`.
+
 ### 4. Multivector Storage Hierarchy
 
 Three storage strategies, each optimized for different use cases:
