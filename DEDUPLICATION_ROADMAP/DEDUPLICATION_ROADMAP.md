@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: ScalarTripletPath3D<T> - Component-wise Scalar Signals)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: HarmonicPath3D<T> - Harmonic Signal Paths)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -640,17 +640,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 5.1 (Phase 3A Module 6A - ScalarTripletPath3D<T> Complete)
-**Letzte Aktualisierung:** 2025-10-28 (ScalarTripletPath3D<T> - Component-wise Scalar Signals)
+**Dokument Version:** 5.2 (Phase 3A Module 6A - HarmonicPath3D<T> Complete)
+**Letzte Aktualisierung:** 2025-10-28 (HarmonicPath3D<T> - Harmonic Signal-based 3D Paths)
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
-**Nächste Review:** Nach Completion von Module 6A (34/151 Klassen, 22.5% complete)
+**Nächste Review:** Nach Completion von Module 6A (35/151 Klassen, 23.2% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 34/151 Klassen complete (22.5%)
-**Aufwand bisher:** ~38 Stunden
-**Tests:** 295 Tests (295 passing ✅ - 100% success rate!)
-**LOC:** ~6,193 LOC Implementation + ~9,728 LOC Tests
+**Status:** 35/151 Klassen complete (23.2%)
+**Aufwand bisher:** ~39 Stunden
+**Tests:** 306 Tests (306 passing ✅ - 100% success rate!)
+**LOC:** ~6,326 LOC Implementation + ~10,090 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -886,8 +886,36 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 214 LOC Implementation + ~333 LOC Tests
     - **Status:** Complete ✅
 
+23. **HarmonicPath3D<T>** - Harmonic Signal-based 3D Paths ✅ COMPLETE (2025-10-28)
+    - Konstruiert 3D parametrischen Pfad aus drei HarmonicScalarSignal<T> Komponenten
+    - **Komponenten:** `XCurve`, `YCurve`, `ZCurve` - jeweils `HarmonicScalarSignal<T>`
+    - **Anwendungsfälle:**
+      - Lissajous-Figuren (komplexe harmonische Bewegungen)
+      - Periodische 3D Pfade mit verschiedenen Frequenzen pro Achse
+      - Sinusförmige Trajektorien in 3D
+    - **Harmonic Formula:** `Magnitude * Cos(Frequency * (t + TimeOffset))` pro Komponente
+    - **Create Factory Method:** `Create(xCurve, yCurve, zCurve)` - Statische Methode
+    - **Time-Range & Periodicity:** Übernommen von XCurve (alle drei Curves müssen kompatibel sein)
+    - **GetValue(t):** Kombiniert `(XCurve(t), YCurve(t), ZCurve(t))`
+    - **Analytical Derivatives:** Component-wise harmonische Ableitungen
+      - `GetDerivative1Value(t)` → `(XCurve'(t), YCurve'(t), ZCurve'(t))`
+      - `GetDerivative2Value(t)` → `(XCurve''(t), YCurve''(t), ZCurve''(t))`
+    - **ToFinitePath/ToPeriodicPath:** Konvertiert alle drei Curves rekursiv
+    - **IsValid:** Validiert alle drei HarmonicScalarSignal Komponenten
+    - **Tests:** 11 Tests (24 assertions including signal tests) ✅ (100% success rate)
+      - HarmonicScalarSignal value tests (magnitude, frequency, time offset)
+      - HarmonicScalarSignal derivative tests (1st and 2nd order)
+      - HarmonicScalarSignal finite/periodic conversions
+      - HarmonicPath3D circular motion in XY-plane
+      - HarmonicPath3D derivatives combine component derivatives
+      - HarmonicPath3D finite/periodic conversions
+      - HarmonicPath3D IsValid validation
+      - Property access (XCurve, YCurve, ZCurve)
+    - **LOC:** 133 LOC Implementation + ~362 LOC Tests
+    - **Status:** Complete ✅
+
 #### ✅ Computed Paths (Complete - 2025-10-28)
-23. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
+24. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
     - Speichert `Func<Scalar<T>, LinVector3D<T>>` Delegates für Position und Ableitungen
     - 14 statische Factory-Methoden: Finite (5 Varianten), Periodic (5 Varianten), Create (4 Varianten)
     - ClampTime-Logik: Finite (Clamping zu [min,max]), Periodic (Wrapping via Math.Floor)
