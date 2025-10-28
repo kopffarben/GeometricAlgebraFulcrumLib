@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: SphericalPath3D<T> - Spherical Coordinate Paths)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: AffineMappedPath3D<T> - Affine Transformations)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -647,10 +647,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 36/151 Klassen complete (23.8%)
-**Aufwand bisher:** ~40 Stunden
-**Tests:** 315 Tests (315 passing ✅ - 100% success rate!)
-**LOC:** ~6,810 LOC Implementation + ~10,447 LOC Tests
+**Status:** 37/151 Klassen complete (24.5%)
+**Aufwand bisher:** ~41 Stunden
+**Tests:** 330 Tests (330 passing ✅ - 100% success rate!)
+**LOC:** ~6,958 LOC Implementation + ~11,022 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -944,6 +944,49 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
       - ToFinitePath/ToPeriodicPath conversions
     - **LOC:** 484 LOC Implementation (with complex derivative formulas) + ~357 LOC Tests
     - **Float64 Reference:** Float64SphericalPath3D.cs (191 LOC)
+    - **Status:** Complete ✅
+
+25. **AffineMappedPath3D<T>** - Affine Transformation Mapped 3D Paths ✅ COMPLETE (2025-10-28)
+    - Wendet affine Transformationen (Translation, Rotation, Skalierung, Scherung) auf 3D Pfade an
+    - **Komponenten:**
+      - `BasePath` - Der zu transformierende Quellpfad
+      - `PointMap` - Transformationsfunktion für Punkte (mit Translation)
+      - `VectorMap` - Transformationsfunktion für Vektoren (ohne Translation, für Ableitungen)
+    - **Anwendungsfälle:**
+      - Geometrische Transformationen von Pfaden
+      - Koordinatensystem-Transformationen
+      - Skalierung, Rotation, Translation von Trajektorien
+    - **Design Pattern:** Func<LinVector3D<T>, LinVector3D<T>> für flexible Transformationen
+      - Vermeidet Abhängigkeit von nicht-existierender IAffineMap3D<T> Interface
+      - Ermöglicht beliebige Transformationsfunktionen
+    - **Factory Methods:**
+      - `Create(basePath, pointMap, vectorMap)` - Volle affine Transformation
+      - `CreateLinear(basePath, linearMap)` - Rein lineare Transformation (ohne Translation)
+    - **GetValue(t):** Wendet PointMap auf BasePath.GetValue(t) an
+    - **GetDerivative1Value(t):** Wendet VectorMap auf Ableitung an (WICHTIG: ohne Translation!)
+    - **GetDerivative2Value(t):** Wendet VectorMap auf 2. Ableitung an
+    - **GetFrame(t):** Transformiert sowohl Position (PointMap) als auch Tangent (VectorMap)
+    - **Mathematical Correctness:**
+      - Punkte transformiert mit Translation: `T(p) = Ap + b`
+      - Vektoren transformiert ohne Translation: `T(v) = Av` (nur lineare Teil)
+      - Frame.Tangent wird immer normalisiert (unit vector)
+    - **ToFinitePath/ToPeriodicPath:** Propagiert Transformation auf konvertierte BasePath
+    - **IsValid:** Validiert nur BasePath (Transformationen sind immer gültig)
+    - **Tests:** 15 Tests ✅ (100% success rate)
+      - Translation only (Point shifted, Vector unchanged)
+      - Uniform scaling (both scale)
+      - Non-uniform scaling (per-axis)
+      - Rotation about Z-axis (90°)
+      - Affine combination (rotation + translation)
+      - Identity transformation
+      - CreateLinear factory
+      - Derivative1/2 transformation
+      - GetFrame transformation (Point + Tangent)
+      - IsValid, ToFinitePath/ToPeriodicPath
+      - Properties (BasePath, PointMap, VectorMap)
+      - TimeRange preservation
+    - **LOC:** 148 LOC Implementation + ~575 LOC Tests
+    - **Float64 Reference:** Float64AffineMappedPath3D.cs (87 LOC)
     - **Status:** Complete ✅
 
 #### ✅ Computed Paths (Complete - 2025-10-28)
