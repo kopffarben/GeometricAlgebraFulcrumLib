@@ -1,8 +1,8 @@
 # Next Steps Roadmap - Konkrete Aktionen
 
-**Letzte Aktualisierung:** 2025-10-27 (✅ Phase 1 Quick Win Optimierungen ABGESCHLOSSEN)
-**Aktueller Status:** Phase 1 Quick Win Optimierungen ✅ COMPLETE | Bereit für Phase 2 Migration
-**Nächster Schritt:** Phase 2 Thin Wrapper Migration (XGa, CGa, PGa)
+**Letzte Aktualisierung:** 2025-10-28 (📋 Phase 3 PLANNED - 257 Klassen in Modeling Layer)
+**Aktueller Status:** Phase 1 ✅ COMPLETE | Phase 2 ⏳ NEXT | Phase 3 📋 PLANNED
+**Nächster Schritt:** Phase 2 Thin Wrapper Migration → dann Phase 3 Modeling Layer
 **Branch:** Feature/ScalarFloat32
 
 ---
@@ -70,6 +70,23 @@ Nach jedem Meilenstein alle drei aktualisieren!
 - **150 LOC** total
 - **Aufwand:** ~2 Stunden (vs. 35-45 Stunden geschätzt)
 - **Next:** Phase 1.4 (Module 4: CGA Visualizers)
+
+**Phase 2:** ⏳ NEXT (Thin Wrapper Migration)
+- Thin Wrapper Pattern für Float64 → Generic<double>
+- ~78,500 LOC Reduktion möglich
+- Module 2 (ComplexAlgebra), Module 3 (VGA), Module 5 (LinearAlgebra) mit Performance-Validierung
+- CGa/PGa Thin Wrapper empfohlen (1.24-1.27x schneller validiert)
+- **Start:** Nach XGa Performance-Untersuchungen
+- **Geschätzter Aufwand:** 1-2 Wochen
+
+**Phase 3:** 📋 PLANNED (Modeling Layer Generic Implementation)
+- **KRITISCHER FUND:** 257 Float64-Klassen mit fast KEINEN Generic<T> Äquivalenten
+- 5 Module: Trajectories (151), Calculus (~107), Signals (11), Statistics (15), PropagatorNetworks (10)
+- 4 Sub-Phasen (3A-3D): Priorität-basiert (P0/P1/P2/P3)
+- **Geschätzte Dauer:** 28 Wochen für Core (3A+3B), 41 Wochen für ALLES
+- **Details:** [PHASE_3_MODELING_LAYER.md](PHASE_3_MODELING_LAYER.md)
+- **Tasks:** [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)
+- **Start:** Nach Phase 2 Complete
 
 ---
 
@@ -441,6 +458,296 @@ Generic: GeometricAlgebra/Generic/Multivectors/XGaScalar.cs (NEU: ToTuple method
 
 ---
 
+## 📋 Phase 3: Modeling Layer - Erste Schritte
+
+**Status:** 📋 PLANNED (Start nach Phase 2 Complete)
+
+**Umfang:** 257 verifizierte Float64-Klassen mit fast KEINEN Generic<T> Äquivalenten
+
+### Übersicht
+
+**Vollständige Dokumentation:**
+- **[PHASE_3_MODELING_LAYER.md](PHASE_3_MODELING_LAYER.md)** - Komplette Planung mit Timeline (870+ Zeilen)
+- **[PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)** - Task-by-Task Checkliste (1000+ Zeilen)
+
+**Module und Prioritäten:**
+
+| Modul | Float64 | Generic | Fehlend | Geschätzt | Priorität |
+|-------|---------|---------|---------|-----------|-----------|
+| **6A: Trajectories Vectors3D** | 60 | 0 | **60** | 8 Wochen | **P0** ← START HIER |
+| **6B: Trajectories Vectors2D** | 40 | 0 | **40** | 5 Wochen | **P1** |
+| **6C: Trajectories Scalars** | 40 | 0 | **40** | 5 Wochen | **P1** |
+| **6D: Trajectories Others** | 11 | 0 | **11** | 2 Wochen | **P2** |
+| **7A: Calculus Core** | 35 | 3 | **32** | 7 Wochen | **P0** |
+| **7B: Calculus Advanced** | 35+ | 0 | **35+** | 8 Wochen | **P2/P3** |
+| **8: Signals** | 14 | 3 | **11** | 2.5 Wochen | **P1** |
+| **9: Statistics** | 15 | 0 | **15** | 1.5 Wochen | **P2** |
+| **10: PropagatorNetworks** | 10 | 0 | **10** | 1.25 Wochen | **P2** |
+
+**Phase 3A (P0 - CRITICAL):** Module 6A + 7A = 16 Wochen
+**Phase 3B (P1 - IMPORTANT):** Module 6B + 6C + 8 = 12 Wochen
+**Phase 3C (P2 - NICE-TO-HAVE):** Module 6D + 9 + 10 = 5 Wochen
+**Phase 3D (P3 - OPTIONAL):** Module 7B = 8 Wochen
+
+---
+
+## 🔴 KRITISCHER WORKFLOW für ALLE 257 Klassen (ZWINGEND!)
+
+**JEDE Klasse folgt diesem Pattern:**
+
+```
+1. ✅ IMPLEMENTIERE Generic<T> basierend auf Float64
+2. ✅ SCHREIBE 10+ Equivalence Tests (Generic<double> vs Float64)
+3. ✅ STELLE SICHER 100% Pass Rate
+4. ✅ NUR DANN Commit
+5. ✅ Weiter zur nächsten Klasse
+```
+
+**❌ NIEMALS committen ohne:**
+- Mindestens 10+ Equivalence Tests
+- 100% Pass Rate (alle Tests grün!)
+- Equivalence nachgewiesen (Generic<double> = Float64)
+
+**✅ Bewährtes Pattern aus Phase 1:**
+- 97.92% Test Pass Rate durch dieses strikte Pattern
+- Jede Klasse mit Tests BEFORE Commit
+- Beispiele: XGaGramSchmidtFrame<T> (9 Tests ✅), ComplexNumber<T> (30 Tests ✅)
+
+**Siehe:**
+- [PHASE_3_MODELING_LAYER.md](PHASE_3_MODELING_LAYER.md) - Workflow-Details + Test-Pattern Beispiel
+- [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md) - Task-Checklisten mit Workflow
+
+---
+
+## 🚀 Module 6A: Trajectories Vectors3D - Tag 1
+
+**Start nach:** Phase 2 Complete
+
+**Ziel:** Parametrische 3D-Kurven Generic implementieren (60 Klassen, 8 Wochen)
+
+### Schritt 1: Float64-Basis-Klasse analysieren
+
+**Datei zu lesen:**
+```
+GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Modeling/
+  Trajectories/Vectors3D/Float64Path3D.cs
+```
+
+**Was zu verstehen:**
+- Abstract Basis-Klasse für alle 3D-Trajektorien
+- Properties: `IScalarProcessor<double>`, `ScalarRange`, `IsPeriodic`
+- Methods: `GetPoint(t)`, `GetTangent(t)`, `GetLength()`, `GetArcLengthSamples()`
+- Dependencies: `LinFloat64Vector3D`, `Float64ScalarRange`, `IParametricCurve3D`
+
+**Kommando:**
+```bash
+# Datei öffnen und analysieren
+code GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Modeling/Trajectories/Vectors3D/Float64Path3D.cs
+
+# Unterklassen finden
+find GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Modeling/Trajectories/Vectors3D -name "*Float64*.cs" | head -10
+```
+
+### Schritt 2: Generic-Struktur erstellen
+
+**Ziel-Location für neue Datei:**
+```
+GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Modeling/
+  Trajectories/Vectors3D/Generic/
+    ParametricPath3D.cs  ← NEUE DATEI (Basis-Klasse)
+```
+
+**Prüfen ob Ordner existiert:**
+```bash
+# Ordner erstellen falls nicht vorhanden
+mkdir -p "GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Modeling/Trajectories/Vectors3D/Generic"
+ls GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Modeling/Trajectories/Vectors3D/
+```
+
+**WICHTIG:** Verzeichnisstruktur prüfen
+```bash
+# Aktuelle Struktur zeigen
+tree GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Modeling/Trajectories/Vectors3D -L 2
+```
+
+### Schritt 3: Implementierung - ParametricPath3D<T>
+
+**Pattern:**
+1. Float64Path3D als Basis nehmen (~200 LOC)
+2. `double` → `T` ersetzen
+3. `LinFloat64Vector3D` → `LinVector3D<T>` ersetzen
+4. `Float64ScalarRange` → `ScalarRange<T>` ersetzen
+5. Hardcoded double-Operations → `ScalarProcessor.Method()` verwenden
+6. Generic-Interface `IScalarProcessor<T>` integrieren
+
+**Beispiel (vereinfacht):**
+```csharp
+// Float64 Version:
+public abstract class Float64Path3D : IParametricCurve3D
+{
+    public IScalarProcessor<double> ScalarProcessor { get; }
+    public Float64ScalarRange ParameterRange { get; }
+
+    public abstract LinFloat64Vector3D GetPoint(double t);
+    public abstract LinFloat64Vector3D GetTangent(double t);
+
+    public double GetLength()
+    {
+        // Hardcoded double integration
+        return IntegrateLength(0.0, 1.0);
+    }
+}
+
+// Generic Version:
+public abstract class ParametricPath3D<T> : IParametricCurve3D<T>
+{
+    public IScalarProcessor<T> ScalarProcessor { get; }
+    public ScalarRange<T> ParameterRange { get; }
+
+    public abstract LinVector3D<T> GetPoint(Scalar<T> t);
+    public abstract LinVector3D<T> GetTangent(Scalar<T> t);
+
+    public Scalar<T> GetLength()
+    {
+        // Generic integration using ScalarProcessor
+        return IntegrateLength(
+            ScalarProcessor.Zero,
+            ScalarProcessor.One
+        );
+    }
+}
+```
+
+### Schritt 4: Testing (ZWINGEND vor Commit!)
+
+**🔴 KRITISCH:** NIEMALS committen ohne 100% passing Tests!
+
+**Test-Datei erstellen:**
+```
+GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/
+  Modeling/Trajectories/ParametricPath3DEquivalenceTests.cs  ← NEUE DATEI
+```
+
+**Test-Pattern (Equivalence Tests: Generic<double> vs Float64):**
+```csharp
+[TestFixture]
+public class ParametricPath3DEquivalenceTests
+{
+    [Test]
+    public void LinearPath3D_GetPoint_ShouldProduceIdenticalResults()
+    {
+        // Float64
+        var pathF64 = new Float64LinearPath3D(
+            new LinFloat64Vector3D(0, 0, 0),
+            new LinFloat64Vector3D(1, 1, 1)
+        );
+        var pointF64 = pathF64.GetPoint(0.5);
+
+        // Generic<double>
+        var scalarProcessor = ScalarProcessorOfFloat64.Instance;
+        var pathGen = new LinearPath3D<double>(
+            scalarProcessor,
+            new LinVector3D<double>(0, 0, 0),
+            new LinVector3D<double>(1, 1, 1)
+        );
+        var pointGen = pathGen.GetPoint(scalarProcessor.GetScalarFromNumber(0.5));
+
+        // Equivalence-Vergleich (WICHTIG: Toleranz für Floating-Point!)
+        Assert.That(pointGen.X.ScalarValue, Is.EqualTo(pointF64.X).Within(1e-12));
+        Assert.That(pointGen.Y.ScalarValue, Is.EqualTo(pointF64.Y).Within(1e-12));
+        Assert.That(pointGen.Z.ScalarValue, Is.EqualTo(pointF64.Z).Within(1e-12));
+    }
+
+    [Test]
+    public void BezierPath3D_GetTangent_ShouldProduceIdenticalResults()
+    {
+        // Test Bezier curves (most complex trajectory type)
+        // ... similar pattern
+    }
+
+    // Mindestens 10+ Tests für ALLE Public Methods!
+}
+```
+
+**Minimum-Anforderung:**
+- **10+ Equivalence Tests** (Generic<double> vs Float64)
+- **Alle Public Methods** testen
+- **Floating-Point Toleranz** verwenden (1e-12)
+
+**Tests laufen lassen:**
+```bash
+# Spezifische Test-Klasse
+dotnet test --filter "ParametricPath3DEquivalenceTests"
+
+# Mit verbose output
+dotnet test --filter "ParametricPath3DEquivalenceTests" --verbosity normal
+```
+
+**✅ NUR weitermachen wenn:**
+- ALLE Tests grün ✅
+- 100% Pass Rate
+- Equivalence nachgewiesen
+
+### Schritt 5: Verification & Commit
+
+**🔴 STOPP! Vor Commit diese Checkliste durchgehen:**
+
+- [ ] ✅ Implementation vollständig (alle Methods implementiert)
+- [ ] ✅ Mindestens 10+ Equivalence Tests geschrieben
+- [ ] ✅ Tests laufen gelassen: `dotnet test --filter "ParametricPath3DEquivalenceTests"`
+- [ ] ✅ **100% Pass Rate** (ALLE Tests grün!)
+- [ ] ✅ Equivalence nachgewiesen (Generic<double> = Float64)
+- [ ] ✅ Code reviewed (keine TODOs, keine Debug-Ausgaben)
+
+**NUR wenn ALLE Punkte ✅ dann committen:**
+
+```bash
+# Files adden
+git add GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Modeling/Trajectories/Vectors3D/Generic/ParametricPath3D.cs
+git add GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/Modeling/Trajectories/ParametricPath3DEquivalenceTests.cs
+
+# Commit mit klarer Message
+git commit -m "feat(Generic): Add ParametricPath3D<T> + 10 Equivalence Tests ✅
+
+- Implement ParametricPath3D<T> based on Float64Path3D (~200 LOC)
+- All operations use IScalarProcessor<T> for scalar abstraction
+- Support for LinVector3D<T>, ScalarRange<T>
+- Add 10+ equivalence tests (Generic<double> vs Float64)
+- All tests passing ✅ (100% Pass Rate)
+- Phase 3 Module 6A (Trajectories Vectors3D) - Task 1/60 complete
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+```
+
+**❌ NIEMALS committen wenn:**
+- Tests fehlen
+- Tests failing (auch nur 1!)
+- Equivalence nicht nachgewiesen
+- TODOs oder Debug-Code noch im Code
+
+---
+
+## ✅ Module 6A Complete Wenn:
+
+- [ ] **ParametricPath3D<T>** (Basis-Klasse) implementiert ← START HIER
+- [ ] **LinearPath3D<T>** implementiert
+- [ ] **BezierPath3D<T>** implementiert (komplexeste Klasse!)
+- [ ] **CircularPath3D<T>** implementiert
+- [ ] **HelixPath3D<T>** implementiert
+- [ ] ... (55 weitere Klassen) - siehe PHASE_3_DEDUPLICATION_TASKS.md
+- [ ] **AdaptiveCurveSampler3D<T>** implementiert (Arc-Length Parameterization)
+- [ ] Alle 60 Klassen haben 10+ Equivalence Tests
+- [ ] Alle Tests passing
+- [ ] Dokumentation aktualisiert
+
+**Geschätzte Dauer:** 8 Wochen (320 Stunden)
+
+**Dann:** Weiter zu Module 6B (Trajectories Vectors2D) oder Module 7A (Calculus Core)
+
+---
+
 ## 🎯 Nach Module 1: Phase 1.2 (ARCHIV - COMPLETE)
 
 **Module 2: ComplexAlgebra (GESAMTES Modul neu)**
@@ -548,6 +855,38 @@ code GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/GeometricAlge
 
 ---
 
+## 📊 Zusammenfassung: Was kommt als nächstes?
+
+**Sofort (Phase 2):**
+- XGa Performance-Untersuchungen durchführen
+- Thin Wrapper Migration für CGa/PGa (validiert schneller)
+- ComplexAlgebra, VGA mit Performance-Tests
+- Geschätzt: 1-2 Wochen
+
+**Danach (Phase 3A - P0 CRITICAL):**
+- Module 6A: Trajectories Vectors3D (60 Klassen, 8 Wochen)
+- Module 7A: Calculus Core (32 Klassen, 7 Wochen)
+- Geschätzt: 16 Wochen
+
+**Später (Phase 3B-D):**
+- Restliche Trajectories Module (6B, 6C, 6D: 91 Klassen, 12 Wochen)
+- Signals (11 Klassen, 2.5 Wochen)
+- Statistics (15 Klassen, 1.5 Wochen)
+- PropagatorNetworks (10 Klassen, 1.25 Wochen)
+- Calculus Advanced (35+ Klassen, 8 Wochen - OPTIONAL)
+- Geschätzt: 25 Wochen
+
+**GESAMT-Timeline:**
+- Phase 2: 1-2 Wochen
+- Phase 3A: 16 Wochen (CRITICAL)
+- Phase 3B+C: 17 Wochen (IMPORTANT + NICE-TO-HAVE)
+- Phase 3D: 8 Wochen (OPTIONAL)
+- **Total ohne Optional:** 34-35 Wochen
+- **Total mit Optional:** 42-43 Wochen
+
+---
+
 *Dokument maintained by: Claude Code*
-*Last verified: 2025-10-25*
+*Last verified: 2025-10-28*
 *Branch: Feature/ScalarFloat32*
+*Phase 3 Planning: COMPLETE ✅*
