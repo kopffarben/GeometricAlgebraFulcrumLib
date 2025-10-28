@@ -1,0 +1,419 @@
+Der Buildvorgang wurde am 27.10.2025 20:49:40 gestartet.
+     1>Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" auf Knoten "1", Restore Ziel(e).
+     1>_GetAllRestoreProjectPathItems:
+         Wiederherzustellende Projekte werden ermittelt...
+       Restore:
+         Bei der Überprüfung der X.509-Zertifikatkette wird der von .NET ausgewählte Standardvertrauensspeicher für Codesignaturen verwendet.
+         Bei der Überprüfung der X.509-Zertifikatkette wird der von .NET ausgewählte Standardvertrauensspeicher für Zeitstempel verwendet.
+         Die Assetdatei wurde nicht geändert. Das Schreiben der Assetdatei wird übersprungen. Pfad: D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Text\obj\project.assets.json
+         Die Assetdatei wurde nicht geändert. Das Schreiben der Assetdatei wird übersprungen. Pfad: D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Structures\obj\project.assets.json
+         Die Assetdatei wurde nicht geändert. Das Schreiben der Assetdatei wird übersprungen. Pfad: D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\obj\project.assets.json
+         "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Text\GeometricAlgebraFulcrumLib.Utilities.Text.csproj" wiederhergestellt (in "49 ms.").
+         "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Structures\GeometricAlgebraFulcrumLib.Utilities.Structures.csproj" wiederhergestellt (in "49 ms.").
+         "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" wiederhergestellt (in "51 ms.").
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         Die Assetdatei wurde nicht geändert. Das Schreiben der Assetdatei wird übersprungen. Pfad: D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\obj\project.assets.json
+         "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" wiederhergestellt (in "68 ms.").
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         Die Assetdatei wurde nicht geändert. Das Schreiben der Assetdatei wird übersprungen. Pfad: D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\obj\project.assets.json
+         "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj" wiederhergestellt (in "68 ms.").
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         Die Assetdatei wurde nicht geändert. Das Schreiben der Assetdatei wird übersprungen. Pfad: D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\obj\project.assets.json
+         "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj" wiederhergestellt (in "68 ms.").
+         
+         Verwendete NuGet-Konfigurationsdateien:
+             C:\Users\schmi\AppData\Roaming\NuGet\NuGet.Config
+             C:\Program Files (x86)\NuGet\Config\Microsoft.VisualStudio.FallbackLocation.config
+             C:\Program Files (x86)\NuGet\Config\Microsoft.VisualStudio.Offline.config
+         
+         Verwendete Feeds:
+             https://api.nuget.org/v3/index.json
+             https://packages.stride3d.net/nuget
+             https://teamcity.vvvv.org/guestAuth/app/nuget/v1/FeedService.svc/
+             C:\Program Files (x86)\Microsoft SDKs\NuGetPackages\
+             C:\program files\dotnet\library-packs
+         Alle Projekte sind für die Wiederherstellung auf dem neuesten Stand.
+     1>Die Erstellung von Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" ist abgeschlossen (Restore Ziel(e)).
+   1:7>Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" auf Knoten "2", VSTest Ziel(e).
+     1>BuildProject:
+         Buildvorgang gestartet, bitte warten...
+   1:7>Das Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (1:7) erstellt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (1:8) auf Knoten "2" (Standardziele).
+   1:8>Das Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (1:8) erstellt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj" (5:6) auf Knoten "2" (Standardziele).
+     5>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg.
+     5>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x.
+     5>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645.
+     5>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw.
+     5>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw.
+     5>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82.
+     5>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
+   1:8>Das Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (1:8) erstellt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" (2:7) auf Knoten "3" (Standardziele).
+     2>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
+   1:8>Das Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (1:8) erstellt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj" (6:6) auf Knoten "5" (Standardziele).
+     6>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg.
+     6>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x.
+     6>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645.
+     6>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw.
+     6>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw.
+     6>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82.
+     6>D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
+   1:8>Das Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (1:8) erstellt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Structures\GeometricAlgebraFulcrumLib.Utilities.Structures.csproj" (4:9) auf Knoten "1" (Standardziele).
+     4>GenerateTargetFrameworkMonikerAttribute:
+       Das Ziel "GenerateTargetFrameworkMonikerAttribute" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       CoreGenerateAssemblyInfo:
+       Das Ziel "CoreGenerateAssemblyInfo" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _GenerateSourceLinkFile:
+         Die Quellverknüpfungsdatei 'obj\Release\net8.0\GeometricAlgebraFulcrumLib.Utilities.Structures.sourcelink.json' ist aktuell.
+       CoreCompile:
+       Das Ziel "CoreCompile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CreateAppHost:
+       Das Ziel "_CreateAppHost" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       Das Ziel "_CopyOutOfDateSourceItemsToOutputDirectory" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildDependencyFile:
+       Das Ziel "GenerateBuildDependencyFile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildRuntimeConfigurationFiles:
+       Das Ziel "GenerateBuildRuntimeConfigurationFiles" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       CopyFilesToOutputDirectory:
+         GeometricAlgebraFulcrumLib.Utilities.Structures -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Structures\bin\Release\net8.0\GeometricAlgebraFulcrumLib.Utilities.Structures.dll
+     4>Die Erstellung von Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Structures\GeometricAlgebraFulcrumLib.Utilities.Structures.csproj" ist abgeschlossen (Standardziele).
+   1:8>Das Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (1:8) erstellt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Text\GeometricAlgebraFulcrumLib.Utilities.Text.csproj" (3:7) auf Knoten "4" (Standardziele).
+     3>GenerateTargetFrameworkMonikerAttribute:
+       Das Ziel "GenerateTargetFrameworkMonikerAttribute" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       CoreGenerateAssemblyInfo:
+       Das Ziel "CoreGenerateAssemblyInfo" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _GenerateSourceLinkFile:
+         Die Quellverknüpfungsdatei 'obj\Release\net8.0\GeometricAlgebraFulcrumLib.Utilities.Text.sourcelink.json' ist aktuell.
+       CoreCompile:
+       Das Ziel "CoreCompile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CreateAppHost:
+       Das Ziel "_CreateAppHost" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       Das Ziel "_CopyOutOfDateSourceItemsToOutputDirectory" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildDependencyFile:
+       Das Ziel "GenerateBuildDependencyFile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildRuntimeConfigurationFiles:
+       Das Ziel "GenerateBuildRuntimeConfigurationFiles" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       CopyFilesToOutputDirectory:
+         GeometricAlgebraFulcrumLib.Utilities.Text -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Text\bin\Release\net8.0\GeometricAlgebraFulcrumLib.Utilities.Text.dll
+     3>Die Erstellung von Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Text\GeometricAlgebraFulcrumLib.Utilities.Text.csproj" ist abgeschlossen (Standardziele).
+     2>GenerateTargetFrameworkMonikerAttribute:
+       Das Ziel "GenerateTargetFrameworkMonikerAttribute" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+     6>GenerateTargetFrameworkMonikerAttribute:
+       Das Ziel "GenerateTargetFrameworkMonikerAttribute" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+     2>CoreGenerateAssemblyInfo:
+       Das Ziel "CoreGenerateAssemblyInfo" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+     6>CoreGenerateAssemblyInfo:
+       Das Ziel "CoreGenerateAssemblyInfo" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _GenerateSourceLinkFile:
+         Die Quellverknüpfungsdatei 'obj\Release\net8.0\GeometricAlgebraFulcrumLib.Utilities.Web.sourcelink.json' ist aktuell.
+       CoreCompile:
+       Das Ziel "CoreCompile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CreateAppHost:
+       Das Ziel "_CreateAppHost" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       Das Ziel "_CopyOutOfDateSourceItemsToOutputDirectory" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildDependencyFile:
+       Das Ziel "GenerateBuildDependencyFile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildRuntimeConfigurationFiles:
+       Das Ziel "GenerateBuildRuntimeConfigurationFiles" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       CopyFilesToOutputDirectory:
+         GeometricAlgebraFulcrumLib.Utilities.Web -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\bin\Release\net8.0\GeometricAlgebraFulcrumLib.Utilities.Web.dll
+     6>Die Erstellung von Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj" ist abgeschlossen (Standardziele).
+     2>_GenerateSourceLinkFile:
+         Die Quellverknüpfungsdatei 'obj\Release\net8.0\GeometricAlgebraFulcrumLib.Algebra.sourcelink.json' ist aktuell.
+       CoreCompile:
+       Das Ziel "CoreCompile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CreateAppHost:
+       Das Ziel "_CreateAppHost" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       Das Ziel "_CopyOutOfDateSourceItemsToOutputDirectory" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildDependencyFile:
+       Das Ziel "GenerateBuildDependencyFile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildRuntimeConfigurationFiles:
+       Das Ziel "GenerateBuildRuntimeConfigurationFiles" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       CopyFilesToOutputDirectory:
+         GeometricAlgebraFulcrumLib.Algebra -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\bin\Release\net8.0\GeometricAlgebraFulcrumLib.Algebra.dll
+     2>Die Erstellung von Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" ist abgeschlossen (Standardziele).
+     5>C:\program files\dotnet\sdk\9.0.306\Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3270: Konflikt zwischen der Prozessorarchitektur des Projekts "MSIL", das erstellt wird, und der Prozessorarchitektur des Verweises, "C:\Users\schmi\.nuget\packages\magick.net-q16-x64\14.7.0\lib\net8.0\Magick.NET-Q16-x64.dll", "AMD64". Dieser Konflikt kann zu Laufzeitfehlern führen. Ändern Sie ggf. mithilfe des Konfigurations-Managers die als Ziel angegebene Prozessorarchitektur Ihres Projekts so, dass die Prozessorarchitekturen zwischen Ihrem Projekt und den Verweisen ausgerichtet werden, oder wählen Sie eine Abhängigkeit von Verweisen mit einer Prozessorarchitektur, die der als Ziel angegebene Prozessorarchitektur Ihres Projekts entspricht. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj]
+     5>GenerateTargetFrameworkMonikerAttribute:
+       Das Ziel "GenerateTargetFrameworkMonikerAttribute" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       CoreGenerateAssemblyInfo:
+       Das Ziel "CoreGenerateAssemblyInfo" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _GenerateSourceLinkFile:
+         Die Quellverknüpfungsdatei 'obj\Release\net8.0\GeometricAlgebraFulcrumLib.Modeling.sourcelink.json' ist aktuell.
+       CoreCompile:
+       Das Ziel "CoreCompile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CreateAppHost:
+       Das Ziel "_CreateAppHost" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       Das Ziel "_CopyOutOfDateSourceItemsToOutputDirectory" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildDependencyFile:
+       Das Ziel "GenerateBuildDependencyFile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildRuntimeConfigurationFiles:
+       Das Ziel "GenerateBuildRuntimeConfigurationFiles" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       CopyFilesToOutputDirectory:
+         GeometricAlgebraFulcrumLib.Modeling -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\bin\Release\net8.0\GeometricAlgebraFulcrumLib.Modeling.dll
+     5>Die Erstellung von Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj" ist abgeschlossen (Standardziele).
+     1>C:\program files\dotnet\sdk\9.0.306\Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3270: Konflikt zwischen der Prozessorarchitektur des Projekts "MSIL", das erstellt wird, und der Prozessorarchitektur des Verweises, "C:\Users\schmi\.nuget\packages\magick.net-q16-x64\14.7.0\lib\net8.0\Magick.NET-Q16-x64.dll", "AMD64". Dieser Konflikt kann zu Laufzeitfehlern führen. Ändern Sie ggf. mithilfe des Konfigurations-Managers die als Ziel angegebene Prozessorarchitektur Ihres Projekts so, dass die Prozessorarchitekturen zwischen Ihrem Projekt und den Verweisen ausgerichtet werden, oder wählen Sie eine Abhängigkeit von Verweisen mit einer Prozessorarchitektur, die der als Ziel angegebene Prozessorarchitektur Ihres Projekts entspricht. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+     1>GenerateTargetFrameworkMonikerAttribute:
+       Das Ziel "GenerateTargetFrameworkMonikerAttribute" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       CoreGenerateAssemblyInfo:
+       Das Ziel "CoreGenerateAssemblyInfo" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _GenerateSourceLinkFile:
+         Die Quellverknüpfungsdatei 'obj\Release\net8.0\GeometricAlgebraFulcrumLib.UnitTests.sourcelink.json' ist aktuell.
+       CoreCompile:
+       Das Ziel "CoreCompile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       _CopyOutOfDateSourceItemsToOutputDirectory:
+       Das Ziel "_CopyOutOfDateSourceItemsToOutputDirectory" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildDependencyFile:
+       Das Ziel "GenerateBuildDependencyFile" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       GenerateBuildRuntimeConfigurationFiles:
+       Das Ziel "GenerateBuildRuntimeConfigurationFiles" wird übersprungen, da alle Ausgabedateien hinsichtlich der Eingabedateien aktuell sind.
+       CopyFilesToOutputDirectory:
+         GeometricAlgebraFulcrumLib.UnitTests -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\bin\Release\net8.0\GeometricAlgebraFulcrumLib.UnitTests.dll
+     1>Die Erstellung von Projekt "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" ist abgeschlossen (Standardziele).
+     1>BuildProject:
+         Buildvorgang abgeschlossen.
+         
+Testlauf für "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\bin\Release\net8.0\GeometricAlgebraFulcrumLib.UnitTests.dll" (.NETCoreApp,Version=v8.0)
+VSTest-Version 17.14.1 (x64)
+
+Die Testausführung wird gestartet, bitte warten...
+Insgesamt 1 Testdateien stimmten mit dem angegebenen Muster überein.
+NUnit Adapter 5.0.0.0: Test execution started
+Running selected tests in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\bin\Release\net8.0\GeometricAlgebraFulcrumLib.UnitTests.dll
+   NUnit3TestExecutor discovered 130 of 130 NUnit test cases using Current Discovery mode, Non-Explicit run
+ConformalProcessor_VSpaceDimensions: Conformal processor is dimension-agnostic
+  Bestanden DirectedAngle_SpecialAngles_ShouldHaveCorrectValues(False) [9 ms]
+  Bestanden DirectedAngle_SpecialAngles_ShouldHaveCorrectValues(True) [1 ms]
+  Bestanden ConformalProcessor_IsConformal [< 1 ms]
+  Bestanden ConformalProcessor_VSpaceDimensions [8 ms]
+  Bestanden CustomProcessor_BasisVectorSquares_Mixed [4 ms]
+  Bestanden CustomProcessor_Creation_WithSignature [< 1 ms]
+  Bestanden BasisVectors_AntiCommute [3 ms]
+  Bestanden BasisVectors_Orthonormal [2 ms]
+  Bestanden BasisVectors_SquareToOne [< 1 ms]
+VectorSpaceDimension: Euclidean processor works with arbitrary dimensions, tested up to 5
+  Bestanden GeometricAlgebraDimension [< 1 ms]
+  Bestanden Norm_PositiveDefinite [5 ms]
+  Bestanden Pseudoscalar_Square [< 1 ms]
+  Bestanden PythagoreanTheorem [< 1 ms]
+  Fehler Rotation_PreservesNorm [5 ms]
+  Fehlermeldung:
+   System.ArgumentException : value
+  Stapelverfolgung:
+     at GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.XGaFloat64Vector.CreatePureRotor(XGaFloat64Vector targetVector, Boolean assumeUnitVectors) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebra\Float64\Multivectors\SubspaceOps.cs:line 728
+   at GeometricAlgebraFulcrumLib.UnitTests.Algebra.ProcessorSpecificTests.EuclideanProcessorTests.Rotation_PreservesNorm() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Algebra\ProcessorSpecificTests.cs:line 134
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+  Bestanden VectorSpaceDimension [< 1 ms]
+  Bestanden Metric_ConsistentWithGeometricProduct [< 1 ms]
+  Bestanden DifferentProcessors_SameMetric [< 1 ms]
+  Bestanden EuclideanVsConformal_DifferentMetrics [< 1 ms]
+  Bestanden ProjectiveProcessor_IsProjective [< 1 ms]
+  Bestanden CGaFloat32GeometricSpace_Create_ShouldWorkWithCustomDimensions [75 ms]
+  Bestanden CGaFloat32GeometricSpace_EncodePoint_ShouldWork [9 ms]
+  Bestanden CGaFloat32GeometricSpace_HybridAPI_Double_Overload_ShouldWork [1 ms]
+  Bestanden CGaFloat32GeometricSpace_HybridAPI_T_Overload_ShouldWork [< 1 ms]
+  Bestanden CGaFloat32GeometricSpace_Space4D_ShouldNotBeNull [< 1 ms]
+  Bestanden CGaFloat32GeometricSpace_Space5D_ShouldNotBeNull [< 1 ms]
+  Bestanden PGaFloat32GeometricSpace_Create_ShouldWorkWithCustomDimensions [2 ms]
+  Bestanden PGaFloat32GeometricSpace_Space4D_ShouldNotBeNull [< 1 ms]
+  Bestanden PGaFloat32GeometricSpace_Space5D_ShouldNotBeNull [< 1 ms]
+  Bestanden Reflector_ReflectionAcrossDiagonalPlane [2 ms]
+  Bestanden Reflector_ReflectionThroughXAxis [< 1 ms]
+  Bestanden Reflector_ReflectionThroughYAxis [< 1 ms]
+  Bestanden Reflector_ReflectionThroughZAxis [< 1 ms]
+  Bestanden Reflector_ThreeAxisReflections [< 1 ms]
+  Bestanden Reflector_VectorPerpendicularToAxis [< 1 ms]
+  Bestanden CurveFrame_VSpaceDimensions_ShouldBeThree [2 ms]
+  Bestanden Sphere_DecodeRadius_ShouldSucceed [3 ms]
+  Bestanden Sphere_Encode_ShouldCreateValidBlade [< 1 ms]
+  Bestanden Sphere_ScalarMultiplication_ShouldWork [< 1 ms]
+  Bestanden EncodeSphere_IPNS [< 1 ms]
+  Bestanden EncodeSphere_OPNS [< 1 ms]
+  Bestanden Scaling_ScalesSphereBlade [2 ms]
+  Bestanden Create4DSpace_ShouldHaveCorrectDimensions [< 1 ms]
+  Bestanden Create5DSpace_ShouldHaveCorrectDimensions [< 1 ms]
+  Bestanden VerifyBasisBlades_5D [< 1 ms]
+  Bestanden VerifyConformalBasis [< 1 ms]
+DecodeHyperSphere_Element_ShouldReturnValidRound: TODO: HyperSphere() decoding needs investigation - returns unexpected values
+  Bestanden SphereDuality_IPNS_to_OPNS [< 1 ms]
+  Bestanden Blade_AllOperationsPreserveGeometricSpace [< 1 ms]
+  Bestanden Blade_CombinedOperationsPreserveGeometricSpace [2 ms]
+  Bestanden Blade_GeometricSpace_ShouldMatchConstructor [< 1 ms]
+  Bestanden Blade_VSpaceDimensions_ShouldMatchSpace [< 1 ms]
+  Übersprungen DecodeHyperSphere_Element_ShouldReturnValidRound [< 1 ms]
+  Bestanden DecodeImaginarySphere_ShouldHandleNegativeRadiusSquared [5 ms]
+  Bestanden DecodeSphere_IPNS_ShouldSucceed [< 1 ms]
+  Bestanden DecodeSphere_OPNS_ShouldSucceed [< 1 ms]
+  Bestanden DecodeSphereAtOrigin_ShouldSucceed [< 1 ms]
+  Bestanden DecodeUnitSphere_ShouldHaveUnitRadius [< 1 ms]
+  Bestanden DecodeZeroRadiusSphere_ShouldHandleCorrectly [< 1 ms]
+  Bestanden ExtractHyperSphereCenter_ShouldSucceed [< 1 ms]
+  Bestanden ExtractHyperSphereWeightAndCenter_ShouldSucceed [< 1 ms]
+  Bestanden ExtractRadiusSquared_FromSphere_ShouldMatchOriginal [< 1 ms]
+  Bestanden EncodeSphere_IPNS_ShouldHaveCorrectGrade [< 1 ms]
+  Bestanden Sphere_DecodeProperties_ShouldHaveCorrectRadius [< 1 ms]
+  Bestanden Sphere_EncodeDecodeCycle_ShouldPreserveRadius [< 1 ms]
+  Bestanden Sphere_IpnsToOpns_ShouldSucceed [1 ms]
+  Bestanden Sphere_IsValid_ShouldReturnTrue [3 ms]
+  Bestanden ReflectSphere_AcrossPlane_ShouldSucceed [< 1 ms]
+  Bestanden RotateSphere_ShouldPreserveRadius [< 1 ms]
+  Bestanden ScaleSphere_ShouldChangeRadius [< 1 ms]
+  Bestanden TranslateSphere_ShouldPreserveRadius [< 1 ms]
+  Bestanden ImaginarySphere_3D_FromCenterAndRadius_ShouldProduceIdenticalBlades [25 ms]
+  Bestanden RealSphere_3D_FromCenterAndRadius_ShouldProduceIdenticalBlades [1 ms]
+  Bestanden Sphere_3D_FromCenterAndRadius_ShouldProduceIdenticalBlades [< 1 ms]
+  Bestanden Sphere_UnitRadius_ShouldProduceIdenticalBlades [< 1 ms]
+  Bestanden MeetIpns_SphereAndPlane_ShouldSucceed [< 1 ms]
+  Bestanden MeetIpns_ThreeSpheres_ShouldSucceed [< 1 ms]
+  Bestanden MeetIpns_TwoNonIntersectingSpheres_ShouldHaveSpecialResult [< 1 ms]
+  Bestanden MeetIpns_TwoSpheres_ShouldGiveCircle [< 1 ms]
+  Bestanden MeetOpns_TwoParallelLines_ShouldHaveSpecialResult [< 1 ms]
+  Bestanden Composition_AddSphereThenDecodeCenter_ShouldWork [< 1 ms]
+  Bestanden Sphere_3D_FromFourPoints_ShouldProduceIdenticalBlades [2 ms]
+  Bestanden Sphere_ThroughOrigin_ShouldProduceIdenticalBlades [1 ms]
+  Bestanden IpnsDirection_ArbitraryVector_ShouldWork [< 1 ms]
+  Bestanden IpnsDirection_ArithmeticOperations_ShouldWork [< 1 ms]
+  Bestanden IpnsDirection_BasisVectors_ShouldWork [< 1 ms]
+  Bestanden IpnsDirection_ScaledVector_ShouldWork [< 1 ms]
+  Bestanden IpnsDirection_VectorEncoding_ShouldCreateValidBlade [< 1 ms]
+  Bestanden IpnsTangent_ArithmeticOperations_ShouldWork [< 1 ms]
+  Bestanden IpnsTangent_MultiplePoints_ShouldProduceDifferentBlades [< 1 ms]
+  Bestanden IpnsTangent_Point2D_ShouldWork [< 1 ms]
+  Bestanden IpnsTangent_Point3D_ShouldWork [< 1 ms]
+  Bestanden IpnsTangent_PointEncoding_ShouldCreateValidBlade [< 1 ms]
+  Bestanden OpnsDirection_ArbitraryVector_ShouldWork [< 1 ms]
+  Bestanden OpnsDirection_ArithmeticOperations_ShouldWork [< 1 ms]
+  Bestanden OpnsDirection_BasisVectors_ShouldWork [< 1 ms]
+  Bestanden OpnsDirection_OrthogonalVectors_ShouldProduceDifferentDirections [< 1 ms]
+  Bestanden OpnsDirection_VectorEncoding_ShouldCreateValidBlade [< 1 ms]
+  Bestanden OpnsTangent_ArithmeticOperations_ShouldWork [< 1 ms]
+  Bestanden OpnsTangent_MultiplePoints_ShouldProduceDifferentBlades [< 1 ms]
+  Bestanden OpnsTangent_Point2D_ShouldWork [< 1 ms]
+  Bestanden OpnsTangent_Point3D_ShouldWork [< 1 ms]
+  Bestanden OpnsTangent_PointEncoding_ShouldCreateValidBlade [< 1 ms]
+  Bestanden Sphere_AtOrigin_ShouldWork [3 ms]
+  Bestanden Sphere_CreateStatic_ShouldWork [< 1 ms]
+  Bestanden Sphere_DifferentRadii_ShouldWork [< 1 ms]
+  Bestanden Sphere_Style_ShouldBeAccessible [< 1 ms]
+  Bestanden Geometry_Sphere_CenterRadiusAccessible [< 1 ms]
+  Bestanden IsValid_Sphere_ShouldBeValid [< 1 ms]
+  Bestanden Name_Sphere_ShouldBeAccessible [< 1 ms]
+  Bestanden Style_Sphere_ShouldBeAccessible [< 1 ms]
+  Bestanden LinearInterpolation_Spline_ShouldExist [2 ms]
+  Bestanden Signal_SamplingSpecs_ShouldBeAccessible [< 1 ms]
+  Bestanden GetEnergySpectrum_ShouldWork [5 ms]
+  Bestanden GetFourierSpectrum_ShouldWork [< 1 ms]
+  Bestanden SamplingSpecs_FromSamplingRate_ShouldWork [5 ms]
+  Bestanden SamplingSpecs_FromTimeLength_ShouldWork [< 1 ms]
+  Bestanden SpectrumSampling_ShouldWork [2 ms]
+  Bestanden BasicShapesUtils_RegularPolygon_EqualAngularSpacing [1 ms]
+  Bestanden IsSparseSet_ShouldDetectGaps [< 1 ms]
+  Bestanden SetBitToOneAt_ShouldSetSpecificBit [< 1 ms]
+  Bestanden SetBitToZeroAt_ShouldClearSpecificBit [< 1 ms]
+  Bestanden SetBitsToZeroAt_MultiplePositions_ShouldClearAllSpecified [< 1 ms]
+  Bestanden SetBitToOneAt_ShouldSetSpecificBit [< 1 ms]
+  Bestanden SetBitToZeroAt_ShouldClearSpecificBit [< 1 ms]
+  Bestanden SplitAtFirstWhitespace_EmptyString [1 ms]
+  Bestanden SplitAtFirstWhitespace_NullString [< 1 ms]
+  Bestanden SplitAtFirstWhitespace_OnlyWhitespace [< 1 ms]
+NUnit Adapter 5.0.0.0: Test execution complete
+  Bestanden SplitAtFirstWhitespace_SimpleCase [< 1 ms]
+  Bestanden SplitAtFirstWhitespace_SingleWord [< 1 ms]
+  Bestanden SplitAtFirstWhitespace_WithLeadingWhitespace [< 1 ms]
+  Bestanden ValueToLiteral_WithEscapes_ShouldEscapeSpecialChars [5 ms]
+
+Fehler beim Testlauf.
+Gesamtzahl Tests: 130
+     Bestanden: 128
+     Nicht bestanden: 1
+    Übersprungen: 1
+ Gesamtzeit: 0,8198 Sekunden
+       _VSTestConsole:
+         MSB4181: Die Aufgabe "VSTestTask" hat FALSE zurückgegeben, jedoch keinen Fehler protokolliert.
+     1>Die Erstellung des Projekts "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" ist abgeschlossen, VSTest Ziel(e) -- FEHLER.
+
+Fehler beim Buildvorgang.
+
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (Restore Ziel) (1) ->
+       (Restore Ziel) -> 
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+
+
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (VSTest Ziel) (1:7) ->
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (Standardziel) (1:8) ->
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj" (Standardziel) (5:6) ->
+       (ResolvePackageAssets Ziel) -> 
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
+
+
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (VSTest Ziel) (1:7) ->
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (Standardziel) (1:8) ->
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" (Standardziel) (2:7) ->
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
+
+
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (VSTest Ziel) (1:7) ->
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (Standardziel) (1:8) ->
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj" (Standardziel) (6:6) ->
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82.
+         D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
+
+
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (VSTest Ziel) (1:7) ->
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (Standardziel) (1:8) ->
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj" (Standardziel) (5:6) ->
+       (ResolveAssemblyReferences Ziel) -> 
+         C:\program files\dotnet\sdk\9.0.306\Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3270: Konflikt zwischen der Prozessorarchitektur des Projekts "MSIL", das erstellt wird, und der Prozessorarchitektur des Verweises, "C:\Users\schmi\.nuget\packages\magick.net-q16-x64\14.7.0\lib\net8.0\Magick.NET-Q16-x64.dll", "AMD64". Dieser Konflikt kann zu Laufzeitfehlern führen. Ändern Sie ggf. mithilfe des Konfigurations-Managers die als Ziel angegebene Prozessorarchitektur Ihres Projekts so, dass die Prozessorarchitekturen zwischen Ihrem Projekt und den Verweisen ausgerichtet werden, oder wählen Sie eine Abhängigkeit von Verweisen mit einer Prozessorarchitektur, die der als Ziel angegebene Prozessorarchitektur Ihres Projekts entspricht. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj]
+
+
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (VSTest Ziel) (1:7) ->
+       "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" (Standardziel) (1:8) ->
+         C:\program files\dotnet\sdk\9.0.306\Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3270: Konflikt zwischen der Prozessorarchitektur des Projekts "MSIL", das erstellt wird, und der Prozessorarchitektur des Verweises, "C:\Users\schmi\.nuget\packages\magick.net-q16-x64\14.7.0\lib\net8.0\Magick.NET-Q16-x64.dll", "AMD64". Dieser Konflikt kann zu Laufzeitfehlern führen. Ändern Sie ggf. mithilfe des Konfigurations-Managers die als Ziel angegebene Prozessorarchitektur Ihres Projekts so, dass die Prozessorarchitekturen zwischen Ihrem Projekt und den Verweisen ausgerichtet werden, oder wählen Sie eine Abhängigkeit von Verweisen mit einer Prozessorarchitektur, die der als Ziel angegebene Prozessorarchitektur Ihres Projekts entspricht. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+
+    32 Warnung(en)
+    0 Fehler
+
+Verstrichene Zeit 00:00:04.86
+
+Es sind Workloadupdates verfügbar. Um weitere Informationen zu erhalten, führen Sie `dotnet workload list` aus.

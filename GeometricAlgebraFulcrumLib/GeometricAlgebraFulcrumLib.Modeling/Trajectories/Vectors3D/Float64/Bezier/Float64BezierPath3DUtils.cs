@@ -186,13 +186,14 @@ public static class Float64BezierPath3DUtils
         var zList = new double[pointsCount];
 
         //Perform first stage of linear interpolation on given points
+        // 🐛 BUGFIX (2025-10-28): Was reading from empty xList/yList/zList instead of pointsList!
         for (var i = 0; i < pointsCount; i++)
         {
             var j = i + 1;
 
-            xList[i] = s * xList[i] + t * xList[j];
-            yList[i] = s * yList[i] + t * yList[j];
-            zList[i] = s * zList[i] + t * zList[j];
+            xList[i] = s * pointsList[i].X + t * pointsList[j].X;
+            yList[i] = s * pointsList[i].Y + t * pointsList[j].Y;
+            zList[i] = s * pointsList[i].Z + t * pointsList[j].Z;
         }
 
         //Perform remaining stages of linear interpolation

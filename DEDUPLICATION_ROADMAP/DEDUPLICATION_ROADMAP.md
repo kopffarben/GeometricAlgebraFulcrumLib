@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: ScalarTripletPath3D, HarmonicPath3D, SphericalPath3D complete)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: BezierNPath3D<T> + Critical Float64 DeCasteljau Bug Fix)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -640,17 +640,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 4.6 (Phase 3A Module 6A - Bezier3Path3D Complete)
-**Letzte Aktualisierung:** 2025-10-28
+**Dokument Version:** 4.7 (Phase 3A Module 6A - BezierNPath3D<T> Complete)
+**Letzte Aktualisierung:** 2025-10-28 (BezierNPath3D<T> + Critical Float64 Bug Fix)
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
 **Nächste Review:** Nach Completion von Module 6A (18/151 Klassen, 11.9% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 29/151 Klassen complete (19.2%)
-**Aufwand bisher:** ~32 Stunden
-**Tests:** 229 Tests (229 passing ✅ - 100% success rate!)
-**LOC:** ~5,117 LOC Implementation + ~7,811 LOC Tests
+**Status:** 30/151 Klassen complete (19.9%)
+**Aufwand bisher:** ~34 Stunden
+**Tests:** 242 Tests (242 passing ✅ - 100% success rate!)
+**LOC:** ~5,362 LOC Implementation + ~8,231 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -724,6 +724,41 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - ToFinitePath/ToPeriodicPath Konvertierung
     - **Tests:** 13 Tests ✅
     - **LOC:** 148 LOC Implementation + 575 LOC Tests
+
+18. **BezierNPath3D<T>** - Arbitrary-Degree Bezier-Kurven (N Kontrollpunkte) ✅ COMPLETE (2025-10-28)
+    - Parametrische Form: De Casteljau's algorithm für beliebige Anzahl von Kontrollpunkten
+    - **Degree = N-1** wo N die Anzahl der Kontrollpunkte ist
+    - GetDerivativeCurve() reduziert Degree um 1 (Degree-N → Degree-(N-1))
+    - Analytische Ableitungen via Derivative Curve Chain
+    - Optimiert für Degree 0-4: Nutzt spezialisierte DeCasteljau-Methoden
+    - Für Degree ≥5: Nutzt generellen iterativen Algorithmus
+    - Modifiable ControlPoints Liste für dynamische Kurvendefinition
+    - Factory-Methoden: Finite/Periodic mit IEnumerable<T> und params[] Überladungen
+    - **Tests:** 13 Tests ✅ (100% success rate)
+      - Degree 0 (constant point)
+      - Degree 1 (linear, match LineSegment)
+      - Degree 2 (quadratic, match Bezier2Path3D)
+      - Degree 3 (cubic, match Bezier3Path3D)
+      - Degree 5 (quintic, tests general algorithm)
+      - Degree 7 (septic, higher-degree validation)
+      - GetDerivativeCurve() chain validation
+      - Endpoint tests (t=0, t=1)
+      - Empty control points handling
+      - Dynamic control point modification
+    - **LOC:** 169 LOC Implementation + ~420 LOC Tests
+    - **BONUS - BezierPath3DUtils<T> Enhancement:**
+      - Added array-based DeCasteljau<T>(Scalar<T> t, params LinVector3D<T>[] controlPoints)
+      - Handles arbitrary number of control points (N ≥ 1)
+      - Optimized fast-paths for N=1,2,3,4 delegate to specialized methods
+      - General iterative algorithm for N≥5
+      - **LOC:** +76 LOC to BezierPath3DUtils<T> (Total: 313 LOC)
+    - **🐛 CRITICAL BUGFIX in Float64**:
+      - Fixed `Float64BezierPath3DUtils.DeCasteljau(double, params LinFloat64Vector3D[])`
+      - **Bug:** Lines 193-195 read from empty `xList/yList/zList` instead of `pointsList`
+      - **Impact:** ALL Float64 Bezier curves with 5+ control points returned ZERO
+      - **Fix:** Changed to read from `pointsList[i]` and `pointsList[j]`
+      - Generic<T> implementation has correct logic from the start
+    - **Status:** Complete ✅
 
 #### ✅ Computed Paths (Complete - 2025-10-28)
 19. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade

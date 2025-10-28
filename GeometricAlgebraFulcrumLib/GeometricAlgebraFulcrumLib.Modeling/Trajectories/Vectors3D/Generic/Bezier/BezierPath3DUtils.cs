@@ -219,4 +219,79 @@ public static class BezierPath3DUtils
     }
 
     #endregion
+
+    #region DeCasteljau Array-Based (Arbitrary Degree)
+
+    /// <summary>
+    /// De Casteljau's algorithm for arbitrary-degree Bezier curves.
+    /// Evaluates a Bezier curve defined by N control points at parameter t.
+    /// </summary>
+    /// <typeparam name="T">Scalar type</typeparam>
+    /// <param name="t">Parameter value in [0,1]</param>
+    /// <param name="controlPoints">Array of control points (N points define degree N-1 curve)</param>
+    /// <returns>Point on the Bezier curve at parameter t</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector3D<T> DeCasteljau<T>(this Scalar<T> t, params LinVector3D<T>[] controlPoints)
+    {
+        var pointsCount = controlPoints.Length;
+
+        if (pointsCount == 0)
+            throw new ArgumentException("At least one control point is required", nameof(controlPoints));
+
+        if (pointsCount == 1)
+            return controlPoints[0];
+
+        if (pointsCount == 2)
+            return t.DeCasteljau(controlPoints[0], controlPoints[1]);
+
+        if (pointsCount == 3)
+            return t.DeCasteljau(controlPoints[0], controlPoints[1], controlPoints[2]);
+
+        if (pointsCount == 4)
+            return t.DeCasteljau(controlPoints[0], controlPoints[1], controlPoints[2], controlPoints[3]);
+
+        // For 5+ control points, use the general algorithm
+        var processor = t.ScalarProcessor;
+        var s = processor.One - t;
+        pointsCount--;
+
+        var xList = new Scalar<T>[pointsCount];
+        var yList = new Scalar<T>[pointsCount];
+        var zList = new Scalar<T>[pointsCount];
+
+        // Perform first stage of linear interpolation on given points
+        // 🐛 BUGFIX: Float64 version had bug here - was reading from empty arrays instead of controlPoints!
+        for (var i = 0; i < pointsCount; i++)
+        {
+            var j = i + 1;
+
+            xList[i] = s * controlPoints[i].X + t * controlPoints[j].X;
+            yList[i] = s * controlPoints[i].Y + t * controlPoints[j].Y;
+            zList[i] = s * controlPoints[i].Z + t * controlPoints[j].Z;
+        }
+
+        // Perform remaining stages of linear interpolation
+        while (pointsCount > 2)
+        {
+            pointsCount--;
+
+            for (var i = 0; i < pointsCount; i++)
+            {
+                var j = i + 1;
+
+                xList[i] = s * xList[i] + t * xList[j];
+                yList[i] = s * yList[i] + t * yList[j];
+                zList[i] = s * zList[i] + t * zList[j];
+            }
+        }
+
+        // Only two points remain; interpolate them at t
+        return LinVector3D<T>.Create(
+            s * xList[0] + t * xList[1],
+            s * yList[0] + t * yList[1],
+            s * zList[0] + t * zList[1]
+        );
+    }
+
+    #endregion
 }

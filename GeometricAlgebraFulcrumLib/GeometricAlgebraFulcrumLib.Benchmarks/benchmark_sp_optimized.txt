@@ -1,0 +1,1415 @@
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
+C:\program files\dotnet\sdk\9.0.306\Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3270: Konflikt zwischen der Prozessorarchitektur des Projekts "MSIL", das erstellt wird, und der Prozessorarchitektur des Verweises, "C:\Users\schmi\.nuget\packages\magick.net-q16-x64\14.7.0\lib\net8.0\Magick.NET-Q16-x64.dll", "AMD64". Dieser Konflikt kann zu Laufzeitfehlern führen. Ändern Sie ggf. mithilfe des Konfigurations-Managers die als Ziel angegebene Prozessorarchitektur Ihres Projekts so, dass die Prozessorarchitekturen zwischen Ihrem Projekt und den Verweisen ausgerichtet werden, oder wählen Sie eine Abhängigkeit von Verweisen mit einer Prozessorarchitektur, die der als Ziel angegebene Prozessorarchitektur Ihres Projekts entspricht. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj]
+C:\program files\dotnet\sdk\9.0.306\Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3270: Konflikt zwischen der Prozessorarchitektur des Projekts "MSIL", das erstellt wird, und der Prozessorarchitektur des Verweises, "C:\Users\schmi\.nuget\packages\magick.net-q16-x64\14.7.0\lib\net8.0\Magick.NET-Q16-x64.dll", "AMD64". Dieser Konflikt kann zu Laufzeitfehlern führen. Ändern Sie ggf. mithilfe des Konfigurations-Managers die als Ziel angegebene Prozessorarchitektur Ihres Projekts so, dass die Prozessorarchitekturen zwischen Ihrem Projekt und den Verweisen ausgerichtet werden, oder wählen Sie eine Abhängigkeit von Verweisen mit einer Prozessorarchitektur, die der als Ziel angegebene Prozessorarchitektur Ihres Projekts entspricht. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj]
+// Validating benchmarks:
+// ***** BenchmarkRunner: Start   *****
+// ***** Found 12 benchmark(s) in total *****
+// ***** Building 1 exe(s) in Parallel: Start   *****
+// start dotnet  restore /p:UseSharedCompilation=false /p:BuildInParallel=false /m:1 /p:Deterministic=true /p:Optimize=true /p:ArtifactsPath="D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1/" /p:OutDir="D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0/" /p:OutputPath="D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0/" /p:PublishDir="D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\publish/" in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1
+// command took 2.07 sec and exited with 0
+// start dotnet  build -c Release --no-restore /p:UseSharedCompilation=false /p:BuildInParallel=false /m:1 /p:Deterministic=true /p:Optimize=true /p:ArtifactsPath="D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1/" /p:OutDir="D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0/" /p:OutputPath="D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0/" /p:PublishDir="D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\publish/" --output "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0/" in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1
+// command took 110.54 sec and exited with 0
+// ***** Done, took 00:01:52 (112.81 sec)   *****
+// Found 12 benchmarks:
+//   XGaMetricOperationsComparisonBenchmark.'Float64 - Euclidean Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Generic<double> - Euclidean Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Generic<float> - Euclidean Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Float64 - Conformal Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Generic<double> - Conformal Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Generic<float> - Conformal Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Float64 - Euclidean Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Generic<double> - Euclidean Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Generic<float> - Euclidean Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Float64 - Conformal Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Generic<double> - Conformal Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+//   XGaMetricOperationsComparisonBenchmark.'Generic<float> - Conformal Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Float64 - Euclidean Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 940 1044 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.EuclideanGp_Float64 --job "IterationCount=10, WarmupCount=3" --benchmarkId 0 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 99600.00 ns, 99.6000 us/op
+WorkloadJitting  1: 1 op, 5856100.00 ns, 5.8561 ms/op
+
+OverheadJitting  2: 16 op, 139400.00 ns, 8.7125 us/op
+WorkloadJitting  2: 16 op, 9201800.00 ns, 575.1125 us/op
+
+WorkloadPilot    1: 16 op, 9347600.00 ns, 584.2250 us/op
+WorkloadPilot    2: 32 op, 16473100.00 ns, 514.7844 us/op
+WorkloadPilot    3: 64 op, 31695900.00 ns, 495.2484 us/op
+WorkloadPilot    4: 128 op, 59151400.00 ns, 462.1203 us/op
+WorkloadPilot    5: 256 op, 127717300.00 ns, 498.8957 us/op
+WorkloadPilot    6: 512 op, 103734000.00 ns, 202.6055 us/op
+WorkloadPilot    7: 1024 op, 94952600.00 ns, 92.7271 us/op
+WorkloadPilot    8: 2048 op, 186655300.00 ns, 91.1403 us/op
+WorkloadPilot    9: 4096 op, 381169200.00 ns, 93.0589 us/op
+WorkloadPilot   10: 8192 op, 745950100.00 ns, 91.0584 us/op
+
+OverheadWarmup   1: 8192 op, 16200.00 ns, 1.9775 ns/op
+OverheadWarmup   2: 8192 op, 15200.00 ns, 1.8555 ns/op
+OverheadWarmup   3: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadWarmup   4: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadWarmup   5: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadWarmup   6: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadWarmup   7: 8192 op, 15000.00 ns, 1.8311 ns/op
+
+OverheadActual   1: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual   2: 8192 op, 16200.00 ns, 1.9775 ns/op
+OverheadActual   3: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual   4: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadActual   5: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual   6: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadActual   7: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadActual   8: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual   9: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadActual  10: 8192 op, 15900.00 ns, 1.9409 ns/op
+OverheadActual  11: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadActual  12: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual  13: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadActual  14: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadActual  15: 8192 op, 15100.00 ns, 1.8433 ns/op
+
+WorkloadWarmup   1: 8192 op, 758647200.00 ns, 92.6083 us/op
+WorkloadWarmup   2: 8192 op, 755723900.00 ns, 92.2515 us/op
+WorkloadWarmup   3: 8192 op, 753838000.00 ns, 92.0212 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 8192 op, 745748900.00 ns, 91.0338 us/op
+WorkloadActual   2: 8192 op, 763988000.00 ns, 93.2603 us/op
+WorkloadActual   3: 8192 op, 762283100.00 ns, 93.0521 us/op
+WorkloadActual   4: 8192 op, 764677600.00 ns, 93.3444 us/op
+WorkloadActual   5: 8192 op, 768503400.00 ns, 93.8115 us/op
+WorkloadActual   6: 8192 op, 762834800.00 ns, 93.1195 us/op
+WorkloadActual   7: 8192 op, 767973300.00 ns, 93.7467 us/op
+WorkloadActual   8: 8192 op, 757174900.00 ns, 92.4286 us/op
+WorkloadActual   9: 8192 op, 759599300.00 ns, 92.7245 us/op
+WorkloadActual  10: 8192 op, 764046200.00 ns, 93.2674 us/op
+
+// AfterActualRun
+WorkloadResult   1: 8192 op, 745733800.00 ns, 91.0320 us/op
+WorkloadResult   2: 8192 op, 763972900.00 ns, 93.2584 us/op
+WorkloadResult   3: 8192 op, 762268000.00 ns, 93.0503 us/op
+WorkloadResult   4: 8192 op, 764662500.00 ns, 93.3426 us/op
+WorkloadResult   5: 8192 op, 768488300.00 ns, 93.8096 us/op
+WorkloadResult   6: 8192 op, 762819700.00 ns, 93.1176 us/op
+WorkloadResult   7: 8192 op, 767958200.00 ns, 93.7449 us/op
+WorkloadResult   8: 8192 op, 757159800.00 ns, 92.4267 us/op
+WorkloadResult   9: 8192 op, 759584200.00 ns, 92.7227 us/op
+WorkloadResult  10: 8192 op, 764031100.00 ns, 93.2655 us/op
+// GC:  237 1 0 1985740800 8192
+// Threading:  0 0 8192
+
+// AfterAll
+// Benchmark Process 73556 has exited with code 0.
+
+Mean = 92.977 us, StdErr = 0.253 us (0.27%), N = 10, StdDev = 0.800 us
+Min = 91.032 us, Q1 = 92.805 us, Median = 93.188 us, Q3 = 93.323 us, Max = 93.810 us
+IQR = 0.519 us, LowerFence = 92.026 us, UpperFence = 94.101 us
+ConfidenceInterval = [91.768 us; 94.186 us] (CI 99.9%), Margin = 1.209 us (1.30% of Mean)
+Skewness = -1.25, Kurtosis = 3.73, MValue = 2
+
+// ** Remained 11 (91,7 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 2m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Generic<double> - Euclidean Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 1064 6952 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.EuclideanGp_GenericDouble --job "IterationCount=10, WarmupCount=3" --benchmarkId 1 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 91700.00 ns, 91.7000 us/op
+WorkloadJitting  1: 1 op, 12279400.00 ns, 12.2794 ms/op
+
+OverheadJitting  2: 16 op, 148900.00 ns, 9.3063 us/op
+WorkloadJitting  2: 16 op, 10432900.00 ns, 652.0563 us/op
+
+WorkloadPilot    1: 16 op, 9910900.00 ns, 619.4313 us/op
+WorkloadPilot    2: 32 op, 18482400.00 ns, 577.5750 us/op
+WorkloadPilot    3: 64 op, 34731900.00 ns, 542.6859 us/op
+WorkloadPilot    4: 128 op, 65467100.00 ns, 511.4617 us/op
+WorkloadPilot    5: 256 op, 133008000.00 ns, 519.5625 us/op
+WorkloadPilot    6: 512 op, 58064100.00 ns, 113.4064 us/op
+WorkloadPilot    7: 1024 op, 102910600.00 ns, 100.4986 us/op
+WorkloadPilot    8: 2048 op, 198657800.00 ns, 97.0009 us/op
+WorkloadPilot    9: 4096 op, 392412300.00 ns, 95.8038 us/op
+WorkloadPilot   10: 8192 op, 794470300.00 ns, 96.9812 us/op
+
+OverheadWarmup   1: 8192 op, 15900.00 ns, 1.9409 ns/op
+OverheadWarmup   2: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadWarmup   3: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadWarmup   4: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadWarmup   5: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadWarmup   6: 8192 op, 15000.00 ns, 1.8311 ns/op
+
+OverheadActual   1: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual   2: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadActual   3: 8192 op, 15600.00 ns, 1.9043 ns/op
+OverheadActual   4: 8192 op, 15000.00 ns, 1.8311 ns/op
+OverheadActual   5: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual   6: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual   7: 8192 op, 15200.00 ns, 1.8555 ns/op
+OverheadActual   8: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual   9: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual  10: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual  11: 8192 op, 15900.00 ns, 1.9409 ns/op
+OverheadActual  12: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual  13: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual  14: 8192 op, 15100.00 ns, 1.8433 ns/op
+OverheadActual  15: 8192 op, 15100.00 ns, 1.8433 ns/op
+
+WorkloadWarmup   1: 8192 op, 801783900.00 ns, 97.8740 us/op
+WorkloadWarmup   2: 8192 op, 776431700.00 ns, 94.7793 us/op
+WorkloadWarmup   3: 8192 op, 782766200.00 ns, 95.5525 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 8192 op, 831311300.00 ns, 101.4784 us/op
+WorkloadActual   2: 8192 op, 792498500.00 ns, 96.7405 us/op
+WorkloadActual   3: 8192 op, 783315900.00 ns, 95.6196 us/op
+WorkloadActual   4: 8192 op, 794348200.00 ns, 96.9663 us/op
+WorkloadActual   5: 8192 op, 801538200.00 ns, 97.8440 us/op
+WorkloadActual   6: 8192 op, 789437300.00 ns, 96.3669 us/op
+WorkloadActual   7: 8192 op, 788440100.00 ns, 96.2451 us/op
+WorkloadActual   8: 8192 op, 790856700.00 ns, 96.5401 us/op
+WorkloadActual   9: 8192 op, 780991300.00 ns, 95.3359 us/op
+WorkloadActual  10: 8192 op, 780903600.00 ns, 95.3251 us/op
+
+// AfterActualRun
+WorkloadResult   1: 8192 op, 792483400.00 ns, 96.7387 us/op
+WorkloadResult   2: 8192 op, 783300800.00 ns, 95.6178 us/op
+WorkloadResult   3: 8192 op, 794333100.00 ns, 96.9645 us/op
+WorkloadResult   4: 8192 op, 801523100.00 ns, 97.8422 us/op
+WorkloadResult   5: 8192 op, 789422200.00 ns, 96.3650 us/op
+WorkloadResult   6: 8192 op, 788425000.00 ns, 96.2433 us/op
+WorkloadResult   7: 8192 op, 790841600.00 ns, 96.5383 us/op
+WorkloadResult   8: 8192 op, 780976200.00 ns, 95.3340 us/op
+WorkloadResult   9: 8192 op, 780888500.00 ns, 95.3233 us/op
+// GC:  248 1 0 2077491200 8192
+// Threading:  0 0 8192
+
+// AfterAll
+// Benchmark Process 54304 has exited with code 0.
+
+Mean = 96.330 us, StdErr = 0.274 us (0.28%), N = 9, StdDev = 0.823 us
+Min = 95.323 us, Q1 = 95.618 us, Median = 96.365 us, Q3 = 96.739 us, Max = 97.842 us
+IQR = 1.121 us, LowerFence = 93.936 us, UpperFence = 98.420 us
+ConfidenceInterval = [94.946 us; 97.713 us] (CI 99.9%), Margin = 1.383 us (1.44% of Mean)
+Skewness = 0.28, Kurtosis = 1.86, MValue = 2
+
+// ** Remained 10 (83,3 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 2m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Generic<float> - Euclidean Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 1168 1012 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.EuclideanGp_GenericFloat --job "IterationCount=10, WarmupCount=3" --benchmarkId 2 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 91200.00 ns, 91.2000 us/op
+WorkloadJitting  1: 1 op, 12467400.00 ns, 12.4674 ms/op
+
+OverheadJitting  2: 16 op, 153800.00 ns, 9.6125 us/op
+WorkloadJitting  2: 16 op, 10305000.00 ns, 644.0625 us/op
+
+WorkloadPilot    1: 16 op, 10404800.00 ns, 650.3000 us/op
+WorkloadPilot    2: 32 op, 19164600.00 ns, 598.8938 us/op
+WorkloadPilot    3: 64 op, 35420400.00 ns, 553.4438 us/op
+WorkloadPilot    4: 128 op, 68626900.00 ns, 536.1477 us/op
+WorkloadPilot    5: 256 op, 132663700.00 ns, 518.2176 us/op
+WorkloadPilot    6: 512 op, 58919300.00 ns, 115.0768 us/op
+WorkloadPilot    7: 1024 op, 98412300.00 ns, 96.1058 us/op
+WorkloadPilot    8: 2048 op, 207057200.00 ns, 101.1021 us/op
+WorkloadPilot    9: 4096 op, 398807900.00 ns, 97.3652 us/op
+WorkloadPilot   10: 8192 op, 821810800.00 ns, 100.3187 us/op
+
+OverheadWarmup   1: 8192 op, 17000.00 ns, 2.0752 ns/op
+OverheadWarmup   2: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadWarmup   3: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadWarmup   4: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadWarmup   5: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadWarmup   6: 8192 op, 15400.00 ns, 1.8799 ns/op
+
+OverheadActual   1: 8192 op, 15600.00 ns, 1.9043 ns/op
+OverheadActual   2: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadActual   3: 8192 op, 15900.00 ns, 1.9409 ns/op
+OverheadActual   4: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadActual   5: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadActual   6: 8192 op, 15300.00 ns, 1.8677 ns/op
+OverheadActual   7: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadActual   8: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadActual   9: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadActual  10: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadActual  11: 8192 op, 15800.00 ns, 1.9287 ns/op
+OverheadActual  12: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadActual  13: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadActual  14: 8192 op, 15400.00 ns, 1.8799 ns/op
+OverheadActual  15: 8192 op, 15400.00 ns, 1.8799 ns/op
+
+WorkloadWarmup   1: 8192 op, 804446900.00 ns, 98.1991 us/op
+WorkloadWarmup   2: 8192 op, 796258100.00 ns, 97.1995 us/op
+WorkloadWarmup   3: 8192 op, 810760000.00 ns, 98.9697 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 8192 op, 806163200.00 ns, 98.4086 us/op
+WorkloadActual   2: 8192 op, 800440400.00 ns, 97.7100 us/op
+WorkloadActual   3: 8192 op, 801954200.00 ns, 97.8948 us/op
+WorkloadActual   4: 8192 op, 798635500.00 ns, 97.4897 us/op
+WorkloadActual   5: 8192 op, 805523000.00 ns, 98.3304 us/op
+WorkloadActual   6: 8192 op, 800085000.00 ns, 97.6666 us/op
+WorkloadActual   7: 8192 op, 796545500.00 ns, 97.2346 us/op
+WorkloadActual   8: 8192 op, 795408100.00 ns, 97.0957 us/op
+WorkloadActual   9: 8192 op, 799616100.00 ns, 97.6094 us/op
+WorkloadActual  10: 8192 op, 802097500.00 ns, 97.9123 us/op
+
+// AfterActualRun
+WorkloadResult   1: 8192 op, 806147800.00 ns, 98.4067 us/op
+WorkloadResult   2: 8192 op, 800425000.00 ns, 97.7081 us/op
+WorkloadResult   3: 8192 op, 801938800.00 ns, 97.8929 us/op
+WorkloadResult   4: 8192 op, 798620100.00 ns, 97.4878 us/op
+WorkloadResult   5: 8192 op, 805507600.00 ns, 98.3286 us/op
+WorkloadResult   6: 8192 op, 800069600.00 ns, 97.6647 us/op
+WorkloadResult   7: 8192 op, 796530100.00 ns, 97.2327 us/op
+WorkloadResult   8: 8192 op, 795392700.00 ns, 97.0938 us/op
+WorkloadResult   9: 8192 op, 799600700.00 ns, 97.6075 us/op
+WorkloadResult  10: 8192 op, 802082100.00 ns, 97.9104 us/op
+// GC:  248 1 0 2077491200 8192
+// Threading:  0 0 8192
+
+// AfterAll
+// Benchmark Process 72948 has exited with code 0.
+
+Mean = 97.733 us, StdErr = 0.134 us (0.14%), N = 10, StdDev = 0.422 us
+Min = 97.094 us, Q1 = 97.518 us, Median = 97.686 us, Q3 = 97.906 us, Max = 98.407 us
+IQR = 0.388 us, LowerFence = 96.935 us, UpperFence = 98.489 us
+ConfidenceInterval = [97.095 us; 98.372 us] (CI 99.9%), Margin = 0.639 us (0.65% of Mean)
+Skewness = 0.16, Kurtosis = 1.78, MValue = 2
+
+// ** Remained 9 (75,0 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 2m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Float64 - Conformal Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 8508 8468 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.ConformalGp_Float64 --job "IterationCount=10, WarmupCount=3" --benchmarkId 3 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 91100.00 ns, 91.1000 us/op
+WorkloadJitting  1: 1 op, 7043000.00 ns, 7.0430 ms/op
+
+OverheadJitting  2: 16 op, 140300.00 ns, 8.7688 us/op
+WorkloadJitting  2: 16 op, 29456000.00 ns, 1.8410 ms/op
+
+WorkloadPilot    1: 16 op, 26609200.00 ns, 1.6631 ms/op
+WorkloadPilot    2: 32 op, 50462200.00 ns, 1.5769 ms/op
+WorkloadPilot    3: 64 op, 97988900.00 ns, 1.5311 ms/op
+WorkloadPilot    4: 128 op, 177616100.00 ns, 1.3876 ms/op
+WorkloadPilot    5: 256 op, 74861500.00 ns, 292.4277 us/op
+WorkloadPilot    6: 512 op, 144245600.00 ns, 281.7297 us/op
+WorkloadPilot    7: 1024 op, 292528500.00 ns, 285.6724 us/op
+WorkloadPilot    8: 2048 op, 577712900.00 ns, 282.0864 us/op
+
+OverheadWarmup   1: 2048 op, 5000.00 ns, 2.4414 ns/op
+OverheadWarmup   2: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadWarmup   3: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadWarmup   4: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadWarmup   5: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadWarmup   6: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadWarmup   7: 2048 op, 4000.00 ns, 1.9531 ns/op
+
+OverheadActual   1: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   2: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual   3: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   4: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual   5: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual   6: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   7: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   8: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   9: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  10: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  11: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual  12: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  13: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual  14: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  15: 2048 op, 4000.00 ns, 1.9531 ns/op
+
+WorkloadWarmup   1: 2048 op, 588524900.00 ns, 287.3657 us/op
+WorkloadWarmup   2: 2048 op, 577574900.00 ns, 282.0190 us/op
+WorkloadWarmup   3: 2048 op, 586648700.00 ns, 286.4496 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 2048 op, 583149400.00 ns, 284.7409 us/op
+WorkloadActual   2: 2048 op, 581115100.00 ns, 283.7476 us/op
+WorkloadActual   3: 2048 op, 580011500.00 ns, 283.2087 us/op
+WorkloadActual   4: 2048 op, 578020700.00 ns, 282.2367 us/op
+WorkloadActual   5: 2048 op, 580601400.00 ns, 283.4968 us/op
+WorkloadActual   6: 2048 op, 571045200.00 ns, 278.8307 us/op
+WorkloadActual   7: 2048 op, 585987200.00 ns, 286.1266 us/op
+WorkloadActual   8: 2048 op, 573149800.00 ns, 279.8583 us/op
+WorkloadActual   9: 2048 op, 594329800.00 ns, 290.2001 us/op
+WorkloadActual  10: 2048 op, 593780800.00 ns, 289.9320 us/op
+
+// AfterActualRun
+WorkloadResult   1: 2048 op, 583145400.00 ns, 284.7390 us/op
+WorkloadResult   2: 2048 op, 581111100.00 ns, 283.7457 us/op
+WorkloadResult   3: 2048 op, 580007500.00 ns, 283.2068 us/op
+WorkloadResult   4: 2048 op, 578016700.00 ns, 282.2347 us/op
+WorkloadResult   5: 2048 op, 580597400.00 ns, 283.4948 us/op
+WorkloadResult   6: 2048 op, 571041200.00 ns, 278.8287 us/op
+WorkloadResult   7: 2048 op, 585983200.00 ns, 286.1246 us/op
+WorkloadResult   8: 2048 op, 573145800.00 ns, 279.8563 us/op
+WorkloadResult   9: 2048 op, 594325800.00 ns, 290.1981 us/op
+WorkloadResult  10: 2048 op, 593776800.00 ns, 289.9301 us/op
+// GC:  174 1 0 1456537600 2048
+// Threading:  0 0 2048
+
+// AfterAll
+// Benchmark Process 64112 has exited with code 0.
+
+Mean = 284.236 us, StdErr = 1.184 us (0.42%), N = 10, StdDev = 3.743 us
+Min = 278.829 us, Q1 = 282.478 us, Median = 283.620 us, Q3 = 285.778 us, Max = 290.198 us
+IQR = 3.300 us, LowerFence = 277.527 us, UpperFence = 290.729 us
+ConfidenceInterval = [278.578 us; 289.894 us] (CI 99.9%), Margin = 5.658 us (1.99% of Mean)
+Skewness = 0.29, Kurtosis = 1.82, MValue = 2
+
+// ** Remained 8 (66,7 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 1m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Generic<double> - Conformal Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 8480 8496 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.ConformalGp_GenericDouble --job "IterationCount=10, WarmupCount=3" --benchmarkId 4 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 93400.00 ns, 93.4000 us/op
+WorkloadJitting  1: 1 op, 13598400.00 ns, 13.5984 ms/op
+
+OverheadJitting  2: 16 op, 147700.00 ns, 9.2313 us/op
+WorkloadJitting  2: 16 op, 33128700.00 ns, 2.0705 ms/op
+
+WorkloadPilot    1: 16 op, 29555200.00 ns, 1.8472 ms/op
+WorkloadPilot    2: 32 op, 55228500.00 ns, 1.7259 ms/op
+WorkloadPilot    3: 64 op, 107265900.00 ns, 1.6760 ms/op
+WorkloadPilot    4: 128 op, 163870100.00 ns, 1.2802 ms/op
+WorkloadPilot    5: 256 op, 76375100.00 ns, 298.3402 us/op
+WorkloadPilot    6: 512 op, 150757300.00 ns, 294.4479 us/op
+WorkloadPilot    7: 1024 op, 303176900.00 ns, 296.0712 us/op
+WorkloadPilot    8: 2048 op, 610644300.00 ns, 298.1662 us/op
+
+OverheadWarmup   1: 2048 op, 5400.00 ns, 2.6367 ns/op
+OverheadWarmup   2: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadWarmup   3: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadWarmup   4: 2048 op, 4200.00 ns, 2.0508 ns/op
+OverheadWarmup   5: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadWarmup   6: 2048 op, 4100.00 ns, 2.0020 ns/op
+
+OverheadActual   1: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual   2: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual   3: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual   4: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   5: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual   6: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   7: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual   8: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual   9: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  10: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual  11: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual  12: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual  13: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  14: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadActual  15: 2048 op, 4000.00 ns, 1.9531 ns/op
+
+WorkloadWarmup   1: 2048 op, 612847300.00 ns, 299.2418 us/op
+WorkloadWarmup   2: 2048 op, 611347500.00 ns, 298.5095 us/op
+WorkloadWarmup   3: 2048 op, 622356700.00 ns, 303.8851 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 2048 op, 615648800.00 ns, 300.6098 us/op
+WorkloadActual   2: 2048 op, 630402800.00 ns, 307.8139 us/op
+WorkloadActual   3: 2048 op, 629653800.00 ns, 307.4481 us/op
+WorkloadActual   4: 2048 op, 643250000.00 ns, 314.0869 us/op
+WorkloadActual   5: 2048 op, 641014400.00 ns, 312.9953 us/op
+WorkloadActual   6: 2048 op, 648730900.00 ns, 316.7631 us/op
+WorkloadActual   7: 2048 op, 633999400.00 ns, 309.5700 us/op
+WorkloadActual   8: 2048 op, 650203900.00 ns, 317.4824 us/op
+WorkloadActual   9: 2048 op, 623345700.00 ns, 304.3680 us/op
+WorkloadActual  10: 2048 op, 620215800.00 ns, 302.8397 us/op
+
+// AfterActualRun
+WorkloadResult   1: 2048 op, 615644700.00 ns, 300.6078 us/op
+WorkloadResult   2: 2048 op, 630398700.00 ns, 307.8119 us/op
+WorkloadResult   3: 2048 op, 629649700.00 ns, 307.4461 us/op
+WorkloadResult   4: 2048 op, 643245900.00 ns, 314.0849 us/op
+WorkloadResult   5: 2048 op, 641010300.00 ns, 312.9933 us/op
+WorkloadResult   6: 2048 op, 648726800.00 ns, 316.7611 us/op
+WorkloadResult   7: 2048 op, 633995300.00 ns, 309.5680 us/op
+WorkloadResult   8: 2048 op, 650199800.00 ns, 317.4804 us/op
+WorkloadResult   9: 2048 op, 623341600.00 ns, 304.3660 us/op
+WorkloadResult  10: 2048 op, 620211700.00 ns, 302.8377 us/op
+// GC:  183 1 0 1531904000 2048
+// Threading:  0 0 2048
+
+// AfterAll
+// Benchmark Process 69456 has exited with code 0.
+
+Mean = 309.396 us, StdErr = 1.845 us (0.60%), N = 10, StdDev = 5.835 us
+Min = 300.608 us, Q1 = 305.136 us, Median = 308.690 us, Q3 = 313.812 us, Max = 317.480 us
+IQR = 8.676 us, LowerFence = 292.122 us, UpperFence = 326.826 us
+ConfidenceInterval = [300.574 us; 318.217 us] (CI 99.9%), Margin = 8.822 us (2.85% of Mean)
+Skewness = -0.01, Kurtosis = 1.41, MValue = 2
+
+// ** Remained 7 (58,3 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 1m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Generic<float> - Conformal Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 1152 1736 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.ConformalGp_GenericFloat --job "IterationCount=10, WarmupCount=3" --benchmarkId 5 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 88900.00 ns, 88.9000 us/op
+WorkloadJitting  1: 1 op, 13773200.00 ns, 13.7732 ms/op
+
+OverheadJitting  2: 16 op, 142900.00 ns, 8.9313 us/op
+WorkloadJitting  2: 16 op, 32395900.00 ns, 2.0247 ms/op
+
+WorkloadPilot    1: 16 op, 29532400.00 ns, 1.8458 ms/op
+WorkloadPilot    2: 32 op, 55993800.00 ns, 1.7498 ms/op
+WorkloadPilot    3: 64 op, 107666700.00 ns, 1.6823 ms/op
+WorkloadPilot    4: 128 op, 165638900.00 ns, 1.2941 ms/op
+WorkloadPilot    5: 256 op, 76460300.00 ns, 298.6730 us/op
+WorkloadPilot    6: 512 op, 157846000.00 ns, 308.2930 us/op
+WorkloadPilot    7: 1024 op, 302160200.00 ns, 295.0783 us/op
+WorkloadPilot    8: 2048 op, 610370300.00 ns, 298.0324 us/op
+
+OverheadWarmup   1: 2048 op, 5100.00 ns, 2.4902 ns/op
+OverheadWarmup   2: 2048 op, 4100.00 ns, 2.0020 ns/op
+OverheadWarmup   3: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadWarmup   4: 2048 op, 3900.00 ns, 1.9043 ns/op
+OverheadWarmup   5: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadWarmup   6: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadWarmup   7: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadWarmup   8: 2048 op, 4000.00 ns, 1.9531 ns/op
+
+OverheadActual   1: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   2: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   3: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   4: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   5: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   6: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   7: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   8: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual   9: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  10: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  11: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  12: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  13: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  14: 2048 op, 4000.00 ns, 1.9531 ns/op
+OverheadActual  15: 2048 op, 4000.00 ns, 1.9531 ns/op
+
+WorkloadWarmup   1: 2048 op, 622023400.00 ns, 303.7224 us/op
+WorkloadWarmup   2: 2048 op, 617887400.00 ns, 301.7028 us/op
+WorkloadWarmup   3: 2048 op, 609585900.00 ns, 297.6494 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 2048 op, 616174600.00 ns, 300.8665 us/op
+WorkloadActual   2: 2048 op, 620691400.00 ns, 303.0720 us/op
+WorkloadActual   3: 2048 op, 631567700.00 ns, 308.3827 us/op
+WorkloadActual   4: 2048 op, 626200200.00 ns, 305.7618 us/op
+WorkloadActual   5: 2048 op, 620293200.00 ns, 302.8775 us/op
+WorkloadActual   6: 2048 op, 620654900.00 ns, 303.0542 us/op
+WorkloadActual   7: 2048 op, 624769700.00 ns, 305.0633 us/op
+WorkloadActual   8: 2048 op, 627181100.00 ns, 306.2408 us/op
+WorkloadActual   9: 2048 op, 623179100.00 ns, 304.2867 us/op
+WorkloadActual  10: 2048 op, 621728500.00 ns, 303.5784 us/op
+
+// AfterActualRun
+WorkloadResult   1: 2048 op, 616170600.00 ns, 300.8646 us/op
+WorkloadResult   2: 2048 op, 620687400.00 ns, 303.0700 us/op
+WorkloadResult   3: 2048 op, 631563700.00 ns, 308.3807 us/op
+WorkloadResult   4: 2048 op, 626196200.00 ns, 305.7599 us/op
+WorkloadResult   5: 2048 op, 620289200.00 ns, 302.8756 us/op
+WorkloadResult   6: 2048 op, 620650900.00 ns, 303.0522 us/op
+WorkloadResult   7: 2048 op, 624765700.00 ns, 305.0614 us/op
+WorkloadResult   8: 2048 op, 627177100.00 ns, 306.2388 us/op
+WorkloadResult   9: 2048 op, 623175100.00 ns, 304.2847 us/op
+WorkloadResult  10: 2048 op, 621724500.00 ns, 303.5764 us/op
+// GC:  183 1 0 1531904000 2048
+// Threading:  0 0 2048
+
+// AfterAll
+// Benchmark Process 48824 has exited with code 0.
+
+Mean = 304.316 us, StdErr = 0.671 us (0.22%), N = 10, StdDev = 2.122 us
+Min = 300.865 us, Q1 = 303.057 us, Median = 303.931 us, Q3 = 305.585 us, Max = 308.381 us
+IQR = 2.529 us, LowerFence = 299.264 us, UpperFence = 309.378 us
+ConfidenceInterval = [301.108 us; 307.525 us] (CI 99.9%), Margin = 3.209 us (1.05% of Mean)
+Skewness = 0.31, Kurtosis = 2.18, MValue = 2
+
+// ** Remained 6 (50,0 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 1m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Float64 - Euclidean Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 8492 1776 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.EuclideanSp_Float64 --job "IterationCount=10, WarmupCount=3" --benchmarkId 6 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 89700.00 ns, 89.7000 us/op
+WorkloadJitting  1: 1 op, 1767500.00 ns, 1.7675 ms/op
+
+OverheadJitting  2: 16 op, 162800.00 ns, 10.1750 us/op
+WorkloadJitting  2: 16 op, 1332500.00 ns, 83.2813 us/op
+
+WorkloadPilot    1: 16 op, 1225700.00 ns, 76.6063 us/op
+WorkloadPilot    2: 32 op, 2733000.00 ns, 85.4063 us/op
+WorkloadPilot    3: 64 op, 5150600.00 ns, 80.4781 us/op
+WorkloadPilot    4: 128 op, 9757000.00 ns, 76.2266 us/op
+WorkloadPilot    5: 256 op, 18892500.00 ns, 73.7988 us/op
+WorkloadPilot    6: 512 op, 37027000.00 ns, 72.3184 us/op
+WorkloadPilot    7: 1024 op, 71301500.00 ns, 69.6304 us/op
+WorkloadPilot    8: 2048 op, 34122900.00 ns, 16.6616 us/op
+WorkloadPilot    9: 4096 op, 35488700.00 ns, 8.6642 us/op
+WorkloadPilot   10: 8192 op, 72567300.00 ns, 8.8583 us/op
+WorkloadPilot   11: 16384 op, 145165500.00 ns, 8.8602 us/op
+WorkloadPilot   12: 32768 op, 285111700.00 ns, 8.7009 us/op
+WorkloadPilot   13: 65536 op, 570061400.00 ns, 8.6984 us/op
+
+OverheadWarmup   1: 65536 op, 122000.00 ns, 1.8616 ns/op
+OverheadWarmup   2: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadWarmup   3: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadWarmup   4: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadWarmup   5: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadWarmup   6: 65536 op, 121100.00 ns, 1.8478 ns/op
+OverheadWarmup   7: 65536 op, 121200.00 ns, 1.8494 ns/op
+
+OverheadActual   1: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   2: 65536 op, 121500.00 ns, 1.8539 ns/op
+OverheadActual   3: 65536 op, 121700.00 ns, 1.8570 ns/op
+OverheadActual   4: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   5: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   6: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   7: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   8: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual   9: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual  10: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual  11: 65536 op, 121100.00 ns, 1.8478 ns/op
+OverheadActual  12: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual  13: 65536 op, 121100.00 ns, 1.8478 ns/op
+OverheadActual  14: 65536 op, 121100.00 ns, 1.8478 ns/op
+OverheadActual  15: 65536 op, 121100.00 ns, 1.8478 ns/op
+
+WorkloadWarmup   1: 65536 op, 579827500.00 ns, 8.8475 us/op
+WorkloadWarmup   2: 65536 op, 565613500.00 ns, 8.6306 us/op
+WorkloadWarmup   3: 65536 op, 561508800.00 ns, 8.5679 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 65536 op, 563067100.00 ns, 8.5917 us/op
+WorkloadActual   2: 65536 op, 561328300.00 ns, 8.5652 us/op
+WorkloadActual   3: 65536 op, 563448300.00 ns, 8.5975 us/op
+WorkloadActual   4: 65536 op, 561224100.00 ns, 8.5636 us/op
+WorkloadActual   5: 65536 op, 565014600.00 ns, 8.6214 us/op
+WorkloadActual   6: 65536 op, 559207700.00 ns, 8.5328 us/op
+WorkloadActual   7: 65536 op, 564789000.00 ns, 8.6180 us/op
+WorkloadActual   8: 65536 op, 566680800.00 ns, 8.6469 us/op
+WorkloadActual   9: 65536 op, 568850500.00 ns, 8.6800 us/op
+WorkloadActual  10: 65536 op, 562805800.00 ns, 8.5877 us/op
+
+// AfterActualRun
+WorkloadResult   1: 65536 op, 562945900.00 ns, 8.5899 us/op
+WorkloadResult   2: 65536 op, 561207100.00 ns, 8.5633 us/op
+WorkloadResult   3: 65536 op, 563327100.00 ns, 8.5957 us/op
+WorkloadResult   4: 65536 op, 561102900.00 ns, 8.5618 us/op
+WorkloadResult   5: 65536 op, 564893400.00 ns, 8.6196 us/op
+WorkloadResult   6: 65536 op, 559086500.00 ns, 8.5310 us/op
+WorkloadResult   7: 65536 op, 564667800.00 ns, 8.6161 us/op
+WorkloadResult   8: 65536 op, 566559600.00 ns, 8.6450 us/op
+WorkloadResult   9: 65536 op, 568729300.00 ns, 8.6781 us/op
+WorkloadResult  10: 65536 op, 562684600.00 ns, 8.5859 us/op
+// GC:  106 0 0 891289600 65536
+// Threading:  0 0 65536
+
+// AfterAll
+// Benchmark Process 69848 has exited with code 0.
+
+Mean = 8.599 us, StdErr = 0.014 us (0.16%), N = 10, StdDev = 0.043 us
+Min = 8.531 us, Q1 = 8.569 us, Median = 8.593 us, Q3 = 8.619 us, Max = 8.678 us
+IQR = 0.050 us, LowerFence = 8.494 us, UpperFence = 8.693 us
+ConfidenceInterval = [8.534 us; 8.664 us] (CI 99.9%), Margin = 0.065 us (0.76% of Mean)
+Skewness = 0.26, Kurtosis = 2.02, MValue = 2
+
+// ** Remained 5 (41,7 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 0m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Generic<double> - Euclidean Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 4960 7044 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.EuclideanSp_GenericDouble --job "IterationCount=10, WarmupCount=3" --benchmarkId 7 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 95700.00 ns, 95.7000 us/op
+WorkloadJitting  1: 1 op, 4892900.00 ns, 4.8929 ms/op
+
+OverheadJitting  2: 16 op, 155800.00 ns, 9.7375 us/op
+WorkloadJitting  2: 16 op, 1672600.00 ns, 104.5375 us/op
+
+WorkloadPilot    1: 16 op, 1608000.00 ns, 100.5000 us/op
+WorkloadPilot    2: 32 op, 3471400.00 ns, 108.4813 us/op
+WorkloadPilot    3: 64 op, 6666900.00 ns, 104.1703 us/op
+WorkloadPilot    4: 128 op, 13347500.00 ns, 104.2773 us/op
+WorkloadPilot    5: 256 op, 24948600.00 ns, 97.4555 us/op
+WorkloadPilot    6: 512 op, 49219700.00 ns, 96.1322 us/op
+WorkloadPilot    7: 1024 op, 68524400.00 ns, 66.9184 us/op
+WorkloadPilot    8: 2048 op, 22694600.00 ns, 11.0813 us/op
+WorkloadPilot    9: 4096 op, 45405900.00 ns, 11.0854 us/op
+WorkloadPilot   10: 8192 op, 91542000.00 ns, 11.1746 us/op
+WorkloadPilot   11: 16384 op, 181620200.00 ns, 11.0852 us/op
+WorkloadPilot   12: 32768 op, 362300700.00 ns, 11.0565 us/op
+WorkloadPilot   13: 65536 op, 728643900.00 ns, 11.1182 us/op
+
+OverheadWarmup   1: 65536 op, 122000.00 ns, 1.8616 ns/op
+OverheadWarmup   2: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadWarmup   3: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadWarmup   4: 65536 op, 121100.00 ns, 1.8478 ns/op
+OverheadWarmup   5: 65536 op, 121100.00 ns, 1.8478 ns/op
+OverheadWarmup   6: 65536 op, 121100.00 ns, 1.8478 ns/op
+
+OverheadActual   1: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   2: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   3: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   4: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   5: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   6: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   7: 65536 op, 121100.00 ns, 1.8478 ns/op
+OverheadActual   8: 65536 op, 121400.00 ns, 1.8524 ns/op
+OverheadActual   9: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual  10: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual  11: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual  12: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual  13: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual  14: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual  15: 65536 op, 121300.00 ns, 1.8509 ns/op
+
+WorkloadWarmup   1: 65536 op, 736623000.00 ns, 11.2400 us/op
+WorkloadWarmup   2: 65536 op, 727028400.00 ns, 11.0936 us/op
+WorkloadWarmup   3: 65536 op, 730250600.00 ns, 11.1427 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 65536 op, 727091000.00 ns, 11.0945 us/op
+WorkloadActual   2: 65536 op, 729087400.00 ns, 11.1250 us/op
+WorkloadActual   3: 65536 op, 728535700.00 ns, 11.1166 us/op
+WorkloadActual   4: 65536 op, 733461400.00 ns, 11.1917 us/op
+WorkloadActual   5: 65536 op, 727291300.00 ns, 11.0976 us/op
+WorkloadActual   6: 65536 op, 755068800.00 ns, 11.5214 us/op
+WorkloadActual   7: 65536 op, 729218700.00 ns, 11.1270 us/op
+WorkloadActual   8: 65536 op, 728908600.00 ns, 11.1223 us/op
+WorkloadActual   9: 65536 op, 725596100.00 ns, 11.0717 us/op
+WorkloadActual  10: 65536 op, 731621800.00 ns, 11.1637 us/op
+
+// AfterActualRun
+WorkloadResult   1: 65536 op, 726969700.00 ns, 11.0927 us/op
+WorkloadResult   2: 65536 op, 728966100.00 ns, 11.1231 us/op
+WorkloadResult   3: 65536 op, 728414400.00 ns, 11.1147 us/op
+WorkloadResult   4: 65536 op, 733340100.00 ns, 11.1899 us/op
+WorkloadResult   5: 65536 op, 727170000.00 ns, 11.0957 us/op
+WorkloadResult   6: 65536 op, 729097400.00 ns, 11.1251 us/op
+WorkloadResult   7: 65536 op, 728787300.00 ns, 11.1204 us/op
+WorkloadResult   8: 65536 op, 725474800.00 ns, 11.0699 us/op
+WorkloadResult   9: 65536 op, 731500500.00 ns, 11.1618 us/op
+// GC:  119 0 0 996147200 65536
+// Threading:  0 0 65536
+
+// AfterAll
+// Benchmark Process 74992 has exited with code 0.
+
+Mean = 11.121 us, StdErr = 0.012 us (0.11%), N = 9, StdDev = 0.036 us
+Min = 11.070 us, Q1 = 11.096 us, Median = 11.120 us, Q3 = 11.125 us, Max = 11.190 us
+IQR = 0.029 us, LowerFence = 11.052 us, UpperFence = 11.169 us
+ConfidenceInterval = [11.061 us; 11.182 us] (CI 99.9%), Margin = 0.061 us (0.55% of Mean)
+Skewness = 0.48, Kurtosis = 2.1, MValue = 2
+
+// ** Remained 4 (33,3 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 0m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Generic<float> - Euclidean Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 8548 8552 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.EuclideanSp_GenericFloat --job "IterationCount=10, WarmupCount=3" --benchmarkId 8 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 94500.00 ns, 94.5000 us/op
+WorkloadJitting  1: 1 op, 4961100.00 ns, 4.9611 ms/op
+
+OverheadJitting  2: 16 op, 157300.00 ns, 9.8313 us/op
+WorkloadJitting  2: 16 op, 1768600.00 ns, 110.5375 us/op
+
+WorkloadPilot    1: 16 op, 1675700.00 ns, 104.7313 us/op
+WorkloadPilot    2: 32 op, 3587400.00 ns, 112.1063 us/op
+WorkloadPilot    3: 64 op, 6806700.00 ns, 106.3547 us/op
+WorkloadPilot    4: 128 op, 13320000.00 ns, 104.0625 us/op
+WorkloadPilot    5: 256 op, 25213200.00 ns, 98.4891 us/op
+WorkloadPilot    6: 512 op, 50474300.00 ns, 98.5826 us/op
+WorkloadPilot    7: 1024 op, 70051300.00 ns, 68.4095 us/op
+WorkloadPilot    8: 2048 op, 23816300.00 ns, 11.6291 us/op
+WorkloadPilot    9: 4096 op, 49253400.00 ns, 12.0248 us/op
+WorkloadPilot   10: 8192 op, 93425500.00 ns, 11.4045 us/op
+WorkloadPilot   11: 16384 op, 186798000.00 ns, 11.4012 us/op
+WorkloadPilot   12: 32768 op, 371545800.00 ns, 11.3387 us/op
+WorkloadPilot   13: 65536 op, 744924000.00 ns, 11.3666 us/op
+
+OverheadWarmup   1: 65536 op, 121900.00 ns, 1.8600 ns/op
+OverheadWarmup   2: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadWarmup   3: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadWarmup   4: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadWarmup   5: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadWarmup   6: 65536 op, 121300.00 ns, 1.8509 ns/op
+
+OverheadActual   1: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual   2: 65536 op, 121700.00 ns, 1.8570 ns/op
+OverheadActual   3: 65536 op, 121600.00 ns, 1.8555 ns/op
+OverheadActual   4: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   5: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual   6: 65536 op, 121100.00 ns, 1.8478 ns/op
+OverheadActual   7: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual   8: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual   9: 65536 op, 121400.00 ns, 1.8524 ns/op
+OverheadActual  10: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual  11: 65536 op, 121300.00 ns, 1.8509 ns/op
+OverheadActual  12: 65536 op, 124200.00 ns, 1.8951 ns/op
+OverheadActual  13: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual  14: 65536 op, 121200.00 ns, 1.8494 ns/op
+OverheadActual  15: 65536 op, 121300.00 ns, 1.8509 ns/op
+
+WorkloadWarmup   1: 65536 op, 750874900.00 ns, 11.4574 us/op
+WorkloadWarmup   2: 65536 op, 750393000.00 ns, 11.4501 us/op
+WorkloadWarmup   3: 65536 op, 750382300.00 ns, 11.4499 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 65536 op, 750741900.00 ns, 11.4554 us/op
+WorkloadActual   2: 65536 op, 743963700.00 ns, 11.3520 us/op
+WorkloadActual   3: 65536 op, 756674400.00 ns, 11.5459 us/op
+WorkloadActual   4: 65536 op, 753731000.00 ns, 11.5010 us/op
+WorkloadActual   5: 65536 op, 749278500.00 ns, 11.4331 us/op
+WorkloadActual   6: 65536 op, 749073200.00 ns, 11.4299 us/op
+WorkloadActual   7: 65536 op, 748648500.00 ns, 11.4235 us/op
+WorkloadActual   8: 65536 op, 749740200.00 ns, 11.4401 us/op
+WorkloadActual   9: 65536 op, 746319900.00 ns, 11.3879 us/op
+WorkloadActual  10: 65536 op, 751602500.00 ns, 11.4685 us/op
+
+// AfterActualRun
+WorkloadResult   1: 65536 op, 750620600.00 ns, 11.4536 us/op
+WorkloadResult   2: 65536 op, 743842400.00 ns, 11.3501 us/op
+WorkloadResult   3: 65536 op, 753609700.00 ns, 11.4992 us/op
+WorkloadResult   4: 65536 op, 749157200.00 ns, 11.4312 us/op
+WorkloadResult   5: 65536 op, 748951900.00 ns, 11.4281 us/op
+WorkloadResult   6: 65536 op, 748527200.00 ns, 11.4216 us/op
+WorkloadResult   7: 65536 op, 749618900.00 ns, 11.4383 us/op
+WorkloadResult   8: 65536 op, 746198600.00 ns, 11.3861 us/op
+WorkloadResult   9: 65536 op, 751481200.00 ns, 11.4667 us/op
+// GC:  119 0 0 996147200 65536
+// Threading:  0 0 65536
+
+// AfterAll
+// Benchmark Process 72328 has exited with code 0.
+
+Mean = 11.431 us, StdErr = 0.014 us (0.13%), N = 9, StdDev = 0.043 us
+Min = 11.350 us, Q1 = 11.422 us, Median = 11.431 us, Q3 = 11.454 us, Max = 11.499 us
+IQR = 0.032 us, LowerFence = 11.374 us, UpperFence = 11.501 us
+ConfidenceInterval = [11.357 us; 11.504 us] (CI 99.9%), Margin = 0.073 us (0.64% of Mean)
+Skewness = -0.3, Kurtosis = 2.17, MValue = 2
+
+// ** Remained 3 (25,0 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 0m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Float64 - Conformal Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 1688 8508 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.ConformalSp_Float64 --job "IterationCount=10, WarmupCount=3" --benchmarkId 9 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 92200.00 ns, 92.2000 us/op
+WorkloadJitting  1: 1 op, 2168000.00 ns, 2.1680 ms/op
+
+OverheadJitting  2: 16 op, 141200.00 ns, 8.8250 us/op
+WorkloadJitting  2: 16 op, 2808600.00 ns, 175.5375 us/op
+
+WorkloadPilot    1: 16 op, 3140400.00 ns, 196.2750 us/op
+WorkloadPilot    2: 32 op, 5504900.00 ns, 172.0281 us/op
+WorkloadPilot    3: 64 op, 10504500.00 ns, 164.1328 us/op
+WorkloadPilot    4: 128 op, 19951800.00 ns, 155.8734 us/op
+WorkloadPilot    5: 256 op, 39057600.00 ns, 152.5688 us/op
+WorkloadPilot    6: 512 op, 76372100.00 ns, 149.1643 us/op
+WorkloadPilot    7: 1024 op, 32098900.00 ns, 31.3466 us/op
+WorkloadPilot    8: 2048 op, 36217900.00 ns, 17.6845 us/op
+WorkloadPilot    9: 4096 op, 73059800.00 ns, 17.8369 us/op
+WorkloadPilot   10: 8192 op, 144124300.00 ns, 17.5933 us/op
+WorkloadPilot   11: 16384 op, 290277300.00 ns, 17.7171 us/op
+WorkloadPilot   12: 32768 op, 579386800.00 ns, 17.6815 us/op
+
+OverheadWarmup   1: 32768 op, 61300.00 ns, 1.8707 ns/op
+OverheadWarmup   2: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadWarmup   3: 32768 op, 60900.00 ns, 1.8585 ns/op
+OverheadWarmup   4: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadWarmup   5: 32768 op, 61000.00 ns, 1.8616 ns/op
+OverheadWarmup   6: 32768 op, 60600.00 ns, 1.8494 ns/op
+
+OverheadActual   1: 32768 op, 60900.00 ns, 1.8585 ns/op
+OverheadActual   2: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadActual   3: 32768 op, 61300.00 ns, 1.8707 ns/op
+OverheadActual   4: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadActual   5: 32768 op, 60900.00 ns, 1.8585 ns/op
+OverheadActual   6: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadActual   7: 32768 op, 62800.00 ns, 1.9165 ns/op
+OverheadActual   8: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadActual   9: 32768 op, 60900.00 ns, 1.8585 ns/op
+OverheadActual  10: 32768 op, 60500.00 ns, 1.8463 ns/op
+OverheadActual  11: 32768 op, 60900.00 ns, 1.8585 ns/op
+OverheadActual  12: 32768 op, 60500.00 ns, 1.8463 ns/op
+OverheadActual  13: 32768 op, 61000.00 ns, 1.8616 ns/op
+OverheadActual  14: 32768 op, 60500.00 ns, 1.8463 ns/op
+OverheadActual  15: 32768 op, 61300.00 ns, 1.8707 ns/op
+
+WorkloadWarmup   1: 32768 op, 576757700.00 ns, 17.6012 us/op
+WorkloadWarmup   2: 32768 op, 592531100.00 ns, 18.0826 us/op
+WorkloadWarmup   3: 32768 op, 571859100.00 ns, 17.4518 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 32768 op, 594463800.00 ns, 18.1416 us/op
+WorkloadActual   2: 32768 op, 581101300.00 ns, 17.7338 us/op
+WorkloadActual   3: 32768 op, 590471300.00 ns, 18.0198 us/op
+WorkloadActual   4: 32768 op, 580430100.00 ns, 17.7133 us/op
+WorkloadActual   5: 32768 op, 584018900.00 ns, 17.8228 us/op
+WorkloadActual   6: 32768 op, 583598000.00 ns, 17.8100 us/op
+WorkloadActual   7: 32768 op, 582155100.00 ns, 17.7660 us/op
+WorkloadActual   8: 32768 op, 587461400.00 ns, 17.9279 us/op
+WorkloadActual   9: 32768 op, 580139400.00 ns, 17.7044 us/op
+WorkloadActual  10: 32768 op, 591463700.00 ns, 18.0500 us/op
+
+// AfterActualRun
+WorkloadResult   1: 32768 op, 594402900.00 ns, 18.1397 us/op
+WorkloadResult   2: 32768 op, 581040400.00 ns, 17.7319 us/op
+WorkloadResult   3: 32768 op, 590410400.00 ns, 18.0179 us/op
+WorkloadResult   4: 32768 op, 580369200.00 ns, 17.7115 us/op
+WorkloadResult   5: 32768 op, 583958000.00 ns, 17.8210 us/op
+WorkloadResult   6: 32768 op, 583537100.00 ns, 17.8081 us/op
+WorkloadResult   7: 32768 op, 582094200.00 ns, 17.7641 us/op
+WorkloadResult   8: 32768 op, 587400500.00 ns, 17.9260 us/op
+WorkloadResult   9: 32768 op, 580078500.00 ns, 17.7026 us/op
+WorkloadResult  10: 32768 op, 591402800.00 ns, 18.0482 us/op
+// GC:  147 0 0 1232076800 32768
+// Threading:  0 0 32768
+
+// AfterAll
+// Benchmark Process 74988 has exited with code 0.
+
+Mean = 17.867 us, StdErr = 0.049 us (0.28%), N = 10, StdDev = 0.156 us
+Min = 17.703 us, Q1 = 17.740 us, Median = 17.815 us, Q3 = 17.995 us, Max = 18.140 us
+IQR = 0.255 us, LowerFence = 17.358 us, UpperFence = 18.377 us
+ConfidenceInterval = [17.631 us; 18.103 us] (CI 99.9%), Margin = 0.236 us (1.32% of Mean)
+Skewness = 0.47, Kurtosis = 1.5, MValue = 2
+
+// ** Remained 2 (16,7 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 0m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Generic<double> - Conformal Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 1660 6964 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.ConformalSp_GenericDouble --job "IterationCount=10, WarmupCount=3" --benchmarkId 10 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 91500.00 ns, 91.5000 us/op
+WorkloadJitting  1: 1 op, 5389200.00 ns, 5.3892 ms/op
+
+OverheadJitting  2: 16 op, 139700.00 ns, 8.7313 us/op
+WorkloadJitting  2: 16 op, 3161900.00 ns, 197.6188 us/op
+
+WorkloadPilot    1: 16 op, 3580400.00 ns, 223.7750 us/op
+WorkloadPilot    2: 32 op, 6500600.00 ns, 203.1438 us/op
+WorkloadPilot    3: 64 op, 12554200.00 ns, 196.1594 us/op
+WorkloadPilot    4: 128 op, 24309500.00 ns, 189.9180 us/op
+WorkloadPilot    5: 256 op, 47519100.00 ns, 185.6215 us/op
+WorkloadPilot    6: 512 op, 74107500.00 ns, 144.7412 us/op
+WorkloadPilot    7: 1024 op, 21087200.00 ns, 20.5930 us/op
+WorkloadPilot    8: 2048 op, 42186500.00 ns, 20.5989 us/op
+WorkloadPilot    9: 4096 op, 90118000.00 ns, 22.0015 us/op
+WorkloadPilot   10: 8192 op, 170790800.00 ns, 20.8485 us/op
+WorkloadPilot   11: 16384 op, 349725900.00 ns, 21.3456 us/op
+WorkloadPilot   12: 32768 op, 686936400.00 ns, 20.9636 us/op
+
+OverheadWarmup   1: 32768 op, 61400.00 ns, 1.8738 ns/op
+OverheadWarmup   2: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadWarmup   3: 32768 op, 61100.00 ns, 1.8646 ns/op
+OverheadWarmup   4: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadWarmup   5: 32768 op, 61000.00 ns, 1.8616 ns/op
+OverheadWarmup   6: 32768 op, 60600.00 ns, 1.8494 ns/op
+
+OverheadActual   1: 32768 op, 60900.00 ns, 1.8585 ns/op
+OverheadActual   2: 32768 op, 60700.00 ns, 1.8524 ns/op
+OverheadActual   3: 32768 op, 61500.00 ns, 1.8768 ns/op
+OverheadActual   4: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadActual   5: 32768 op, 60900.00 ns, 1.8585 ns/op
+OverheadActual   6: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadActual   7: 32768 op, 61000.00 ns, 1.8616 ns/op
+OverheadActual   8: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadActual   9: 32768 op, 61000.00 ns, 1.8616 ns/op
+OverheadActual  10: 32768 op, 60600.00 ns, 1.8494 ns/op
+OverheadActual  11: 32768 op, 60900.00 ns, 1.8585 ns/op
+OverheadActual  12: 32768 op, 60500.00 ns, 1.8463 ns/op
+OverheadActual  13: 32768 op, 61000.00 ns, 1.8616 ns/op
+OverheadActual  14: 32768 op, 60500.00 ns, 1.8463 ns/op
+OverheadActual  15: 32768 op, 60900.00 ns, 1.8585 ns/op
+
+WorkloadWarmup   1: 32768 op, 689168900.00 ns, 21.0318 us/op
+WorkloadWarmup   2: 32768 op, 679671400.00 ns, 20.7419 us/op
+WorkloadWarmup   3: 32768 op, 680478300.00 ns, 20.7665 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 32768 op, 693810600.00 ns, 21.1734 us/op
+WorkloadActual   2: 32768 op, 683736500.00 ns, 20.8660 us/op
+WorkloadActual   3: 32768 op, 682139100.00 ns, 20.8172 us/op
+WorkloadActual   4: 32768 op, 702722400.00 ns, 21.4454 us/op
+WorkloadActual   5: 32768 op, 704418700.00 ns, 21.4972 us/op
+WorkloadActual   6: 32768 op, 682744100.00 ns, 20.8357 us/op
+WorkloadActual   7: 32768 op, 689644200.00 ns, 21.0463 us/op
+WorkloadActual   8: 32768 op, 689849300.00 ns, 21.0525 us/op
+WorkloadActual   9: 32768 op, 688055000.00 ns, 20.9978 us/op
+WorkloadActual  10: 32768 op, 683860600.00 ns, 20.8698 us/op
+
+// AfterActualRun
+WorkloadResult   1: 32768 op, 693749700.00 ns, 21.1716 us/op
+WorkloadResult   2: 32768 op, 683675600.00 ns, 20.8641 us/op
+WorkloadResult   3: 32768 op, 682078200.00 ns, 20.8154 us/op
+WorkloadResult   4: 32768 op, 702661500.00 ns, 21.4435 us/op
+WorkloadResult   5: 32768 op, 704357800.00 ns, 21.4953 us/op
+WorkloadResult   6: 32768 op, 682683200.00 ns, 20.8338 us/op
+WorkloadResult   7: 32768 op, 689583300.00 ns, 21.0444 us/op
+WorkloadResult   8: 32768 op, 689788400.00 ns, 21.0507 us/op
+WorkloadResult   9: 32768 op, 687994100.00 ns, 20.9959 us/op
+WorkloadResult  10: 32768 op, 683799700.00 ns, 20.8679 us/op
+// GC:  153 0 0 1284505600 32768
+// Threading:  0 0 32768
+
+// AfterAll
+// Benchmark Process 75772 has exited with code 0.
+
+Mean = 21.058 us, StdErr = 0.077 us (0.37%), N = 10, StdDev = 0.245 us
+Min = 20.815 us, Q1 = 20.865 us, Median = 21.020 us, Q3 = 21.141 us, Max = 21.495 us
+IQR = 0.276 us, LowerFence = 20.451 us, UpperFence = 21.556 us
+ConfidenceInterval = [20.688 us; 21.428 us] (CI 99.9%), Margin = 0.370 us (1.76% of Mean)
+Skewness = 0.69, Kurtosis = 1.88, MValue = 2
+
+// ** Remained 1 (8,3 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 0m from now) **
+Setup power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// **************************
+// Benchmark: XGaMetricOperationsComparisonBenchmark.'Generic<float> - Conformal Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+// *** Execute ***
+// Launch: 1 / 1
+// Execute: dotnet Job-YFEFPZ-1.dll --anonymousPipes 1776 8480 --benchmarkName GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark.ConformalSp_GenericFloat --job "IterationCount=10, WarmupCount=3" --benchmarkId 11 in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Benchmarks\bin\Release\net8.0\Job-YFEFPZ-1\bin\Release\net8.0
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// BenchmarkDotNet v0.15.2
+// Runtime=.NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+// GC=Concurrent Workstation
+// HardwareIntrinsics=AVX2,AES,BMI1,BMI2,FMA,LZCNT,PCLMUL,POPCNT VectorSize=256
+// Job: Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+
+OverheadJitting  1: 1 op, 91700.00 ns, 91.7000 us/op
+WorkloadJitting  1: 1 op, 5744900.00 ns, 5.7449 ms/op
+
+OverheadJitting  2: 16 op, 168000.00 ns, 10.5000 us/op
+WorkloadJitting  2: 16 op, 3289000.00 ns, 205.5625 us/op
+
+WorkloadPilot    1: 16 op, 3669800.00 ns, 229.3625 us/op
+WorkloadPilot    2: 32 op, 6783200.00 ns, 211.9750 us/op
+WorkloadPilot    3: 64 op, 13570700.00 ns, 212.0422 us/op
+WorkloadPilot    4: 128 op, 24786300.00 ns, 193.6430 us/op
+WorkloadPilot    5: 256 op, 48116500.00 ns, 187.9551 us/op
+WorkloadPilot    6: 512 op, 72287100.00 ns, 141.1857 us/op
+WorkloadPilot    7: 1024 op, 21213700.00 ns, 20.7165 us/op
+WorkloadPilot    8: 2048 op, 42812700.00 ns, 20.9046 us/op
+WorkloadPilot    9: 4096 op, 85258700.00 ns, 20.8151 us/op
+WorkloadPilot   10: 8192 op, 173734200.00 ns, 21.2078 us/op
+WorkloadPilot   11: 16384 op, 344921300.00 ns, 21.0523 us/op
+WorkloadPilot   12: 32768 op, 686368900.00 ns, 20.9463 us/op
+
+OverheadWarmup   1: 32768 op, 60000.00 ns, 1.8311 ns/op
+OverheadWarmup   2: 32768 op, 59200.00 ns, 1.8066 ns/op
+OverheadWarmup   3: 32768 op, 59600.00 ns, 1.8188 ns/op
+OverheadWarmup   4: 32768 op, 59300.00 ns, 1.8097 ns/op
+OverheadWarmup   5: 32768 op, 59700.00 ns, 1.8219 ns/op
+OverheadWarmup   6: 32768 op, 59300.00 ns, 1.8097 ns/op
+
+OverheadActual   1: 32768 op, 60000.00 ns, 1.8311 ns/op
+OverheadActual   2: 32768 op, 59300.00 ns, 1.8097 ns/op
+OverheadActual   3: 32768 op, 60000.00 ns, 1.8311 ns/op
+OverheadActual   4: 32768 op, 59200.00 ns, 1.8066 ns/op
+OverheadActual   5: 32768 op, 59600.00 ns, 1.8188 ns/op
+OverheadActual   6: 32768 op, 59300.00 ns, 1.8097 ns/op
+OverheadActual   7: 32768 op, 59600.00 ns, 1.8188 ns/op
+OverheadActual   8: 32768 op, 68900.00 ns, 2.1027 ns/op
+OverheadActual   9: 32768 op, 59600.00 ns, 1.8188 ns/op
+OverheadActual  10: 32768 op, 59200.00 ns, 1.8066 ns/op
+OverheadActual  11: 32768 op, 59500.00 ns, 1.8158 ns/op
+OverheadActual  12: 32768 op, 59300.00 ns, 1.8097 ns/op
+OverheadActual  13: 32768 op, 59600.00 ns, 1.8188 ns/op
+OverheadActual  14: 32768 op, 59300.00 ns, 1.8097 ns/op
+OverheadActual  15: 32768 op, 59600.00 ns, 1.8188 ns/op
+
+WorkloadWarmup   1: 32768 op, 695205500.00 ns, 21.2160 us/op
+WorkloadWarmup   2: 32768 op, 694348000.00 ns, 21.1898 us/op
+WorkloadWarmup   3: 32768 op, 690551900.00 ns, 21.0740 us/op
+
+// BeforeActualRun
+WorkloadActual   1: 32768 op, 686285000.00 ns, 20.9438 us/op
+WorkloadActual   2: 32768 op, 691567300.00 ns, 21.1050 us/op
+WorkloadActual   3: 32768 op, 691632600.00 ns, 21.1070 us/op
+WorkloadActual   4: 32768 op, 694618900.00 ns, 21.1981 us/op
+WorkloadActual   5: 32768 op, 695474900.00 ns, 21.2242 us/op
+WorkloadActual   6: 32768 op, 688999800.00 ns, 21.0266 us/op
+WorkloadActual   7: 32768 op, 692962900.00 ns, 21.1475 us/op
+WorkloadActual   8: 32768 op, 695010800.00 ns, 21.2100 us/op
+WorkloadActual   9: 32768 op, 691935800.00 ns, 21.1162 us/op
+WorkloadActual  10: 32768 op, 692760100.00 ns, 21.1414 us/op
+
+// AfterActualRun
+WorkloadResult   1: 32768 op, 686225400.00 ns, 20.9419 us/op
+WorkloadResult   2: 32768 op, 691507700.00 ns, 21.1031 us/op
+WorkloadResult   3: 32768 op, 691573000.00 ns, 21.1051 us/op
+WorkloadResult   4: 32768 op, 694559300.00 ns, 21.1963 us/op
+WorkloadResult   5: 32768 op, 695415300.00 ns, 21.2224 us/op
+WorkloadResult   6: 32768 op, 688940200.00 ns, 21.0248 us/op
+WorkloadResult   7: 32768 op, 692903300.00 ns, 21.1457 us/op
+WorkloadResult   8: 32768 op, 694951200.00 ns, 21.2082 us/op
+WorkloadResult   9: 32768 op, 691876200.00 ns, 21.1144 us/op
+WorkloadResult  10: 32768 op, 692700500.00 ns, 21.1395 us/op
+// GC:  153 0 0 1284505600 32768
+// Threading:  0 0 32768
+
+// AfterAll
+// Benchmark Process 48480 has exited with code 0.
+
+Mean = 21.120 us, StdErr = 0.027 us (0.13%), N = 10, StdDev = 0.086 us
+Min = 20.942 us, Q1 = 21.104 us, Median = 21.127 us, Q3 = 21.184 us, Max = 21.222 us
+IQR = 0.080 us, LowerFence = 20.984 us, UpperFence = 21.304 us
+ConfidenceInterval = [20.990 us; 21.250 us] (CI 99.9%), Margin = 0.130 us (0.62% of Mean)
+Skewness = -0.68, Kurtosis = 2.38, MValue = 2
+
+// ** Remained 0 (0,0 %) benchmark(s) to run. Estimated finish 2025-10-27 20:18 (0h 0m from now) **
+Successfully reverted power plan (GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c FriendlyName: Höchstleistung)
+// ***** BenchmarkRunner: Finish  *****
+
+// * Export *
+  BenchmarkDotNet.Artifacts\results\GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark-report.csv
+  BenchmarkDotNet.Artifacts\results\GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark-report-github.md
+  BenchmarkDotNet.Artifacts\results\GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra.XGaMetricOperationsComparisonBenchmark-report.html
+
+// * Detailed results *
+XGaMetricOperationsComparisonBenchmark.'Float64 - Euclidean Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 92.977 us, StdErr = 0.253 us (0.27%), N = 10, StdDev = 0.800 us
+Min = 91.032 us, Q1 = 92.805 us, Median = 93.188 us, Q3 = 93.323 us, Max = 93.810 us
+IQR = 0.519 us, LowerFence = 92.026 us, UpperFence = 94.101 us
+ConfidenceInterval = [91.768 us; 94.186 us] (CI 99.9%), Margin = 1.209 us (1.30% of Mean)
+Skewness = -1.25, Kurtosis = 3.73, MValue = 2
+-------------------- Histogram --------------------
+[90.545 us ; 94.297 us) | @@@@@@@@@@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Generic<double> - Euclidean Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 96.330 us, StdErr = 0.274 us (0.28%), N = 9, StdDev = 0.823 us
+Min = 95.323 us, Q1 = 95.618 us, Median = 96.365 us, Q3 = 96.739 us, Max = 97.842 us
+IQR = 1.121 us, LowerFence = 93.936 us, UpperFence = 98.420 us
+ConfidenceInterval = [94.946 us; 97.713 us] (CI 99.9%), Margin = 1.383 us (1.44% of Mean)
+Skewness = 0.28, Kurtosis = 1.86, MValue = 2
+-------------------- Histogram --------------------
+[94.804 us ; 98.362 us) | @@@@@@@@@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Generic<float> - Euclidean Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 97.733 us, StdErr = 0.134 us (0.14%), N = 10, StdDev = 0.422 us
+Min = 97.094 us, Q1 = 97.518 us, Median = 97.686 us, Q3 = 97.906 us, Max = 98.407 us
+IQR = 0.388 us, LowerFence = 96.935 us, UpperFence = 98.489 us
+ConfidenceInterval = [97.095 us; 98.372 us] (CI 99.9%), Margin = 0.639 us (0.65% of Mean)
+Skewness = 0.16, Kurtosis = 1.78, MValue = 2
+-------------------- Histogram --------------------
+[96.837 us ; 98.664 us) | @@@@@@@@@@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Float64 - Conformal Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 284.236 us, StdErr = 1.184 us (0.42%), N = 10, StdDev = 3.743 us
+Min = 278.829 us, Q1 = 282.478 us, Median = 283.620 us, Q3 = 285.778 us, Max = 290.198 us
+IQR = 3.300 us, LowerFence = 277.527 us, UpperFence = 290.729 us
+ConfidenceInterval = [278.578 us; 289.894 us] (CI 99.9%), Margin = 5.658 us (1.99% of Mean)
+Skewness = 0.29, Kurtosis = 1.82, MValue = 2
+-------------------- Histogram --------------------
+[276.549 us ; 292.478 us) | @@@@@@@@@@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Generic<double> - Conformal Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 309.396 us, StdErr = 1.845 us (0.60%), N = 10, StdDev = 5.835 us
+Min = 300.608 us, Q1 = 305.136 us, Median = 308.690 us, Q3 = 313.812 us, Max = 317.480 us
+IQR = 8.676 us, LowerFence = 292.122 us, UpperFence = 326.826 us
+ConfidenceInterval = [300.574 us; 318.217 us] (CI 99.9%), Margin = 8.822 us (2.85% of Mean)
+Skewness = -0.01, Kurtosis = 1.41, MValue = 2
+-------------------- Histogram --------------------
+[298.932 us ; 307.211 us) | @@@
+[307.211 us ; 314.320 us) | @@@@@
+[314.320 us ; 321.035 us) | @@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Generic<float> - Conformal Gp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 304.316 us, StdErr = 0.671 us (0.22%), N = 10, StdDev = 2.122 us
+Min = 300.865 us, Q1 = 303.057 us, Median = 303.931 us, Q3 = 305.585 us, Max = 308.381 us
+IQR = 2.529 us, LowerFence = 299.264 us, UpperFence = 309.378 us
+ConfidenceInterval = [301.108 us; 307.525 us] (CI 99.9%), Margin = 3.209 us (1.05% of Mean)
+Skewness = 0.31, Kurtosis = 2.18, MValue = 2
+-------------------- Histogram --------------------
+[299.572 us ; 309.674 us) | @@@@@@@@@@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Float64 - Euclidean Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 8.599 us, StdErr = 0.014 us (0.16%), N = 10, StdDev = 0.043 us
+Min = 8.531 us, Q1 = 8.569 us, Median = 8.593 us, Q3 = 8.619 us, Max = 8.678 us
+IQR = 0.050 us, LowerFence = 8.494 us, UpperFence = 8.693 us
+ConfidenceInterval = [8.534 us; 8.664 us] (CI 99.9%), Margin = 0.065 us (0.76% of Mean)
+Skewness = 0.26, Kurtosis = 2.02, MValue = 2
+-------------------- Histogram --------------------
+[8.517 us ; 8.689 us) | @@@@@@@@@@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Generic<double> - Euclidean Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 11.121 us, StdErr = 0.012 us (0.11%), N = 9, StdDev = 0.036 us
+Min = 11.070 us, Q1 = 11.096 us, Median = 11.120 us, Q3 = 11.125 us, Max = 11.190 us
+IQR = 0.029 us, LowerFence = 11.052 us, UpperFence = 11.169 us
+ConfidenceInterval = [11.061 us; 11.182 us] (CI 99.9%), Margin = 0.061 us (0.55% of Mean)
+Skewness = 0.48, Kurtosis = 2.1, MValue = 2
+-------------------- Histogram --------------------
+[11.047 us ; 11.213 us) | @@@@@@@@@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Generic<float> - Euclidean Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 11.431 us, StdErr = 0.014 us (0.13%), N = 9, StdDev = 0.043 us
+Min = 11.350 us, Q1 = 11.422 us, Median = 11.431 us, Q3 = 11.454 us, Max = 11.499 us
+IQR = 0.032 us, LowerFence = 11.374 us, UpperFence = 11.501 us
+ConfidenceInterval = [11.357 us; 11.504 us] (CI 99.9%), Margin = 0.073 us (0.64% of Mean)
+Skewness = -0.3, Kurtosis = 2.17, MValue = 2
+-------------------- Histogram --------------------
+[11.323 us ; 11.527 us) | @@@@@@@@@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Float64 - Conformal Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 17.867 us, StdErr = 0.049 us (0.28%), N = 10, StdDev = 0.156 us
+Min = 17.703 us, Q1 = 17.740 us, Median = 17.815 us, Q3 = 17.995 us, Max = 18.140 us
+IQR = 0.255 us, LowerFence = 17.358 us, UpperFence = 18.377 us
+ConfidenceInterval = [17.631 us; 18.103 us] (CI 99.9%), Margin = 0.236 us (1.32% of Mean)
+Skewness = 0.47, Kurtosis = 1.5, MValue = 2
+-------------------- Histogram --------------------
+[17.608 us ; 18.235 us) | @@@@@@@@@@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Generic<double> - Conformal Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 21.058 us, StdErr = 0.077 us (0.37%), N = 10, StdDev = 0.245 us
+Min = 20.815 us, Q1 = 20.865 us, Median = 21.020 us, Q3 = 21.141 us, Max = 21.495 us
+IQR = 0.276 us, LowerFence = 20.451 us, UpperFence = 21.556 us
+ConfidenceInterval = [20.688 us; 21.428 us] (CI 99.9%), Margin = 0.370 us (1.76% of Mean)
+Skewness = 0.69, Kurtosis = 1.88, MValue = 2
+-------------------- Histogram --------------------
+[20.724 us ; 21.644 us) | @@@@@@@@@@
+---------------------------------------------------
+
+XGaMetricOperationsComparisonBenchmark.'Generic<float> - Conformal Sp': Job-YFEFPZ(IterationCount=10, WarmupCount=3)
+Runtime = .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2; GC = Concurrent Workstation
+Mean = 21.120 us, StdErr = 0.027 us (0.13%), N = 10, StdDev = 0.086 us
+Min = 20.942 us, Q1 = 21.104 us, Median = 21.127 us, Q3 = 21.184 us, Max = 21.222 us
+IQR = 0.080 us, LowerFence = 20.984 us, UpperFence = 21.304 us
+ConfidenceInterval = [20.990 us; 21.250 us] (CI 99.9%), Margin = 0.130 us (0.62% of Mean)
+Skewness = -0.68, Kurtosis = 2.38, MValue = 2
+-------------------- Histogram --------------------
+[20.890 us ; 21.275 us) | @@@@@@@@@@
+---------------------------------------------------
+
+// * Summary *
+
+BenchmarkDotNet v0.15.2, Windows 11 (10.0.26200.6901)
+Intel Core i7-10700 CPU 2.90GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK 9.0.306
+  [Host]     : .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+  Job-YFEFPZ : .NET 8.0.21 (8.0.2125.47513), X64 RyuJIT AVX2
+
+IterationCount=10  WarmupCount=3  
+
+| Method                           | Mean       | Error     | StdDev    | Ratio | RatioSD | Gen0    | Gen1   | Allocated | Alloc Ratio |
+|--------------------------------- |-----------:|----------:|----------:|------:|--------:|--------:|-------:|----------:|------------:|
+| 'Float64 - Euclidean Gp'         |  92.977 us | 1.2089 us | 0.7996 us |  1.00 |    0.01 | 28.9307 | 0.1221 | 236.72 KB |        1.00 |
+| 'Generic<double> - Euclidean Gp' |  96.330 us | 1.3833 us | 0.8232 us |  1.04 |    0.01 | 30.2734 | 0.1221 | 247.66 KB |        1.05 |
+| 'Generic<float> - Euclidean Gp'  |  97.733 us | 0.6386 us | 0.4224 us |  1.05 |    0.01 | 30.2734 | 0.1221 | 247.66 KB |        1.05 |
+| 'Float64 - Conformal Gp'         | 284.236 us | 5.6583 us | 3.7426 us |  3.06 |    0.05 | 84.9609 | 0.4883 | 694.53 KB |        2.93 |
+| 'Generic<double> - Conformal Gp' | 309.396 us | 8.8215 us | 5.8349 us |  3.33 |    0.07 | 89.3555 | 0.4883 | 730.47 KB |        3.09 |
+| 'Generic<float> - Conformal Gp'  | 304.316 us | 3.2089 us | 2.1225 us |  3.27 |    0.03 | 89.3555 | 0.4883 | 730.47 KB |        3.09 |
+| 'Float64 - Euclidean Sp'         |   8.599 us | 0.0650 us | 0.0430 us |  0.09 |    0.00 |  1.6174 |      - |  13.28 KB |        0.06 |
+| 'Generic<double> - Euclidean Sp' |  11.121 us | 0.0610 us | 0.0363 us |  0.12 |    0.00 |  1.8158 |      - |  14.84 KB |        0.06 |
+| 'Generic<float> - Euclidean Sp'  |  11.431 us | 0.0731 us | 0.0435 us |  0.12 |    0.00 |  1.8158 |      - |  14.84 KB |        0.06 |
+| 'Float64 - Conformal Sp'         |  17.867 us | 0.2359 us | 0.1560 us |  0.19 |    0.00 |  4.4861 |      - |  36.72 KB |        0.16 |
+| 'Generic<double> - Conformal Sp' |  21.058 us | 0.3702 us | 0.2449 us |  0.23 |    0.00 |  4.6692 |      - |  38.28 KB |        0.16 |
+| 'Generic<float> - Conformal Sp'  |  21.120 us | 0.1299 us | 0.0859 us |  0.23 |    0.00 |  4.6692 |      - |  38.28 KB |        0.16 |
+
+// * Hints *
+Outliers
+  XGaMetricOperationsComparisonBenchmark.'Float64 - Euclidean Gp': IterationCount=10, WarmupCount=3         -> 1 outlier  was  detected (91.03 us)
+  XGaMetricOperationsComparisonBenchmark.'Generic<double> - Euclidean Gp': IterationCount=10, WarmupCount=3 -> 1 outlier  was  removed (101.48 us)
+  XGaMetricOperationsComparisonBenchmark.'Generic<double> - Euclidean Sp': IterationCount=10, WarmupCount=3 -> 1 outlier  was  removed (11.52 us)
+  XGaMetricOperationsComparisonBenchmark.'Generic<float> - Euclidean Sp': IterationCount=10, WarmupCount=3  -> 1 outlier  was  removed, 2 outliers were detected (11.35 us, 11.55 us)
+  XGaMetricOperationsComparisonBenchmark.'Generic<float> - Conformal Sp': IterationCount=10, WarmupCount=3  -> 1 outlier  was  detected (20.94 us)
+
+// * Legends *
+  Mean        : Arithmetic mean of all measurements
+  Error       : Half of 99.9% confidence interval
+  StdDev      : Standard deviation of all measurements
+  Ratio       : Mean of the ratio distribution ([Current]/[Baseline])
+  RatioSD     : Standard deviation of the ratio distribution ([Current]/[Baseline])
+  Gen0        : GC Generation 0 collects per 1000 operations
+  Gen1        : GC Generation 1 collects per 1000 operations
+  Allocated   : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
+  Alloc Ratio : Allocated memory ratio distribution ([Current]/[Baseline])
+  1 us        : 1 Microsecond (0.000001 sec)
+
+// * Diagnostic Output - MemoryDiagnoser *
+
+
+// ***** BenchmarkRunner: End *****
+Run time: 00:02:20 (140.31 sec), executed benchmarks: 12
+
+Global total time: 00:04:13 (253.38 sec), executed benchmarks: 12
+// * Artifacts cleanup *
+Artifacts cleanup is finished
