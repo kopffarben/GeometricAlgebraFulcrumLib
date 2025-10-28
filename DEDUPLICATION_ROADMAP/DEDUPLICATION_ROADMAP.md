@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: PlusPath3D<T> - Path Addition/Sum of Multiple Paths)
+**Letzte Aktualisierung:** 2025-10-28 (Phase 3A Module 6A: TimesPath3D<T> - Component-wise Path Multiplication)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -640,17 +640,17 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 4.8 (Phase 3A Module 6A - PlusPath3D<T> Complete)
-**Letzte Aktualisierung:** 2025-10-28 (PlusPath3D<T> - Path Addition/Sum of Multiple Paths)
+**Dokument Version:** 4.9 (Phase 3A Module 6A - TimesPath3D<T> Complete)
+**Letzte Aktualisierung:** 2025-10-28 (TimesPath3D<T> - Component-wise Path Multiplication)
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
-**Nächste Review:** Nach Completion von Module 6A (18/151 Klassen, 11.9% complete)
+**Nächste Review:** Nach Completion von Module 6A (19/151 Klassen, 12.6% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
-**Status:** 31/151 Klassen complete (20.5%)
-**Aufwand bisher:** ~35 Stunden
-**Tests:** 255 Tests (255 passing ✅ - 100% success rate!)
-**LOC:** ~5,579 LOC Implementation + ~8,594 LOC Tests
+**Status:** 32/151 Klassen complete (21.2%)
+**Aufwand bisher:** ~36 Stunden
+**Tests:** 269 Tests (269 passing ✅ - 100% success rate!)
+**LOC:** ~5,869 LOC Implementation + ~8,990 LOC Tests
 
 #### ✅ Basis Framework (Complete - 2025-10-28)
 1. **ITrajectory<T>** interface (Basis für alle Trajektorien)
@@ -787,8 +787,41 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 217 LOC Implementation + ~363 LOC Tests
     - **Status:** Complete ✅
 
+20. **TimesPath3D<T>** - Path Multiplication (Component-wise Product of Multiple Paths) ✅ COMPLETE (2025-10-28)
+    - Parametrische Form: `(A ⊗ B ⊗ C ⊗ ...)(t) = A(t) ⊗ B(t) ⊗ C(t) ⊗ ...`
+    - Component-wise (Hadamard) Produkt von beliebig vielen Basis-Pfaden
+    - **Recursive Flattening:** Verschachtelte TimesPath3D werden automatisch flachgemacht
+      - `((A*B)*C)` wird zu `[A, B, C]` statt nested structure
+      - Analoges Pattern zu PlusPath3D
+    - **IReadOnlyList<ParametricPath3D<T>>** interface für Enumeration der Basis-Pfade
+    - Derivative Product Rule:
+      - `d/dt[A⊗B] = dA/dt⊗B + A⊗dB/dt` (erste Ableitung)
+      - `d²/dt²[A⊗B] = d²A/dt²⊗B + 2(dA/dt⊗dB/dt) + A⊗d²B/dt²` (zweite Ableitung)
+    - Aggregate-Pattern mit Identity (1,1,1) als Startwert
+    - Factory-Methoden: Finite/Periodic mit 2+ Pfaden (multiple overloads)
+    - Time-Range: Min(alle MinTimes) bis Max(alle MaxTimes)
+    - Indexer und Count für direkten Zugriff auf Basis-Pfade
+    - **NEW METHOD:** `VectorComponentTimes<T>()` extension method für `LinVector3D<T>`
+      - Implementiert in `LinVector3DUtils.cs` (~13 LOC)
+      - Ermöglicht component-wise multiplication für Generic<T>
+    - **Tests:** 14 Tests ✅ (100% success rate)
+      - Two constant paths multiplication
+      - Two line segments multiplication
+      - Three paths multiplication
+      - Nested TimesPath3D flattening
+      - Derivative with product rule (1st and 2nd order)
+      - IsValid validation
+      - ToFinitePath/ToPeriodicPath conversions
+      - IReadOnlyList interface
+      - Time range calculation (Min/Max of components)
+      - Periodic path creation
+      - SimpleHarmonic ⊗ Constant multiplication
+      - Identity multiplication (verify (1,1,1) preserves original)
+    - **LOC:** 277 LOC Implementation + ~396 LOC Tests + 13 LOC VectorComponentTimes
+    - **Status:** Complete ✅
+
 #### ✅ Computed Paths (Complete - 2025-10-28)
-20. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
+21. **ComputedPath3D<T>** - Funktions-basierte parametrische Pfade
     - Speichert `Func<Scalar<T>, LinVector3D<T>>` Delegates für Position und Ableitungen
     - 14 statische Factory-Methoden: Finite (5 Varianten), Periodic (5 Varianten), Create (4 Varianten)
     - ClampTime-Logik: Finite (Clamping zu [min,max]), Periodic (Wrapping via Math.Floor)

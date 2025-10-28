@@ -651,6 +651,20 @@ public static class LinVector3DUtils
     }
 
     /// <summary>
+    /// Returns the component-wise (Hadamard) product of two vectors.
+    /// Result: (v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z)
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector3D<T> VectorComponentTimes<T>(this ITriplet<Scalar<T>> v1, ITriplet<Scalar<T>> v2)
+    {
+        return LinVector3D<T>.Create(
+            v1.Item1 * v2.Item1,
+            v1.Item2 * v2.Item2,
+            v1.Item3 * v2.Item3
+        );
+    }
+
+    /// <summary>
     /// Returns the Euclidean cross product between the given vectors as a unit vector
     /// Both vectors are assumed to have z=0 components
     /// </summary>
