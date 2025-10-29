@@ -740,6 +740,57 @@ ParametricPath3D<T> (Basis)
 - Classes implemented: 23/40 (57.5%)
 - Total tests: 303 (all passing in Modeling project)
 
+### Session 13: Mapped Signal - ScalarListSignal<T> ✅
+
+**Date:** 2025-10-29
+**Status:** Newly implemented
+**Implementation:** 210 LOC (Generic<T>)
+**Tests:** 6 equivalence tests (170+ LOC)
+**Test Results:** Unable to run (unrelated compilation errors in other test files)
+**Build Status:** ✅ Implementation compiles successfully
+
+**Features:**
+- Concatenates multiple signals into a single continuous list
+- Implements IReadOnlyList<ScalarSignal<T>> for signal enumeration
+- Automatically offsets signal time ranges so they're consecutive
+- Flattens nested ListSignals recursively (avoids deep nesting)
+- Time-based signal selection via First() LINQ query
+- Factory methods: `Finite(params)` and `Periodic(params)` with multiple overloads
+
+**API Compatibility:**
+- ✅ All factory methods match Float64 version
+- ✅ All properties match Float64 version
+- ✅ All methods match Float64 version
+- ✅ IReadOnlyList<T> interface implemented
+
+**Key Implementation Details:**
+- **Time Offsetting:** Subsequent signals offset so `MinTime = previous.MaxTime`
+- **List Flattening:** Recursive `Add()` method flattens nested ListSignals
+- **Time Clamping:** Replaced Float64-specific `ClampTime()` extension with `TimeRange.Clamp(t)`
+- **Time Containment:** Replaced `ContainsTime()` extension with inline range check: `!t.IsLessThan(MinTime) && !MaxTime.IsLessThan(t)`
+- **Signal Selection:** `GetValue(t)` finds first signal where `MinTime ≤ t ≤ MaxTime`
+
+**Technical Challenges:**
+- Extension methods `ClampTime()` and `ContainsTime()` don't exist for Generic<T>
+- Solution: Use `TimeRange.Clamp()` and inline Scalar<T> comparisons
+- Note: Periodic clamping not implemented (ClampPeriodic commented out in ScalarRange<T>)
+
+**Helper Methods:**
+- `OffsetTimeMinTo()`: Uses AffineMap1D<T>.CreateTranslate() for time offsetting
+- `Add()`: Recursive flattening method for nested ListSignals
+
+**Equivalence Tests:**
+- Test finite list with two signals (sin + cos)
+- Test periodic list with three signals (sin + cos + constant)
+- Test derivative values
+- Test ToFiniteSignal conversion
+- Test ToPeriodicSignal conversion
+- Test BaseSignals access and count
+
+**Progress:**
+- Classes implemented: 24/40 (60%)
+- Total tests: 309 (6 new tests written, unable to run due to unrelated compilation errors)
+
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
 - [ ] AnglePath<T>, NormalizedAngle<T>, PolarAngle<T>
