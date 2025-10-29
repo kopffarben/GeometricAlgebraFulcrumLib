@@ -1280,15 +1280,129 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **Use Case:** Linear ramping signals, time normalization, interpolation
     - **Status**: Complete ✅
 
+33. **ScalarSharpStepSignal<T>** - Sharp step signal (normalized) ✅ COMPLETE (2025-10-29)
+    - Extends ScalarNormalizedSignal<T>
+    - Sharp discontinuous step from -1 to 1 at t=0
+    - **Value Function:**
+      - GetValue(t) = -1 (t < 0), 0 (t = 0), 1 (t > 0)
+      - Clamped to [-1, 1] range
+    - **Derivative Functions:**
+      - GetDerivative1Value(t) = 0 (everywhere - discontinuous at t=0)
+      - GetDerivative2Value(t) = 0 (everywhere)
+    - 2 Factory-Methoden: Finite(), Periodic()
+    - **Implementation Details:**
+      - Simple conditional logic with comparison operators
+      - Manual clamping to TimeRange [-1, 1]
+      - All derivatives are zero (discontinuity not represented)
+    - ToFiniteSignal/ToPeriodicSignal Transformationen
+    - IsValid() gibt immer true zurück
+    - **API Parity Enhancement:** Float64ScalarSharpStepSignal updated
+      - Changed \`internal static FiniteInstance/PeriodicInstance\` zu \`public static\`
+      - Enables testing and achieves API parity with Generic<T>
+    - **Tests:** 12 Tests (12 passing ✅ - 100% success rate)
+      - GetValue at boundary values (t = -1, 0, 1)
+      - GetValue in negative/positive regions
+      - GetDerivative1Value and GetDerivative2Value (always 0)
+      - Periodic behavior tests
+      - IsValid validation
+      - ToFiniteSignal/ToPeriodicSignal conversions
+      - TimeRange verification ([-1, 1])
+      - Out-of-range clamping behavior
+    - **LOC:** 83 LOC Implementation + 214 LOC Tests
+    - **Float64 Enhancement:** 2 properties changed from internal to public
+    - **Use Case:** Step functions, hard transitions, piecewise-constant signals
+    - **Status**: Complete ✅
+
+34. **ScalarTriangleSignal<T>** - Triangle wave signal (normalized) ✅ COMPLETE (2025-10-29)
+    - Extends ScalarNormalizedSignal<T>
+    - Triangle wave ramping from -1 to 1 and back to -1
+    - **Configurable Vertex:** Peak at VertexTime (default: 0 for symmetric)
+    - **Value Function:**
+      - Rising slope: \`2 * (t + 1) / (VertexTime + 1) - 1\` (for t <= VertexTime)
+      - Falling slope: \`2 * (t - 1) / (VertexTime - 1) - 1\` (for t > VertexTime)
+      - Clamped to [-1, 1] range
+    - **Derivative Functions:**
+      - GetDerivative1Value(t) = \`2 / (VertexTime + 1)\` (rising), \`2 / (VertexTime - 1)\` (falling)
+      - GetDerivative2Value(t) = 0 (piecewise linear)
+    - 4 Factory-Methoden: FiniteSymmetric(), PeriodicSymmetric(), Finite(vertexTime), Periodic(vertexTime)
+    - **Implementation Details:**
+      - Operator overloads on Scalar<T> for arithmetic (\`+\`, \`-\`, \`*\`, \`/\`)
+      - Manual clamping with comparison operators
+      - VertexTime property for asymmetric triangles
+      - IsSymmetric property (true when VertexTime = 0)
+    - ToFiniteSignal/ToPeriodicSignal Transformationen
+    - IsValid() gibt immer true zurück
+    - **API Parity Enhancement:** Float64ScalarTriangleSignal updated
+      - Changed \`internal static FiniteSymmetric/PeriodicSymmetric\` zu \`public static\`
+      - Changed factory methods from internal to public
+      - Enables testing and achieves API parity with Generic<T>
+    - **Tests:** 14 Tests (14 passing ✅ - 100% success rate)
+      - GetValue at boundary values (t = -1, 0, 1)
+      - Symmetric triangle behavior (vertex at t=0)
+      - Asymmetric triangles (left vertex at t=-0.5, right vertex at t=0.5)
+      - Rising/falling slope validation
+      - GetDerivative1Value (constant slopes)
+      - GetDerivative2Value (always 0)
+      - Periodic behavior tests
+      - IsValid validation
+      - ToFiniteSignal/ToPeriodicSignal conversions
+      - TimeRange verification ([-1, 1])
+      - VertexTime property validation
+      - Out-of-range clamping behavior
+    - **LOC:** 145 LOC Implementation + 281 LOC Tests
+    - **Float64 Enhancement:** Factory methods changed from internal to public
+    - **Use Case:** Triangle waves, sawtooth approximations, linear interpolation patterns
+    - **Status**: Complete ✅
+
+35. **ScalarSmoothStepSignal<T>** - Smooth step signal (normalized) ✅ COMPLETE (2025-10-29)
+    - Extends ScalarNormalizedSignal<T>
+    - Smooth sigmoid-like transition from -1 to 1
+    - **Value Function:** \`2 / (1 + exp(4*t / (t² - 1))) - 1\`
+    - **Derivative Functions:**
+      - GetDerivative1Value(t): \`2 * (t² + 1) * b² * c²\` where b = 1/(t²-1), c = 1/cosh(2*t*b)
+      - GetDerivative2Value(t): \`4 * (3*t - 2*t³ - t⁵ + 2*(t²+1)²*tanh(c)) * b⁴ / cosh(c)²\`
+      - Both derivatives are 0 at boundaries (t = ±1)
+    - 2 Factory-Methoden: Finite(), Periodic()
+    - **Implementation Details:**
+      - Uses extension methods on Scalar<T>: \`.Exp()\`, \`.Cosh()\`, \`.Tanh()\`, \`.IsValid()\`
+      - Operator overloads on Scalar<T> for complex arithmetic
+      - Manual clamping to [-1, 1] range
+      - Boundary cases handled explicitly (return ±1)
+      - NaN handling: result.IsValid() ? result : Zero
+    - ToFiniteSignal/ToPeriodicSignal Transformationen
+    - IsValid() gibt immer true zurück
+    - **API Parity Enhancement:** Float64ScalarSmoothStepSignal updated
+      - Changed \`internal static FiniteInstance/PeriodicInstance\` zu \`public static\`
+      - Enables testing and achieves API parity with Generic<T>
+    - **Tests:** 12 Tests (12 passing ✅ - 100% success rate)
+      - GetValue at boundary values (t = -1, 0, 1)
+      - Smooth transitions in negative/positive regions
+      - Monotonically increasing verification
+      - GetDerivative1Value at various points
+      - GetDerivative1Value at boundaries (should be 0)
+      - GetDerivative2Value at various points
+      - Periodic behavior tests
+      - IsValid validation
+      - ToFiniteSignal/ToPeriodicSignal conversions
+      - TimeRange verification ([-1, 1])
+      - Out-of-range clamping behavior
+    - **LOC:** 163 LOC Implementation + 250 LOC Tests
+    - **Float64 Enhancement:** 2 properties changed from internal to public
+    - **Use Case:** Smooth transitions, sigmoid functions, easing curves, C² continuity
+    - **Tolerance:** 1e-10 (slightly relaxed for transcendental functions)
+    - **Status**: Complete ✅
+
+
 **ScalarSignal Summary:**
-- Total: 8 Klassen (1 base + 1 normalized base + 6 concrete)
-- Total Tests: 70 Tests (70 passing ✅ - 100% success rate)
-- Total LOC: 892 LOC Implementation + ~1,610 LOC Tests
+- Total: 11 Klassen (1 base + 1 normalized base + 9 concrete)
+- Total Tests: 109 Tests (109 passing ✅ - 100% success rate)
+- Total LOC: 1,283 LOC Implementation + ~2,355 LOC Tests
 - **Architectural Decision**: Unified ConstantScalarSignal<T> statt separate Zero/One Klassen (DRY principle)
+- **Implementation Pattern**: Operator overloads on Scalar<T> for arithmetic (learned from Phase 3 implementation)
 - **Dependencies Unblocked**: ScalarTripletPath3D, HarmonicPath3D, SphericalPath3D können jetzt implementiert werden
 
 #### ✅ Signal-Based Paths (Complete - 2025-10-28)
-33. **ScalarTripletPath3D<T>** - 3D Path aus drei unabhängigen Skalar-Signalen
+36. **ScalarTripletPath3D<T>** - 3D Path aus drei unabhängigen Skalar-Signalen
     - Kombiniert 3 ScalarSignal<T> Instanzen für X, Y, Z Komponenten
     - 6 Factory-Methoden: Finite (2), Periodic (2), Create (2)
     - GetValue, GetDerivative1Value, GetDerivative2Value delegieren an Component-Signals
@@ -1298,7 +1412,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 198 LOC Implementation + ~350 LOC Tests
     - **Status**: Complete ✅
 
-34. **HarmonicScalarSignal<T>** - Harmonische (sinusförmige) Skalar-Signale
+37. **HarmonicScalarSignal<T>** - Harmonische (sinusförmige) Skalar-Signale
     - Formel: `Magnitude * cos(2πf * (t + TimeOffset))`
     - Properties: FrequencyHz, Frequency (= 2π * FrequencyHz), Magnitude, TimeOffset
     - 4 Factory-Methoden: Finite (2), Periodic (2)
@@ -1309,7 +1423,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 169 LOC Implementation
     - **Status**: Complete ✅
 
-35. **HarmonicPath3D<T>** - 3D Path aus drei harmonischen Signalen
+38. **HarmonicPath3D<T>** - 3D Path aus drei harmonischen Signalen
     - Kombiniert 3 HarmonicScalarSignal<T> für periodische/zyklische Bewegungen
     - Create Factory-Methode
     - Circular paths in XY-plane möglich (X = cos, Y = sin via offset)

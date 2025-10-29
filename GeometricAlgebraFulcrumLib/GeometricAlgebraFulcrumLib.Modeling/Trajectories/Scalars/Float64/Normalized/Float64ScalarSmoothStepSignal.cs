@@ -6,10 +6,10 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Norma
 public sealed class Float64ScalarSmoothStepSignal :
     Float64ScalarNormalizedSignal
 {
-    internal static Float64ScalarSmoothStepSignal FiniteInstance { get; }
+    public static Float64ScalarSmoothStepSignal FiniteInstance { get; }
         = new Float64ScalarSmoothStepSignal(false);
 
-    internal static Float64ScalarSmoothStepSignal PeriodicInstance { get; }
+    public static Float64ScalarSmoothStepSignal PeriodicInstance { get; }
         = new Float64ScalarSmoothStepSignal(true);
 
 

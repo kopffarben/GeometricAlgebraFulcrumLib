@@ -7,20 +7,20 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Norma
 public sealed class Float64ScalarTriangleSignal :
     Float64ScalarNormalizedSignal
 {
-    internal static Float64ScalarTriangleSignal FiniteSymmetric { get; }
+    public static Float64ScalarTriangleSignal FiniteSymmetric { get; }
         = new Float64ScalarTriangleSignal(false, 0);
 
-    internal static Float64ScalarTriangleSignal PeriodicSymmetric { get; }
+    public static Float64ScalarTriangleSignal PeriodicSymmetric { get; }
         = new Float64ScalarTriangleSignal(true, 0);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarTriangleSignal Finite(double vertexRelativeTime)
+    public static Float64ScalarTriangleSignal Finite(double vertexRelativeTime)
     {
         return new Float64ScalarTriangleSignal(false, 2 * vertexRelativeTime - 1);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarTriangleSignal Periodic(double vertexRelativeTime)
+    public static Float64ScalarTriangleSignal Periodic(double vertexRelativeTime)
     {
         return new Float64ScalarTriangleSignal(true, 2 * vertexRelativeTime - 1);
     }
