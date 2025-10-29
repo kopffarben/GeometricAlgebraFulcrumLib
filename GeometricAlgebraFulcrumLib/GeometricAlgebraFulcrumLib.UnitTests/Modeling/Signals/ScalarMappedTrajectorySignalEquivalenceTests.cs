@@ -289,7 +289,7 @@ public sealed class ScalarMappedTrajectorySignalEquivalenceTests
     public void TestValueMapProperty()
     {
         var trajectoryGeneric = new SimpleGenericVectorTrajectory<double>(ScalarProcessor);
-        Func<(Scalar<double>, Scalar<double>, Scalar<double>), Scalar<double>> mapFunc = v => v.y;
+        Func<(Scalar<double>, Scalar<double>, Scalar<double>), Scalar<double>> mapFunc = v => v.Item2;
 
         var signalGeneric = ScalarMappedTrajectorySignal<double, (Scalar<double>, Scalar<double>, Scalar<double>)>.Create(
             trajectoryGeneric,
