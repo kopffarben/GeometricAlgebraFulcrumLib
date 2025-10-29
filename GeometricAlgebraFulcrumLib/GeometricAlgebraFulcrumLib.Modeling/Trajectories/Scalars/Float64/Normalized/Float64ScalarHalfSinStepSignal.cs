@@ -5,10 +5,10 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Norma
 public sealed class Float64ScalarHalfSinStepSignal :
     Float64ScalarNormalizedSignal
 {
-    internal static Float64ScalarHalfSinStepSignal FiniteInstance { get; }
+    public static Float64ScalarHalfSinStepSignal FiniteInstance { get; }
         = new Float64ScalarHalfSinStepSignal(false);
 
-    internal static Float64ScalarHalfSinStepSignal PeriodicInstance { get; }
+    public static Float64ScalarHalfSinStepSignal PeriodicInstance { get; }
         = new Float64ScalarHalfSinStepSignal(true);
 
     

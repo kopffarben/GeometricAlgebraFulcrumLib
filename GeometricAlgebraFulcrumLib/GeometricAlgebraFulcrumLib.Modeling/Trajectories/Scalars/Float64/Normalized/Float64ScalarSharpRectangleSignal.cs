@@ -6,10 +6,10 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Norma
 public sealed class Float64ScalarSharpRectangleSignal :
     Float64ScalarNormalizedSignal
 {
-    internal static Float64ScalarSharpRectangleSignal FiniteInstance { get; }
+    public static Float64ScalarSharpRectangleSignal FiniteInstance { get; }
         = new Float64ScalarSharpRectangleSignal(false);
 
-    internal static Float64ScalarSharpRectangleSignal PeriodicInstance { get; }
+    public static Float64ScalarSharpRectangleSignal PeriodicInstance { get; }
         = new Float64ScalarSharpRectangleSignal(true);
 
 

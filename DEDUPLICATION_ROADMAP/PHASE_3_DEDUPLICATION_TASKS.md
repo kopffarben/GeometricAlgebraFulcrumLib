@@ -382,6 +382,34 @@ ParametricPath3D<T> (Basis)
 
 **Scalar Trajectories:** `time → scalar`
 
+### ✅ Completed: Normalized Signals (3 Klassen) - 2025-10-29
+
+- [x] **ScalarHalfSinStepSignal<T>** - Smooth half-sine step signal (sin(π/2 * t))
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized`
+  - **Referenz:** `Float64ScalarHalfSinStepSignal` (104 LOC)
+  - **Implementation:** 104 LOC, operator overloads pattern
+  - **Tests:** 14 Equivalence Tests ✅ (100% passing)
+  - **Commit:** 2025-10-29
+
+- [x] **ScalarSharpRectangleSignal<T>** - Sharp discontinuous rectangle signal
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized`
+  - **Referenz:** `Float64ScalarSharpRectangleSignal` (91 LOC)
+  - **Implementation:** 91 LOC, conditional logic pattern
+  - **Tests:** 12 Equivalence Tests ✅ (100% passing)
+  - **Commit:** 2025-10-29
+
+- [x] **ScalarSmoothRectangleSignal<T>** - Smooth rectangle with exponential transitions
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized`
+  - **Referenz:** `Float64ScalarSmoothRectangleSignal` (188 LOC)
+  - **Implementation:** 188 LOC, complex exponential formula (1 - 2/(1 + exp(1/t - 1/(1-t))))
+  - **Tests:** 13 Equivalence Tests ✅ (100% passing, tolerance 1e-7 for complex exponentials)
+  - **Commit:** 2025-10-29
+  - **Note:** Derivative2 formula required careful (-1+t) notation matching Float64 version
+
+**Total Completed in Module 6C:** 3/40 Klassen (7.5%)
+**Total Tests:** 39 Equivalence Tests (100% passing)
+**Time Spent:** ~6 hours (implementation + testing + debugging)
+
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
 - [ ] AnglePath<T>, NormalizedAngle<T>, PolarAngle<T>
