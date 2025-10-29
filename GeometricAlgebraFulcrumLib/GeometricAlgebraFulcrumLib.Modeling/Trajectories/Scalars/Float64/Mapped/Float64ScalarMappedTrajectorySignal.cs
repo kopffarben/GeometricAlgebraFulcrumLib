@@ -8,7 +8,7 @@ public sealed class Float64ScalarMappedTrajectorySignal<T> :
     Float64ScalarSignal
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarMappedTrajectorySignal<T> Create(Float64Trajectory<T> baseTrajectory, Func<T, double> valueMap)
+    public static Float64ScalarMappedTrajectorySignal<T> Create(Float64Trajectory<T> baseTrajectory, Func<T, double> valueMap)
     {
         return new Float64ScalarMappedTrajectorySignal<T>(baseTrajectory, valueMap);
     }
