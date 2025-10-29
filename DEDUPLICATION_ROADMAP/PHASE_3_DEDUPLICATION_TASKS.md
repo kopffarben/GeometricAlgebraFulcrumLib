@@ -657,6 +657,45 @@ ParametricPath3D<T> (Basis)
 **Session 8 Time:** ~2 hours (implementing ScalarAffineMappedTimeSignal<T> + 13 tests, fixing internal Create methods via Extension methods)
 **Session 9 Time:** ~1 hour (verifying ScalarPlusSignal<T> already exists + 12 tests, validating API compatibility)
 **Session 10 Time:** ~0.5 hours (verifying ScalarTimesSignal<T> already exists + 13 tests, validating API compatibility)
+**Session 11 Time:** ~0.5 hours (verifying ScalarDerivativeSignal<T> already exists + 14 tests, validating API compatibility)
+
+### Session 11: Mapped Signal - ScalarDerivativeSignal<T> ✅
+
+**Date:** 2025-10-29
+**Status:** Verified (already implemented in Session 5)
+**Implementation:** 77 LOC (Generic<T>)
+**Tests:** 14 equivalence tests (288 LOC)
+**Test Results:** All 14 tests passing (100%)
+
+**Features:**
+- Returns derivative of base signal
+- `GetValue(t)` returns `BaseSignal.GetDerivative1Value(t)`
+- `GetDerivative1Value(t)` returns `BaseSignal.GetDerivative2Value(t)`
+- Implements IReadOnlyList<ScalarSignal<T>> for base signal access
+- Time range preserved from base signal
+- Periodicity preserved from base signal
+
+**API Compatibility:**
+- ✅ All constructors match Float64 version
+- ✅ All properties match Float64 version
+- ✅ All methods match Float64 version (except GetDerivative2Value)
+- ⚠️ Generic<T> doesn't implement GetDerivative2Value (requires MathNet.Numerics numerical differentiation, only available for double)
+
+**Equivalence Tests:**
+- Test derivative of sin(t) = cos(t)
+- Test derivative of cos(t) = -sin(t)
+- Test second derivative of sin(t) = -sin(t)
+- Test second derivative of cos(t) = -cos(t)
+- Test chained derivatives (derivative of derivative)
+- Test derivative of constant signal = 0
+- Test periodic signals
+- Test finite/periodic conversion
+- Test time range preservation
+- Test derivative of plus signal: d/dt(sin+cos) = cos-sin
+
+**Progress:**
+- Classes implemented: 22/40 (55%)
+- Total tests: 299 (all passing)
 
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
