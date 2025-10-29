@@ -791,6 +791,63 @@ ParametricPath3D<T> (Basis)
 - Classes implemented: 24/40 (60%)
 - Total tests: 309 (6 new tests written, unable to run due to unrelated compilation errors)
 
+### Session 14: Mapped Signal - ScalarSmoothBlendSignal<T> ✅
+
+**Date:** 2025-10-29
+**Status:** Newly implemented
+**Implementation:** 163 LOC (Generic<T>)
+**Tests:** 10 equivalence tests (180+ LOC)
+**Test Results:** Unable to run (unrelated compilation errors in other test files)
+**Build Status:** ✅ Implementation compiles successfully
+
+**Features:**
+- Smoothly blends between two signals using sigmoid-based smooth transition
+- At MinTime: returns 100% BaseSignal1
+- At MaxTime: returns 100% BaseSignal2
+- In between: weighted blend with smooth unit step function
+- Supports finite and periodic modes
+- Factory methods: `Finite(blendTimeMin, blendTimeMax, signal1, signal2)` and `Periodic(...)`
+
+**API Compatibility:**
+- ✅ All factory methods match Float64 version
+- ✅ All properties match Float64 version (BaseSignal1, BaseSignal2)
+- ✅ All methods match Float64 version
+- ✅ Made factory methods public (were internal)
+
+**Key Implementation Details:**
+- **Smooth Unit Step Function:** Uses sigmoid transition: `1 / (1 + exp(1/t - 1/(1-t)))`
+- **Normalization:** Maps [MinTime, MaxTime] → [0, 1] before applying sigmoid
+- **Blending Formula:** `value1 * (1-x) + value2 * x` where x = SmoothUnitStepFunction(t)
+- **Scalar Operators:** Uses `Scalar<T>` arithmetic operators (`+`, `-`, `*`, `/`) for clean code
+- **Processor Usage:** Only uses processor for Exp() function (no generic exp operator)
+
+**Technical Challenges:**
+- Initial implementation tried to use `IScalarProcessor<T>` methods everywhere
+- Solution: Use Scalar<T> operators for arithmetic, processor.Exp() for exponential
+- Pattern: `var one = processor.One.ToScalar()` then use `one` in arithmetic
+- Debug.Assert removed from final version (was causing type issues)
+
+**Mathematics:**
+- Sigmoid transition ensures C∞ smoothness (infinitely differentiable)
+- At midpoint t=0.5 (normalized): blend factor ≈ 0.5
+- Monotonically increasing from 0 to 1 over blend range
+
+**Equivalence Tests:**
+- Test finite smooth blend (sin → cos)
+- Test periodic smooth blend (ramp → constant)
+- Test blending behavior at midpoint (should be ~50%)
+- Test ToFiniteSignal conversion
+- Test ToPeriodicSignal conversion
+- Test BaseSignal properties
+- Test IsValid
+- Test factory methods with ScalarRange
+- Test smooth transition monotonicity
+- Test boundary values
+
+**Progress:**
+- Classes implemented: 25/40 (62.5%)
+- Total tests: 319 (10 new tests written, unable to run due to unrelated compilation errors)
+
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
 - [ ] AnglePath<T>, NormalizedAngle<T>, PolarAngle<T>
