@@ -529,13 +529,24 @@ ParametricPath3D<T> (Basis)
   - **Features:** Shifts derivative order (GetValue returns 1st derivative, GetDerivative1Value returns 2nd derivative)
   - **Note:** GetDerivative2Value NOT implemented for Generic<T> (would require numerical differentiation, only available for double)
 
-**Total Completed in Module 6C:** 16/40 Klassen (40%)
-**Total Tests:** 224 Equivalence Tests (100% passing)
+#### Session 6: Mapped Signal - ScalarRepeatedSignal<T> - 2025-10-29
+
+- [x] **ScalarRepeatedSignal<T>** - Repeats a base signal N times sequentially
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Mapped`
+  - **Referenz:** `Float64ScalarRepeatedSignal` (108 LOC)
+  - **Lines of Code:** 147 LOC
+  - **Features:** Repeats base signal Count times, extends time range to MinTime + Count * BaseSignal.TimeRangeLength
+  - **Implementation:** Proper ClampTime logic using IScalarProcessor<T> operations with periodic wrapping via modulo
+  - **Tests:** 10 Equivalence Tests (100% passing in 30ms)
+
+**Total Completed in Module 6C:** 17/40 Klassen (42.5%)
+**Total Tests:** 234 Equivalence Tests (100% passing)
 **Session 1 Time:** ~6 hours (implementation + testing + debugging for 3 complex signals)
 **Session 2 Time:** ~1 hour (writing 16 tests for RampSignal, verifying existing implementations)
 **Session 3 Time:** ~2 hours (writing 40 tests for Sin/Cos/SimpleHarmonic signals, Float64 API parity updates)
 **Session 4 Time:** ~2.5 hours (writing 39 tests for Constant/Computed/Harmonic signals, Float64 API parity updates)
 **Session 5 Time:** ~4 hours (implementing 3 Mapped Signals + 38 tests, debugging IComparable issue with Scalar<T>.Min/Max)
+**Session 6 Time:** ~2 hours (implementing ScalarRepeatedSignal + 10 tests, fixing IScalarProcessor<T> type handling)
 
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
