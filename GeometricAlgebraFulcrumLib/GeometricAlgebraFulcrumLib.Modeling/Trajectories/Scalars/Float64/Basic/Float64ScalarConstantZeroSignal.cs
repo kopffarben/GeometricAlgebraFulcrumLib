@@ -7,10 +7,10 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Basic
 public sealed class Float64ScalarConstantZeroSignal :
     Float64ScalarSignal
 {
-    internal static Float64ScalarConstantZeroSignal FiniteInstance { get; } 
+    public static Float64ScalarConstantZeroSignal FiniteInstance { get; }
         = new Float64ScalarConstantZeroSignal(false);
 
-    internal static Float64ScalarConstantZeroSignal PeriodicInstance { get; } 
+    public static Float64ScalarConstantZeroSignal PeriodicInstance { get; }
         = new Float64ScalarConstantZeroSignal(true);
 
 

@@ -7,92 +7,92 @@ public sealed class Float64ScalarComputedSignal :
     Float64ScalarSignal
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarComputedSignal Finite(Float64ScalarRange timeRange, Func<double, double> getValueFunc)
+    public static Float64ScalarComputedSignal Finite(Float64ScalarRange timeRange, Func<double, double> getValueFunc)
     {
         return new Float64ScalarComputedSignal(
-            timeRange, 
+            timeRange,
             false,
             getValueFunc
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarComputedSignal Finite(Float64ScalarRange timeRange, Func<double, double> getValueFunc, Func<double, double> getDerivative1ValueFunc)
+    public static Float64ScalarComputedSignal Finite(Float64ScalarRange timeRange, Func<double, double> getValueFunc, Func<double, double> getDerivative1ValueFunc)
     {
         return new Float64ScalarComputedSignal(
-            timeRange, 
-            false, 
-            getValueFunc, 
+            timeRange,
+            false,
+            getValueFunc,
             getDerivative1ValueFunc
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarComputedSignal Finite(Float64ScalarRange timeRange, Func<double, double> getValueFunc, Func<double, double> getDerivative1ValueFunc, Func<double, double> getDerivative2ValueFunc)
+    public static Float64ScalarComputedSignal Finite(Float64ScalarRange timeRange, Func<double, double> getValueFunc, Func<double, double> getDerivative1ValueFunc, Func<double, double> getDerivative2ValueFunc)
     {
         return new Float64ScalarComputedSignal(
-            timeRange, 
-            false, 
-            getValueFunc, 
-            getDerivative1ValueFunc, 
+            timeRange,
+            false,
+            getValueFunc,
+            getDerivative1ValueFunc,
             getDerivative2ValueFunc
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarComputedSignal Finite(double timeMin, double timeMax, Func<double, double> getValueFunc)
+    public static Float64ScalarComputedSignal Finite(double timeMin, double timeMax, Func<double, double> getValueFunc)
     {
         var timeRange = Float64ScalarRange.Create(timeMin, timeMax);
 
         return new Float64ScalarComputedSignal(
-            timeRange, 
-            false, 
+            timeRange,
+            false,
             getValueFunc
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarComputedSignal Periodic(Float64ScalarRange timeRange, Func<double, double> getValueFunc)
+    public static Float64ScalarComputedSignal Periodic(Float64ScalarRange timeRange, Func<double, double> getValueFunc)
     {
         return new Float64ScalarComputedSignal(
-            timeRange, 
+            timeRange,
             true,
             getValueFunc
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarComputedSignal Periodic(Float64ScalarRange timeRange, Func<double, double> getValueFunc, Func<double, double> getDerivative1ValueFunc)
+    public static Float64ScalarComputedSignal Periodic(Float64ScalarRange timeRange, Func<double, double> getValueFunc, Func<double, double> getDerivative1ValueFunc)
     {
         return new Float64ScalarComputedSignal(
-            timeRange, 
-            true, 
-            getValueFunc, 
+            timeRange,
+            true,
+            getValueFunc,
             getDerivative1ValueFunc
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarComputedSignal Periodic(Float64ScalarRange timeRange, Func<double, double> getValueFunc, Func<double, double> getDerivative1ValueFunc, Func<double, double> getDerivative2ValueFunc)
+    public static Float64ScalarComputedSignal Periodic(Float64ScalarRange timeRange, Func<double, double> getValueFunc, Func<double, double> getDerivative1ValueFunc, Func<double, double> getDerivative2ValueFunc)
     {
         return new Float64ScalarComputedSignal(
-            timeRange, 
-            true, 
-            getValueFunc, 
-            getDerivative1ValueFunc, 
+            timeRange,
+            true,
+            getValueFunc,
+            getDerivative1ValueFunc,
             getDerivative2ValueFunc
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarComputedSignal Periodic(double timeMin, double timeMax, Func<double, double> getValueFunc)
+    public static Float64ScalarComputedSignal Periodic(double timeMin, double timeMax, Func<double, double> getValueFunc)
     {
         var timeRange = Float64ScalarRange.Create(timeMin, timeMax);
 
         return new Float64ScalarComputedSignal(
-            timeRange, 
-            true, 
+            timeRange,
+            true,
             getValueFunc
         );
     }

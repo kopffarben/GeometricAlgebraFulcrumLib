@@ -6,10 +6,10 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Basic
 public sealed class Float64ScalarConstantOneSignal :
     Float64ScalarSignal
 {
-    internal static Float64ScalarConstantOneSignal FiniteInstance { get; }
+    public static Float64ScalarConstantOneSignal FiniteInstance { get; }
         = new Float64ScalarConstantOneSignal(false);
 
-    internal static Float64ScalarConstantOneSignal PeriodicInstance { get; }
+    public static Float64ScalarConstantOneSignal PeriodicInstance { get; }
         = new Float64ScalarConstantOneSignal(true);
 
 

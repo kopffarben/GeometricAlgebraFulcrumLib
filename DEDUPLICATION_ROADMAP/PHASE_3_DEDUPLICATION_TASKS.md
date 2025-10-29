@@ -467,11 +467,42 @@ ParametricPath3D<T> (Basis)
   - **Formula:** `Magnitude * Cos(2π * HarmonicFactor * (t + TimeOffset))`
   - **Features:** Configurable harmonic factor (1-N), magnitude scaling, time offset/phase shift
 
-**Total Completed in Module 6C:** 10/40 Klassen (25%)
-**Total Tests:** 147 Equivalence Tests (100% passing)
+#### Session 4: Basic Signals (3 Klassen) - 2025-10-29
+
+- [x] **ConstantScalarSignal<T>** - Constant value signal
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic`
+  - **Referenz:** `Float64ScalarConstantZeroSignal` (72 LOC), `Float64ScalarConstantOneSignal` (70 LOC)
+  - **Implementation:** 109 LOC, returns constant value for all time
+  - **Tests:** 11 Equivalence Tests ✅ (100% passing)
+  - **Note:** Implementation already existed, added tests + updated Float64 API (internal → public static)
+  - **Test Coverage:** Zero/One constants, arbitrary values, derivatives (always zero), conversions, custom time ranges
+  - **Formula:** `Value` (constant for all t)
+
+- [x] **ComputedScalarSignal<T>** - User-defined function signal
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic`
+  - **Referenz:** `Float64ScalarComputedSignal` (173 LOC)
+  - **Implementation:** 264 LOC, takes Func<Scalar<T>, Scalar<T>> for custom computation
+  - **Tests:** 12 Equivalence Tests ✅ (100% passing)
+  - **Note:** Implementation already existed, added tests + updated Float64 API (internal → public static)
+  - **Test Coverage:** Quadratic, sine, exponential functions, with/without custom derivatives, polynomial with all derivatives
+  - **Features:** Optional custom derivative functions (1st and 2nd), falls back to NotSupportedException if not provided
+
+- [x] **HarmonicScalarSignal<T>** - Harmonic oscillator with frequency parameter
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic`
+  - **Referenz:** `Float64ScalarHarmonicSignal` (118 LOC)
+  - **Implementation:** 161 LOC, Magnitude * Cos(2π * FrequencyHz * (t + TimeOffset))
+  - **Tests:** 16 Equivalence Tests ✅ (100% passing)
+  - **Note:** Implementation already existed, added comprehensive tests. Float64 already public ✅
+  - **Test Coverage:** Basic parameters, time offset, higher frequencies, derivatives with frequency multiplication, phase shift effects, Frequency property (2π * FrequencyHz)
+  - **Formula:** `Magnitude * Cos(2π * FrequencyHz * (t + TimeOffset))`
+  - **Features:** FrequencyHz parameter (Hz), Frequency property (rad/s = 2π * FrequencyHz), configurable magnitude and time offset
+
+**Total Completed in Module 6C:** 13/40 Klassen (32.5%)
+**Total Tests:** 186 Equivalence Tests (100% passing)
 **Session 1 Time:** ~6 hours (implementation + testing + debugging for 3 complex signals)
 **Session 2 Time:** ~1 hour (writing 16 tests for RampSignal, verifying existing implementations)
 **Session 3 Time:** ~2 hours (writing 40 tests for Sin/Cos/SimpleHarmonic signals, Float64 API parity updates)
+**Session 4 Time:** ~2.5 hours (writing 39 tests for Constant/Computed/Harmonic signals, Float64 API parity updates)
 
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
