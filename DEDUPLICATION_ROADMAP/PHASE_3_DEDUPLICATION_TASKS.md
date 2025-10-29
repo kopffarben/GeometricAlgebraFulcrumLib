@@ -579,6 +579,31 @@ ParametricPath3D<T> (Basis)
 **Session 6 Time:** ~2 hours (implementing ScalarRepeatedSignal + 10 tests, fixing IScalarProcessor<T> type handling)
 **Session 7 Time:** ~2.5 hours (implementing AffineMap1D<T> + ScalarAffineMappedSignal<T> + 13 tests, fixing Scalar<T>/T type conversion errors)
 
+#### Session 8: Mapped Signal - ScalarAffineMappedTimeSignal<T> - 2025-10-29
+
+- [x] **ScalarAffineMappedTimeSignal<T>** - Maps signal time parameter through affine transformation
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Mapped`
+  - **Referenz:** `Float64ScalarAffineMappedTimeSignal` (110 LOC)
+  - **Lines of Code:** 133 LOC
+  - **Features:** Time stretching/compression via affine map: baseSignal(affineMapInverse(t)), derivatives scaled by inverse scaling (squared for 2nd derivative)
+  - **Tests:** 13 Equivalence Tests (100% passing)
+    - Time shift, time scaling, combined transformations
+    - Negative scaling (time reversal)
+    - First/second derivative correctness with chain rule
+    - Time range transformation (positive/negative scaling)
+    - Properties: IsFinite, ToFiniteSignal, ToPeriodicSignal
+
+**Total Completed in Module 6C:** 19/40 Klassen (47.5%)
+**Total Tests:** 260 Equivalence Tests (100% passing)
+**Session 1 Time:** ~6 hours (implementation + testing + debugging for 3 complex signals)
+**Session 2 Time:** ~1 hour (writing 16 tests for RampSignal, verifying existing implementations)
+**Session 3 Time:** ~2 hours (writing 40 tests for Sin/Cos/SimpleHarmonic signals, Float64 API parity updates)
+**Session 4 Time:** ~2.5 hours (writing 39 tests for Constant/Computed/Harmonic signals, Float64 API parity updates)
+**Session 5 Time:** ~4 hours (implementing 3 Mapped Signals + 38 tests, debugging IComparable issue with Scalar<T>.Min/Max)
+**Session 6 Time:** ~2 hours (implementing ScalarRepeatedSignal + 10 tests, fixing IScalarProcessor<T> type handling)
+**Session 7 Time:** ~2.5 hours (implementing AffineMap1D<T> + ScalarAffineMappedSignal<T> + 13 tests, fixing Scalar<T>/T type conversion errors)
+**Session 8 Time:** ~2 hours (implementing ScalarAffineMappedTimeSignal<T> + 13 tests, fixing internal Create methods via Extension methods)
+
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
 - [ ] AnglePath<T>, NormalizedAngle<T>, PolarAngle<T>

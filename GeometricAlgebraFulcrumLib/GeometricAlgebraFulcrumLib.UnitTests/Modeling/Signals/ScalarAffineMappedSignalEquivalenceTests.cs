@@ -3,6 +3,7 @@ using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space1D;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Mapped;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic;
@@ -26,7 +27,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // Arrange - Scale signal values by 2.0
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.CreateScale(2.0);
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.CreateScale(ScalarProcessor, ScalarProcessor.ScalarFromNumber(2.0));
@@ -61,7 +62,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // Arrange - Translate signal values by +3.0
         var float64BaseSignal = Float64ScalarCosSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.CreateTranslate(3.0);
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = CosScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.CreateTranslate(ScalarProcessor, ScalarProcessor.ScalarFromNumber(3.0));
@@ -96,7 +97,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // Arrange - Affine map: f(x) = 2.5*x + 1.0
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.Create(2.5, 1.0);
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.Create(
@@ -135,7 +136,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // Arrange - Identity map: f(x) = x (scaling=1, offset=0)
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.Identity;
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.Identity(ScalarProcessor);
@@ -170,7 +171,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // Arrange - Reflection: f(x) = -x (scaling=-1, offset=0)
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.Reflection;
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.Reflection(ScalarProcessor);
@@ -206,7 +207,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // d/dt[3*sin(t) + 2] = 3*cos(t)
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.Create(3.0, 2.0);
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.Create(
@@ -246,7 +247,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // d²/dt²[2.5*sin(t) + 1.5] = -2.5*sin(t)
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.Create(2.5, 1.5);
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.Create(
@@ -285,7 +286,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // Arrange
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.Create(2.0, 1.0);
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.Create(
@@ -312,7 +313,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // Arrange - Affine mapping preserves time range of base signal
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.Create(2.0, 1.0);
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.Create(
@@ -355,7 +356,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // Arrange
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.Create(2.0, 1.0);
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.Create(
@@ -393,7 +394,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // Arrange
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.Create(2.0, 1.0);
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.Create(
@@ -405,12 +406,12 @@ public class ScalarAffineMappedSignalEquivalenceTests
 
         // Act & Assert - Verify BaseSignal property is accessible
         Debug.Assert(
-            ReferenceEquals(float64Signal.BaseSignal, float64BaseSignal),
+            ReferenceEquals((float64Signal as Float64ScalarAffineMappedSignal)?.BaseSignal, float64BaseSignal),
             "Float64 BaseSignal should reference the original base signal"
         );
 
         Assert.That(
-            ReferenceEquals(float64Signal.BaseSignal, float64BaseSignal),
+            ReferenceEquals((float64Signal as Float64ScalarAffineMappedSignal)?.BaseSignal, float64BaseSignal),
             Is.True,
             "Float64 BaseSignal should reference the original base signal"
         );
@@ -422,7 +423,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
 
         // Verify base signal values match
         var t = 0.5;
-        var float64BaseValue = float64Signal.BaseSignal.GetValue(t);
+        var float64BaseValue = (float64Signal as Float64ScalarAffineMappedSignal)?.BaseSignal.GetValue(t) ?? 0;
         var genericBaseValue = genericSignal.BaseSignal.GetValue(ScalarProcessor.ScalarFromNumber(t)).ScalarValue;
 
         Assert.That(
@@ -438,7 +439,7 @@ public class ScalarAffineMappedSignalEquivalenceTests
         // Arrange
         var float64BaseSignal = Float64ScalarSinSignal.FiniteInstance;
         var float64AffineMap = Float64AffineMap1D.Create(3.5, 2.5);
-        var float64Signal = Float64ScalarAffineMappedSignal.Create(float64BaseSignal, float64AffineMap);
+        var float64Signal = float64BaseSignal.MapValueUsing(float64AffineMap);
 
         var genericBaseSignal = SinScalarSignal<double>.Finite(ScalarProcessor);
         var genericAffineMap = AffineMap1D<double>.Create(
@@ -450,13 +451,13 @@ public class ScalarAffineMappedSignalEquivalenceTests
 
         // Act & Assert - Verify AffineMap properties
         Assert.That(
-            Math.Abs(float64Signal.AffineMap.Scaling.ScalarValue - genericSignal.AffineMap.Scaling.ScalarValue),
+            Math.Abs((float64Signal as Float64ScalarAffineMappedSignal)?.AffineMap.Scaling.ScalarValue ?? 0 - genericSignal.AffineMap.Scaling.ScalarValue),
             Is.LessThan(Tolerance),
             "AffineMap Scaling should match"
         );
 
         Assert.That(
-            Math.Abs(float64Signal.AffineMap.Offset.ScalarValue - genericSignal.AffineMap.Offset.ScalarValue),
+            Math.Abs((float64Signal as Float64ScalarAffineMappedSignal)?.AffineMap.Offset.ScalarValue ?? 0 - genericSignal.AffineMap.Offset.ScalarValue),
             Is.LessThan(Tolerance),
             "AffineMap Offset should match"
         );
