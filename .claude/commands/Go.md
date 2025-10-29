@@ -3,19 +3,22 @@
 **Für JEDE Klasse gilt diese Reihenfolge:**
 
 ```
-1. ✅ ANALYSIERE Float64 Klasse
+1. ✅ BENUTZE Serena MCP zum semantischen SUCHEN und EDITIEREN des Codes
    ↓
-2. ✅ IMPLEMENTIERE Generic<T> Klasse
+2. ✅ ANALYSIERE Float64 Klasse
    ↓
-3. ✅ Stelle API-Kompartibilität zwischen Float64 und Generic<T> sicher
+3. ✅ IMPLEMENTIERE Generic<T> Klasse
    ↓
-4. ✅ SCHREIBE Equivalence Tests (Generic<double> vs Float64)
+4. ✅ Stelle API-Kompartibilität zwischen Float64 und Generic<T> sicher
    ↓
-5. ✅ STELLE SICHER alle Tests passing (100% Pass Rate!)
+5. ✅ SCHREIBE Equivalence Tests (Generic<double> vs Float64)
    ↓
-6. ✅ Update DEDUPLICATION_ROADMAP/PHASE_3_DEDUPLICATION_TASKS.md und DEDUPLICATION_ROADMAP/DEDUPLICATION_ROADMAP.md
+6. ✅ STELLE SICHER alle Tests passing (100% Pass Rate!)
    ↓
-7. ✅ NUR DANN Git Commit
+7. ✅ Update DEDUPLICATION_ROADMAP/PHASE_3_DEDUPLICATION_TASKS.md und DEDUPLICATION_ROADMAP/DEDUPLICATION_ROADMAP.md
    ↓
-8. ✅ Weiter zur nächsten Klasse
+8. ✅ NUR DANN Git Commit
+   ↓
+9. ✅ Weiter zur nächsten Klasse
 ```
+
