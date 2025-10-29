@@ -956,8 +956,64 @@ Made `Create()` method public in both Float64 and Generic versions to enable pro
 - This pattern will apply to ConstantZeroScalarSignal as well
 
 **Progress:**
-- Classes implemented: 27/40 (67.5%)
-- Total tests: 337 (8 new tests written, unable to run due to unrelated compilation errors)
+- Classes implemented: 28/40 (70%)
+- Total tests: 348 (19 new tests written, unable to run due to unrelated compilation errors)
+
+### Session 17: Basic Signal - ConstantZeroScalarSignal<T> ✅
+
+**Date:** 2025-10-29
+**Status:** Newly implemented
+**Implementation:** 73 LOC (Generic<T>)
+**Tests:** 11 equivalence tests (216 LOC)
+**Test Results:** Unable to run (unrelated compilation errors in other test files)
+**Build Status:** ✅ Implementation compiles successfully
+
+**Features:**
+- Constant scalar signal that always returns 0.0
+- Additive identity element for signal operations
+- First and second derivatives are always zero
+- Supports finite and periodic modes
+- Factory methods: `Finite(processor)` and `Periodic(processor)`
+
+**API Compatibility:**
+- ✅ Factory methods match Float64 pattern (FiniteInstance/PeriodicInstance become Finite()/Periodic())
+- ✅ All core methods match Float64 version (GetValue, GetDerivative1Value, GetDerivative2Value)
+- ⚠️ **Removed:** FindValueRange() methods (don't exist in Generic<T> base class)
+
+**Key Implementation Details:**
+- **Time Range:** Uses `ScalarRange<T>.SymmetricOne()` ([-1, 1])
+- **Constant Value:** Returns `ScalarProcessor.Zero.ToScalar()` always
+- **Derivatives:** Both derivatives return `ScalarProcessor.Zero.ToScalar()`
+- **Singleton Pattern:** Float64 uses static instances, Generic uses factory methods
+- **No State:** Class has no fields except inherited time range
+
+**Technical Challenges:**
+- Identical pattern to ConstantOneScalarSignal
+- Float64 version uses singleton pattern with static instances
+- Generic version uses factory methods (cannot have generic static instances per type)
+- FindValueRange() methods exist in Float64 but not in Generic base class - removed
+
+**Equivalence Tests:**
+- Test finite constant zero value (always 0.0)
+- Test periodic constant zero value
+- Test first derivative (always 0.0)
+- Test second derivative (always 0.0)
+- Test time range properties
+- Test IsValid validation
+- Test ToFiniteSignal conversion
+- Test ToPeriodicSignal conversion
+- Test constant behavior at edge cases (extreme time values)
+- Test zero identity property (additive identity: x + 0 = x)
+- Test mathematical zero behavior
+
+**Mathematical Properties:**
+- **Additive Identity:** For any signal s(t), s(t) + 0 = s(t)
+- **Multiplicative Annihilator:** For any signal s(t), s(t) * 0 = 0
+- **Derivative Property:** d/dt(0) = 0
+
+**Progress:**
+- Classes implemented: 28/40 (70%)
+- Total tests: 348 (11 new tests written, unable to run due to unrelated compilation errors)
 
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
