@@ -122,7 +122,11 @@
       "Bash(timeout 180 dotnet test:*)",
       "Bash(Select-String -Pattern \"\\.cs$\")",
       "Bash(Select-String -Pattern \"(Test Name:|Passed|Failed|Expected|But was|Message:)\")",
-      "Bash(Select-Object -First 80)"
+      "Bash(Select-Object -First 80)",
+      "Bash(timeout 60 powershell:*)",
+      "Bash(timeout 180 powershell:*)",
+      "Bash(Select-String -Pattern \"(Passed|Failed|Total tests|error|Test Name:)\")",
+      "Bash(Select-String -Pattern \"(error|warning CS)\" -Context 2,2)"
     ]
   },
   "enabledMcpjsonServers": [

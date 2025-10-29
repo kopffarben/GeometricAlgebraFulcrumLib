@@ -17,7 +17,7 @@
 
 ---
 
-## 🔴 KRITISCHER WORKFLOW: Equivalence Test Pattern (ZWINGEND!)
+## 🔴 KRITISCHER WORKFLOW: Equivalence Test Pattern und Documentation (ZWINGEND!)
 
 **Für JEDE Klasse gilt diese Reihenfolge:**
 
@@ -28,9 +28,11 @@
    ↓
 3. ✅ STELLE SICHER alle Tests passing (100% Pass Rate!)
    ↓
-4. ✅ NUR DANN Git Commit
+4. ✅ Update DEDUPLICATION_ROADMAP/PHASE_3_DEDUPLICATION_TASKS.md und DEDUPLICATION_ROADMAP/DEDUPLICATION_ROADMAP.md
    ↓
-5. ✅ Weiter zur nächsten Klasse
+5. ✅ NUR DANN Git Commit
+   ↓
+6. ✅ Weiter zur nächsten Klasse
 ```
 
 **❌ NIEMALS committen wenn:**
