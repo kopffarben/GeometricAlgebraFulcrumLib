@@ -5,10 +5,10 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Norma
 public sealed class Float64ScalarRampSignal :
     Float64ScalarNormalizedSignal
 {
-    internal static Float64ScalarRampSignal FiniteInstance { get; }
+    public static Float64ScalarRampSignal FiniteInstance { get; }
         = new Float64ScalarRampSignal(false);
 
-    internal static Float64ScalarRampSignal PeriodicInstance { get; }
+    public static Float64ScalarRampSignal PeriodicInstance { get; }
         = new Float64ScalarRampSignal(true);
 
 

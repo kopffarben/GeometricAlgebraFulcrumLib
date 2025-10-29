@@ -1238,15 +1238,57 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **Use Case:** Harmonische Signale mit ganzzahligen Frequenzmultiplikatoren
     - **Status**: Complete ✅
 
+31. **ScalarNormalizedSignal<T>** - Abstract base class for normalized signals ✅ COMPLETE (2025-10-29)
+    - Abstract base class für Signale mit time range [-1, 1] und value range [-1, 1]
+    - Extends ScalarSignal<T>
+    - Constructor: Initialisiert TimeRange mit ScalarRange<T>.SymmetricOne
+    - **Removed Method:** FindValueRange() - nicht in ScalarSignal<T> base class
+    - **Simplified Version:** Generic<T> hat keine FindValueRange() Methode (siehe ScalarSignal<T> design)
+    - **Properties:** TimeRange = [-1, 1], IsPeriodic (inherited)
+    - **LOC:** 20 LOC Implementation
+    - **Use Case:** Basis für normalisierte Signale (RampSignal, StepSignal, etc.)
+    - **Status**: Complete ✅
+
+32. **ScalarRampSignal<T>** - Linear ramp signal (normalized) ✅ COMPLETE (2025-10-29)
+    - Extends ScalarNormalizedSignal<T>
+    - Linear ramp von -1 bis 1 über time range [-1, 1]
+    - **Value Function:** GetValue(t) = clamp(t, -1, 1)
+    - **Derivative Functions:**
+      - GetDerivative1Value(t) = 1 (inside range für finite), 1 (always für periodic)
+      - GetDerivative2Value(t) = 0 (constant slope)
+    - 2 Factory-Methoden: Finite(), Periodic()
+    - **Implementation Details:**
+      - Direct comparison operators (<, >) auf Scalar<T>
+      - No ClampTime() extension method (not available for Generic<T>)
+      - Manual clamping logic: `t < Min ? Min : t > Max ? Max : t`
+    - ToFiniteSignal/ToPeriodicSignal Transformationen
+    - IsValid() gibt immer true zurück
+    - **API Parity Enhancement:** Float64ScalarRampSignal updated
+      - Changed `internal static FiniteInstance/PeriodicInstance` zu `public static`
+      - Enables testing and achieves API parity with Generic<T>
+    - **Tests:** 14 Tests (14 passing ✅ - 100% success rate)
+      - GetValue at boundary points (-1, 0, 1)
+      - GetValue below/above range (clamping behavior)
+      - GetDerivative1Value inside/outside range
+      - GetDerivative2Value (always 0)
+      - Periodic behavior tests
+      - IsValid validation
+      - ToFiniteSignal/ToPeriodicSignal conversions
+      - TimeRange verification ([-1, 1])
+    - **LOC:** 94 LOC Implementation + ~210 LOC Tests
+    - **Float64 Enhancement:** 2 properties changed from internal to public
+    - **Use Case:** Linear ramping signals, time normalization, interpolation
+    - **Status**: Complete ✅
+
 **ScalarSignal Summary:**
-- Total: 6 Klassen (1 base + 5 concrete)
-- Total Tests: 56 Tests (56 passing ✅ - 100% success rate)
-- Total LOC: 778 LOC Implementation + ~1,400 LOC Tests
+- Total: 8 Klassen (1 base + 1 normalized base + 6 concrete)
+- Total Tests: 70 Tests (70 passing ✅ - 100% success rate)
+- Total LOC: 892 LOC Implementation + ~1,610 LOC Tests
 - **Architectural Decision**: Unified ConstantScalarSignal<T> statt separate Zero/One Klassen (DRY principle)
 - **Dependencies Unblocked**: ScalarTripletPath3D, HarmonicPath3D, SphericalPath3D können jetzt implementiert werden
 
 #### ✅ Signal-Based Paths (Complete - 2025-10-28)
-31. **ScalarTripletPath3D<T>** - 3D Path aus drei unabhängigen Skalar-Signalen
+33. **ScalarTripletPath3D<T>** - 3D Path aus drei unabhängigen Skalar-Signalen
     - Kombiniert 3 ScalarSignal<T> Instanzen für X, Y, Z Komponenten
     - 6 Factory-Methoden: Finite (2), Periodic (2), Create (2)
     - GetValue, GetDerivative1Value, GetDerivative2Value delegieren an Component-Signals
@@ -1256,7 +1298,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 198 LOC Implementation + ~350 LOC Tests
     - **Status**: Complete ✅
 
-32. **HarmonicScalarSignal<T>** - Harmonische (sinusförmige) Skalar-Signale
+34. **HarmonicScalarSignal<T>** - Harmonische (sinusförmige) Skalar-Signale
     - Formel: `Magnitude * cos(2πf * (t + TimeOffset))`
     - Properties: FrequencyHz, Frequency (= 2π * FrequencyHz), Magnitude, TimeOffset
     - 4 Factory-Methoden: Finite (2), Periodic (2)
@@ -1267,7 +1309,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 169 LOC Implementation
     - **Status**: Complete ✅
 
-33. **HarmonicPath3D<T>** - 3D Path aus drei harmonischen Signalen
+35. **HarmonicPath3D<T>** - 3D Path aus drei harmonischen Signalen
     - Kombiniert 3 HarmonicScalarSignal<T> für periodische/zyklische Bewegungen
     - Create Factory-Methode
     - Circular paths in XY-plane möglich (X = cos, Y = sin via offset)
@@ -1277,7 +1319,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 107 LOC Implementation + ~450 LOC Tests
     - **Status**: Complete ✅
 
-34. **SphericalPath3D<T>** - 3D Path in sphärischen Koordinaten
+36. **SphericalPath3D<T>** - 3D Path in sphärischen Koordinaten
     - Konvertiert (r, theta, phi) → (x, y, z) Cartesian
     - Formeln: `x = r*cos(θ)*cos(φ), y = r*cos(θ)*sin(φ), z = r*sin(θ)`
     - 2 Factory-Methoden: Finite, Periodic
@@ -1295,7 +1337,7 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 - **Use Cases**: HarmonicPath3D für periodische Bewegungen, SphericalPath3D für radial-symmetrische Pfade
 
 #### ⏳ Nächste Schritte
-35. **Weitere Circle/Line Variants**, **Hermite**, **Roulette** etc.
+37. **Weitere Circle/Line Variants**, **Hermite**, **Roulette** etc.
 ...
 
 **Vollständige Task-Liste:** Siehe [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)
