@@ -548,6 +548,37 @@ ParametricPath3D<T> (Basis)
 **Session 5 Time:** ~4 hours (implementing 3 Mapped Signals + 38 tests, debugging IComparable issue with Scalar<T>.Min/Max)
 **Session 6 Time:** ~2 hours (implementing ScalarRepeatedSignal + 10 tests, fixing IScalarProcessor<T> type handling)
 
+#### Session 7: Mapped Signal - ScalarAffineMappedSignal<T> + AffineMap1D<T> - 2025-10-29
+
+- [x] **AffineMap1D<T>** - 1D affine transformation: f(x) = scaling * x + offset (Dependency)
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space1D`
+  - **Referenz:** `Float64AffineMap1D` (310 LOC)
+  - **Lines of Code:** 204 LOC
+  - **Features:** Identity, Reflection, CreateScale, CreateTranslate, CreateFromRanges factory methods; MapPoint, MapVector, GetInverseAffineMap
+  - **Implementation:** Full API parity with Float64 version, proper Scalar<T> type handling in all factory methods
+
+- [x] **ScalarAffineMappedSignal<T>** - Maps signal values through affine transformation
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Mapped`
+  - **Referenz:** `Float64ScalarAffineMappedSignal` (106 LOC)
+  - **Lines of Code:** 115 LOC
+  - **Features:** Applies affine transformation to base signal values: GetValue(t) = affineMap.MapPoint(baseSignal.GetValue(t)), derivatives scaled by Scaling factor
+  - **Implementation:** Simplified API (removed FindValueRange methods not present in Generic<T> base class)
+  - **Tests:** 13 Equivalence Tests (100% passing)
+    - Scale-only, translate-only, combined transformations
+    - Identity and reflection special cases
+    - First/second derivative correctness
+    - Properties: IsFinite, TimeRange, BaseSignal, AffineMap access
+
+**Total Completed in Module 6C:** 18/40 Klassen (45%)
+**Total Tests:** 247 Equivalence Tests (100% passing)
+**Session 1 Time:** ~6 hours (implementation + testing + debugging for 3 complex signals)
+**Session 2 Time:** ~1 hour (writing 16 tests for RampSignal, verifying existing implementations)
+**Session 3 Time:** ~2 hours (writing 40 tests for Sin/Cos/SimpleHarmonic signals, Float64 API parity updates)
+**Session 4 Time:** ~2.5 hours (writing 39 tests for Constant/Computed/Harmonic signals, Float64 API parity updates)
+**Session 5 Time:** ~4 hours (implementing 3 Mapped Signals + 38 tests, debugging IComparable issue with Scalar<T>.Min/Max)
+**Session 6 Time:** ~2 hours (implementing ScalarRepeatedSignal + 10 tests, fixing IScalarProcessor<T> type handling)
+**Session 7 Time:** ~2.5 hours (implementing AffineMap1D<T> + ScalarAffineMappedSignal<T> + 13 tests, fixing Scalar<T>/T type conversion errors)
+
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
 - [ ] AnglePath<T>, NormalizedAngle<T>, PolarAngle<T>
