@@ -658,6 +658,7 @@ ParametricPath3D<T> (Basis)
 **Session 9 Time:** ~1 hour (verifying ScalarPlusSignal<T> already exists + 12 tests, validating API compatibility)
 **Session 10 Time:** ~0.5 hours (verifying ScalarTimesSignal<T> already exists + 13 tests, validating API compatibility)
 **Session 11 Time:** ~0.5 hours (verifying ScalarDerivativeSignal<T> already exists + 14 tests, validating API compatibility)
+**Session 12 Time:** ~3 hours (implementing ScalarSegmentSignal<T> + Clamp() method + 4 equivalence tests, fixing multiple compilation errors)
 
 ### Session 11: Mapped Signal - ScalarDerivativeSignal<T> ✅
 
@@ -696,6 +697,48 @@ ParametricPath3D<T> (Basis)
 **Progress:**
 - Classes implemented: 22/40 (55%)
 - Total tests: 299 (all passing)
+
+### Session 12: Mapped Signal - ScalarSegmentSignal<T> ✅
+
+**Date:** 2025-10-29
+**Status:** Newly implemented
+**Implementation:** 175 LOC (Generic<T>)
+**Tests:** 4 equivalence tests (132 LOC)
+**Test Results:** All 4 tests passing (100%)
+
+**Features:**
+- Creates a segment of a signal - restricts a base signal to a specific time range
+- Clamps time values to the segment's time range
+- Supports finite and periodic modes
+- Handles inverted time ranges (timeMin > timeMax) via FlipTimeRange helper
+- Factory methods: `Finite()` and `Periodic()`
+
+**API Compatibility:**
+- ✅ All factory methods match Float64 version
+- ✅ All properties match Float64 version
+- ✅ All methods match Float64 version
+- ✅ Made factory methods public (were internal)
+
+**Additional Changes:**
+- Added `Clamp(Scalar<T> value)` method to ScalarRange<T> (ScalarRange.cs:769-781)
+  - Clamps a value to the range [MinValue, MaxValue]
+  - Uses Scalar<T> comparison methods (IsLessThan)
+- Made Float64ScalarSegmentSignal factory methods public for API consistency
+
+**Implementation Details:**
+- Uses AffineMap1D<T>.CreateFromRanges() for time range flipping
+- Uses ScalarAffineMappedTimeSignal<T> to implement FlipTimeRange helper
+- Comparison logic uses Scalar<T>.IsLessThanOrEqualTo() instead of IScalarProcessor methods
+
+**Equivalence Tests:**
+- Test finite segment with sin signal
+- Test periodic segment with cos signal
+- Test ToFiniteSignal conversion
+- Test ToPeriodicSignal conversion
+
+**Progress:**
+- Classes implemented: 23/40 (57.5%)
+- Total tests: 303 (all passing in Modeling project)
 
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>

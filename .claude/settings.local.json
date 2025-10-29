@@ -126,7 +126,9 @@
       "Bash(timeout 60 powershell:*)",
       "Bash(timeout 180 powershell:*)",
       "Bash(Select-String -Pattern \"(Passed|Failed|Total tests|error|Test Name:)\")",
-      "Bash(Select-String -Pattern \"(error|warning CS)\" -Context 2,2)"
+      "Bash(Select-String -Pattern \"(error|warning CS)\" -Context 2,2)",
+      "Bash(Select-String -Pattern \"(error|warning CS|Build succeeded|Build FAILED|Passed|Failed|Total tests)\")",
+      "Bash(/dev/null)"
     ]
   },
   "enabledMcpjsonServers": [

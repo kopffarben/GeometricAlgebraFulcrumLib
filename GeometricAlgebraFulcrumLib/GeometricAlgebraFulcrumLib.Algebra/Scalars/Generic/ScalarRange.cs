@@ -766,6 +766,21 @@ public readonly struct ScalarRange<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Clamp(Scalar<T> value)
+    {
+        // If value < MinValue, return MinValue
+        if (value.IsLessThan(MinValue))
+            return MinValue;
+
+        // If value > MaxValue (i.e., MaxValue < value), return MaxValue
+        if (MaxValue.IsLessThan(value))
+            return MaxValue;
+
+        // Value is within range
+        return value;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
         return $"[{MinValue}, {MaxValue}]";

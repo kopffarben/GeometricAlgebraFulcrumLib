@@ -1,6 +1,6 @@
   Wiederherzustellende Projekte werden ermittelt...
-D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-cjc8-g9w8-chfw. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
@@ -15,7 +15,6 @@ D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
   Alle Projekte sind für die Wiederherstellung auf dem neuesten Stand.
-D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg.
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x.
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645.
@@ -23,6 +22,7 @@ D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw.
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82.
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-23hg-53q6-hqfg.
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-6hgw-6x87-578x.
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-9ccg-6pjw-x645.
@@ -30,187 +30,47 @@ D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1901: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Niedrig Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-fh55-q5pj-pxgw.
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1903: Das Paket "Magick.NET-Q16-x64" 14.7.0 weist eine bekannte Hoch Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-qp29-wxp5-wh82.
 D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj : warning NU1902: Das Paket "SixLabors.ImageSharp" 3.1.10 weist eine bekannte Moderat Schweregrad-Sicherheitsanfälligkeit auf, https://github.com/advisories/GHSA-rxmq-m78w-7wmc.
-  GeometricAlgebraFulcrumLib.Utilities.Structures -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Structures\bin\Release\net8.0\GeometricAlgebraFulcrumLib.Utilities.Structures.dll
-  GeometricAlgebraFulcrumLib.Utilities.Text -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Text\bin\Release\net8.0\GeometricAlgebraFulcrumLib.Utilities.Text.dll
-  GeometricAlgebraFulcrumLib.Utilities.Web -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\bin\Release\net8.0\GeometricAlgebraFulcrumLib.Utilities.Web.dll
-  GeometricAlgebraFulcrumLib.Algebra -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\bin\Release\net8.0\GeometricAlgebraFulcrumLib.Algebra.dll
-C:\program files\dotnet\sdk\9.0.306\Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3270: Konflikt zwischen der Prozessorarchitektur des Projekts "MSIL", das erstellt wird, und der Prozessorarchitektur des Verweises, "C:\Users\schmi\.nuget\packages\magick.net-q16-x64\14.7.0\lib\net8.0\Magick.NET-Q16-x64.dll", "AMD64". Dieser Konflikt kann zu Laufzeitfehlern führen. Ändern Sie ggf. mithilfe des Konfigurations-Managers die als Ziel angegebene Prozessorarchitektur Ihres Projekts so, dass die Prozessorarchitekturen zwischen Ihrem Projekt und den Verweisen ausgerichtet werden, oder wählen Sie eine Abhängigkeit von Verweisen mit einer Prozessorarchitektur, die der als Ziel angegebene Prozessorarchitektur Ihres Projekts entspricht. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj]
-  GeometricAlgebraFulcrumLib.Modeling -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\bin\Release\net8.0\GeometricAlgebraFulcrumLib.Modeling.dll
-C:\program files\dotnet\sdk\9.0.306\Microsoft.Common.CurrentVersion.targets(2433,5): warning MSB3270: Konflikt zwischen der Prozessorarchitektur des Projekts "MSIL", das erstellt wird, und der Prozessorarchitektur des Verweises, "C:\Users\schmi\.nuget\packages\magick.net-q16-x64\14.7.0\lib\net8.0\Magick.NET-Q16-x64.dll", "AMD64". Dieser Konflikt kann zu Laufzeitfehlern führen. Ändern Sie ggf. mithilfe des Konfigurations-Managers die als Ziel angegebene Prozessorarchitektur Ihres Projekts so, dass die Prozessorarchitekturen zwischen Ihrem Projekt und den Verweisen ausgerichtet werden, oder wählen Sie eine Abhängigkeit von Verweisen mit einer Prozessorarchitektur, die der als Ziel angegebene Prozessorarchitektur Ihres Projekts entspricht. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
-  GeometricAlgebraFulcrumLib.UnitTests -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\bin\Release\net8.0\GeometricAlgebraFulcrumLib.UnitTests.dll
-Testlauf für "D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\bin\Release\net8.0\GeometricAlgebraFulcrumLib.UnitTests.dll" (.NETCoreApp,Version=v8.0)
-VSTest-Version 17.14.1 (x64)
-
-Die Testausführung wird gestartet, bitte warten...
-Insgesamt 1 Testdateien stimmten mit dem angegebenen Muster überein.
-  Fehler Rotation_PreservesNorm [6 ms]
-  Fehlermeldung:
-   System.ArgumentException : value
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.XGaFloat64Vector.CreatePureRotor(XGaFloat64Vector targetVector, Boolean assumeUnitVectors) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebra\Float64\Multivectors\SubspaceOps.cs:line 728
-   at GeometricAlgebraFulcrumLib.UnitTests.Algebra.ProcessorSpecificTests.EuclideanProcessorTests.Rotation_PreservesNorm() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Algebra\ProcessorSpecificTests.cs:line 134
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-
-  Fehler VGa2D_BasisVectors_ShouldMatch [4 ms]
-  Fehlermeldung:
-   System.TypeInitializationException : The type initializer for 'GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D' threw an exception.
-  ----> System.ArgumentOutOfRangeException : Specified argument was out of the range of valid values. (Parameter 'grade')
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D.get_Instance() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace2D.cs:line 11
-   at GeometricAlgebraFulcrumLib.UnitTests.Algebra.VGaEquivalenceTests.VGa2D_BasisVectors_ShouldMatch() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Algebra\VGaEquivalenceTests.cs:line 108
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
---ArgumentOutOfRangeException
-   at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace..ctor(Int32 vSpaceDimensions) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace.cs:line 37
-   at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D..cctor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace2D.cs:line 12
-
-  Fehler VGa2D_EncodeBivector_ShouldProduceEquivalentResults [< 1 ms]
-  Fehlermeldung:
-   System.TypeInitializationException : The type initializer for 'GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D' threw an exception.
-  ----> System.ArgumentOutOfRangeException : Specified argument was out of the range of valid values. (Parameter 'grade')
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D.get_Instance() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace2D.cs:line 11
-   at GeometricAlgebraFulcrumLib.UnitTests.Algebra.VGaEquivalenceTests.VGa2D_EncodeBivector_ShouldProduceEquivalentResults() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Algebra\VGaEquivalenceTests.cs:line 70
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
---ArgumentOutOfRangeException
-   at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace..ctor(Int32 vSpaceDimensions) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace.cs:line 37
-   at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D..cctor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace2D.cs:line 12
-
-  Fehler VGa2D_EncodeDecodeComplex_ShouldPreserveValues [< 1 ms]
-  Fehlermeldung:
-   System.TypeInitializationException : The type initializer for 'GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D' threw an exception.
-  ----> System.ArgumentOutOfRangeException : Specified argument was out of the range of valid values. (Parameter 'grade')
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D.get_Instance() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace2D.cs:line 11
-   at GeometricAlgebraFulcrumLib.UnitTests.Algebra.VGaEquivalenceTests.VGa2D_EncodeDecodeComplex_ShouldPreserveValues() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Algebra\VGaEquivalenceTests.cs:line 86
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
---ArgumentOutOfRangeException
-   at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace..ctor(Int32 vSpaceDimensions) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace.cs:line 37
-   at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D..cctor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace2D.cs:line 12
-
-  Fehler VGa2D_EncodeVector_ShouldProduceEquivalentResults [< 1 ms]
-  Fehlermeldung:
-   System.TypeInitializationException : The type initializer for 'GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D' threw an exception.
-  ----> System.ArgumentOutOfRangeException : Specified argument was out of the range of valid values. (Parameter 'grade')
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D.get_Instance() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace2D.cs:line 11
-   at GeometricAlgebraFulcrumLib.UnitTests.Algebra.VGaEquivalenceTests.VGa2D_EncodeVector_ShouldProduceEquivalentResults() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Algebra\VGaEquivalenceTests.cs:line 51
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
---ArgumentOutOfRangeException
-   at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace..ctor(Int32 vSpaceDimensions) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace.cs:line 37
-   at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D..cctor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace2D.cs:line 12
-
-  Fehler VGa2D_Pseudoscalar_ShouldMatch [< 1 ms]
-  Fehlermeldung:
-   System.TypeInitializationException : The type initializer for 'GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D' threw an exception.
-  ----> System.ArgumentOutOfRangeException : Specified argument was out of the range of valid values. (Parameter 'grade')
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D.get_Instance() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace2D.cs:line 11
-   at GeometricAlgebraFulcrumLib.UnitTests.Algebra.VGaEquivalenceTests.VGa2D_Pseudoscalar_ShouldMatch() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Algebra\VGaEquivalenceTests.cs:line 248
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
---ArgumentOutOfRangeException
-   at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace..ctor(Int32 vSpaceDimensions) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace.cs:line 37
-   at GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64.XGaEuclideanGeometrySpace2D..cctor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\Geometry\VGa\Float64\RGaEuclideanGeometrySpace2D.cs:line 12
-
-  Übersprungen Debug_RotorComposition [< 1 ms]
-  Fehler PureRotor_InverseUndoesRotation [< 1 ms]
-  Fehlermeldung:
-   System.ArgumentException : value
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.XGaFloat64Vector.CreatePureRotor(XGaFloat64Vector targetVector, Boolean assumeUnitVectors) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebra\Float64\Multivectors\SubspaceOps.cs:line 728
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.CreateValidRotor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 293
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.PureRotor_InverseUndoesRotation() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 177
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-
-  Fehler PureRotor_PreservesKVectorGrade [< 1 ms]
-  Fehlermeldung:
-   System.ArgumentException : value
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.XGaFloat64Vector.CreatePureRotor(XGaFloat64Vector targetVector, Boolean assumeUnitVectors) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebra\Float64\Multivectors\SubspaceOps.cs:line 728
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.CreateValidRotor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 293
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.PureRotor_PreservesKVectorGrade() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 223
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-
-  Fehler PureRotor_PreservesNorm [< 1 ms]
-  Fehlermeldung:
-   System.ArgumentException : value
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.XGaFloat64Vector.CreatePureRotor(XGaFloat64Vector targetVector, Boolean assumeUnitVectors) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebra\Float64\Multivectors\SubspaceOps.cs:line 728
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.CreateValidRotor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 293
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.PureRotor_PreservesNorm() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 66
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-
-  Fehler PureRotor_PreservesOuterProduct [< 1 ms]
-  Fehlermeldung:
-   System.ArgumentException : value
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.XGaFloat64Vector.CreatePureRotor(XGaFloat64Vector targetVector, Boolean assumeUnitVectors) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebra\Float64\Multivectors\SubspaceOps.cs:line 728
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.CreateValidRotor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 293
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.PureRotor_PreservesOuterProduct() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 260
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-
-  Fehler PureRotor_PreservesScalarProduct [< 1 ms]
-  Fehlermeldung:
-   System.ArgumentException : value
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.XGaFloat64Vector.CreatePureRotor(XGaFloat64Vector targetVector, Boolean assumeUnitVectors) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebra\Float64\Multivectors\SubspaceOps.cs:line 728
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.CreateValidRotor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 293
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.PureRotor_PreservesScalarProduct() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 242
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-
-  Fehler PureRotor_RotatesSourceToTarget [< 1 ms]
-  Fehlermeldung:
-   System.ArgumentException : value
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.XGaFloat64Vector.CreatePureRotor(XGaFloat64Vector targetVector, Boolean assumeUnitVectors) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebra\Float64\Multivectors\SubspaceOps.cs:line 728
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.PureRotor_RotatesSourceToTarget() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 94
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-
-  Fehler PureRotor_RotorCondition_RTimesReverseEqualsOne [< 1 ms]
-  Fehlermeldung:
-   System.ArgumentException : value
-  Stapelverfolgung:
-     at GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.XGaFloat64Vector.CreatePureRotor(XGaFloat64Vector targetVector, Boolean assumeUnitVectors) in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebra\Float64\Multivectors\SubspaceOps.cs:line 728
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.CreateValidRotor() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 293
-   at GeometricAlgebraFulcrumLib.UnitTests.LinearMaps.RotorsTests.PureRotorTests.PureRotor_RotorCondition_RTimesReverseEqualsOne() in D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\LinearMaps\RotorsTests.cs:line 53
-   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
-   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
-
-  Übersprungen MultivectorFourierCurve_HighOrderDerivative_ShouldCycle [< 1 ms]
-  Übersprungen VectorFourierCurve_GetDerivativeOrder4_ShouldBeOriginal [< 1 ms]
-  Übersprungen VectorFourierCurve_HighOrderDerivative_ShouldCycle [< 1 ms]
-  Übersprungen DecodeFlat_Element_ShouldReturnValidFlat [< 1 ms]
-  Übersprungen DecodeFlat_WithProbePoint_ShouldSucceed [< 1 ms]
-  Übersprungen DecodeHyperSphere_Element_ShouldReturnValidRound [< 1 ms]
-  Übersprungen DecodeLine_OPNS_ShouldSucceed [< 1 ms]
-  Übersprungen DecodeLine_ShouldHaveCorrectGrade [< 1 ms]
-  Übersprungen DecodeLineAtOrigin_ShouldSucceed [< 1 ms]
-  Übersprungen DecodeOPNSFlat_VGaPosition_ShouldSucceed [< 1 ms]
-  Übersprungen DecodeOPNSFlat_WithProbePoint_ShouldSucceed [< 1 ms]
-  Übersprungen DecodePlane_OPNS_ShouldSucceed [< 1 ms]
-  Übersprungen DecodePlaneAtOrigin_ShouldSucceed [< 1 ms]
-  Übersprungen DecodePointPair_AsVector2D_ShouldReturnCorrectPoints [< 1 ms]
-  Übersprungen GetDominantFrequencyIndexSet_ShouldWork [< 1 ms]
-  Übersprungen DiscretePMF_GetCdf_ShouldWork [< 1 ms]
-  Übersprungen QuantizedHistogram_AddHeight_ShouldWork [< 1 ms]
-  Übersprungen QuantizedHistogram_BinProperties_ShouldBeAccessible [< 1 ms]
-  Übersprungen QuantizedHistogram_CreateExponential_ShouldWork [< 1 ms]
-  Übersprungen QuantizedHistogram_CreateNormal_ShouldWork [< 1 ms]
-  Übersprungen QuantizedHistogram_GetMean_ShouldWork [< 1 ms]
-  Übersprungen TrajectoryOperations_MapTimeRange_ShouldWork [< 1 ms]
-  Übersprungen LastOneBitPosition_HasLibraryBug [< 1 ms]
-
-Fehler!      : Fehler:    13, erfolgreich:  1565, übersprungen:    24, gesamt:  1602, Dauer: 4 s - GeometricAlgebraFulcrumLib.UnitTests.dll (net8.0)
+  GeometricAlgebraFulcrumLib.Utilities.Structures -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Structures\bin\Debug\net8.0\GeometricAlgebraFulcrumLib.Utilities.Structures.dll
+  GeometricAlgebraFulcrumLib.Utilities.Text -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Text\bin\Debug\net8.0\GeometricAlgebraFulcrumLib.Utilities.Text.dll
+  GeometricAlgebraFulcrumLib.Utilities.Web -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Utilities.Web\bin\Debug\net8.0\GeometricAlgebraFulcrumLib.Utilities.Web.dll
+  GeometricAlgebraFulcrumLib.Algebra -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Algebra\bin\Debug\net8.0\GeometricAlgebraFulcrumLib.Algebra.dll
+  GeometricAlgebraFulcrumLib.Modeling -> D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.Modeling\bin\Debug\net8.0\GeometricAlgebraFulcrumLib.Modeling.dll
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\TestUtils.cs(25,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\TestUtils.cs(56,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\TestUtils.cs(75,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\TestUtils.cs(93,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\TestUtils.cs(110,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\TestUtils.cs(126,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\TestUtils.cs(202,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\TestUtils.cs(259,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\TestUtils.cs(308,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\Text\StringUtilsTests.cs(79,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Algebra\ProcessorSpecificTests.cs(208,17): warning CS0219: Die Variable "expectedSign" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\Text\StringUtilsTests.cs(135,15): warning CS8632: Die Anmerkung für Nullable-Verweistypen darf nur in Code innerhalb eines #nullable-Anmerkungskontexts verwendet werden. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Utilities\Structures\IndexSetTests.cs(309,21): warning CS1718: Der Vergleich erfolgte mit der gleichen Variablen. Wollten Sie etwas anderes vergleichen? [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(29,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(64,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(99,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(138,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(173,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(209,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(249,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(288,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(315,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(358,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(396,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\ScalarAffineMappedSignalEquivalenceTests.cs(441,61): error CS0117: "Float64ScalarAffineMappedSignal" enthält keine Definition für "Create". [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(89,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(432,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(452,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(471,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(490,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(509,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(529,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(549,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(607,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(656,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Modeling\Signals\SignalProcessingTests.cs(681,13): warning CS0219: Die Variable "samplingRate" ist zugewiesen, ihr Wert wird aber nie verwendet. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
+D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\Algebra\ProcessorsTests.cs(9,25): warning CS0414: Dem Feld "ProcessorsTests.VSpaceDimensions" wurde ein Wert zugewiesen, der aber nie verwendet wird. [D:\_MBOX\_CODE\GA-FUL-main\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj]
 
 Es sind Workloadupdates verfügbar. Um weitere Informationen zu erhalten, führen Sie `dotnet workload list` aus.

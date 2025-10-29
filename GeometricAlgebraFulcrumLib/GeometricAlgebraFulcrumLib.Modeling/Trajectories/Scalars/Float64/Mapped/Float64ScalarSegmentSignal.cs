@@ -8,13 +8,13 @@ public sealed class Float64ScalarSegmentSignal :
     Float64ScalarSignal
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSegmentSignal Finite(Float64ScalarRange timeRange, Float64ScalarSignal baseSignal)
+    public static Float64ScalarSegmentSignal Finite(Float64ScalarRange timeRange, Float64ScalarSignal baseSignal)
     {
         return new Float64ScalarSegmentSignal(timeRange, false, baseSignal);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSegmentSignal Finite(double timeMin, double timeMax, Float64ScalarSignal baseSignal)
+    public static Float64ScalarSegmentSignal Finite(double timeMin, double timeMax, Float64ScalarSignal baseSignal)
     {
         if (timeMin < timeMax)
             return new Float64ScalarSegmentSignal(
@@ -41,13 +41,13 @@ public sealed class Float64ScalarSegmentSignal :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSegmentSignal Periodic(Float64ScalarRange timeRange, Float64ScalarSignal baseSignal)
+    public static Float64ScalarSegmentSignal Periodic(Float64ScalarRange timeRange, Float64ScalarSignal baseSignal)
     {
         return new Float64ScalarSegmentSignal(timeRange, true, baseSignal);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSegmentSignal Periodic(double timeMin, double timeMax, Float64ScalarSignal baseSignal)
+    public static Float64ScalarSegmentSignal Periodic(double timeMin, double timeMax, Float64ScalarSignal baseSignal)
     {
         if (timeMin < timeMax)
             return new Float64ScalarSegmentSignal(
