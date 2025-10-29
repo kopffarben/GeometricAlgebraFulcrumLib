@@ -382,33 +382,67 @@ ParametricPath3D<T> (Basis)
 
 **Scalar Trajectories:** `time → scalar`
 
-### ✅ Completed: Normalized Signals (3 Klassen) - 2025-10-29
+### ✅ Completed: Normalized Signals (7 Klassen) - 2025-10-29
+
+#### Session 1: Complex Signals (3 Klassen)
 
 - [x] **ScalarHalfSinStepSignal<T>** - Smooth half-sine step signal (sin(π/2 * t))
   - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized`
   - **Referenz:** `Float64ScalarHalfSinStepSignal` (104 LOC)
   - **Implementation:** 104 LOC, operator overloads pattern
   - **Tests:** 14 Equivalence Tests ✅ (100% passing)
-  - **Commit:** 2025-10-29
+  - **Commit:** 2ba8c706
 
 - [x] **ScalarSharpRectangleSignal<T>** - Sharp discontinuous rectangle signal
   - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized`
   - **Referenz:** `Float64ScalarSharpRectangleSignal` (91 LOC)
   - **Implementation:** 91 LOC, conditional logic pattern
   - **Tests:** 12 Equivalence Tests ✅ (100% passing)
-  - **Commit:** 2025-10-29
+  - **Commit:** 2ba8c706
 
 - [x] **ScalarSmoothRectangleSignal<T>** - Smooth rectangle with exponential transitions
   - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized`
   - **Referenz:** `Float64ScalarSmoothRectangleSignal` (188 LOC)
   - **Implementation:** 188 LOC, complex exponential formula (1 - 2/(1 + exp(1/t - 1/(1-t))))
   - **Tests:** 13 Equivalence Tests ✅ (100% passing, tolerance 1e-7 for complex exponentials)
-  - **Commit:** 2025-10-29
+  - **Commit:** 2ba8c706
   - **Note:** Derivative2 formula required careful (-1+t) notation matching Float64 version
 
-**Total Completed in Module 6C:** 3/40 Klassen (7.5%)
-**Total Tests:** 39 Equivalence Tests (100% passing)
-**Time Spent:** ~6 hours (implementation + testing + debugging)
+#### Session 2: Basic Signals (4 Klassen) - Already Implemented!
+
+- [x] **ScalarRampSignal<T>** - Linear ramp from -1 to 1
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized`
+  - **Referenz:** `Float64ScalarRampSignal` (58 LOC)
+  - **Implementation:** 92 LOC, simple linear ramp (GetValue returns clamped t)
+  - **Tests:** 16 Equivalence Tests ✅ (100% passing)
+  - **Note:** Implementation already existed, only tests were missing
+
+- [x] **ScalarSharpStepSignal<T>** - Sharp step from -1 to 1 at t=0
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized`
+  - **Referenz:** `Float64ScalarSharpStepSignal` (62 LOC)
+  - **Implementation:** 83 LOC, discontinuous step (t<0 → -1, t>0 → 1, t=0 → 0)
+  - **Tests:** ~13 Equivalence Tests ✅ (100% passing)
+  - **Note:** Implementation and tests already existed
+
+- [x] **ScalarSmoothStepSignal<T>** - Smooth sigmoid-like step transition
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized`
+  - **Referenz:** `Float64ScalarSmoothStepSignal` (98 LOC)
+  - **Implementation:** 163 LOC, smooth formula (2/(1 + exp(4*t/(t²-1))) - 1)
+  - **Tests:** ~14 Equivalence Tests ✅ (100% passing)
+  - **Note:** Implementation and tests already existed
+
+- [x] **ScalarTriangleSignal<T>** - Triangle wave with configurable vertex
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized`
+  - **Referenz:** `Float64ScalarTriangleSignal` (135 LOC)
+  - **Implementation:** 146 LOC, piecewise linear (ramp up to vertex, then down)
+  - **Tests:** ~13 Equivalence Tests ✅ (100% passing)
+  - **Features:** Configurable vertex time, symmetric/asymmetric modes
+  - **Note:** Implementation and tests already existed
+
+**Total Completed in Module 6C:** 7/40 Klassen (17.5%)
+**Total Tests:** 107 Equivalence Tests (100% passing)
+**Session 1 Time:** ~6 hours (implementation + testing + debugging for 3 complex signals)
+**Session 2 Time:** ~1 hour (writing 16 tests for RampSignal, verifying existing implementations)
 
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
