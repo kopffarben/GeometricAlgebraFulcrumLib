@@ -497,12 +497,45 @@ ParametricPath3D<T> (Basis)
   - **Formula:** `Magnitude * Cos(2π * FrequencyHz * (t + TimeOffset))`
   - **Features:** FrequencyHz parameter (Hz), Frequency property (rad/s = 2π * FrequencyHz), configurable magnitude and time offset
 
-**Total Completed in Module 6C:** 13/40 Klassen (32.5%)
-**Total Tests:** 186 Equivalence Tests (100% passing)
+#### Session 5: Mapped Signals (3 Klassen) - 2025-10-29
+
+- [x] **ScalarPlusSignal<T>** - Sum of multiple scalar signals
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Mapped`
+  - **Referenz:** `Float64ScalarPlusSignal` (186 LOC)
+  - **Implementation:** 203 LOC, sums multiple signals with automatic flattening
+  - **Tests:** 12 Equivalence Tests ✅ (100% passing)
+  - **Test Coverage:** 2-signal sum, 3-signal sum, derivatives (sum rule), periodic signals, conversions, flattening nested PlusSignals, time range union, IReadOnlyList interface
+  - **Formula:** `Sum(signal[i].GetValue(t))`
+  - **Features:** Automatic flattening of nested PlusSignals, implements IReadOnlyList<ScalarSignal<T>>, sum/product rule for derivatives
+  - **Key Challenge:** Comparison-based min/max for time range union (solved using processor.Sign(diff))
+
+- [x] **ScalarTimesSignal<T>** - Product of multiple scalar signals
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Mapped`
+  - **Referenz:** `Float64ScalarTimesSignal` (166 LOC)
+  - **Implementation:** 168 LOC, multiplies multiple signals with automatic flattening
+  - **Tests:** 12 Equivalence Tests ✅ (100% passing)
+  - **Test Coverage:** 2-signal product, 3-signal product, multiplication with constant zero/one, periodic signals, conversions, flattening, trigonometric identity verification
+  - **Formula:** `Product(signal[i].GetValue(t))`
+  - **Features:** Automatic flattening of nested TimesSignals, implements IReadOnlyList<ScalarSignal<T>>
+  - **Note:** Derivatives NOT implemented (would require product rule: (fg)' = f'g + fg')
+
+- [x] **ScalarDerivativeSignal<T>** - Derivative of another scalar signal
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Mapped`
+  - **Referenz:** `Float64ScalarDerivativeSignal` (95 LOC)
+  - **Implementation:** 79 LOC, returns derivative of base signal
+  - **Tests:** 14 Equivalence Tests ✅ (100% passing)
+  - **Test Coverage:** Sin derivative (→cos), Cos derivative (→-sin), second derivatives, chained derivatives, constant base, periodic signals, conversions, PlusSignal derivative
+  - **Formula:** `GetValue(t) = BaseSignal.GetDerivative1Value(t)`, `GetDerivative1Value(t) = BaseSignal.GetDerivative2Value(t)`
+  - **Features:** Shifts derivative order (GetValue returns 1st derivative, GetDerivative1Value returns 2nd derivative)
+  - **Note:** GetDerivative2Value NOT implemented for Generic<T> (would require numerical differentiation, only available for double)
+
+**Total Completed in Module 6C:** 16/40 Klassen (40%)
+**Total Tests:** 224 Equivalence Tests (100% passing)
 **Session 1 Time:** ~6 hours (implementation + testing + debugging for 3 complex signals)
 **Session 2 Time:** ~1 hour (writing 16 tests for RampSignal, verifying existing implementations)
 **Session 3 Time:** ~2 hours (writing 40 tests for Sin/Cos/SimpleHarmonic signals, Float64 API parity updates)
 **Session 4 Time:** ~2.5 hours (writing 39 tests for Constant/Computed/Harmonic signals, Float64 API parity updates)
+**Session 5 Time:** ~4 hours (implementing 3 Mapped Signals + 38 tests, debugging IComparable issue with Scalar<T>.Min/Max)
 
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
