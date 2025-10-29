@@ -6,10 +6,10 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Basic
 public sealed class Float64ScalarSinSignal :
     Float64ScalarSignal
 {
-    internal static Float64ScalarSinSignal FiniteInstance { get; }
+    public static Float64ScalarSinSignal FiniteInstance { get; }
         = new Float64ScalarSinSignal(false);
 
-    internal static Float64ScalarSinSignal PeriodicInstance { get; }
+    public static Float64ScalarSinSignal PeriodicInstance { get; }
         = new Float64ScalarSinSignal(true);
 
 

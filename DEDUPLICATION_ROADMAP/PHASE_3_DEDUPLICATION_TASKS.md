@@ -439,10 +439,39 @@ ParametricPath3D<T> (Basis)
   - **Features:** Configurable vertex time, symmetric/asymmetric modes
   - **Note:** Implementation and tests already existed
 
-**Total Completed in Module 6C:** 7/40 Klassen (17.5%)
-**Total Tests:** 107 Equivalence Tests (100% passing)
+#### Session 3: Basic Signals (3 Klassen) - 2025-10-29
+
+- [x] **SinScalarSignal<T>** - Basic sine signal
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic`
+  - **Referenz:** `Float64ScalarSinSignal` (77 LOC)
+  - **Implementation:** 73 LOC, sin(t) formula with derivatives
+  - **Tests:** 13 Equivalence Tests ✅ (100% passing)
+  - **Note:** Implementation already existed, added tests + updated Float64 API (internal → public static)
+  - **Test Coverage:** Boundary values (sin(±π)≈0, sin(0)=0), key points (sin(π/2)=1, sin(-π/2)=-1), derivatives (cos(t), -sin(t)), odd function property, conversions
+
+- [x] **CosScalarSignal<T>** - Basic cosine signal
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic`
+  - **Referenz:** `Float64ScalarCosSignal` (78 LOC)
+  - **Implementation:** 72 LOC, cos(t) formula with derivatives
+  - **Tests:** 13 Equivalence Tests ✅ (100% passing)
+  - **Note:** Implementation already existed, added tests + updated Float64 API (internal → public static)
+  - **Test Coverage:** Boundary values (cos(±π)=-1, cos(0)=1), key points (cos(±π/2)≈0), derivatives (-sin(t), -cos(t)), even function property, conversions
+
+- [x] **SimpleHarmonicScalarSignal<T>** - Complex harmonic signal with parameters
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic`
+  - **Referenz:** `Float64ScalarSimpleHarmonicSignal` (193 LOC)
+  - **Implementation:** 176 LOC, Magnitude * Cos(2π * HarmonicFactor * (t + TimeOffset))
+  - **Tests:** 14 Equivalence Tests ✅ (100% passing)
+  - **Note:** Implementation already existed, added comprehensive tests
+  - **Test Coverage:** Basic parameters, time offset effects, higher harmonics (2x, 3x), boundary values, derivatives with harmonic factors, property access, conversions
+  - **Formula:** `Magnitude * Cos(2π * HarmonicFactor * (t + TimeOffset))`
+  - **Features:** Configurable harmonic factor (1-N), magnitude scaling, time offset/phase shift
+
+**Total Completed in Module 6C:** 10/40 Klassen (25%)
+**Total Tests:** 147 Equivalence Tests (100% passing)
 **Session 1 Time:** ~6 hours (implementation + testing + debugging for 3 complex signals)
 **Session 2 Time:** ~1 hour (writing 16 tests for RampSignal, verifying existing implementations)
+**Session 3 Time:** ~2 hours (writing 40 tests for Sin/Cos/SimpleHarmonic signals, Float64 API parity updates)
 
 ### Klassen-Liste (40 total):
 - [ ] ParametricScalar<T>, BasicScalarPath<T>, ConstantScalar<T>, LinearScalar<T>
