@@ -383,4 +383,234 @@ public class BezierPath2DEquivalenceTests
     }
 
     #endregion
+
+    #region Bezier3Path2D Tests (8 tests)
+
+    [Test]
+    public void Bezier3Path2D_GetValue_AtT0_ShouldBePoint1()
+    {
+        // Arrange
+        var point1Float64 = LinFloat64Vector2D.Create(1.0, 2.0);
+        var point2Float64 = LinFloat64Vector2D.Create(3.0, 8.0);
+        var point3Float64 = LinFloat64Vector2D.Create(7.0, 10.0);
+        var point4Float64 = LinFloat64Vector2D.Create(9.0, 4.0);
+
+        var point1Generic = CreateGenericVector(1.0, 2.0);
+        var point2Generic = CreateGenericVector(3.0, 8.0);
+        var point3Generic = CreateGenericVector(7.0, 10.0);
+        var point4Generic = CreateGenericVector(9.0, 4.0);
+
+        var pathFloat64 = new Float64Bezier3Path2D(false, point1Float64, point2Float64, point3Float64, point4Float64);
+        var pathGeneric = Bezier3Path2D<double>.Create(ScalarProcessor, false, point1Generic, point2Generic, point3Generic, point4Generic);
+
+        // Act
+        var valueFloat64 = pathFloat64.GetValue(0.0);
+        var valueGeneric = pathGeneric.GetValue(ScalarProcessor.Scalar(0.0));
+
+        // Assert - At t=0, curve should be at Point1
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance), "X at t=0");
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance), "Y at t=0");
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(1.0).Within(Tolerance), "Should be Point1 at t=0");
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(2.0).Within(Tolerance), "Should be Point1 at t=0");
+    }
+
+    [Test]
+    public void Bezier3Path2D_GetValue_AtT1_ShouldBePoint4()
+    {
+        // Arrange
+        var point1Float64 = LinFloat64Vector2D.Create(1.0, 2.0);
+        var point2Float64 = LinFloat64Vector2D.Create(3.0, 8.0);
+        var point3Float64 = LinFloat64Vector2D.Create(7.0, 10.0);
+        var point4Float64 = LinFloat64Vector2D.Create(9.0, 4.0);
+
+        var point1Generic = CreateGenericVector(1.0, 2.0);
+        var point2Generic = CreateGenericVector(3.0, 8.0);
+        var point3Generic = CreateGenericVector(7.0, 10.0);
+        var point4Generic = CreateGenericVector(9.0, 4.0);
+
+        var pathFloat64 = new Float64Bezier3Path2D(false, point1Float64, point2Float64, point3Float64, point4Float64);
+        var pathGeneric = Bezier3Path2D<double>.Create(ScalarProcessor, false, point1Generic, point2Generic, point3Generic, point4Generic);
+
+        // Act
+        var valueFloat64 = pathFloat64.GetValue(1.0);
+        var valueGeneric = pathGeneric.GetValue(ScalarProcessor.Scalar(1.0));
+
+        // Assert - At t=1, curve should be at Point4
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance), "X at t=1");
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance), "Y at t=1");
+        Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(9.0).Within(Tolerance), "Should be Point4 at t=1");
+        Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(4.0).Within(Tolerance), "Should be Point4 at t=1");
+    }
+
+    [Test]
+    public void Bezier3Path2D_GetValue_ShouldMatchFloat64()
+    {
+        // Arrange - Cubic Bezier with 4 control points
+        var point1Float64 = LinFloat64Vector2D.Create(0.0, 0.0);
+        var point2Float64 = LinFloat64Vector2D.Create(1.0, 3.0);
+        var point3Float64 = LinFloat64Vector2D.Create(4.0, 3.0);
+        var point4Float64 = LinFloat64Vector2D.Create(5.0, 0.0);
+
+        var point1Generic = CreateGenericVector(0.0, 0.0);
+        var point2Generic = CreateGenericVector(1.0, 3.0);
+        var point3Generic = CreateGenericVector(4.0, 3.0);
+        var point4Generic = CreateGenericVector(5.0, 0.0);
+
+        var pathFloat64 = new Float64Bezier3Path2D(false, point1Float64, point2Float64, point3Float64, point4Float64);
+        var pathGeneric = Bezier3Path2D<double>.Create(ScalarProcessor, false, point1Generic, point2Generic, point3Generic, point4Generic);
+
+        // Act & Assert - Compare at multiple t values
+        for (var t = 0.0; t <= 1.0; t += 0.1)
+        {
+            var tScalar = ScalarProcessor.Scalar(t);
+            var valueFloat64 = pathFloat64.GetValue(t);
+            var valueGeneric = pathGeneric.GetValue(tScalar);
+
+            Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance), $"X at t={t}");
+            Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance), $"Y at t={t}");
+        }
+    }
+
+    [Test]
+    public void Bezier3Path2D_GetDerivativeCurve_ShouldBeBezier2()
+    {
+        // Arrange
+        var point1Generic = CreateGenericVector(0.0, 0.0);
+        var point2Generic = CreateGenericVector(1.0, 3.0);
+        var point3Generic = CreateGenericVector(4.0, 3.0);
+        var point4Generic = CreateGenericVector(5.0, 0.0);
+
+        var pathGeneric = Bezier3Path2D<double>.Create(ScalarProcessor, false, point1Generic, point2Generic, point3Generic, point4Generic);
+
+        // Act
+        var derivativeCurve = pathGeneric.GetDerivativeCurve();
+
+        // Assert - Derivative of Bezier3 is Bezier2
+        Assert.That(derivativeCurve, Is.InstanceOf<Bezier2Path2D<double>>(), "Derivative curve should be Bezier2");
+
+        // Derivative control points should be 3*(P2-P1), 3*(P3-P2), 3*(P4-P3)
+        var expectedPoint1 = ScalarProcessor.ScalarFromNumber(3) * (point2Generic - point1Generic);
+        var derivValue = derivativeCurve.GetValue(ScalarProcessor.Scalar(0.0));
+
+        Assert.That(derivValue.X.ScalarValue, Is.EqualTo(expectedPoint1.X.ScalarValue).Within(Tolerance), "Derivative curve control point 1 X");
+        Assert.That(derivValue.Y.ScalarValue, Is.EqualTo(expectedPoint1.Y.ScalarValue).Within(Tolerance), "Derivative curve control point 1 Y");
+    }
+
+    [Test]
+    public void Bezier3Path2D_GetDerivative1Value_ShouldMatchFloat64()
+    {
+        // Arrange
+        var point1Float64 = LinFloat64Vector2D.Create(1.0, 1.0);
+        var point2Float64 = LinFloat64Vector2D.Create(2.0, 4.0);
+        var point3Float64 = LinFloat64Vector2D.Create(5.0, 5.0);
+        var point4Float64 = LinFloat64Vector2D.Create(6.0, 2.0);
+
+        var point1Generic = CreateGenericVector(1.0, 1.0);
+        var point2Generic = CreateGenericVector(2.0, 4.0);
+        var point3Generic = CreateGenericVector(5.0, 5.0);
+        var point4Generic = CreateGenericVector(6.0, 2.0);
+
+        var pathFloat64 = new Float64Bezier3Path2D(false, point1Float64, point2Float64, point3Float64, point4Float64);
+        var pathGeneric = Bezier3Path2D<double>.Create(ScalarProcessor, false, point1Generic, point2Generic, point3Generic, point4Generic);
+
+        // Act & Assert - Compare first derivative at multiple t values
+        for (var t = 0.0; t <= 1.0; t += 0.25)
+        {
+            var tScalar = ScalarProcessor.Scalar(t);
+            var derivFloat64 = pathFloat64.GetDerivative1Value(t);
+            var derivGeneric = pathGeneric.GetDerivative1Value(tScalar);
+
+            Assert.That(derivGeneric.X.ScalarValue, Is.EqualTo(derivFloat64.X.ScalarValue).Within(Tolerance), $"Derivative1 X at t={t}");
+            Assert.That(derivGeneric.Y.ScalarValue, Is.EqualTo(derivFloat64.Y.ScalarValue).Within(Tolerance), $"Derivative1 Y at t={t}");
+        }
+    }
+
+    [Test]
+    public void Bezier3Path2D_GetDerivative2Value_ShouldMatchFloat64()
+    {
+        // Arrange
+        var point1Float64 = LinFloat64Vector2D.Create(0.0, 0.0);
+        var point2Float64 = LinFloat64Vector2D.Create(1.0, 2.0);
+        var point3Float64 = LinFloat64Vector2D.Create(3.0, 2.0);
+        var point4Float64 = LinFloat64Vector2D.Create(4.0, 0.0);
+
+        var point1Generic = CreateGenericVector(0.0, 0.0);
+        var point2Generic = CreateGenericVector(1.0, 2.0);
+        var point3Generic = CreateGenericVector(3.0, 2.0);
+        var point4Generic = CreateGenericVector(4.0, 0.0);
+
+        var pathFloat64 = new Float64Bezier3Path2D(false, point1Float64, point2Float64, point3Float64, point4Float64);
+        var pathGeneric = Bezier3Path2D<double>.Create(ScalarProcessor, false, point1Generic, point2Generic, point3Generic, point4Generic);
+
+        // Act & Assert - Compare second derivative at multiple t values
+        for (var t = 0.0; t <= 1.0; t += 0.25)
+        {
+            var tScalar = ScalarProcessor.Scalar(t);
+            var deriv2Float64 = pathFloat64.GetDerivative2Value(t);
+            var deriv2Generic = pathGeneric.GetDerivative2Value(tScalar);
+
+            Assert.That(deriv2Generic.X.ScalarValue, Is.EqualTo(deriv2Float64.X.ScalarValue).Within(Tolerance), $"Derivative2 X at t={t}");
+            Assert.That(deriv2Generic.Y.ScalarValue, Is.EqualTo(deriv2Float64.Y.ScalarValue).Within(Tolerance), $"Derivative2 Y at t={t}");
+        }
+    }
+
+    [Test]
+    public void Bezier3Path2D_GetFrame_TangentShouldBeNormalized()
+    {
+        // Arrange
+        var point1Generic = CreateGenericVector(0.0, 0.0);
+        var point2Generic = CreateGenericVector(2.0, 5.0);
+        var point3Generic = CreateGenericVector(6.0, 8.0);
+        var point4Generic = CreateGenericVector(10.0, 3.0);
+
+        var pathGeneric = Bezier3Path2D<double>.Create(ScalarProcessor, false, point1Generic, point2Generic, point3Generic, point4Generic);
+
+        // Act & Assert - Check tangent normalization at multiple points
+        for (var t = 0.0; t <= 1.0; t += 0.25)
+        {
+            var tScalar = ScalarProcessor.Scalar(t);
+            var frame = pathGeneric.GetFrame(tScalar);
+
+            var tangentNormSq = frame.Tangent.X.ScalarValue * frame.Tangent.X.ScalarValue +
+                                frame.Tangent.Y.ScalarValue * frame.Tangent.Y.ScalarValue;
+
+            Assert.That(tangentNormSq, Is.EqualTo(1.0).Within(Tolerance), $"Frame tangent should be normalized at t={t}");
+        }
+    }
+
+    [Test]
+    public void Bezier3Path2D_GetFrame_ShouldMatchFloat64()
+    {
+        // Arrange
+        var point1Float64 = LinFloat64Vector2D.Create(1.0, 1.0);
+        var point2Float64 = LinFloat64Vector2D.Create(3.0, 4.0);
+        var point3Float64 = LinFloat64Vector2D.Create(6.0, 4.0);
+        var point4Float64 = LinFloat64Vector2D.Create(8.0, 1.0);
+
+        var point1Generic = CreateGenericVector(1.0, 1.0);
+        var point2Generic = CreateGenericVector(3.0, 4.0);
+        var point3Generic = CreateGenericVector(6.0, 4.0);
+        var point4Generic = CreateGenericVector(8.0, 1.0);
+
+        var pathFloat64 = new Float64Bezier3Path2D(false, point1Float64, point2Float64, point3Float64, point4Float64);
+        var pathGeneric = Bezier3Path2D<double>.Create(ScalarProcessor, false, point1Generic, point2Generic, point3Generic, point4Generic);
+
+        // Act & Assert - Compare frames at multiple t values
+        for (var t = 0.0; t <= 1.0; t += 0.25)
+        {
+            var tScalar = ScalarProcessor.Scalar(t);
+            var frameFloat64 = pathFloat64.GetFrame(t);
+            var frameGeneric = pathGeneric.GetFrame(tScalar);
+
+            // Compare point
+            Assert.That(frameGeneric.Point.X.ScalarValue, Is.EqualTo(frameFloat64.Point.X.ScalarValue).Within(Tolerance), $"Frame point X at t={t}");
+            Assert.That(frameGeneric.Point.Y.ScalarValue, Is.EqualTo(frameFloat64.Point.Y.ScalarValue).Within(Tolerance), $"Frame point Y at t={t}");
+
+            // Compare tangent
+            Assert.That(frameGeneric.Tangent.X.ScalarValue, Is.EqualTo(frameFloat64.Tangent.X.ScalarValue).Within(Tolerance), $"Frame tangent X at t={t}");
+            Assert.That(frameGeneric.Tangent.Y.ScalarValue, Is.EqualTo(frameFloat64.Tangent.Y.ScalarValue).Within(Tolerance), $"Frame tangent Y at t={t}");
+        }
+    }
+
+    #endregion
 }

@@ -64,7 +64,7 @@ public sealed record ParametricPath2DLocalFrame<T>
             Time.IsValid() &&
             Point.IsValid() &&
             Tangent.IsValid() &&
-            Tangent.VectorENormSquared().IsNearEqual(scalarProcessor.One);
+            Tangent.VectorENormSquared().IsNearEqualTo(scalarProcessor.One);
 
         return isValid;
     }

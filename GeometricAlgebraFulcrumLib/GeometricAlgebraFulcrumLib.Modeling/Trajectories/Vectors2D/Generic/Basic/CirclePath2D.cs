@@ -140,13 +140,13 @@ public sealed class CirclePath2D<T> :
         Scalar<T> tangentX, tangentY;
         if (ReverseDirection)
         {
-            tangentX = _scalarProcessor.ScalarFromValue(sinAngle);
-            tangentY = _scalarProcessor.ScalarFromValue(_scalarProcessor.Negative(cosAngle));
+            tangentX = sinAngle;
+            tangentY = -cosAngle;
         }
         else
         {
-            tangentX = _scalarProcessor.ScalarFromValue(_scalarProcessor.Negative(sinAngle));
-            tangentY = _scalarProcessor.ScalarFromValue(cosAngle);
+            tangentX = -sinAngle;
+            tangentY = cosAngle;
         }
 
         var tangent = LinVector2D<T>.Create(tangentX, tangentY);
