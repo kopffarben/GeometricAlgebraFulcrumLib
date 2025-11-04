@@ -1,0 +1,202 @@
+using System.Collections;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+
+namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Generic.Mapped;
+
+/// <summary>
+/// A 2D path that is the sum of multiple base paths (superposition).
+/// At any time t, the result is: path1(t) + path2(t) + ... + pathN(t)
+/// </summary>
+/// <typeparam name="T">Scalar type</typeparam>
+public sealed class PlusPath2D<T> :
+    ParametricPath2D<T>,
+    IReadOnlyList<ParametricPath2D<T>>
+{
+    private static void Add(ICollection<ParametricPath2D<T>> basePaths, ParametricPath2D<T> path)
+    {
+        // Flatten nested PlusPath2D structures
+        if (path is not PlusPath2D<T> plusPath)
+        {
+            basePaths.Add(path);
+            return;
+        }
+
+        foreach (var p in plusPath)
+            Add(basePaths, p);
+    }
+
+
+    #region Static Factory Methods - Finite
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static PlusPath2D<T> Finite(ParametricPath2D<T> path1, ParametricPath2D<T> path2)
+    {
+        return Finite(new[] { path1, path2 });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static PlusPath2D<T> Finite(ParametricPath2D<T> path1, ParametricPath2D<T> path2, params ParametricPath2D<T>[] pathList)
+    {
+        var paths = new List<ParametricPath2D<T>>(pathList.Length + 2)
+        {
+            path1,
+            path2
+        };
+
+        paths.AddRange(pathList);
+
+        return Finite(paths);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static PlusPath2D<T> Finite(IEnumerable<ParametricPath2D<T>> pathList)
+    {
+        var basePaths = new List<ParametricPath2D<T>>();
+
+        foreach (var path in pathList)
+            Add(basePaths, path);
+
+        return new PlusPath2D<T>(false, basePaths);
+    }
+
+    #endregion
+
+    #region Static Factory Methods - Periodic
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static PlusPath2D<T> Periodic(ParametricPath2D<T> path1, ParametricPath2D<T> path2)
+    {
+        return Periodic(new[] { path1, path2 });
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static PlusPath2D<T> Periodic(ParametricPath2D<T> path1, ParametricPath2D<T> path2, params ParametricPath2D<T>[] pathList)
+    {
+        var paths = new List<ParametricPath2D<T>>(pathList.Length + 2)
+        {
+            path1,
+            path2
+        };
+
+        paths.AddRange(pathList);
+
+        return Periodic(paths);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static PlusPath2D<T> Periodic(IEnumerable<ParametricPath2D<T>> pathList)
+    {
+        var basePaths = new List<ParametricPath2D<T>>();
+
+        foreach (var path in pathList)
+            Add(basePaths, path);
+
+        return new PlusPath2D<T>(true, basePaths);
+    }
+
+    #endregion
+
+
+    public IReadOnlyList<ParametricPath2D<T>> BasePaths { get; }
+
+    public int Count
+        => BasePaths.Count;
+
+    public ParametricPath2D<T> this[int index]
+        => BasePaths[index];
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private PlusPath2D(bool isPeriodic, IReadOnlyList<ParametricPath2D<T>> basePaths)
+        : base(
+            ScalarRange<T>.Create(
+                basePaths.Select(p => p.TimeRange.MinValue).Min(),
+                basePaths.Select(p => p.TimeRange.MaxValue).Max()
+            ),
+            isPeriodic
+        )
+    {
+        BasePaths = basePaths;
+
+        Debug.Assert(IsValid());
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override bool IsValid()
+    {
+        return BasePaths.Count >= 2 &&
+               BasePaths.All(p => p.IsValid()) &&
+               TimeRange.IsFinite;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override ParametricPath2D<T> ToFinitePath()
+    {
+        return IsFinite
+            ? this
+            : new PlusPath2D<T>(
+                false,
+                BasePaths
+            );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override ParametricPath2D<T> ToPeriodicPath()
+    {
+        return IsPeriodic
+            ? this
+            : new PlusPath2D<T>(
+                true,
+                BasePaths
+            );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override LinVector2D<T> GetValue(Scalar<T> t)
+    {
+        t = TimeRange.Clamp(t);
+
+        return BasePaths.Aggregate(
+            LinVector2D<T>.Zero(t.ScalarProcessor),
+            (a, b) => a + b.GetValue(t)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override LinVector2D<T> GetDerivative1Value(Scalar<T> t)
+    {
+        t = TimeRange.Clamp(t);
+
+        return BasePaths.Aggregate(
+            LinVector2D<T>.Zero(t.ScalarProcessor),
+            (a, b) => a + b.GetDerivative1Value(t)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override LinVector2D<T> GetDerivative2Value(Scalar<T> t)
+    {
+        t = TimeRange.Clamp(t);
+
+        return BasePaths.Aggregate(
+            LinVector2D<T>.Zero(t.ScalarProcessor),
+            (a, b) => a + b.GetDerivative2Value(t)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerator<ParametricPath2D<T>> GetEnumerator()
+    {
+        return BasePaths.GetEnumerator();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+}
