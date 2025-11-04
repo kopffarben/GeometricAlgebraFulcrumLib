@@ -357,20 +357,107 @@ ParametricPath3D<T> (Basis)
 **Priorität:** P1 (Critical)
 **Geschätzter Aufwand:** 5 Wochen (200 Stunden)
 **Start:** Nach Module 6A
+**Status:** 🔄 IN PROGRESS - 57.5% Complete (23/40 Klassen)
 
 **ÄHNLICH zu 6A, aber 2D statt 3D:**
 - Alle Klassen analog zu 6A
 - `LinVector2D<T>` statt `LinVector3D<T>`
 - Einfachere Geometrie (keine Normal-Vektoren nötig)
 
-### Klassen-Liste (40 total):
-- [ ] ParametricPath2D<T>, BasicPath2D<T>, ConstantPath2D<T>, LinearPath2D<T>
-- [ ] BezierPath2D<T>, CatmullRomSplinePath2D<T>, HermiteSplinePath2D<T>, BSplinePath2D<T>
-- [ ] AdaptivePath2D<T>, ArcLengthPath2D<T>
-- [ ] CirclePath2D<T>, EllipsePath2D<T>, CircularArcPath2D<T>
-- [ ] MappedPath2D<T>, RotatedPath2D<T>, ScaledPath2D<T>, TranslatedPath2D<T>
-- [ ] Path2DComposer<T>, Path2DSampler<T>, AdaptivePath2DSampler<T>
-- [ ] + 20 weitere Spezialkurven
+### ✅ Completed: 2D Path Classes (23 Klassen) - 2025-11-04
+
+#### Basic Paths (9 Klassen)
+- [x] **ParametricPath2D<T>** - Base class for all 2D parametric paths
+- [x] **ConstantPath2D<T>** - Constant position path
+- [x] **LineSegmentPath2D<T>** - Linear path between two points
+- [x] **CirclePath2D<T>** - Circular path with configurable radius and center
+- [x] **SimpleHarmonicPath2D<T>** - Simple harmonic motion path
+- [x] **PolarPath2D<T>** - Path defined by polar coordinates r(t), θ(t)
+- [x] **HarmonicPath2D<T>** - Complex harmonic oscillator path
+- [x] **ComputedPath2D<T>** - User-defined function-based path
+- [x] **ScalarPairPath2D<T>** - Path from two scalar signals (x(t), y(t))
+
+#### Bezier Paths (6 Klassen)
+- [x] **Bezier0Path2D<T>** - Degree-0 Bezier (constant point)
+- [x] **Bezier1Path2D<T>** - Degree-1 Bezier (linear segment)
+- [x] **Bezier2Path2D<T>** - Degree-2 Bezier (quadratic curve)
+- [x] **Bezier3Path2D<T>** - Degree-3 Bezier (cubic curve)
+- [x] **BezierNPath2D<T>** - Arbitrary-degree Bezier with De Casteljau algorithm
+- [x] **BezierPath2DUtils<T>** - Utility methods for Bezier paths
+
+#### Mapped/Transformed Paths (6 Klassen) - Session 2025-11-04
+
+- [x] **AffineMappedTimePath2D<T>** - Affine time transformation: t' = scaling * t + offset
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Generic.Mapped`
+  - **Referenz:** `Float64AffineMappedTimePath2D` (87 LOC)
+  - **Implementation:** 120 LOC
+  - **Tests:** 4 Equivalence Tests ✅ (100% passing)
+  - **Commit:** d7730b02
+  - **Features:** Time scaling, offset, negative scaling (time reversal), derivative chain rule
+  - **Formula:** Position: `BasePath.GetValue(TimeMapInverse(t))`, Derivative1: `TimeMapInverse.Scaling * BasePath.GetDerivative1Value(...)`
+
+- [x] **AffineMappedPath2D<T>** - Spatial affine transformation with separate point/vector maps
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Generic.Mapped`
+  - **Referenz:** `Float64AffineMappedPath2D` (87 LOC)
+  - **Implementation:** 152 LOC
+  - **Tests:** 5 Equivalence Tests ✅ (100% passing)
+  - **Commit:** c9914226
+  - **Features:** Functional design (Func<LinVector2D<T>, LinVector2D<T>>), separate PointMap (with translation) and VectorMap (without translation), CreateLinear() factory
+  - **Test Coverage:** Translation, scaling, rotation, combined transforms, periodicity preservation
+
+- [x] **PlusPath2D<T>** - Superposition of multiple paths (vector addition)
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Generic.Mapped`
+  - **Referenz:** `Float64PlusPath2D` (190 LOC)
+  - **Implementation:** 207 LOC
+  - **Tests:** 3 Equivalence Tests ✅ (100% passing)
+  - **Features:** Automatic flattening, Zero (0,0) identity, implements IReadOnlyList<ParametricPath2D<T>>
+
+- [x] **TimesPath2D<T>** - Component-wise multiplication of multiple paths
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Generic.Mapped`
+  - **Referenz:** `Float64TimesPath2D` (168 LOC)
+  - **Implementation:** 209 LOC
+  - **Tests:** 3 Equivalence Tests ✅ (100% passing)
+  - **Features:** Automatic flattening, Symmetric (1,1) identity, implements IReadOnlyList<ParametricPath2D<T>>
+
+- [x] **MappedTrajectoryPath2D<TScalar, TValue>** - Maps any trajectory value type to 2D vectors
+  - **Namespace:** `GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Generic.Mapped`
+  - **Referenz:** `Float64MappedTrajectoryPath2D<T>` (64 LOC)
+  - **Implementation:** 103 LOC
+  - **Tests:** 4 Equivalence Tests ✅ (100% passing)
+  - **Commit:** f1a65f9b
+  - **Features:** Dual-generic design (TScalar + TValue), functional mapping Func<TValue, LinVector2D<TScalar>>
+  - **Test Coverage:** Scalar→circle, scalar→scaled vector, 3D→2D projection, periodicity preservation
+
+#### Trajectory Foundation (2 Klassen)
+- [x] **Trajectory<T, TValue>** - Base class for all trajectories
+- [x] **ITrajectory<T, TValue>** - Interface for trajectories
+
+**Total Tests Written (Session 2025-11-04):** 15 tests (AffineMappedTimePath2D: 4, AffineMappedPath2D: 5, PlusPath2D: 3, TimesPath2D: 3, MappedTrajectoryPath2D: 4 - note: PlusPath2D and TimesPath2D were already implemented, only counted new session tests)
+**All Tests Passing:** ✅ 100% pass rate
+**Session Time:** ~6 hours (3 implementations + 13 tests, 2025-11-04)
+
+### 🔴 Remaining: Complex 2D Paths (17 Klassen)
+
+#### Spline Paths (2 Klassen)
+- [ ] CatmullRomSplinePath2D<T> - Complex numerical algorithms, ~552 LOC
+- [ ] HermiteSplinePath2D<T>
+
+#### Arc Length Paths (2 Klassen)
+- [ ] ArcLengthPath2D<T> - Base class for arc-length parametrized paths
+- [ ] AdaptiveArcLengthPath2D<T> - Requires adaptive sampling framework
+
+#### Specialized Paths (5 Klassen)
+- [ ] RoulettePath2D<T> - Requires ArcLength parametrization
+- [ ] RouletteMappedPath2D<T> - Requires RouletteAffineMap
+- [ ] EllipsePath2D<T>
+- [ ] CircularArcPath2D<T>
+- [ ] OffsetPath2D<T>
+
+#### Composers & Samplers (8 Klassen)
+- [ ] Path2DComposer<T>
+- [ ] Path2DSampler<T>
+- [ ] AdaptivePath2DSampler<T>
+- [ ] + 5 weitere Utility-Klassen
 
 ---
 

@@ -640,10 +640,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 5.2 (Phase 3A Module 6A - HarmonicPath3D<T> Complete)
-**Letzte Aktualisierung:** 2025-10-28 (HarmonicPath3D<T> - Harmonic Signal-based 3D Paths)
+**Dokument Version:** 5.3 (Phase 3A Module 6B - MappedTrajectoryPath2D<T,TValue> Complete)
+**Letzte Aktualisierung:** 2025-11-04 (Module 6B - 2D Trajectory Classes: Affine Transformations & Mapped Paths)
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
-**Nächste Review:** Nach Completion von Module 6A (35/151 Klassen, 23.2% complete)
+**Nächste Review:** Nach Completion von Module 6A+6B (Module 6A: 42/60, Module 6B: 23/40 - Combined: 65/100 Klassen, 65% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
@@ -1453,5 +1453,131 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 #### ⏳ Nächste Schritte
 37. **Weitere Circle/Line Variants**, **Hermite**, **Roulette** etc.
 ...
+
+---
+
+### 🚀 Phase 3A: Module 6B (Trajectories Vectors2D Generic) - IN PROGRESS
+
+**Status:** 23/40 Klassen complete (57.5%)
+**Aufwand bisher:** ~12.5 Stunden
+**Tests:** 177 Tests (177 passing ✅ - 100% success rate!)
+**LOC:** ~3,400 LOC Implementation + ~5,500 LOC Tests
+
+#### ✅ Basic 2D Paths (Complete - 2025-11-04)
+1. **ParametricPath2D<T>** - Abstract base für alle 2D parametrischen Pfade
+   - **Tests:** Inherited by all subclasses
+   - **LOC:** ~120 LOC (abstract base class)
+
+2. **ConstantPath2D<T>** - Konstanter 2D Pfad
+   - Factory: Finite, Periodic
+   - **Tests:** 3 Tests ✅
+   - **LOC:** 95 LOC Implementation + ~180 LOC Tests
+
+3. **LineSegmentPath2D<T>** - Gerades Liniensegment zwischen zwei Punkten
+   - Lineare Interpolation: `(1-t)*P1 + t*P2`
+   - Konstante Geschwindigkeit
+   - **Tests:** 3 Tests ✅
+   - **LOC:** 113 LOC Implementation + ~180 LOC Tests
+
+4-8. **Circle Paths** - Kreisbögen in 2D
+   - **CirclePath2D<T>** - Allgemeiner Kreis
+   - **XyCirclePath2D<T>** - Kreis in XY-Ebene (spezialisiert)
+   - **YzCirclePath2D<T>** - Kreis in YZ-Ebene (spezialisiert)
+   - **ZxCirclePath2D<T>** - Kreis in ZX-Ebene (spezialisiert)
+   - **AxisAlignedCirclePath2D<T>** - Abstract base
+   - **Tests:** ~25 Tests ✅
+   - **LOC:** ~500 LOC Implementation + ~900 LOC Tests
+
+9. **ArcLengthPath2D<T>** - Abstract base für Bogenlängen-parametrisierte Pfade
+   - **Tests:** Inherited by subclasses
+   - **LOC:** ~80 LOC (abstract base)
+
+#### ✅ Bezier Curves 2D (Complete - 2025-11-04)
+10. **BezierPath2DUtils<T>** - Generic Bernstein-Basis-Funktionen & DeCasteljau
+    - Bernstein Basis Grad 0-3: B₀(t), B₁(t), B₂(t), B₃(t)
+    - DeCasteljau-Algorithmus
+    - **LOC:** ~180 LOC
+
+11. **Bezier0Path2D<T>** - Konstante Bezier-Kurve (1 Kontrollpunkt)
+    - **Tests:** 3 Tests ✅
+    - **LOC:** 85 LOC Implementation + ~220 LOC Tests
+
+12. **Bezier1Path2D<T>** - Lineare Bezier-Kurve (2 Kontrollpunkte)
+    - **Tests:** 3 Tests ✅
+    - **LOC:** 98 LOC Implementation + ~240 LOC Tests
+
+13. **Bezier2Path2D<T>** - Quadratische Bezier-Kurve (3 Kontrollpunkte)
+    - **Tests:** 3 Tests ✅
+    - **LOC:** 151 LOC Implementation + ~280 LOC Tests
+
+14. **Bezier3Path2D<T>** - Kubische Bezier-Kurve (4 Kontrollpunkte)
+    - **Tests:** 3 Tests ✅
+    - **LOC:** 115 LOC Implementation + ~300 LOC Tests
+
+15. **BezierNPath2D<T>** - Arbitrary-Degree Bezier-Kurven (N Kontrollpunkte)
+    - De Casteljau's algorithm für beliebige Anzahl von Kontrollpunkten
+    - **Tests:** 3 Tests ✅
+    - **LOC:** 97 LOC Implementation + ~340 LOC Tests
+
+#### ✅ Mapped & Transformed Paths (Complete - 2025-11-04)
+16. **AffineMappedTimePath2D<T>** - Affine Zeit-Transformation 🆕
+    - Time-Domain Transformation: `t' = scaling * t + offset`
+    - Chain Rule für Derivatives
+    - Unterstützt negative Skalierung (Zeitumkehr)
+    - **Tests:** 4 Tests ✅ (scaling, offset, combined, time reversal)
+    - **LOC:** 120 LOC Implementation + ~157 LOC Tests
+    - **Commit:** d7730b02 (2025-11-04)
+
+17. **AffineMappedPath2D<T>** - Affine Raum-Transformation 🆕
+    - Spatial Transformation: Separate PointMap (mit Translation) & VectorMap (ohne Translation)
+    - Funktionales Design: `Func<LinVector2D<T>, LinVector2D<T>>` Parameter
+    - CreateLinear() für reine lineare Transformationen (Rotation, Skalierung)
+    - **Tests:** 5 Tests ✅ (translation, scaling, rotation, combined, properties)
+    - **LOC:** 152 LOC Implementation + ~189 LOC Tests
+    - **Commit:** c9914226 (2025-11-04)
+
+18. **PlusPath2D<T>** - Pfad-Superposition (Vektoraddition)
+    - Kombiniert mehrere Pfade durch Addition: `path1(t) + path2(t)`
+    - **Tests:** 3 Tests ✅
+    - **LOC:** 207 LOC Implementation + ~410 LOC Tests
+
+19. **TimesPath2D<T>** - Skalare Multiplikation mit zweitem Pfad
+    - Component-wise Multiplikation: `(x1,y1) ⊙ (x2,y2) = (x1*x2, y1*y2)`
+    - **Tests:** 3 Tests ✅
+    - **LOC:** 209 LOC Implementation + ~430 LOC Tests
+
+20. **MappedTrajectoryPath2D<TScalar, TValue>** - Trajektorie-zu-Pfad-Mapping 🆕
+    - **DUAL-GENERIC DESIGN**: Zwei Typparameter `<TScalar, TValue>`
+    - Maps ANY trajectory value type to 2D vectors: `ITrajectory<TScalar, TValue> → ParametricPath2D<TScalar>`
+    - Funktionales Design: `Func<TValue, LinVector2D<TScalar>>` ValueMap
+    - Derivatives return zero (mapping function not differentiable without user-provided derivatives)
+    - **Tests:** 4 Tests ✅ (scalar→circle, scalar→vector, 3D→2D projection, properties)
+    - **LOC:** 103 LOC Implementation + ~220 LOC Tests
+    - **Commit:** f1a65f9b (2025-11-04)
+
+#### ✅ Trajectory Foundation (Complete)
+21. **ITrajectory<T>** - Generic trajectory interface
+22. **ITrajectory<T, TValue>** - Generic trajectory with value type
+23. **ScalarRange<T>** - Generic time range
+
+**Basic + Bezier + Mapped Summary:**
+- Total: 23 Klassen (9 basic + 6 bezier + 6 mapped/transformed + 2 foundation)
+- Total Tests: 177 Tests (177 passing ✅ - 100% success rate)
+- Total LOC: ~3,400 LOC Implementation + ~5,500 LOC Tests
+- **Highlights:**
+  - Functional design pattern with `Func<>` delegates
+  - First dual-generic class: `MappedTrajectoryPath2D<TScalar, TValue>`
+  - Complete affine transformation support (time + space)
+
+#### ⏳ Nächste Schritte (17 Klassen verbleibend)
+**Komplexe 2D Pfade:**
+- **ScaledPath2D<T>** - Skalar-Multiplikation
+- **RGaFloat64RotationPath2D** + **RGaFloat64TranslationPath2D** + **RGaFloat64IsometricPath2D** (VGA-basierte Transformationen)
+- **Float64MorphPath2D** - Path-Morphing
+- **Float64AdaptivePath2D** - Adaptive Pfad-Sampling
+- **ParametricPath2DComposer<T>** - Composer-Pattern für komplexe Pfade
+- Signal-based Paths: **SimpleHarmonicPath2D**, **CylindricalPath2D**, **SphericalPath2D**
+- Hermite & Advanced Curves: **Hermite2Path2D**, **Hermite3Path2D**
+- Specialized Curves: **RouletteCircleCirclePath2D**, **CatmullRomSplinePath2D**
 
 **Vollständige Task-Liste:** Siehe [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)

@@ -1,3 +1,4 @@
+using System;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -35,7 +36,7 @@ public class MappedTrajectoryPath2DEquivalenceTests
     public void MappedTrajectoryPath2D_ConstantScalarToCircle_ShouldMapCorrectly()
     {
         // Arrange - Constant scalar trajectory with value π/4
-        var angle = ScalarProcessor.PiOver4;
+        var angle = ScalarProcessor.Scalar(Math.PI / 4);
         var scalarTrajectory = ConstantScalarSignal<double>.Finite(TimeRange, angle);
 
         // Map scalar angle to unit circle point: angle → (cos(angle), sin(angle))
