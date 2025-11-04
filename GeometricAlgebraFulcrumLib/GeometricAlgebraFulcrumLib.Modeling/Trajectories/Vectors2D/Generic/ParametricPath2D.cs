@@ -1,6 +1,9 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Generic;
 
@@ -10,10 +13,9 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Generic;
 /// <typeparam name="T">Scalar type for time parameter</typeparam>
 /// <remarks>
 /// SIMPLIFIED VERSION: This implementation does NOT include:
-/// - GetScalarComponents() (requires ScalarSignal<T> from Module 8)
-/// - FindValueRange() / GetValueRange() (requires ScalarSignal<T>)
+/// - FindValueRange() / GetValueRange() (requires optimization/sampling)
 /// - Numerical differentiation methods (MathNet.Numerics is hardcoded to double)
-/// These features will be added after Module 8 (Signals) is implemented.
+/// These features may be added in future updates.
 /// </remarks>
 public abstract class ParametricPath2D<T>(ScalarRange<T> timeRange, bool isPeriodic) :
     Trajectory<T, LinVector2D<T>>(timeRange, isPeriodic)
@@ -59,6 +61,48 @@ public abstract class ParametricPath2D<T>(ScalarRange<T> timeRange, bool isPerio
             t,
             GetValue(t),
             GetDerivative1Value(t)
+        );
+    }
+
+    /// <summary>
+    /// Get the X and Y components as separate scalar signals.
+    /// This creates computed signals that wrap the path's GetValue/GetDerivative methods.
+    /// Override this method in derived classes for more efficient implementations.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public virtual Pair<ScalarSignal<T>> GetScalarComponents()
+    {
+        if (IsFinite)
+            return new Pair<ScalarSignal<T>>(
+                ComputedScalarSignal<T>.Finite(
+                    TimeRange,
+                    t => GetValue(t).Item1,
+                    t => GetDerivative1Value(t).Item1,
+                    t => GetDerivative2Value(t).Item1
+                ),
+
+                ComputedScalarSignal<T>.Finite(
+                    TimeRange,
+                    t => GetValue(t).Item2,
+                    t => GetDerivative1Value(t).Item2,
+                    t => GetDerivative2Value(t).Item2
+                )
+            );
+
+        return new Pair<ScalarSignal<T>>(
+            ComputedScalarSignal<T>.Periodic(
+                TimeRange,
+                t => GetValue(t).Item1,
+                t => GetDerivative1Value(t).Item1,
+                t => GetDerivative2Value(t).Item1
+            ),
+
+            ComputedScalarSignal<T>.Periodic(
+                TimeRange,
+                t => GetValue(t).Item2,
+                t => GetDerivative1Value(t).Item2,
+                t => GetDerivative2Value(t).Item2
+            )
         );
     }
 }
