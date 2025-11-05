@@ -488,4 +488,69 @@ public class LinVector3DMethodEquivalenceTests
 
 ---
 
+## 📈 Status Update: 2025-11-05
+
+**Test-Fixing Session abgeschlossen:**
+
+### Gesamt-Statistik:
+- **Start:** 2438 passing, 30 failing, 25 skipped (Total: 2493)
+- **Aktuell:** 2454 passing, 14 failing, 25 skipped (Total: 2493)
+- **Fortschritt:** +16 Tests behoben ✅
+- **Pass Rate:** 97.92% → 98.44% (+0.52%)
+
+### Behobene Kategorien (3 Commits):
+
+#### 1. **aec0f601** - AngouriMath Parse-Fehler (9 Tests)
+- **Datei:** `AngouriMathNumericalOperations.cs`
+- **Problem:** Variable-Namen mit double underscores `__diff_var__`, `__int_var__`
+- **Root Cause:** AngouriMath Parser kann keine `__` in Variablennamen verarbeiten
+- **Lösung:** Geändert zu einfachem "x"
+- **Betroffene Tests:** Alle AngouriMath Differentiate/Differentiate2/Integrate Tests
+
+#### 2. **658aea25** - VGa2D Pseudoscalar Type Bug (5 Tests)
+- **Dateien:**
+  - `RGaEuclideanGeometrySpace.cs` (Float64)
+  - `RGaEuclideanGeometrySpace.cs` (Generic<T>)
+- **Problem:** `XGaFloat64HigherKVector` unterstützt nur grade ≥ 3, aber 2D Pseudoscalar ist grade 2 (bivector)
+- **Root Cause:** Falsche Typ-Annahme - HigherKVectorTerm prüft `if (grade < 3) throw`
+- **Lösung:**
+  - Typ geändert: `XGaFloat64HigherKVector` → `XGaFloat64KVector`
+  - Typ geändert: `XGaHigherKVector<T>` → `XGaKVector<T>`
+  - Factory-Methode: `HigherKVectorTerm` → `KVectorTerm` (automatischer Dispatch)
+- **Betroffene Tests:** VGa2D_BasisVectors, EncodeBivector, EncodeDecodeComplex, EncodeVector, Pseudoscalar
+
+#### 3. **6e4a3bc5** - CatmullRomSplinePath2D Edge Cases (2 Tests)
+- **Datei:** `CatmullRomSplinePath2D.cs` (Generic<T>)
+- **Problem:** Division durch Null bei single-point oder coincident-point splines
+- **Root Cause:** `tRange = 0` → `tRangeInv = 1/0` → Exception
+- **Lösung:** Check `if (tRange.IsNotNearZero())` vor Normalisierung hinzugefügt
+- **Betroffene Tests:** GetDerivative1Value_SingleKnot, GetDerivative2Value_SingleKnot
+- **Note:** Identisches Muster wie Float64CatmullRomSplinePath3D (commit 93f41968)
+
+### Verbleibende 14 Failures (Für nächste Session):
+
+| Kategorie | Count | Tests |
+|-----------|-------|-------|
+| **Float32 Operations** | 1 | `Float32_Differentiate2_Polynomial_ReturnsCorrectSecondDerivative` |
+| **AffineMapped Paths/Signals** | 3 | AffineMappedSignal_AffineMapProperty, AffineMappedTimeSignal_ScaleAndShift, AffineMappedTimeSignal_TimeShift |
+| **HarmonicSignal** | 5 | TestToPeriodicSignal, TestClearMethod, TestRemoveHarmonic, TestReplaceHarmonic, TestSingleHarmonic, TestWithTimeShift |
+| **Path2D Tests** | 3 | AffineMappedTimePath2D_CombinedTransform, Bezier3Path2D_GetFrame, CatmullRomSplinePath2D_Closed_ControlPointCount |
+| **Andere** | 2 | TestArbitraryNormal_Diagonal, ... |
+
+### Erkenntnisse / Patterns:
+
+1. **AngouriMath Limitations:** Parser ist sehr limitiert bei Variablennamen (keine `_` doubles)
+2. **Type Hierarchie Bug:** HigherKVector vs KVector - Base-Klasse sollte immer verwendet werden
+3. **Edge Cases:** Division durch Null bei degenerierten Geometrien (single point, coincident points)
+4. **Consistency:** Float64 und Generic<T> haben oft gleiche Bugs → beide fixen!
+
+### Nächste Session (TODO):
+
+1. **Float32 Differentiate2:** Wahrscheinlich Präzisions-Problem
+2. **AffineMapped Tests:** Wahrscheinlich Float64 vs Generic Mismatch
+3. **HarmonicSignal Tests:** 5 Tests, vermutlich gleiche Root Cause
+4. **CatmullRom Closed:** Control point count off by one (7 vs 6 erwartet)
+
+---
+
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
