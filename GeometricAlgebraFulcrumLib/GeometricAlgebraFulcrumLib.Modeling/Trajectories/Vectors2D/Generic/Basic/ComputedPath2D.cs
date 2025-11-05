@@ -257,11 +257,21 @@ public sealed class ComputedPath2D<T> :
         if (GetDerivative1ValueFunc is not null)
             return GetDerivative1ValueFunc(t);
 
-        // Fall back to numerical differentiation if available in base class
-        // For Generic<T>, numerical differentiation is complex, so we throw
-        throw new NotSupportedException(
-            "First derivative not provided for ComputedPath2D. " +
-            "Please provide derivative functions in constructor for Generic<T> paths."
+        // Fallback to numerical differentiation via INumericalOperations<T>
+        var ops = t.ScalarProcessor.NumericalOperations;
+        if (ops is null)
+            throw new NotSupportedException(
+                "Numerical differentiation requires INumericalOperations<T>, " +
+                "which is not available for this scalar type. " +
+                "Please provide an explicit derivative function when creating ComputedPath2D<T>.");
+
+        // Differentiate each component separately
+        Scalar<T> GetX(Scalar<T> param) => GetValueFunc(param).X;
+        Scalar<T> GetY(Scalar<T> param) => GetValueFunc(param).Y;
+
+        return LinVector2D<T>.Create(
+            ops.Differentiate(GetX, t),
+            ops.Differentiate(GetY, t)
         );
     }
 
@@ -271,11 +281,21 @@ public sealed class ComputedPath2D<T> :
         if (GetDerivative2ValueFunc is not null)
             return GetDerivative2ValueFunc(t);
 
-        // Fall back to numerical differentiation if available in base class
-        // For Generic<T>, numerical differentiation is complex, so we throw
-        throw new NotSupportedException(
-            "Second derivative not provided for ComputedPath2D. " +
-            "Please provide derivative functions in constructor for Generic<T> paths."
+        // Fallback to numerical second derivative via INumericalOperations<T>
+        var ops = t.ScalarProcessor.NumericalOperations;
+        if (ops is null)
+            throw new NotSupportedException(
+                "Numerical second derivative requires INumericalOperations<T>, " +
+                "which is not available for this scalar type. " +
+                "Please provide an explicit second derivative function when creating ComputedPath2D<T>.");
+
+        // Differentiate each component separately
+        Scalar<T> GetX(Scalar<T> param) => GetValueFunc(param).X;
+        Scalar<T> GetY(Scalar<T> param) => GetValueFunc(param).Y;
+
+        return LinVector2D<T>.Create(
+            ops.Differentiate2(GetX, t),
+            ops.Differentiate2(GetY, t)
         );
     }
 

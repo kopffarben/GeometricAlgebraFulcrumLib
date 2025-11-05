@@ -344,10 +344,16 @@ public sealed class CatmullRomSplinePath2D<T> :
 
         if (parameterValue <= _knotList[0] || parameterValue >= _knotList[^1])
         {
-            // Numerical differentiation not available for Generic<T>
-            throw new NotImplementedException(
-                "Numerical differentiation at boundary is not available for Generic<T>. " +
-                "CatmullRom derivatives require values within the spline range."
+            // Edge cases - use numerical differentiation via INumericalOperations<T>
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Numerical differentiation at boundary requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector2D<T>.Create(
+                ops.Differentiate(GetPointX, parameterValue),
+                ops.Differentiate(GetPointY, parameterValue)
             );
         }
 
@@ -356,8 +362,16 @@ public sealed class CatmullRomSplinePath2D<T> :
 
         if (index1 == index2)
         {
-            throw new NotImplementedException(
-                "Numerical differentiation at exact knot points is not available for Generic<T>."
+            // Single point - use numerical differentiation via INumericalOperations<T>
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Derivative at exact knot point requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector2D<T>.Create(
+                ops.Differentiate(GetPointX, parameterValue),
+                ops.Differentiate(GetPointY, parameterValue)
             );
         }
 
@@ -390,9 +404,16 @@ public sealed class CatmullRomSplinePath2D<T> :
 
         if (parameterValue <= _knotList[0] || parameterValue >= _knotList[^1])
         {
-            throw new NotImplementedException(
-                "Numerical differentiation at boundary is not available for Generic<T>. " +
-                "CatmullRom second derivatives require values within the spline range."
+            // Edge cases - use numerical differentiation via INumericalOperations<T>
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Numerical differentiation at boundary requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector2D<T>.Create(
+                ops.Differentiate2(GetPointX, parameterValue),
+                ops.Differentiate2(GetPointY, parameterValue)
             );
         }
 
@@ -401,8 +422,16 @@ public sealed class CatmullRomSplinePath2D<T> :
 
         if (index1 == index2)
         {
-            throw new NotImplementedException(
-                "Numerical differentiation at exact knot points is not available for Generic<T>."
+            // Single point - use numerical differentiation via INumericalOperations<T>
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Second derivative at exact knot point requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector2D<T>.Create(
+                ops.Differentiate2(GetPointX, parameterValue),
+                ops.Differentiate2(GetPointY, parameterValue)
             );
         }
 

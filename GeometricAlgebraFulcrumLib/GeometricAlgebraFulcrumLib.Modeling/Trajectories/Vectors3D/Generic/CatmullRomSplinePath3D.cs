@@ -359,10 +359,18 @@ public sealed class CatmullRomSplinePath3D<T> :
     {
         if (parameterValue <= TimeRange.MinValue || parameterValue >= TimeRange.MaxValue)
         {
-            // Edge cases - would need numerical differentiation
-            throw new NotSupportedException(
-                "Numerical differentiation at endpoints is not available for Generic<T>. " +
-                "Parameter value must be within the interior of the time range.");
+            // Edge cases - use numerical differentiation via INumericalOperations<T>
+            var ops = parameterValue.ScalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Numerical differentiation at endpoints requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector3D<T>.Create(
+                ops.Differentiate(GetPointX, parameterValue),
+                ops.Differentiate(GetPointY, parameterValue),
+                ops.Differentiate(GetPointZ, parameterValue)
+            );
         }
 
         var (index1, index2) =
@@ -370,10 +378,18 @@ public sealed class CatmullRomSplinePath3D<T> :
 
         if (index1 == index2)
         {
-            // Single point - would need numerical differentiation
-            throw new NotSupportedException(
-                "Derivative at a single knot point requires numerical differentiation, " +
-                "which is not available for Generic<T>.");
+            // Single point - use numerical differentiation via INumericalOperations<T>
+            var ops = parameterValue.ScalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Derivative at a single knot point requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector3D<T>.Create(
+                ops.Differentiate(GetPointX, parameterValue),
+                ops.Differentiate(GetPointY, parameterValue),
+                ops.Differentiate(GetPointZ, parameterValue)
+            );
         }
 
         Debug.Assert(
@@ -398,10 +414,18 @@ public sealed class CatmullRomSplinePath3D<T> :
     {
         if (parameterValue <= TimeRange.MinValue || parameterValue >= TimeRange.MaxValue)
         {
-            // Edge cases - would need numerical differentiation
-            throw new NotSupportedException(
-                "Numerical differentiation at endpoints is not available for Generic<T>. " +
-                "Parameter value must be within the interior of the time range.");
+            // Edge cases - use numerical differentiation via INumericalOperations<T>
+            var ops = parameterValue.ScalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Numerical differentiation at endpoints requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector3D<T>.Create(
+                ops.Differentiate2(GetPointX, parameterValue),
+                ops.Differentiate2(GetPointY, parameterValue),
+                ops.Differentiate2(GetPointZ, parameterValue)
+            );
         }
 
         var (index1, index2) =
@@ -409,10 +433,18 @@ public sealed class CatmullRomSplinePath3D<T> :
 
         if (index1 == index2)
         {
-            // Single point - would need numerical differentiation
-            throw new NotSupportedException(
-                "Second derivative at a single knot point requires numerical differentiation, " +
-                "which is not available for Generic<T>.");
+            // Single point - use numerical differentiation via INumericalOperations<T>
+            var ops = parameterValue.ScalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Second derivative at a single knot point requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector3D<T>.Create(
+                ops.Differentiate2(GetPointX, parameterValue),
+                ops.Differentiate2(GetPointY, parameterValue),
+                ops.Differentiate2(GetPointZ, parameterValue)
+            );
         }
 
         Debug.Assert(

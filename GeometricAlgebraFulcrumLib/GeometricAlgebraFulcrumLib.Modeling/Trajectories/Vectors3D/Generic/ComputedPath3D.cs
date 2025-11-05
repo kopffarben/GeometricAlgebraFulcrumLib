@@ -318,11 +318,24 @@ public sealed class ComputedPath3D<T> :
         if (GetDerivative1ValueFunc is not null)
             return GetDerivative1ValueFunc(ClampTime(t));
 
-        // Numerical differentiation not available for Generic<T>
-        // MathNet.Numerics.Differentiate is hardcoded to double
-        throw new NotImplementedException(
-            "Numerical differentiation is not available for Generic<T>. " +
-            "Please provide an explicit derivative function when creating ComputedPath3D<T>."
+        // Fallback to numerical differentiation via INumericalOperations<T>
+        var ops = t.ScalarProcessor.NumericalOperations;
+        if (ops is null)
+            throw new NotSupportedException(
+                "Numerical differentiation requires INumericalOperations<T>, " +
+                "which is not available for this scalar type. " +
+                "Please provide an explicit derivative function when creating ComputedPath3D<T>.");
+
+        // Differentiate each component separately
+        var clampedT = ClampTime(t);
+        Scalar<T> GetX(Scalar<T> param) => GetValueFunc(ClampTime(param)).X;
+        Scalar<T> GetY(Scalar<T> param) => GetValueFunc(ClampTime(param)).Y;
+        Scalar<T> GetZ(Scalar<T> param) => GetValueFunc(ClampTime(param)).Z;
+
+        return LinVector3D<T>.Create(
+            ops.Differentiate(GetX, clampedT),
+            ops.Differentiate(GetY, clampedT),
+            ops.Differentiate(GetZ, clampedT)
         );
     }
 
@@ -332,10 +345,24 @@ public sealed class ComputedPath3D<T> :
         if (GetDerivative2ValueFunc is not null)
             return GetDerivative2ValueFunc(ClampTime(t));
 
-        // Numerical differentiation not available for Generic<T>
-        throw new NotImplementedException(
-            "Numerical differentiation is not available for Generic<T>. " +
-            "Please provide an explicit second derivative function when creating ComputedPath3D<T>."
+        // Fallback to numerical second derivative via INumericalOperations<T>
+        var ops = t.ScalarProcessor.NumericalOperations;
+        if (ops is null)
+            throw new NotSupportedException(
+                "Numerical second derivative requires INumericalOperations<T>, " +
+                "which is not available for this scalar type. " +
+                "Please provide an explicit second derivative function when creating ComputedPath3D<T>.");
+
+        // Differentiate each component separately
+        var clampedT = ClampTime(t);
+        Scalar<T> GetX(Scalar<T> param) => GetValueFunc(ClampTime(param)).X;
+        Scalar<T> GetY(Scalar<T> param) => GetValueFunc(ClampTime(param)).Y;
+        Scalar<T> GetZ(Scalar<T> param) => GetValueFunc(ClampTime(param)).Z;
+
+        return LinVector3D<T>.Create(
+            ops.Differentiate2(GetX, clampedT),
+            ops.Differentiate2(GetY, clampedT),
+            ops.Differentiate2(GetZ, clampedT)
         );
     }
 }
