@@ -313,10 +313,10 @@ public class CatmullRomSplinePath2DEquivalenceTests
         var float64End = float64Spline.GetValue(1.0);
 
         // Assert
-        Assert.That(genericStart.X.ScalarValue, Is.EqualTo(float64Start.X).Within(Tolerance), "Start X");
-        Assert.That(genericStart.Y.ScalarValue, Is.EqualTo(float64Start.Y).Within(Tolerance), "Start Y");
-        Assert.That(genericEnd.X.ScalarValue, Is.EqualTo(float64End.X).Within(Tolerance), "End X");
-        Assert.That(genericEnd.Y.ScalarValue, Is.EqualTo(float64End.Y).Within(Tolerance), "End Y");
+        Assert.That(genericStart.X.ScalarValue, Is.EqualTo(float64Start.X.ScalarValue).Within(Tolerance), "Start X");
+        Assert.That(genericStart.Y.ScalarValue, Is.EqualTo(float64Start.Y.ScalarValue).Within(Tolerance), "Start Y");
+        Assert.That(genericEnd.X.ScalarValue, Is.EqualTo(float64End.X.ScalarValue).Within(Tolerance), "End X");
+        Assert.That(genericEnd.Y.ScalarValue, Is.EqualTo(float64End.Y.ScalarValue).Within(Tolerance), "End Y");
     }
 
     #endregion
@@ -386,9 +386,9 @@ public class CatmullRomSplinePath2DEquivalenceTests
             var genericDeriv2 = genericSpline.GetDerivative2Value(tScalar);
             var float64Deriv2 = float64Spline.GetDerivative2Value(t);
 
-            Assert.That(genericDeriv2.X.ScalarValue, Is.EqualTo(float64Deriv2.X).Within(Tolerance),
+            Assert.That(genericDeriv2.X.ScalarValue, Is.EqualTo(float64Deriv2.X.ScalarValue).Within(Tolerance),
                 $"Derivative2 X at t={t}");
-            Assert.That(genericDeriv2.Y.ScalarValue, Is.EqualTo(float64Deriv2.Y).Within(Tolerance),
+            Assert.That(genericDeriv2.Y.ScalarValue, Is.EqualTo(float64Deriv2.Y.ScalarValue).Within(Tolerance),
                 $"Derivative2 Y at t={t}");
         }
     }
@@ -456,9 +456,9 @@ public class CatmullRomSplinePath2DEquivalenceTests
             var genericDeriv2 = genericSpline.GetDerivative2Value(tScalar);
             var float64Deriv2 = float64Spline.GetDerivative2Value(t);
 
-            Assert.That(genericDeriv2.X.ScalarValue, Is.EqualTo(float64Deriv2.X).Within(Tolerance),
+            Assert.That(genericDeriv2.X.ScalarValue, Is.EqualTo(float64Deriv2.X.ScalarValue).Within(Tolerance),
                 $"Chordal Derivative2 X at t={t}");
-            Assert.That(genericDeriv2.Y.ScalarValue, Is.EqualTo(float64Deriv2.Y).Within(Tolerance),
+            Assert.That(genericDeriv2.Y.ScalarValue, Is.EqualTo(float64Deriv2.Y.ScalarValue).Within(Tolerance),
                 $"Chordal Derivative2 Y at t={t}");
         }
     }

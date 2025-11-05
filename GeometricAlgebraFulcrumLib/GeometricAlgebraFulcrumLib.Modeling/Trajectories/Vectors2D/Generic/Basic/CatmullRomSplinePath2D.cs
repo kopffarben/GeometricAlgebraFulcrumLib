@@ -50,7 +50,14 @@ public sealed class CatmullRomSplinePath2D<T> :
         var scalarProcessor = _pointList[0].ScalarProcessor;
         ILinVector2D<T> endPoint1, endPoint2;
 
-        if (isClosed)
+        // Handle single-point spline as a degenerate case (constant path)
+        if (_pointList.Count == 1)
+        {
+            var singlePoint = _pointList[0];
+            endPoint1 = singlePoint;
+            endPoint2 = singlePoint;
+        }
+        else if (isClosed)
         {
             // Make sure the first and last points are the same.
             var distanceSquared = _pointList[0].GetDistanceSquaredToPoint(_pointList[^1]);
@@ -198,6 +205,14 @@ public sealed class CatmullRomSplinePath2D<T> :
             return (one - t) * _pointList[^2].X + t * _pointList[^1].X;
         }
 
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, return constant X value (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            var dataPointIndex = Math.Max(0, Math.Min(1, _pointList.Count - 2));
+            return _pointList[dataPointIndex].X;
+        }
+
         // General case
         Debug.Assert(
             index2 == index1 + 1 &&
@@ -240,6 +255,14 @@ public sealed class CatmullRomSplinePath2D<T> :
             var one = t.ScalarProcessor.One;
 
             return (one - t) * _pointList[^2].Y + t * _pointList[^1].Y;
+        }
+
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, return constant Y value (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            var dataPointIndex = Math.Max(0, Math.Min(1, _pointList.Count - 2));
+            return _pointList[dataPointIndex].Y;
         }
 
         // General case
@@ -299,6 +322,19 @@ public sealed class CatmullRomSplinePath2D<T> :
                 scalarProcessor,
                 ((one - t) * p0.X + t * p1.X).ScalarValue,
                 ((one - t) * p0.Y + t * p1.Y).ScalarValue
+            );
+        }
+
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, return constant point (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            // Degenerate case - return first data point (original input point, not control point)
+            var dataPointIndex = Math.Max(0, Math.Min(1, _pointList.Count - 2));
+            return LinVector2D<T>.Create(
+                scalarProcessor,
+                _pointList[dataPointIndex].X.ScalarValue,
+                _pointList[dataPointIndex].Y.ScalarValue
             );
         }
 
@@ -375,6 +411,22 @@ public sealed class CatmullRomSplinePath2D<T> :
             );
         }
 
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, fall back to numerical differentiation (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Derivative in degenerate case requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector2D<T>.Create(
+                ops.Differentiate(GetPointX, parameterValue),
+                ops.Differentiate(GetPointY, parameterValue)
+            );
+        }
+
         Debug.Assert(
             index2 == index1 + 1 &&
             index1 >= 1 &&
@@ -427,6 +479,22 @@ public sealed class CatmullRomSplinePath2D<T> :
             if (ops is null)
                 throw new NotSupportedException(
                     "Second derivative at exact knot point requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector2D<T>.Create(
+                ops.Differentiate2(GetPointX, parameterValue),
+                ops.Differentiate2(GetPointY, parameterValue)
+            );
+        }
+
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, fall back to numerical differentiation (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Second derivative in degenerate case requires INumericalOperations<T>, " +
                     "which is not available for this scalar type.");
 
             return LinVector2D<T>.Create(
