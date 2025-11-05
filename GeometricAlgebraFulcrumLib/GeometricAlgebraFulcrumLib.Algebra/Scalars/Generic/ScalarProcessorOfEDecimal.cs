@@ -454,13 +454,18 @@ public sealed class ScalarProcessorOfEDecimal
     {
         var value = EDecimal.FromDouble(
             Math.Atan2(
-                scalarY.ToDouble(), 
+                scalarY.ToDouble(),
                 scalarX.ToDouble()
             )
         );
-        
+
         if (value.IsNegative) value += PiTimes2Value;
 
         return value.ScalarFromValue(this);
     }
+
+    /// <summary>
+    /// Numerical operations not yet implemented for EDecimal (arbitrary precision decimals).
+    /// </summary>
+    public INumericalOperations<EDecimal>? NumericalOperations => null;
 }

@@ -319,4 +319,10 @@ public sealed class ScalarProcessorOfFloating<T> : INumericScalarProcessor<T>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ToFloat64(T scalar) => double.CreateChecked(scalar);
+
+    /// <summary>
+    /// Numerical operations not yet implemented for generic floating-point types.
+    /// TODO Phase 3: Implement type-specific dispatch for float/double.
+    /// </summary>
+    public INumericalOperations<T>? NumericalOperations => null;
 }

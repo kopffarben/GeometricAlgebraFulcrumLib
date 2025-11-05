@@ -453,4 +453,9 @@ public sealed class ScalarProcessorOfComplex
 
         return this.ScalarFromValue(value);
     }
+
+    /// <summary>
+    /// Numerical operations not yet implemented for Complex numbers.
+    /// </summary>
+    public INumericalOperations<Complex>? NumericalOperations => null;
 }

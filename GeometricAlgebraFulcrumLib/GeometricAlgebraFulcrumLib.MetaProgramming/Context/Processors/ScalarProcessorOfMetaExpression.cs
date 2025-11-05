@@ -576,4 +576,15 @@ public class ScalarProcessorOfMetaExpression :
     {
         return scalar;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<IMetaExpression> Scalar(IMetaExpression value)
+    {
+        return value.ScalarFromValue(this);
+    }
+
+    /// <summary>
+    /// Numerical operations not yet implemented for meta-expression processors.
+    /// </summary>
+    public INumericalOperations<IMetaExpression>? NumericalOperations => null;
 }

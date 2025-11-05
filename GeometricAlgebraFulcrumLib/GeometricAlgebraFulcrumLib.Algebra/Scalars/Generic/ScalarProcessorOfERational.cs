@@ -459,15 +459,18 @@ public sealed class ScalarProcessorOfERational
     {
         var value = ERational.FromDouble(
             Math.Atan2(
-                scalarY.ToDouble(), 
+                scalarY.ToDouble(),
                 scalarX.ToDouble()
             )
         );
-        
+
         if (value.IsNegative) value += PiTimes2Value;
 
         return value.ScalarFromValue(this);
     }
 
-
+    /// <summary>
+    /// Numerical operations not yet implemented for ERational (exact rational arithmetic).
+    /// </summary>
+    public INumericalOperations<ERational>? NumericalOperations => null;
 }

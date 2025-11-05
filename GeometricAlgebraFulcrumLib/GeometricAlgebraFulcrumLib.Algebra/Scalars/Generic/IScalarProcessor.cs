@@ -163,7 +163,18 @@ public interface IScalarProcessor<T>
     Scalar<T> Sinh(T scalar);
 
     Scalar<T> Tanh(T scalar);
-    
+
+
+    /// <summary>
+    /// Numerical operations for this scalar type (differentiation, integration, root finding).
+    /// Returns null if numerical operations are not supported for this scalar type.
+    ///
+    /// For double/float: Uses Math.NET.Numerics (fast numerical approximations)
+    /// For symbolic types: Uses AngouriMath (exact symbolic computation)
+    /// </summary>
+    INumericalOperations<T>? NumericalOperations { get; }
+
+
     //bool IsFiniteNumber(T scalar);
 
     //bool IsZero(T scalar);

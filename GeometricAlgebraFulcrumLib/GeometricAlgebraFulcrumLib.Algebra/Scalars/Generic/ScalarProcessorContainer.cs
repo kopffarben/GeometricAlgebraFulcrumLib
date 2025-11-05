@@ -413,4 +413,10 @@ public abstract class ScalarProcessorContainer<T> :
     {
         return ScalarProcessor.ToText(scalar);
     }
+
+    /// <summary>
+    /// Delegates numerical operations to the wrapped scalar processor.
+    /// </summary>
+    public INumericalOperations<T>? NumericalOperations
+        => ScalarProcessor.NumericalOperations;
 }

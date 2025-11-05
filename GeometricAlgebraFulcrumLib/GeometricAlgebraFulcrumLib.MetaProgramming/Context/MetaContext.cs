@@ -2541,4 +2541,15 @@ public sealed class MetaContext :
 
         return composer.ToString();
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<IMetaExpressionAtomic> Scalar(IMetaExpressionAtomic value)
+    {
+        return value.ScalarFromValue(this);
+    }
+
+    /// <summary>
+    /// Numerical operations not yet implemented for MetaContext.
+    /// </summary>
+    public INumericalOperations<IMetaExpressionAtomic>? NumericalOperations => null;
 }

@@ -509,6 +509,12 @@ public sealed class ScalarProcessorOfAngouriMathEntity
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<Entity> Scalar(Entity value)
+    {
+        return value.ScalarFromValue(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ToFloat64(Entity scalar)
     {
         if (!scalar.EvaluableNumerical) return double.NaN;
@@ -549,4 +555,14 @@ public sealed class ScalarProcessorOfAngouriMathEntity
     {
         throw new NotImplementedException();
     }
+
+
+    private INumericalOperations<Entity>? _numericalOperations;
+
+    /// <summary>
+    /// Numerical operations for symbolic computation (AngouriMath backend).
+    /// Provides EXACT symbolic differentiation and integration (not numerical approximation).
+    /// </summary>
+    public INumericalOperations<Entity> NumericalOperations
+        => _numericalOperations ??= new AngouriMathNumericalOperations(this);
 }

@@ -512,4 +512,9 @@ public sealed class ScalarProcessorOfFloat64Signal :
             .Select(s => s.ToString("G"))
             .Concatenate(", ", "{", "}");
     }
+
+    /// <summary>
+    /// Numerical operations not yet implemented for signal processors.
+    /// </summary>
+    public INumericalOperations<Float64SampledTimeSignal>? NumericalOperations => null;
 }

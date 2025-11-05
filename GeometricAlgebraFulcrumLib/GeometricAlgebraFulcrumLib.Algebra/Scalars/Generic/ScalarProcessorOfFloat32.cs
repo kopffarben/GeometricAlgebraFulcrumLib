@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float32;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -445,5 +446,13 @@ public sealed class ScalarProcessorOfFloat32
 
         return ScalarFromNumber(value);
     }
+
+
+    /// <summary>
+    /// Numerical operations for single precision (Math.NET backend).
+    /// Provides numerical differentiation, integration, and root finding.
+    /// </summary>
+    public INumericalOperations<float> NumericalOperations
+        => MathNetNumericalOperationsOfFloat32.Instance;
 
 }

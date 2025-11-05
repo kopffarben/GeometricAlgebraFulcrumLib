@@ -495,4 +495,9 @@ public sealed class ScalarProcessorOfFloat64NdArray :
         //    .Select(s => s.ToString())
         //    .Concatenate(", ", "{", "}");
     }
+
+    /// <summary>
+    /// Numerical operations not yet implemented for NumPy ndarrays.
+    /// </summary>
+    public INumericalOperations<ndarray>? NumericalOperations => null;
 }

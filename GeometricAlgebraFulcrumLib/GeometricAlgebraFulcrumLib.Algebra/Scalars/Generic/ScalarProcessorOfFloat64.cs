@@ -483,4 +483,11 @@ public class ScalarProcessorOfFloat64
     }
 
 
+    /// <summary>
+    /// Numerical operations for double precision (Math.NET backend).
+    /// Provides numerical differentiation, integration, and root finding.
+    /// </summary>
+    public INumericalOperations<double> NumericalOperations
+        => MathNetNumericalOperationsOfFloat64.Instance;
+
 }

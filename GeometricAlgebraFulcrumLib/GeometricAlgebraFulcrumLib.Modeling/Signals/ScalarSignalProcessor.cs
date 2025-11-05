@@ -520,4 +520,9 @@ public sealed class ScalarSignalProcessor<T> :
     {
         return BinaryOperation(scalarX, scalarY, (scalar1, scalar2) => ScalarProcessor.VectorToRadians(scalar1, scalar2).ScalarValue).ScalarFromValue(this);
     }
+
+    /// <summary>
+    /// Numerical operations not yet implemented for signal processors.
+    /// </summary>
+    public INumericalOperations<IReadOnlyList<T>>? NumericalOperations => null;
 }
