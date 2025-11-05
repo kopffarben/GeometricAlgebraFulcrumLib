@@ -357,12 +357,16 @@ ParametricPath3D<T> (Basis)
 **Priorität:** P1 (Critical)
 **Geschätzter Aufwand:** 5 Wochen (200 Stunden)
 **Start:** Nach Module 6A
-**Status:** 🔄 IN PROGRESS - 65.0% Complete (26/40 Klassen)
+**Status:** 🎯 MILESTONE - 65.0% Complete (26/40 Klassen) - Foundational Classes Complete ✅
 
 **ÄHNLICH zu 6A, aber 2D statt 3D:**
 - Alle Klassen analog zu 6A
 - `LinVector2D<T>` statt `LinVector3D<T>`
 - Einfachere Geometrie (keine Normal-Vektoren nötig)
+
+**Milestone Note (2025-11-05):**
+✅ All foundational and straightforward 2D path classes implemented (26/40)
+⚠️ Remaining 14 classes require complex infrastructure (see below)
 
 ### ✅ Completed: 2D Path Classes (23 Klassen) - 2025-11-04
 
@@ -473,31 +477,45 @@ ParametricPath3D<T> (Basis)
   - **Referenz:** `Float64ArcLengthPath2D` (32 LOC)
   - **Implementation:** 52 LOC
   - **Tests:** (N/A - abstract base class, no concrete implementation to test)
-  - **Commit:** (pending)
+  - **Commit:** f9f179dd
   - **Features:** Abstract methods for GetLength(), TimeToLength(), LengthToTime(), ToFiniteArcLengthPath(), ToPeriodicArcLengthPath()
   - **Pattern:** Follows 3D Generic version (ArcLengthPath3D<T>)
   - **Note:** Foundation for concrete arc-length paths (requires implementations to test)
 
-### 🔴 Remaining: Complex 2D Paths (14 Klassen)
+### 🔴 Remaining: Complex 2D Paths (14 Klassen) - Deferred for Infrastructure
+
+**Status:** DEFERRED - Requires complex infrastructure not yet available in Generic<T>
+**Reason:** These classes depend on adaptive sampling framework, geometry classes, and complex utilities
 
 #### Spline Paths (1 Klasse)
-- [ ] HermiteSplinePath2D<T>
+- [ ] HermiteSplinePath2D<T> ⚠️ **No Float64 reference found in codebase**
 
 #### Arc Length Paths (1 Klasse)
-- [ ] AdaptiveArcLengthPath2D<T> - Requires adaptive sampling framework
+- [ ] AdaptiveArcLengthPath2D<T> ⚠️ **Requires:**
+  - Float64AdaptivePath2D framework (adaptive sampling tree structure)
+  - Float64AdaptivePath2DSamplingOptions (angle tolerance, depth limits)
+  - Float64AdaptivePath2DNode/Branch/Leaf hierarchy
+  - Complex adaptive subdivision logic
 
 #### Specialized Paths (5 Klassen)
-- [ ] RoulettePath2D<T> - Requires ArcLength parametrization
-- [ ] RouletteMappedPath2D<T> - Requires RouletteAffineMap
-- [ ] EllipsePath2D<T>
-- [ ] CircularArcPath2D<T>
-- [ ] OffsetPath2D<T>
+- [ ] RoulettePath2D<T> ⚠️ **Requires:** Float64RouletteAffineMap2D geometry class
+- [ ] RouletteMappedPath2D<T> ⚠️ **Requires:** RouletteAffineMap infrastructure
+- [ ] EllipsePath2D<T> ⚠️ **Not found in Float64 directory**
+- [ ] CircularArcPath2D<T> ⚠️ **Not found in Float64 directory**
+- [ ] OffsetPath2D<T> ⚠️ **Not found in Float64 directory**
 
 #### Composers & Samplers (7 Klassen)
-- [ ] Path2DComposer<T>
-- [ ] Path2DSampler<T>
-- [ ] AdaptivePath2DSampler<T>
+- [ ] Path2DComposerUtils ⚠️ **Float64 version is 15,478 LOC** - massive utility class
+- [ ] Path2DSampler<T> and related samplers ⚠️ **Requires sampling framework**
 - [ ] + 4 weitere Utility-Klassen
+
+**Deferral Rationale:**
+1. **Missing Float64 References:** Several classes don't exist in Float64 codebase
+2. **Adaptive Sampling Framework:** Requires implementing entire tree-based adaptive sampling system first
+3. **Geometry Infrastructure:** RGa/VGa transformation classes needed
+4. **Massive Utility Classes:** Path2DComposerUtils (15K+ LOC) requires extensive dependencies
+
+**Recommendation:** Implement supporting infrastructure in separate phase before attempting these classes
 
 ---
 

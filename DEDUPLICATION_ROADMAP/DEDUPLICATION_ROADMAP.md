@@ -1592,16 +1592,16 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
   - Complete affine transformation support (time + space)
   - Catmull-Rom spline interpolation with centripetal and chordal types
 
-#### ⏳ Nächste Schritte (14 Klassen verbleibend)
-**Komplexe 2D Pfade:**
-- **ScaledPath2D<T>** - Skalar-Multiplikation
-- **RGaFloat64RotationPath2D** + **RGaFloat64TranslationPath2D** + **RGaFloat64IsometricPath2D** (VGA-basierte Transformationen)
-- **Float64MorphPath2D** - Path-Morphing
-- **Float64AdaptivePath2D** - Adaptive Pfad-Sampling
-- **ParametricPath2DComposer<T>** - Composer-Pattern für komplexe Pfade
-- Signal-based Paths: **CylindricalPath2D**, **SphericalPath2D**
-- Hermite & Advanced Curves: **HermiteSplinePath2D**
-- Specialized Curves: **RouletteCircleCirclePath2D**, **EllipsePath2D**, **CircularArcPath2D**, **OffsetPath2D**
-- Arc Length: **AdaptiveArcLengthPath2D**
+#### 🎯 MILESTONE: Foundational Classes Complete (2025-11-05)
+
+**Status:** 65% Complete (26/40 Klassen) - All straightforward classes implemented ✅
+
+**Remaining 14 Classes DEFERRED** - Require complex infrastructure:
+1. **Adaptive Sampling Framework** (Float64AdaptivePath2D tree structure, sampling options)
+2. **Geometry Classes** (Float64RouletteAffineMap2D, transformation infrastructure)
+3. **Massive Utilities** (Path2DComposerUtils 15K+ LOC)
+4. **Missing Float64 References** (HermiteSplinePath2D, EllipsePath2D, CircularArcPath2D, OffsetPath2D not found)
+
+**Recommendation:** Implement supporting infrastructure before attempting remaining classes.
 
 **Vollständige Task-Liste:** Siehe [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)
