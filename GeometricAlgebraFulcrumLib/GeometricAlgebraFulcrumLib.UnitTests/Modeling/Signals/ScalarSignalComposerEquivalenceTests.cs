@@ -2,8 +2,10 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Mapped;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Mapped;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Modeling.Signals;

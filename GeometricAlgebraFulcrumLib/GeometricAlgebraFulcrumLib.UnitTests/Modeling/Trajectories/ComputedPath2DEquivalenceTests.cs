@@ -354,16 +354,98 @@ public class ComputedPath2DEquivalenceTests
             )
         );
 
-        // Act & Assert - Should throw when derivative is requested
-        Assert.Throws<NotSupportedException>(() =>
-        {
-            path.GetDerivative1Value(ScalarProcessor.Scalar(0.5));
-        }, "Should throw when derivative function not provided");
+        // Act & Assert - NOW WORKS with INumericalOperations<T> fallback!
+        var deriv1 = path.GetDerivative1Value(ScalarProcessor.Scalar(0.5));
+        Assert.That(deriv1, Is.Not.Null, "Derivative should be computed via numerical differentiation");
 
-        Assert.Throws<NotSupportedException>(() =>
-        {
-            path.GetDerivative2Value(ScalarProcessor.Scalar(0.5));
-        }, "Should throw when second derivative function not provided");
+        var deriv2 = path.GetDerivative2Value(ScalarProcessor.Scalar(0.5));
+        Assert.That(deriv2, Is.Not.Null, "Second derivative should be computed via numerical differentiation");
+    }
+
+    #endregion
+
+    #region Phase 1: INumericalOperations<T> Fallback Tests
+
+    [Test]
+    public void ComputedPath2D_GetDerivative1Value_WithoutFunction_UsesNumericalDifferentiation()
+    {
+        // Test INumericalOperations<T> fallback - simple smoke test
+        var timeRangeGeneric = ScalarRange<double>.Create(ScalarProcessor.Zero, ScalarProcessor.One);
+
+        var pathGeneric = ComputedPath2D<double>.Finite(
+            timeRangeGeneric,
+            t => LinVector2D<double>.Create(t * t, ScalarProcessor.ScalarFromNumber(2) * t * t)
+        );
+
+        // Should not throw - uses INumericalOperations<T> fallback
+        var deriv1Generic = pathGeneric.GetDerivative1Value(ScalarProcessor.Scalar(0.5));
+
+        Assert.That(deriv1Generic, Is.Not.Null, "Derivative should be computed via numerical differentiation");
+        Assert.That(deriv1Generic.X.ScalarValue, Is.Not.NaN, "X derivative should be valid");
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.Not.NaN, "Y derivative should be valid");
+
+        // Expected derivative at t=0.5: (2*0.5, 4*0.5) = (1, 2)
+        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(1.0).Within(1e-6), "X derivative should be ~1.0");
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(2.0).Within(1e-6), "Y derivative should be ~2.0");
+    }
+
+    [Test]
+    public void ComputedPath2D_GetDerivative2Value_WithoutFunction_UsesNumericalDifferentiation()
+    {
+        // Test INumericalOperations<T> fallback for second derivative - simple smoke test
+        var timeRangeGeneric = ScalarRange<double>.Create(ScalarProcessor.Zero, ScalarProcessor.One);
+
+        var pathGeneric = ComputedPath2D<double>.Finite(
+            timeRangeGeneric,
+            t => LinVector2D<double>.Create(t * t, ScalarProcessor.ScalarFromNumber(2) * t * t)
+        );
+
+        // Should not throw - uses INumericalOperations<T> fallback
+        var deriv2Generic = pathGeneric.GetDerivative2Value(ScalarProcessor.Scalar(0.5));
+
+        Assert.That(deriv2Generic, Is.Not.Null, "Second derivative should be computed via numerical differentiation");
+        Assert.That(deriv2Generic.X.ScalarValue, Is.Not.NaN, "X second derivative should be valid");
+        Assert.That(deriv2Generic.Y.ScalarValue, Is.Not.NaN, "Y second derivative should be valid");
+
+        // Expected second derivative: constant (2, 4)
+        Assert.That(deriv2Generic.X.ScalarValue, Is.EqualTo(2.0).Within(1e-4), "X second derivative should be ~2.0");
+        Assert.That(deriv2Generic.Y.ScalarValue, Is.EqualTo(4.0).Within(1e-4), "Y second derivative should be ~4.0");
+    }
+
+    [Test]
+    public void ComputedPath2D_GetDerivative1Value_ComplexFunction_UsesNumericalDifferentiation()
+    {
+        // Test with complex function: (sin(t), cos(t))
+        var timeRangeGeneric = ScalarRange<double>.Create(
+            ScalarProcessor.Zero,
+            ScalarProcessor.ScalarFromNumber(Math.PI)
+        );
+
+        var pathGeneric = ComputedPath2D<double>.Finite(
+            timeRangeGeneric,
+            t =>
+            {
+                var tVal = t.ScalarValue;
+                return LinVector2D<double>.Create(
+                    ScalarProcessor.ScalarFromNumber(Math.Sin(tVal)),
+                    ScalarProcessor.ScalarFromNumber(Math.Cos(tVal))
+                );
+            }
+        );
+
+        var tTest = Math.PI / 4.0;
+
+        // Should not throw - uses INumericalOperations<T> fallback
+        var deriv1Generic = pathGeneric.GetDerivative1Value(ScalarProcessor.ScalarFromNumber(tTest));
+
+        Assert.That(deriv1Generic, Is.Not.Null, "Derivative should be computed via numerical differentiation");
+        Assert.That(deriv1Generic.X.ScalarValue, Is.Not.NaN, "X derivative should be valid");
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.Not.NaN, "Y derivative should be valid");
+
+        // Expected derivative at t=π/4: (cos(π/4), -sin(π/4)) ≈ (0.707, -0.707)
+        const double tolerance = 1e-6;
+        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(Math.Cos(tTest)).Within(tolerance));
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(-Math.Sin(tTest)).Within(tolerance));
     }
 
     #endregion

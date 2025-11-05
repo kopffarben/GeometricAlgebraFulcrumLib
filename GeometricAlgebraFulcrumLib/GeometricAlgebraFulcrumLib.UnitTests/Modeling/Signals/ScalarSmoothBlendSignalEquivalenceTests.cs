@@ -2,8 +2,10 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Mapped;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Normalized;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Mapped;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Normalized;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Modeling.Signals;
@@ -67,11 +69,11 @@ public sealed class ScalarSmoothBlendSignalEquivalenceTests
         var blendFloat64 = Float64ScalarSmoothBlendSignal.Periodic(-1, 1, signal1Float64, signal2Float64);
 
         // Generic version
-        var signal1Generic = RampScalarSignal<double>.Finite(ScalarProcessor);
-        var signal2Generic = ConstantScalarSignal<double>.Finite(ScalarProcessor, ScalarProcessor.Scalar(1.0));
+        var signal1Generic = ScalarRampSignal<double>.Finite(ScalarProcessor);
+        var signal2Generic = ConstantScalarSignal<double>.Finite(ScalarProcessor, ScalarProcessor.One);
         var blendGeneric = ScalarSmoothBlendSignal<double>.Periodic(
             ScalarProcessor.Scalar(-1),
-            ScalarProcessor.Scalar(1),
+            ScalarProcessor.One,
             signal1Generic,
             signal2Generic
         );
@@ -100,11 +102,11 @@ public sealed class ScalarSmoothBlendSignalEquivalenceTests
         var signal2Float64 = Float64ScalarConstantOneSignal.FiniteInstance;
         var blendFloat64 = Float64ScalarSmoothBlendSignal.Finite(0.0, 1.0, signal1Float64, signal2Float64);
 
-        var signal1Generic = ConstantScalarSignal<double>.Finite(ScalarProcessor, ScalarProcessor.Scalar(0.0));
-        var signal2Generic = ConstantScalarSignal<double>.Finite(ScalarProcessor, ScalarProcessor.Scalar(1.0));
+        var signal1Generic = ConstantScalarSignal<double>.Finite(ScalarProcessor, ScalarProcessor.Zero);
+        var signal2Generic = ConstantScalarSignal<double>.Finite(ScalarProcessor, ScalarProcessor.One);
         var blendGeneric = ScalarSmoothBlendSignal<double>.Finite(
-            ScalarProcessor.Scalar(0.0),
-            ScalarProcessor.Scalar(1.0),
+            ScalarProcessor.Zero,
+            ScalarProcessor.One,
             signal1Generic,
             signal2Generic
         );

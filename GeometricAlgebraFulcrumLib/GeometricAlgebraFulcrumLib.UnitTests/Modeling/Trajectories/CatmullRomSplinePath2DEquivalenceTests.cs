@@ -551,4 +551,105 @@ public class CatmullRomSplinePath2DEquivalenceTests
     }
 
     #endregion
+
+    #region Phase 1: INumericalOperations<T> Edge Case Tests
+
+    [Test]
+    public void CatmullRomSplinePath2D_GetDerivative1Value_BeforeStart_UsesNumericalDifferentiation()
+    {
+        // Test edge case: t < MinTime (uses numerical differentiation fallback)
+        var controlPointsGeneric = GetTestControlPoints4();
+        var splineGeneric = new CatmullRomSplinePath2D<double>(
+            isPeriodic: false,
+            inputPointList: controlPointsGeneric,
+            curveType: CatmullRomSplineType.Centripetal,
+            isClosed: false
+        );
+
+        var tValue = -0.1;
+        // Should not throw - uses INumericalOperations<T> fallback
+        var deriv1Generic = splineGeneric.GetDerivative1Value(ScalarProcessor.ScalarFromNumber(tValue));
+
+        Assert.That(deriv1Generic, Is.Not.Null, "Derivative should be computed via numerical differentiation");
+        Assert.That(deriv1Generic.X.ScalarValue, Is.Not.NaN, "X derivative should be valid");
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.Not.NaN, "Y derivative should be valid");
+    }
+
+    [Test]
+    public void CatmullRomSplinePath2D_GetDerivative1Value_AfterEnd_UsesNumericalDifferentiation()
+    {
+        var controlPointsGeneric = GetTestControlPoints4();
+        var splineGeneric = new CatmullRomSplinePath2D<double>(
+            isPeriodic: false, inputPointList: controlPointsGeneric,
+            curveType: CatmullRomSplineType.Centripetal, isClosed: false
+        );
+
+        var deriv1Generic = splineGeneric.GetDerivative1Value(ScalarProcessor.ScalarFromNumber(1.1));
+        Assert.That(deriv1Generic, Is.Not.Null);
+        Assert.That(deriv1Generic.X.ScalarValue, Is.Not.NaN);
+    }
+
+    [Test]
+    public void CatmullRomSplinePath2D_GetDerivative2Value_BeforeStart_UsesNumericalDifferentiation()
+    {
+        var controlPointsGeneric = GetTestControlPoints4();
+        var splineGeneric = new CatmullRomSplinePath2D<double>(
+            isPeriodic: false, inputPointList: controlPointsGeneric,
+            curveType: CatmullRomSplineType.Centripetal, isClosed: false
+        );
+
+        var deriv2Generic = splineGeneric.GetDerivative2Value(ScalarProcessor.ScalarFromNumber(-0.1));
+        Assert.That(deriv2Generic, Is.Not.Null);
+        Assert.That(deriv2Generic.X.ScalarValue, Is.Not.NaN);
+    }
+
+    [Test]
+    public void CatmullRomSplinePath2D_GetDerivative2Value_AfterEnd_UsesNumericalDifferentiation()
+    {
+        var controlPointsGeneric = GetTestControlPoints4();
+        var splineGeneric = new CatmullRomSplinePath2D<double>(
+            isPeriodic: false, inputPointList: controlPointsGeneric,
+            curveType: CatmullRomSplineType.Centripetal, isClosed: false
+        );
+
+        var deriv2Generic = splineGeneric.GetDerivative2Value(ScalarProcessor.ScalarFromNumber(1.1));
+        Assert.That(deriv2Generic, Is.Not.Null);
+        Assert.That(deriv2Generic.X.ScalarValue, Is.Not.NaN);
+    }
+
+    [Test]
+    public void CatmullRomSplinePath2D_GetDerivative1Value_SingleKnot_UsesNumericalDifferentiation()
+    {
+        var singlePoint = new List<LinVector2D<double>>
+        {
+            LinVector2D<double>.Create(ScalarProcessor.ScalarFromNumber(2), ScalarProcessor.ScalarFromNumber(3))
+        };
+
+        var splineGeneric = new CatmullRomSplinePath2D<double>(
+            isPeriodic: false, inputPointList: singlePoint,
+            curveType: CatmullRomSplineType.Centripetal, isClosed: false
+        );
+
+        var deriv1Generic = splineGeneric.GetDerivative1Value(ScalarProcessor.ScalarFromNumber(0.5));
+        Assert.That(deriv1Generic, Is.Not.Null);
+    }
+
+    [Test]
+    public void CatmullRomSplinePath2D_GetDerivative2Value_SingleKnot_UsesNumericalDifferentiation()
+    {
+        var singlePoint = new List<LinVector2D<double>>
+        {
+            LinVector2D<double>.Create(ScalarProcessor.ScalarFromNumber(2), ScalarProcessor.ScalarFromNumber(3))
+        };
+
+        var splineGeneric = new CatmullRomSplinePath2D<double>(
+            isPeriodic: false, inputPointList: singlePoint,
+            curveType: CatmullRomSplineType.Centripetal, isClosed: false
+        );
+
+        var deriv2Generic = splineGeneric.GetDerivative2Value(ScalarProcessor.ScalarFromNumber(0.5));
+        Assert.That(deriv2Generic, Is.Not.Null);
+    }
+
+    #endregion
 }

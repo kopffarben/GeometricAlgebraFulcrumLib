@@ -23,7 +23,7 @@
       "mcp__serena__think_about_task_adherence",
       "mcp__serena__think_about_whether_you_are_done",
       "mcp__sequential-thinking__sequentialthinking",
-	  "mcp__serena__initial_instructions",
+      "mcp__serena__initial_instructions",
       "Bash(tree:*)",
       "Bash(find:*)",
       "Bash(git:*)",
@@ -52,9 +52,10 @@
       "Bash(xargs:*)",
       "Bash(for:*)",
       "Bash(do:*)",
-	  "Bash(if:*)",
+      "Bash(if:*)",
       "Bash(then:*)",
-	  "Bash(else:*)"
+      "Bash(else:*)",
+      "Bash(SimpleHarmonicPath2D.cs.tmp)"
     ]
   },
   "enabledMcpjsonServers": [

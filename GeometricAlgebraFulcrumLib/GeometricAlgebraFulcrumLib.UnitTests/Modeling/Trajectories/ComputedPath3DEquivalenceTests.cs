@@ -188,14 +188,21 @@ public class ComputedPath3DEquivalenceTests
     }
 
     [Test]
-    public void ComputedPath3D_GetDerivative1Value_WithoutFunction_ShouldThrowNotImplementedException()
+    public void ComputedPath3D_GetDerivative1Value_WithoutFunction_UsesNumericalDifferentiation()
     {
+        // UPDATED TEST: Now uses INumericalOperations<T> fallback instead of throwing
+        var timeRange = Float64ScalarRange.Create(0, 1);
         var timeRangeGeneric = ScalarRange<double>.Create(
             ScalarProcessor.Zero,
             ScalarProcessor.One
         );
 
         // Path: (t², 2t², 3t²) without explicit derivative
+        var pathFloat64 = Float64ComputedPath3D.Finite(
+            timeRange,
+            t => LinFloat64Vector3D.Create(t * t, 2 * t * t, 3 * t * t)
+        );
+
         var pathGeneric = ComputedPath3D<double>.Finite(
             timeRangeGeneric,
             t => LinVector3D<double>.Create(
@@ -205,11 +212,16 @@ public class ComputedPath3DEquivalenceTests
             )
         );
 
-        // Numerical differentiation is not available for Generic<T>
-        Assert.Throws<NotImplementedException>(() =>
-        {
-            var deriv1Generic = pathGeneric.GetDerivative1Value(ScalarProcessor.Scalar(0.5));
-        });
+        // Numerical differentiation via INumericalOperations<T>
+        // Expected derivative at t=0.5: (2*0.5, 4*0.5, 6*0.5) = (1, 2, 3)
+        var deriv1Float64 = pathFloat64.GetDerivative1Value(0.5);
+        var deriv1Generic = pathGeneric.GetDerivative1Value(ScalarProcessor.Scalar(0.5));
+
+        // Numerical differentiation has lower precision
+        const double numericalTolerance = 1e-6;
+        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(deriv1Float64.X.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(deriv1Float64.Y.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv1Generic.Z.ScalarValue, Is.EqualTo(deriv1Float64.Z.ScalarValue).Within(numericalTolerance));
     }
 
     [Test]
@@ -411,5 +423,123 @@ public class ComputedPath3DEquivalenceTests
         Assert.That(valueGeneric.X.ScalarValue, Is.EqualTo(valueFloat64.X.ScalarValue).Within(Tolerance));
         Assert.That(valueGeneric.Y.ScalarValue, Is.EqualTo(valueFloat64.Y.ScalarValue).Within(Tolerance));
         Assert.That(valueGeneric.Z.ScalarValue, Is.EqualTo(valueFloat64.Z.ScalarValue).Within(Tolerance));
+    }
+
+    // ===== NEW TESTS FOR PHASE 1: INumericalOperations<T> Fallbacks =====
+
+    [Test]
+    public void ComputedPath3D_GetDerivative2Value_WithoutFunction_UsesNumericalDifferentiation()
+    {
+        // Test INumericalOperations<T> fallback for second derivative
+        var timeRange = Float64ScalarRange.Create(0, 1);
+        var timeRangeGeneric = ScalarRange<double>.Create(
+            ScalarProcessor.Zero,
+            ScalarProcessor.One
+        );
+
+        // Path: (t², 2t², 3t²) without explicit derivatives
+        // Expected 2nd derivative: (2, 4, 6) - constant
+        var pathFloat64 = Float64ComputedPath3D.Finite(
+            timeRange,
+            t => LinFloat64Vector3D.Create(t * t, 2 * t * t, 3 * t * t)
+        );
+
+        var pathGeneric = ComputedPath3D<double>.Finite(
+            timeRangeGeneric,
+            t => LinVector3D<double>.Create(
+                t * t,
+                ScalarProcessor.ScalarFromNumber(2) * t * t,
+                ScalarProcessor.ScalarFromNumber(3) * t * t
+            )
+        );
+
+        var deriv2Float64 = pathFloat64.GetDerivative2Value(0.5);
+        var deriv2Generic = pathGeneric.GetDerivative2Value(ScalarProcessor.Scalar(0.5));
+
+        // Second derivative numerical differentiation has lower precision
+        const double numericalTolerance = 1e-4;
+        Assert.That(deriv2Generic.X.ScalarValue, Is.EqualTo(deriv2Float64.X.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv2Generic.Y.ScalarValue, Is.EqualTo(deriv2Float64.Y.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv2Generic.Z.ScalarValue, Is.EqualTo(deriv2Float64.Z.ScalarValue).Within(numericalTolerance));
+    }
+
+    [Test]
+    public void ComputedPath3D_GetDerivative1Value_ComplexFunction_ShouldMatchFloat64()
+    {
+        // Test with more complex function: (sin(t), cos(t), t³)
+        var timeRange = Float64ScalarRange.Create(0, Math.PI);
+        var timeRangeGeneric = ScalarRange<double>.Create(
+            ScalarProcessor.Zero,
+            ScalarProcessor.ScalarFromNumber(Math.PI)
+        );
+
+        var pathFloat64 = Float64ComputedPath3D.Finite(
+            timeRange,
+            t => LinFloat64Vector3D.Create(Math.Sin(t), Math.Cos(t), t * t * t)
+        );
+
+        var pathGeneric = ComputedPath3D<double>.Finite(
+            timeRangeGeneric,
+            t =>
+            {
+                var tVal = t.ScalarValue;
+                return LinVector3D<double>.Create(
+                    ScalarProcessor.ScalarFromNumber(Math.Sin(tVal)),
+                    ScalarProcessor.ScalarFromNumber(Math.Cos(tVal)),
+                    t * t * t
+                );
+            }
+        );
+
+        // Test at t=π/4
+        var tTest = Math.PI / 4.0;
+        var deriv1Float64 = pathFloat64.GetDerivative1Value(tTest);
+        var deriv1Generic = pathGeneric.GetDerivative1Value(ScalarProcessor.ScalarFromNumber(tTest));
+
+        // Numerical differentiation tolerance
+        const double numericalTolerance = 1e-6;
+        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(deriv1Float64.X.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(deriv1Float64.Y.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv1Generic.Z.ScalarValue, Is.EqualTo(deriv1Float64.Z.ScalarValue).Within(numericalTolerance));
+    }
+
+    [Test]
+    public void ComputedPath3D_GetDerivative2Value_ComplexFunction_ShouldMatchFloat64()
+    {
+        // Test second derivative with complex function: (sin(t), cos(t), t³)
+        var timeRange = Float64ScalarRange.Create(0, Math.PI);
+        var timeRangeGeneric = ScalarRange<double>.Create(
+            ScalarProcessor.Zero,
+            ScalarProcessor.ScalarFromNumber(Math.PI)
+        );
+
+        var pathFloat64 = Float64ComputedPath3D.Finite(
+            timeRange,
+            t => LinFloat64Vector3D.Create(Math.Sin(t), Math.Cos(t), t * t * t)
+        );
+
+        var pathGeneric = ComputedPath3D<double>.Finite(
+            timeRangeGeneric,
+            t =>
+            {
+                var tVal = t.ScalarValue;
+                return LinVector3D<double>.Create(
+                    ScalarProcessor.ScalarFromNumber(Math.Sin(tVal)),
+                    ScalarProcessor.ScalarFromNumber(Math.Cos(tVal)),
+                    t * t * t
+                );
+            }
+        );
+
+        // Test at t=π/4
+        var tTest = Math.PI / 4.0;
+        var deriv2Float64 = pathFloat64.GetDerivative2Value(tTest);
+        var deriv2Generic = pathGeneric.GetDerivative2Value(ScalarProcessor.ScalarFromNumber(tTest));
+
+        // Second derivative numerical tolerance
+        const double numericalTolerance = 1e-4;
+        Assert.That(deriv2Generic.X.ScalarValue, Is.EqualTo(deriv2Float64.X.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv2Generic.Y.ScalarValue, Is.EqualTo(deriv2Float64.Y.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv2Generic.Z.ScalarValue, Is.EqualTo(deriv2Float64.Z.ScalarValue).Within(numericalTolerance));
     }
 }

@@ -462,4 +462,214 @@ public class CatmullRomSplinePath3DEquivalenceTests
 
         Assert.That(splineGeneric.IsClosed, Is.True);
     }
+
+    // ===== NEW TESTS FOR PHASE 1: INumericalOperations<T> Edge Case Fallbacks =====
+
+    [Test]
+    public void CatmullRomSpline_GetDerivative1Value_BeforeStart_ShouldMatchFloat64()
+    {
+        // Test edge case: t < MinTime (uses numerical differentiation fallback)
+        var controlPointsFloat64 = CreateTestControlPoints();
+        var splineFloat64 = new Float64CatmullRomSplinePath3D(
+            false,
+            controlPointsFloat64,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var controlPointsGeneric = CreateTestControlPointsGeneric(ScalarProcessor);
+        var splineGeneric = new CatmullRomSplinePath3D<double>(
+            false,
+            controlPointsGeneric,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var tValue = -0.1; // Before start
+        var deriv1Float64 = splineFloat64.GetDerivative1Value(tValue);
+        var deriv1Generic = splineGeneric.GetDerivative1Value(ScalarProcessor.ScalarFromNumber(tValue));
+
+        // Numerical differentiation has lower precision (~1e-7)
+        const double numericalTolerance = 1e-6;
+        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(deriv1Float64.X.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(deriv1Float64.Y.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv1Generic.Z.ScalarValue, Is.EqualTo(deriv1Float64.Z.ScalarValue).Within(numericalTolerance));
+    }
+
+    [Test]
+    public void CatmullRomSpline_GetDerivative1Value_AfterEnd_ShouldMatchFloat64()
+    {
+        // Test edge case: t > MaxTime (uses numerical differentiation fallback)
+        var controlPointsFloat64 = CreateTestControlPoints();
+        var splineFloat64 = new Float64CatmullRomSplinePath3D(
+            false,
+            controlPointsFloat64,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var controlPointsGeneric = CreateTestControlPointsGeneric(ScalarProcessor);
+        var splineGeneric = new CatmullRomSplinePath3D<double>(
+            false,
+            controlPointsGeneric,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var tValue = 1.1; // After end
+        var deriv1Float64 = splineFloat64.GetDerivative1Value(tValue);
+        var deriv1Generic = splineGeneric.GetDerivative1Value(ScalarProcessor.ScalarFromNumber(tValue));
+
+        // Numerical differentiation has lower precision
+        const double numericalTolerance = 1e-6;
+        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(deriv1Float64.X.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(deriv1Float64.Y.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv1Generic.Z.ScalarValue, Is.EqualTo(deriv1Float64.Z.ScalarValue).Within(numericalTolerance));
+    }
+
+    [Test]
+    public void CatmullRomSpline_GetDerivative2Value_BeforeStart_ShouldMatchFloat64()
+    {
+        // Test edge case: t < MinTime (uses numerical differentiation fallback)
+        var controlPointsFloat64 = CreateTestControlPoints();
+        var splineFloat64 = new Float64CatmullRomSplinePath3D(
+            false,
+            controlPointsFloat64,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var controlPointsGeneric = CreateTestControlPointsGeneric(ScalarProcessor);
+        var splineGeneric = new CatmullRomSplinePath3D<double>(
+            false,
+            controlPointsGeneric,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var tValue = -0.1; // Before start
+        var deriv2Float64 = splineFloat64.GetDerivative2Value(tValue);
+        var deriv2Generic = splineGeneric.GetDerivative2Value(ScalarProcessor.ScalarFromNumber(tValue));
+
+        // Numerical second derivative has even lower precision (~1e-5)
+        const double numericalTolerance = 1e-4;
+        Assert.That(deriv2Generic.X.ScalarValue, Is.EqualTo(deriv2Float64.X.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv2Generic.Y.ScalarValue, Is.EqualTo(deriv2Float64.Y.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv2Generic.Z.ScalarValue, Is.EqualTo(deriv2Float64.Z.ScalarValue).Within(numericalTolerance));
+    }
+
+    [Test]
+    public void CatmullRomSpline_GetDerivative2Value_AfterEnd_ShouldMatchFloat64()
+    {
+        // Test edge case: t > MaxTime (uses numerical differentiation fallback)
+        var controlPointsFloat64 = CreateTestControlPoints();
+        var splineFloat64 = new Float64CatmullRomSplinePath3D(
+            false,
+            controlPointsFloat64,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var controlPointsGeneric = CreateTestControlPointsGeneric(ScalarProcessor);
+        var splineGeneric = new CatmullRomSplinePath3D<double>(
+            false,
+            controlPointsGeneric,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var tValue = 1.1; // After end
+        var deriv2Float64 = splineFloat64.GetDerivative2Value(tValue);
+        var deriv2Generic = splineGeneric.GetDerivative2Value(ScalarProcessor.ScalarFromNumber(tValue));
+
+        // Numerical second derivative has lower precision
+        const double numericalTolerance = 1e-4;
+        Assert.That(deriv2Generic.X.ScalarValue, Is.EqualTo(deriv2Float64.X.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv2Generic.Y.ScalarValue, Is.EqualTo(deriv2Float64.Y.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv2Generic.Z.ScalarValue, Is.EqualTo(deriv2Float64.Z.ScalarValue).Within(numericalTolerance));
+    }
+
+    [Test]
+    public void CatmullRomSpline_GetDerivative1Value_SingleKnotPoint_ShouldMatchFloat64()
+    {
+        // Test edge case: Single knot point (uses numerical differentiation fallback)
+        var singlePoint = new List<LinVector3D<double>>
+        {
+            LinVector3D<double>.Create(
+                ScalarProcessor.ScalarFromNumber(2),
+                ScalarProcessor.ScalarFromNumber(3),
+                ScalarProcessor.ScalarFromNumber(1)
+            )
+        };
+
+        var singlePointFloat64 = new List<LinFloat64Vector3D>
+        {
+            LinFloat64Vector3D.Create(2, 3, 1)
+        };
+
+        var splineFloat64 = new Float64CatmullRomSplinePath3D(
+            false,
+            singlePointFloat64,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var splineGeneric = new CatmullRomSplinePath3D<double>(
+            false,
+            singlePoint,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var deriv1Float64 = splineFloat64.GetDerivative1Value(0.5);
+        var deriv1Generic = splineGeneric.GetDerivative1Value(ScalarProcessor.ScalarFromNumber(0.5));
+
+        // Numerical differentiation tolerance
+        const double numericalTolerance = 1e-6;
+        Assert.That(deriv1Generic.X.ScalarValue, Is.EqualTo(deriv1Float64.X.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv1Generic.Y.ScalarValue, Is.EqualTo(deriv1Float64.Y.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv1Generic.Z.ScalarValue, Is.EqualTo(deriv1Float64.Z.ScalarValue).Within(numericalTolerance));
+    }
+
+    [Test]
+    public void CatmullRomSpline_GetDerivative2Value_SingleKnotPoint_ShouldMatchFloat64()
+    {
+        // Test edge case: Single knot point (uses numerical differentiation fallback)
+        var singlePoint = new List<LinVector3D<double>>
+        {
+            LinVector3D<double>.Create(
+                ScalarProcessor.ScalarFromNumber(2),
+                ScalarProcessor.ScalarFromNumber(3),
+                ScalarProcessor.ScalarFromNumber(1)
+            )
+        };
+
+        var singlePointFloat64 = new List<LinFloat64Vector3D>
+        {
+            LinFloat64Vector3D.Create(2, 3, 1)
+        };
+
+        var splineFloat64 = new Float64CatmullRomSplinePath3D(
+            false,
+            singlePointFloat64,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var splineGeneric = new CatmullRomSplinePath3D<double>(
+            false,
+            singlePoint,
+            CatmullRomSplineType.Centripetal,
+            false
+        );
+
+        var deriv2Float64 = splineFloat64.GetDerivative2Value(0.5);
+        var deriv2Generic = splineGeneric.GetDerivative2Value(ScalarProcessor.ScalarFromNumber(0.5));
+
+        // Second derivative numerical tolerance
+        const double numericalTolerance = 1e-4;
+        Assert.That(deriv2Generic.X.ScalarValue, Is.EqualTo(deriv2Float64.X.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv2Generic.Y.ScalarValue, Is.EqualTo(deriv2Float64.Y.ScalarValue).Within(numericalTolerance));
+        Assert.That(deriv2Generic.Z.ScalarValue, Is.EqualTo(deriv2Float64.Z.ScalarValue).Within(numericalTolerance));
+    }
 }

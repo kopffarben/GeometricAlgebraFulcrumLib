@@ -33,7 +33,7 @@ public sealed class Float64CatmullRomSplinePath2D :
         => _pointList.Count;
 
 
-    internal Float64CatmullRomSplinePath2D(bool isPeriodic, IEnumerable<ILinFloat64Vector2D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
+    public Float64CatmullRomSplinePath2D(bool isPeriodic, IEnumerable<ILinFloat64Vector2D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
         : base(Float64ScalarRange.ZeroToOne, isPeriodic)
     {
         SplineType = curveType;

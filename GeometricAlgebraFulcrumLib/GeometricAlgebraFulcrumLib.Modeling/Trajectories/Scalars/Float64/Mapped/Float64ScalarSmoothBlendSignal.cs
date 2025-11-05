@@ -12,45 +12,45 @@ public sealed class Float64ScalarSmoothBlendSignal :
     Float64ScalarSignal
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSmoothBlendSignal Finite(double blendTimeMin, double blendTimeMax, Float64ScalarSignal baseSignal1, Float64ScalarSignal baseSignal2)
+    public static Float64ScalarSmoothBlendSignal Finite(double blendTimeMin, double blendTimeMax, Float64ScalarSignal baseSignal1, Float64ScalarSignal baseSignal2)
     {
         return new Float64ScalarSmoothBlendSignal(
             Float64ScalarRange.Create(blendTimeMin, blendTimeMax),
-            false, 
-            baseSignal1, 
+            false,
+            baseSignal1,
             baseSignal2
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSmoothBlendSignal Finite(Float64ScalarRange timeRange, Float64ScalarSignal baseSignal1, Float64ScalarSignal baseSignal2)
+    public static Float64ScalarSmoothBlendSignal Finite(Float64ScalarRange timeRange, Float64ScalarSignal baseSignal1, Float64ScalarSignal baseSignal2)
     {
         return new Float64ScalarSmoothBlendSignal(
             timeRange,
-            false, 
-            baseSignal1, 
+            false,
+            baseSignal1,
             baseSignal2
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSmoothBlendSignal Periodic(Float64ScalarRange timeRange, Float64ScalarSignal baseSignal1, Float64ScalarSignal baseSignal2)
+    public static Float64ScalarSmoothBlendSignal Periodic(Float64ScalarRange timeRange, Float64ScalarSignal baseSignal1, Float64ScalarSignal baseSignal2)
     {
         return new Float64ScalarSmoothBlendSignal(
             timeRange,
-            true, 
-            baseSignal1, 
+            true,
+            baseSignal1,
             baseSignal2
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Float64ScalarSmoothBlendSignal Periodic(double blendTimeMin, double blendTimeMax, Float64ScalarSignal baseSignal1, Float64ScalarSignal baseSignal2)
+    public static Float64ScalarSmoothBlendSignal Periodic(double blendTimeMin, double blendTimeMax, Float64ScalarSignal baseSignal1, Float64ScalarSignal baseSignal2)
     {
         return new Float64ScalarSmoothBlendSignal(
             Float64ScalarRange.Create(blendTimeMin, blendTimeMax),
-            true, 
-            baseSignal1, 
+            true,
+            baseSignal1,
             baseSignal2
         );
     }
