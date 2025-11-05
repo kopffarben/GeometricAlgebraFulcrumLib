@@ -114,8 +114,10 @@ public sealed class TimesPath2D<T> :
     private TimesPath2D(bool isPeriodic, IReadOnlyList<ParametricPath2D<T>> basePaths)
         : base(
             ScalarRange<T>.Create(
-                basePaths.Select(p => p.TimeRange.MinValue).Min(),
-                basePaths.Select(p => p.TimeRange.MaxValue).Max()
+                basePaths.Select(p => p.TimeRange.MinValue)
+                    .Aggregate((min, current) => current < min ? current : min),
+                basePaths.Select(p => p.TimeRange.MaxValue)
+                    .Aggregate((max, current) => current > max ? current : max)
             ),
             isPeriodic
         )
