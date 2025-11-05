@@ -50,7 +50,14 @@ public sealed class CatmullRomSplinePath3D<T> :
         var scalarProcessor = _pointList[0].ScalarProcessor;
         ILinVector3D<T> endPoint1, endPoint2;
 
-        if (isClosed)
+        // Handle single-point spline as a degenerate case (constant path)
+        if (_pointList.Count == 1)
+        {
+            var singlePoint = _pointList[0];
+            endPoint1 = singlePoint;
+            endPoint2 = singlePoint;
+        }
+        else if (isClosed)
         {
             // Make sure the first and last points are the same.
             var distanceSquared = _pointList[0].GetDistanceSquaredToPoint(_pointList[^1]);
@@ -125,10 +132,23 @@ public sealed class CatmullRomSplinePath3D<T> :
         var tMin = _knotList[1];
         var tMax = _knotList[^2];
         var tRange = tMax - tMin;
-        var tRangeInv = scalarProcessor.One / tRange;
 
-        for (var i = 0; i < _knotList.Length; i++)
-            _knotList[i] = (_knotList[i] - tMin) * tRangeInv;
+        // Normalize knot list to [0, 1] range
+        // For single-point splines (tRange == 0), skip normalization
+        var tRangeValue = scalarProcessor.ToFloat64(tRange.ScalarValue);
+        if (tRangeValue > scalarProcessor.ZeroEpsilon)
+        {
+            var tRangeInv = scalarProcessor.One / tRange;
+
+            for (var i = 0; i < _knotList.Length; i++)
+                _knotList[i] = (_knotList[i] - tMin) * tRangeInv;
+        }
+        else
+        {
+            // Degenerate case: all knots are the same, just set to 0
+            for (var i = 0; i < _knotList.Length; i++)
+                _knotList[i] = scalarProcessor.Zero;
+        }
     }
 
 
@@ -201,6 +221,14 @@ public sealed class CatmullRomSplinePath3D<T> :
             return (one - t) * _pointList[^2].X + t * _pointList[^1].X;
         }
 
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, return constant X value (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            var dataPointIndex = Math.Max(0, Math.Min(1, _pointList.Count - 2));
+            return _pointList[dataPointIndex].X;
+        }
+
         // General case
         Debug.Assert(
             index2 == index1 + 1 &&
@@ -245,6 +273,14 @@ public sealed class CatmullRomSplinePath3D<T> :
             return (one - t) * _pointList[^2].Y + t * _pointList[^1].Y;
         }
 
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, return constant Y value (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            var dataPointIndex = Math.Max(0, Math.Min(1, _pointList.Count - 2));
+            return _pointList[dataPointIndex].Y;
+        }
+
         // General case
         Debug.Assert(
             index2 == index1 + 1 &&
@@ -287,6 +323,14 @@ public sealed class CatmullRomSplinePath3D<T> :
             var one = t.ScalarProcessor.One;
 
             return (one - t) * _pointList[^2].Z + t * _pointList[^1].Z;
+        }
+
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, return constant Z value (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            var dataPointIndex = Math.Max(0, Math.Min(1, _pointList.Count - 2));
+            return _pointList[dataPointIndex].Z;
         }
 
         // General case
@@ -351,6 +395,20 @@ public sealed class CatmullRomSplinePath3D<T> :
             );
         }
 
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, return constant point (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            // Degenerate case - return first data point (original input point, not control point)
+            var dataPointIndex = Math.Max(0, Math.Min(1, _pointList.Count - 2));
+            return LinVector3D<T>.Create(
+                scalarProcessor,
+                _pointList[dataPointIndex].X.ScalarValue,
+                _pointList[dataPointIndex].Y.ScalarValue,
+                _pointList[dataPointIndex].Z.ScalarValue
+            );
+        }
+
         // General case
         Debug.Assert(
             index2 == index1 + 1 &&
@@ -393,10 +451,17 @@ public sealed class CatmullRomSplinePath3D<T> :
 
         if (parameterValue <= _knotList[0] || parameterValue >= _knotList[^1])
         {
-            // Numerical differentiation not available for Generic<T>
-            throw new NotImplementedException(
-                "Numerical differentiation at boundary is not available for Generic<T>. " +
-                "CatmullRom derivatives require values within the spline range."
+            // Edge cases - use numerical differentiation via INumericalOperations<T>
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Numerical differentiation at boundary requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector3D<T>.Create(
+                ops.Differentiate(GetPointX, parameterValue),
+                ops.Differentiate(GetPointY, parameterValue),
+                ops.Differentiate(GetPointZ, parameterValue)
             );
         }
 
@@ -405,8 +470,34 @@ public sealed class CatmullRomSplinePath3D<T> :
 
         if (index1 == index2)
         {
-            throw new NotImplementedException(
-                "Numerical differentiation at exact knot points is not available for Generic<T>."
+            // Single point - use numerical differentiation via INumericalOperations<T>
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Derivative at exact knot point requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector3D<T>.Create(
+                ops.Differentiate(GetPointX, parameterValue),
+                ops.Differentiate(GetPointY, parameterValue),
+                ops.Differentiate(GetPointZ, parameterValue)
+            );
+        }
+
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, fall back to numerical differentiation (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Derivative in degenerate case requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector3D<T>.Create(
+                ops.Differentiate(GetPointX, parameterValue),
+                ops.Differentiate(GetPointY, parameterValue),
+                ops.Differentiate(GetPointZ, parameterValue)
             );
         }
 
@@ -439,9 +530,17 @@ public sealed class CatmullRomSplinePath3D<T> :
 
         if (parameterValue <= _knotList[0] || parameterValue >= _knotList[^1])
         {
-            throw new NotImplementedException(
-                "Numerical differentiation at boundary is not available for Generic<T>. " +
-                "CatmullRom second derivatives require values within the spline range."
+            // Edge cases - use numerical differentiation via INumericalOperations<T>
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Numerical second derivative at boundary requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector3D<T>.Create(
+                ops.Differentiate2(GetPointX, parameterValue),
+                ops.Differentiate2(GetPointY, parameterValue),
+                ops.Differentiate2(GetPointZ, parameterValue)
             );
         }
 
@@ -450,8 +549,34 @@ public sealed class CatmullRomSplinePath3D<T> :
 
         if (index1 == index2)
         {
-            throw new NotImplementedException(
-                "Numerical differentiation at exact knot points is not available for Generic<T>."
+            // Single point - use numerical differentiation via INumericalOperations<T>
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Second derivative at exact knot point requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector3D<T>.Create(
+                ops.Differentiate2(GetPointX, parameterValue),
+                ops.Differentiate2(GetPointY, parameterValue),
+                ops.Differentiate2(GetPointZ, parameterValue)
+            );
+        }
+
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, fall back to numerical differentiation (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+        {
+            var ops = scalarProcessor.NumericalOperations;
+            if (ops is null)
+                throw new NotSupportedException(
+                    "Second derivative in degenerate case requires INumericalOperations<T>, " +
+                    "which is not available for this scalar type.");
+
+            return LinVector3D<T>.Create(
+                ops.Differentiate2(GetPointX, parameterValue),
+                ops.Differentiate2(GetPointY, parameterValue),
+                ops.Differentiate2(GetPointZ, parameterValue)
             );
         }
 

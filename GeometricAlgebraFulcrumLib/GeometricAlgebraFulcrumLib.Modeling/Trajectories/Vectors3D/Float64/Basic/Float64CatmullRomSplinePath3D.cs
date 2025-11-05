@@ -42,7 +42,14 @@ public sealed class Float64CatmullRomSplinePath3D :
 
         ILinFloat64Vector3D endPoint1, endPoint2;
 
-        if (isClosed)
+        // Handle single-point spline as a degenerate case (constant path)
+        if (_pointList.Count == 1)
+        {
+            var singlePoint = _pointList[0];
+            endPoint1 = singlePoint;
+            endPoint2 = singlePoint;
+        }
+        else if (isClosed)
         {
             // Make sure the first and last points are the same.
             if (_pointList[0].GetDistanceSquaredToPoint(_pointList[^1]).IsNearZero())
@@ -84,10 +91,23 @@ public sealed class Float64CatmullRomSplinePath3D :
 
         var tMin = _knotList[1];
         var tMax = _knotList[^2];
-        var tRangeInv = 1d / (tMax - tMin);
+        var tRange = tMax - tMin;
 
-        for (var i = 0; i < _knotList.Length; i++)
-            _knotList[i] = (_knotList[i] - tMin) * tRangeInv;
+        // Normalize knot list to [0, 1] range
+        // For single-point splines (tRange == 0), skip normalization
+        if (tRange > double.Epsilon)
+        {
+            var tRangeInv = 1d / tRange;
+
+            for (var i = 0; i < _knotList.Length; i++)
+                _knotList[i] = (_knotList[i] - tMin) * tRangeInv;
+        }
+        else
+        {
+            // Degenerate case: all knots are the same, just set to 0
+            for (var i = 0; i < _knotList.Length; i++)
+                _knotList[i] = 0d;
+        }
     }
 
 
@@ -328,6 +348,13 @@ public sealed class Float64CatmullRomSplinePath3D :
                 Differentiate.FirstDerivative(GetPointY, parameterValue),
                 Differentiate.FirstDerivative(GetPointZ, parameterValue));
 
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, fall back to numerical differentiation (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
+            return LinFloat64Vector3D.Create(Differentiate.FirstDerivative(GetPointX, parameterValue),
+                Differentiate.FirstDerivative(GetPointY, parameterValue),
+                Differentiate.FirstDerivative(GetPointZ, parameterValue));
+
         Debug.Assert(
             index2 == index1 + 1 &&
             index1 >= 1 &&
@@ -357,6 +384,13 @@ public sealed class Float64CatmullRomSplinePath3D :
             GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
         if (index1 == index2)
+            return LinFloat64Vector3D.Create(Differentiate.SecondDerivative(GetPointX, parameterValue),
+                Differentiate.SecondDerivative(GetPointY, parameterValue),
+                Differentiate.SecondDerivative(GetPointZ, parameterValue));
+
+        // Check if indices are in valid range for Catmull-Rom interpolation
+        // If not, fall back to numerical differentiation (e.g., degenerate/single-point splines)
+        if (!(index2 == index1 + 1 && index1 >= 1 && index2 <= _knotList.Length - 2))
             return LinFloat64Vector3D.Create(Differentiate.SecondDerivative(GetPointX, parameterValue),
                 Differentiate.SecondDerivative(GetPointY, parameterValue),
                 Differentiate.SecondDerivative(GetPointZ, parameterValue));
