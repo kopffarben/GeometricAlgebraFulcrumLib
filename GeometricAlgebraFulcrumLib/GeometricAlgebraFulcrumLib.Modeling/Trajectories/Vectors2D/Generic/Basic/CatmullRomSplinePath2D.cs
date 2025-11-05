@@ -129,10 +129,22 @@ public sealed class CatmullRomSplinePath2D<T> :
         var tMin = _knotList[1];
         var tMax = _knotList[^2];
         var tRange = tMax - tMin;
-        var tRangeInv = scalarProcessor.One / tRange;
 
-        for (var i = 0; i < _knotList.Length; i++)
-            _knotList[i] = (_knotList[i] - tMin) * tRangeInv;
+        // Normalize knot list to [0, 1] range
+        // For single-point splines (tRange == 0), skip normalization
+        if (tRange.IsNotNearZero())
+        {
+            var tRangeInv = scalarProcessor.One / tRange;
+
+            for (var i = 0; i < _knotList.Length; i++)
+                _knotList[i] = (_knotList[i] - tMin) * tRangeInv;
+        }
+        else
+        {
+            // Degenerate case: all knots are the same, just set to 0
+            for (var i = 0; i < _knotList.Length; i++)
+                _knotList[i] = scalarProcessor.Zero;
+        }
     }
 
 
