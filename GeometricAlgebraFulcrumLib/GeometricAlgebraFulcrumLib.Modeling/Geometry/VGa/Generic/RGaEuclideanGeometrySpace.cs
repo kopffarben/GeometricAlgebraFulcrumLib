@@ -14,11 +14,11 @@ public abstract class XGaEuclideanGeometrySpace<T> :
 
     public XGaBivector<T> E12 { get; }
 
-    public XGaHigherKVector<T> I { get; }
+    public XGaKVector<T> I { get; }
 
-    public XGaHigherKVector<T> Iinv { get; }
+    public XGaKVector<T> Iinv { get; }
 
-    public XGaHigherKVector<T> Irev { get; }
+    public XGaKVector<T> Irev { get; }
 
 
     protected XGaEuclideanGeometrySpace(IScalarProcessor<T> scalarProcessor, int vSpaceDimensions)
@@ -32,7 +32,7 @@ public abstract class XGaEuclideanGeometrySpace<T> :
 
         E12 = EuclideanProcessor.BivectorTerm(0, 1);
 
-        I = EuclideanProcessor.HigherKVectorTerm((IndexSet)(GaSpaceDimensions - 1), ScalarProcessor.OneValue);
+        I = EuclideanProcessor.KVectorTerm((IndexSet)(GaSpaceDimensions - 1), ScalarProcessor.OneValue);
         Iinv = I.Inverse();
         Irev = I.Reverse();
     }
