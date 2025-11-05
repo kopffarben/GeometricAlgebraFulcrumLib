@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-11-05 (Phase 3 Module 6B: CatmullRomSplinePath2D<T> + SimpleHarmonicPath2DComposer<T>)
+**Letzte Aktualisierung:** 2025-11-05 (Phase 3 Module 6B: CatmullRomSplinePath2D<T> + SimpleHarmonicPath2DComposer<T> + ArcLengthPath2D<T>)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -640,10 +640,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ---
 
-**Dokument Version:** 5.3 (Phase 3A Module 6B - MappedTrajectoryPath2D<T,TValue> Complete)
-**Letzte Aktualisierung:** 2025-11-04 (Module 6B - 2D Trajectory Classes: Affine Transformations & Mapped Paths)
+**Dokument Version:** 5.4 (Phase 3A Module 6B - ArcLengthPath2D<T> Abstract Base Complete)
+**Letzte Aktualisierung:** 2025-11-05 (Module 6B - CatmullRomSplinePath2D<T> + SimpleHarmonicPath2DComposer<T> + ArcLengthPath2D<T>)
 **Status:** Phase 1 COMPLETE ✅ | Phase 2 PAUSED 🔶 | Phase 3A IN PROGRESS 🚀
-**Nächste Review:** Nach Completion von Module 6A+6B (Module 6A: 42/60, Module 6B: 23/40 - Combined: 65/100 Klassen, 65% complete)
+**Nächste Review:** Nach Completion von Module 6A+6B (Module 6A: 42/60, Module 6B: 26/40 - Combined: 68/100 Klassen, 68% complete)
 
 ### 🚀 Phase 3A: Module 6A (Trajectories Vectors3D Generic) - IN PROGRESS
 
@@ -1458,10 +1458,10 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
 
 ### 🚀 Phase 3A: Module 6B (Trajectories Vectors2D Generic) - IN PROGRESS
 
-**Status:** 23/40 Klassen complete (57.5%)
-**Aufwand bisher:** ~12.5 Stunden
-**Tests:** 177 Tests (177 passing ✅ - 100% success rate!)
-**LOC:** ~3,400 LOC Implementation + ~5,500 LOC Tests
+**Status:** 26/40 Klassen complete (65.0%)
+**Aufwand bisher:** ~17.5 Stunden
+**Tests:** 193 Tests (193 passing ✅ - 100% success rate!)
+**LOC:** ~4,100 LOC Implementation + ~6,000 LOC Tests
 
 #### ✅ Basic 2D Paths (Complete - 2025-11-04)
 1. **ParametricPath2D<T>** - Abstract base für alle 2D parametrischen Pfade
@@ -1488,9 +1488,11 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
    - **Tests:** ~25 Tests ✅
    - **LOC:** ~500 LOC Implementation + ~900 LOC Tests
 
-9. **ArcLengthPath2D<T>** - Abstract base für Bogenlängen-parametrisierte Pfade
-   - **Tests:** Inherited by subclasses
-   - **LOC:** ~80 LOC (abstract base)
+9. **ArcLengthPath2D<T>** - Abstract base für Bogenlängen-parametrisierte Pfade (Implemented 2025-11-05)
+   - Abstract methods: GetLength(), TimeToLength(), LengthToTime()
+   - Conversion methods: ToFiniteArcLengthPath(), ToPeriodicArcLengthPath()
+   - **Tests:** N/A (abstract base - requires concrete implementations)
+   - **LOC:** 52 LOC (abstract base class)
 
 #### ✅ Bezier Curves 2D (Complete - 2025-11-04)
 10. **BezierPath2DUtils<T>** - Generic Bernstein-Basis-Funktionen & DeCasteljau
@@ -1555,29 +1557,51 @@ Inkludiert Buffer, Testing, Code Review, und unerwartete Probleme.
     - **LOC:** 103 LOC Implementation + ~220 LOC Tests
     - **Commit:** f1a65f9b (2025-11-04)
 
-#### ✅ Trajectory Foundation (Complete)
-21. **ITrajectory<T>** - Generic trajectory interface
-22. **ITrajectory<T, TValue>** - Generic trajectory with value type
-23. **ScalarRange<T>** - Generic time range
+#### ✅ Spline Paths (Complete - 2025-11-05)
+21. **CatmullRomSplinePath2D<T>** - Catmull-Rom Spline-Interpolation 🆕
+    - Unterstützt Centripetal und Chordal Spline-Typen
+    - Open und Closed Curves
+    - Knot Parameterization mit automatischer Berechnung
+    - 1st und 2nd Derivatives
+    - **Extension Methods:** 3 neue LinVector2D<T> Methoden in CatmullRomUtils.cs
+    - **Tests:** 16 Tests ✅ (centripetal, chordal, open/closed, derivatives, edge cases)
+    - **LOC:** 470 LOC Implementation + ~450 LOC Tests
+    - **Commit:** (pending)
 
-**Basic + Bezier + Mapped Summary:**
-- Total: 23 Klassen (9 basic + 6 bezier + 6 mapped/transformed + 2 foundation)
-- Total Tests: 177 Tests (177 passing ✅ - 100% success rate)
-- Total LOC: ~3,400 LOC Implementation + ~5,500 LOC Tests
+#### ✅ Composers & Samplers (Complete - 2025-11-05)
+22. **SimpleHarmonicPath2DComposer<T>** - Builder für komplexe harmonische Pfade 🆕
+    - Fluent API: SetHarmonic(), RemoveHarmonic(), Clear(), GetPath()
+    - Periodic/Finite path generation mit PlusPath2D<T>
+    - Dictionary-based harmonic term management
+    - **Tests:** (Deferred - simple builder pattern)
+    - **LOC:** 79 LOC Implementation
+    - **Commit:** 2e370cf6 (2025-11-05)
+
+#### ✅ Trajectory Foundation (Complete)
+23. **ITrajectory<T>** - Generic trajectory interface
+24. **ITrajectory<T, TValue>** - Generic trajectory with value type
+25. **ScalarRange<T>** - Generic time range
+
+**Basic + Bezier + Mapped + Spline + Composer Summary:**
+- Total: 26 Klassen (9 basic + 6 bezier + 6 mapped/transformed + 1 spline + 1 composer + 2 foundation + 1 arc-length base)
+- Total Tests: 193 Tests (193 passing ✅ - 100% success rate)
+- Total LOC: ~4,100 LOC Implementation + ~6,000 LOC Tests
 - **Highlights:**
   - Functional design pattern with `Func<>` delegates
   - First dual-generic class: `MappedTrajectoryPath2D<TScalar, TValue>`
   - Complete affine transformation support (time + space)
+  - Catmull-Rom spline interpolation with centripetal and chordal types
 
-#### ⏳ Nächste Schritte (17 Klassen verbleibend)
+#### ⏳ Nächste Schritte (14 Klassen verbleibend)
 **Komplexe 2D Pfade:**
 - **ScaledPath2D<T>** - Skalar-Multiplikation
 - **RGaFloat64RotationPath2D** + **RGaFloat64TranslationPath2D** + **RGaFloat64IsometricPath2D** (VGA-basierte Transformationen)
 - **Float64MorphPath2D** - Path-Morphing
 - **Float64AdaptivePath2D** - Adaptive Pfad-Sampling
 - **ParametricPath2DComposer<T>** - Composer-Pattern für komplexe Pfade
-- Signal-based Paths: **SimpleHarmonicPath2D**, **CylindricalPath2D**, **SphericalPath2D**
-- Hermite & Advanced Curves: **Hermite2Path2D**, **Hermite3Path2D**
-- Specialized Curves: **RouletteCircleCirclePath2D**, **CatmullRomSplinePath2D**
+- Signal-based Paths: **CylindricalPath2D**, **SphericalPath2D**
+- Hermite & Advanced Curves: **HermiteSplinePath2D**
+- Specialized Curves: **RouletteCircleCirclePath2D**, **EllipsePath2D**, **CircularArcPath2D**, **OffsetPath2D**
+- Arc Length: **AdaptiveArcLengthPath2D**
 
 **Vollständige Task-Liste:** Siehe [PHASE_3_DEDUPLICATION_TASKS.md](PHASE_3_DEDUPLICATION_TASKS.md)
