@@ -82,6 +82,55 @@ Nach den Quick Win Optimizations wurden weitere gezielte Optimierungen durchgef�
 
 ---
 
+## 🏗️ Infrastructure: Numerical Operations für Generic<T> (2025-11-05)
+
+**Problem:** Module 6A/6B (Trajectories) benötigen numerische Differentiation für 100% API-Parität mit Float64.
+
+**Lösung:** Dual-Backend INumericalOperations<T> Infrastructure
+- **Math.NET** für double/float (fast, numerical)
+- **AngouriMath** für symbolic types (exact, symbolic)
+
+**Status:** 📋 DESIGNED - Ready for Implementation (Phase 1: 1-2 Wochen)
+
+**Scope:** Nur 2 kritische Operationen benötigt:
+- `Differentiate(func, point)` - Erste Ableitung
+- `Differentiate2(func, point)` - Zweite Ableitung
+
+**Key Insights:**
+- ✅ Math.NET wird in GA-FUL NUR für numerische Differentiation verwendet (Fallback bei Edge-Cases)
+- ✅ AngouriMath ist bereits vollständig integriert (ScalarProcessorOfAngouriMathEntity)
+- ✅ IScalarProcessor<T> ist perfekt designed für Extension
+- ✅ Performance-Pattern aus Phase 1 (type-specific fast-paths) funktioniert garantiert
+
+**Verwendung in Trajectories:**
+```csharp
+// CatmullRomSplinePath2D<T> bei Edge-Cases (t <= 0 or t >= 1)
+var ops = processor.NumericalOperations;
+var dx = ops.Differentiate(t => GetPointX(t.ScalarValue), tScalar);
+var dy = ops.Differentiate(t => GetPointY(t.ScalarValue), tScalar);
+
+// Für double: Math.NET (fast, ~100ns)
+// Für Entity: AngouriMath (exact, symbolic)
+```
+
+**Benefits:**
+- ✅ Generic<double> Performance: ≥95% von Float64 (garantiert durch Fast-Paths)
+- ✅ Generic<Entity> Genauigkeit: EXAKT (symbolische Ableitung, keine Approximation!)
+- ✅ 100% API-Parität mit Float64 erreicht
+
+**Detaillierte Dokumentation:** [NUMERICAL_OPERATIONS_INFRASTRUCTURE.md](NUMERICAL_OPERATIONS_INFRASTRUCTURE.md)
+- Vollständige Architektur-Spezifikation
+- Implementation Details für alle 3 Backends (double, float, symbolic)
+- Usage Examples
+- Problem Analysis & Solutions
+- Implementation Roadmap (Phase 1-3)
+
+**Impact auf Roadmap:**
+- ⚠️ **PREREQUISITE für Module 6A/6B**: CatmullRomSpline, ComputedPath, etc. benötigen INumericalOperations<T>
+- 🎯 **Phase 1 Infrastructure** (1-2 Wochen) muss VOR Module 6A/6B Implementation abgeschlossen sein
+
+---
+
 ## ⚠️ WICHTIG: Dokumentationspflege
 
 **Diese Dateien müssen synchron gehalten werden:**

@@ -52,11 +52,77 @@
 
 ---
 
+## 🏗️ INFRASTRUCTURE PREREQUISITE: Numerical Operations (2025-11-05)
+
+**Status:** 📋 PLANNED - Must be completed BEFORE Module 6A/6B
+**Priorität:** P0 (BLOCKS Module 6A/6B)
+**Geschätzter Aufwand:** 1-2 Wochen
+**Detaillierte Dokumentation:** [NUMERICAL_OPERATIONS_INFRASTRUCTURE.md](NUMERICAL_OPERATIONS_INFRASTRUCTURE.md)
+
+### ⚠️ CRITICAL: Why This is Required
+
+**Problem:** CatmullRomSplinePath2D/3D<T> und andere Trajectory-Klassen benötigen numerische Differentiation für Edge-Cases:
+```csharp
+// Float64 version (current):
+if (t is <= 0d or >= 1d)
+    return LinFloat64Vector3D.Create(
+        Differentiate.FirstDerivative(GetPointX, t),  // Math.NET
+        Differentiate.FirstDerivative(GetPointY, t),  // Math.NET
+        Differentiate.FirstDerivative(GetPointZ, t)   // Math.NET
+    );
+```
+
+**Ohne Infrastructure:** Generic<T> Version kann diese Edge-Cases NICHT implementieren → ❌ API-Parität blockiert!
+
+### Infrastructure Implementation Tasks
+
+- [ ] **Phase 1: Foundation** (Week 1)
+  - [ ] Create `INumericalOperations<T>` interface (see spec)
+  - [ ] Implement `MathNetNumericalOperationsOfFloat64`
+    - [ ] `Differentiate(func, point)` using Math.NET
+    - [ ] `Differentiate2(func, point)` using Math.NET
+  - [ ] Implement `MathNetNumericalOperationsOfFloat32`
+    - [ ] `Differentiate(func, point)` using Math.NET
+    - [ ] `Differentiate2(func, point)` using Math.NET
+  - [ ] Implement `AngouriMathNumericalOperations`
+    - [ ] `Differentiate(func, point)` using symbolic differentiation
+    - [ ] `Differentiate2(func, point)` using symbolic differentiation
+  - [ ] Add `NumericalOperations` property to `IScalarProcessor<T>`
+  - [ ] Update `ScalarProcessorOfFloat64`
+  - [ ] Update `ScalarProcessorOfFloat32`
+  - [ ] Update `ScalarProcessorOfAngouriMathEntity`
+  - [ ] **Tests:** 10+ unit tests per implementation (30+ total)
+
+- [ ] **Phase 2: Integration Testing** (Week 2)
+  - [ ] Equivalence tests: Generic<double> vs Float64 numerical diff
+  - [ ] Performance tests: Verify ≥95% performance vs Float64
+  - [ ] Symbolic accuracy tests: Verify exact symbolic derivatives
+  - [ ] Edge case tests
+
+- [ ] **Documentation**
+  - [ ] Update XML comments for all new interfaces/classes
+  - [ ] Update this file with "Infrastructure Complete ✅"
+  - [ ] Update DEDUPLICATION_ROADMAP.md status
+
+### ✅ Infrastructure Complete Criteria
+
+- [ ] All 3 implementations (Float64, Float32, AngouriMath) working
+- [ ] All tests passing (30+ tests)
+- [ ] Performance benchmarks meet targets (≥95%)
+- [ ] Documentation complete
+
+**⚠️ BLOCKER:** Module 6A/6B cannot start until infrastructure is complete!
+
+---
+
 ## 🗺️ MODULE 6A: Trajectories Vectors3D (60 Klassen)
 
 **Priorität:** P1 (Critical)
 **Geschätzter Aufwand:** 8 Wochen (320 Stunden)
-**Start:** Nach Phase 2 Complete
+**Start:** ⚠️ Nach Infrastructure Complete (siehe oben)
+**Dependencies:**
+- ✅ Phase 2 Complete
+- ⚠️ INumericalOperations<T> Infrastructure (PREREQUISITE!)
 
 ### Architektur-Überlegungen
 
@@ -358,11 +424,15 @@ ParametricPath3D<T> (Basis)
 **Geschätzter Aufwand:** 5 Wochen (200 Stunden)
 **Start:** Nach Module 6A
 **Status:** 🎯 MILESTONE - 65.0% Complete (26/40 Klassen) - Foundational Classes Complete ✅
+**Dependencies:**
+- ✅ Phase 2 Complete
+- ⚠️ INumericalOperations<T> Infrastructure (PREREQUISITE - same as 6A!)
 
 **ÄHNLICH zu 6A, aber 2D statt 3D:**
 - Alle Klassen analog zu 6A
 - `LinVector2D<T>` statt `LinVector3D<T>`
 - Einfachere Geometrie (keine Normal-Vektoren nötig)
+- **Nutzt gleiche INumericalOperations<T> Infrastructure** für Edge-Case Differentiation
 
 **Milestone Note (2025-11-05):**
 ✅ All foundational and straightforward 2D path classes implemented (26/40)
