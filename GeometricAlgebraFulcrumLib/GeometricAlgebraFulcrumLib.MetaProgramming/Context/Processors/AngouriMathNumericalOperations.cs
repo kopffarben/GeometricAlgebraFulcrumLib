@@ -34,8 +34,9 @@ public sealed class AngouriMathNumericalOperations : INumericalOperations<Entity
 
         // Strategy: Create symbolic variable, evaluate function symbolically,
         // differentiate symbolically, then substitute the evaluation point
+        // Note: Using simple variable name without underscores (AngouriMath parser limitation)
 
-        var variable = MathS.Var("__diff_var__");
+        var variable = MathS.Var("x");
         var variableScalar = ScalarProcessor.Scalar(variable);
 
         // Evaluate function symbolically
@@ -65,7 +66,8 @@ public sealed class AngouriMathNumericalOperations : INumericalOperations<Entity
         ArgumentNullException.ThrowIfNull(function);
         ArgumentNullException.ThrowIfNull(point);
 
-        var variable = MathS.Var("__diff_var__");
+        // Note: Using simple variable name without underscores (AngouriMath parser limitation)
+        var variable = MathS.Var("x");
         var variableScalar = ScalarProcessor.Scalar(variable);
 
         var functionResult = function(variableScalar);
@@ -99,7 +101,8 @@ public sealed class AngouriMathNumericalOperations : INumericalOperations<Entity
         try
         {
             // AngouriMath supports symbolic integration
-            var variable = MathS.Var("__int_var__");
+            // Note: Using simple variable name without underscores (AngouriMath parser limitation)
+            var variable = MathS.Var("x");
             var variableScalar = ScalarProcessor.Scalar(variable);
 
             var functionResult = function(variableScalar);
