@@ -451,13 +451,13 @@ public class ScalarAffineMappedSignalEquivalenceTests
 
         // Act & Assert - Verify AffineMap properties
         Assert.That(
-            Math.Abs((float64Signal as Float64ScalarAffineMappedSignal)?.AffineMap.Scaling.ScalarValue ?? 0 - genericSignal.AffineMap.Scaling.ScalarValue),
+            Math.Abs(((float64Signal as Float64ScalarAffineMappedSignal)?.AffineMap.Scaling.ScalarValue ?? 0) - genericSignal.AffineMap.Scaling.ScalarValue),
             Is.LessThan(Tolerance),
             "AffineMap Scaling should match"
         );
 
         Assert.That(
-            Math.Abs((float64Signal as Float64ScalarAffineMappedSignal)?.AffineMap.Offset.ScalarValue ?? 0 - genericSignal.AffineMap.Offset.ScalarValue),
+            Math.Abs(((float64Signal as Float64ScalarAffineMappedSignal)?.AffineMap.Offset.ScalarValue ?? 0) - genericSignal.AffineMap.Offset.ScalarValue),
             Is.LessThan(Tolerance),
             "AffineMap Offset should match"
         );

@@ -706,7 +706,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64
                 return baseSignal;
 
             if (baseSignal is Float64ScalarAffineMappedTimeSignal affineScalar)
-                return Float64ScalarAffineMappedSignal.Create(
+                return Float64ScalarAffineMappedTimeSignal.Create(
                     affineScalar.BaseSignal,
                     affineMap * affineScalar.AffineMap
                 );

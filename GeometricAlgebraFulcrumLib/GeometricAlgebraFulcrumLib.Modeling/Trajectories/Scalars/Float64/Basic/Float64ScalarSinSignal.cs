@@ -60,18 +60,18 @@ public sealed class Float64ScalarSinSignal :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override double GetValue(double t)
     {
-        return Math.Sin(this.ClampTime(t));
+        return Math.Sin(t);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override double GetDerivative1Value(double t)
     {
-        return Math.Cos(this.ClampTime(t));
+        return Math.Cos(t);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override double GetDerivative2Value(double t)
     {
-        return -Math.Sin(this.ClampTime(t));
+        return -Math.Sin(t);
     }
 }

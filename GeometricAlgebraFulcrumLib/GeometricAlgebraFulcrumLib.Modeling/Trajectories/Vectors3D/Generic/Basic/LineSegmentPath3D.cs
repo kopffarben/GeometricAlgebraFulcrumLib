@@ -98,11 +98,12 @@ public sealed class LineSegmentPath3D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override LinVector3D<T> GetValue(Scalar<T> t)
     {
-        // Linear interpolation: (1-t) * Point1 + t * Point2
+        // Normalize t from TimeRange to [0,1]
         var scalarProcessor = t.ScalarProcessor;
-        var oneMinusT = scalarProcessor.One - t;
+        var tNormalized = (t - TimeRange.MinValue) / (TimeRange.MaxValue - TimeRange.MinValue);
+        var oneMinusT = scalarProcessor.One - tNormalized;
 
-        return oneMinusT * Point1 + t * Point2;
+        return oneMinusT * Point1 + tNormalized * Point2;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

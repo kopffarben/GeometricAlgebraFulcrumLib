@@ -174,16 +174,17 @@ public sealed class AffineMap1D<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public AffineMap1D<T> GetInverseAffineMap()
     {
-        var scaling = ScalarProcessor.Divide(
+        // Inverse of t' = a*t + b is: t = (1/a)*t' + (-b/a)
+        var invScaling = ScalarProcessor.Divide(
             ScalarProcessor.One.ScalarValue,
             Scaling.ScalarValue
         );
-        var offset = ScalarProcessor.NegativeTimes(
-            Offset.ScalarValue,
-            scaling.ScalarValue
+        var invOffset = ScalarProcessor.Divide(
+            ScalarProcessor.Negative(Offset.ScalarValue).ScalarValue,
+            Scaling.ScalarValue
         );
 
-        return new AffineMap1D<T>(ScalarProcessor, scaling.ScalarValue, offset.ScalarValue);
+        return new AffineMap1D<T>(ScalarProcessor, invScaling.ScalarValue, invOffset.ScalarValue);
     }
 
 
