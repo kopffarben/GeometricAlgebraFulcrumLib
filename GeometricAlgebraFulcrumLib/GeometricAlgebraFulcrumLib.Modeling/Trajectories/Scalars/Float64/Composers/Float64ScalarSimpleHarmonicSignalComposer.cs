@@ -67,6 +67,22 @@ public class Float64ScalarSimpleHarmonicSignalComposer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64ScalarSignal GetSignal(bool isPeriodic)
     {
+        // If no harmonics, return constant zero signal
+        if (_harmonicTerms.Count == 0)
+        {
+            return isPeriodic
+                ? Float64ScalarConstantZeroSignal.PeriodicInstance
+                : Float64ScalarConstantZeroSignal.FiniteInstance;
+        }
+
+        // If only one harmonic, return it directly
+        if (_harmonicTerms.Count == 1)
+        {
+            var signal = _harmonicTerms.Values.First();
+            return isPeriodic ? signal.ToPeriodicSignal() : signal.ToFiniteSignal();
+        }
+
+        // Multiple harmonics, combine with PlusSignal
         return isPeriodic
             ? Float64ScalarPlusSignal.Periodic(_harmonicTerms.Values)
             : Float64ScalarPlusSignal.Finite(_harmonicTerms.Values);

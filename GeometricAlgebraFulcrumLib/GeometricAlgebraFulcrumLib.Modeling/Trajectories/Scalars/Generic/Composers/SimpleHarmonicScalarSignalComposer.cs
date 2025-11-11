@@ -81,6 +81,22 @@ public class SimpleHarmonicScalarSignalComposer<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ScalarSignal<T> GetSignal(bool isPeriodic)
     {
+        // If no harmonics, return constant zero signal
+        if (_harmonicTerms.Count == 0)
+        {
+            return isPeriodic
+                ? ConstantScalarSignal<T>.Periodic(_scalarProcessor, _scalarProcessor.Zero.ToScalar())
+                : ConstantScalarSignal<T>.Finite(_scalarProcessor, _scalarProcessor.Zero.ToScalar());
+        }
+
+        // If only one harmonic, return it directly
+        if (_harmonicTerms.Count == 1)
+        {
+            var signal = _harmonicTerms.Values.First();
+            return isPeriodic ? signal.ToPeriodicSignal() : signal.ToFiniteSignal();
+        }
+
+        // Multiple harmonics, combine with PlusSignal
         return isPeriodic
             ? ScalarPlusSignal<T>.Periodic(_harmonicTerms.Values)
             : ScalarPlusSignal<T>.Finite(_harmonicTerms.Values);
