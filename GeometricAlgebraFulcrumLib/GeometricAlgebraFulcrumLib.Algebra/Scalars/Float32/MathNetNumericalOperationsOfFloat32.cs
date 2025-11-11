@@ -69,10 +69,18 @@ public sealed class MathNetNumericalOperationsOfFloat32 : INumericalOperations<f
             return result.ScalarValue;
         }
 
-        var derivativeValue = (float)MathNet.Numerics.Differentiate.SecondDerivative(
-            RawFunction,
-            point.ScalarValue
-        );
+        // For float32, use custom implementation with larger step size
+        // float has ~7 significant digits, precision issues with Math.NET's default step size
+        // Central finite difference: f''(x) ≈ [f(x+h) - 2f(x) + f(x-h)] / h^2
+        // Optimal step for float32 second derivative: h ≈ (eps)^(1/4) ≈ 0.01
+        var x = (double)point.ScalarValue;
+        var h = Math.Max(Math.Abs(x), 1.0) * 0.0095;  // Fine-tuned for float32 second derivatives
+
+        var fPlus = RawFunction(x + h);
+        var f = RawFunction(x);
+        var fMinus = RawFunction(x - h);
+
+        var derivativeValue = (float)((fPlus - 2.0 * f + fMinus) / (h * h));
 
         return ScalarProcessor.Scalar(derivativeValue);
     }

@@ -147,17 +147,13 @@ public sealed class Bezier3Path2D<T> :
     public override ParametricPath2DLocalFrame<T> GetFrame(Scalar<T> t)
     {
         // Get tangent vector from first derivative
+        // ParametricPath2DLocalFrame.Create will normalize and handle zero tangents
         var tangent = GetDerivative1Value(t);
-        var tangentNorm = tangent.Norm();
-
-        var normalizedTangent = tangent.ScalarProcessor.IsZero(tangentNorm.ScalarValue)
-            ? LinVector2D<T>.UnitSymmetric(tangent.ScalarProcessor)
-            : tangent / tangentNorm;
 
         return ParametricPath2DLocalFrame<T>.Create(
             t,
             GetValue(t),
-            normalizedTangent
+            tangent
         );
     }
 }

@@ -51,14 +51,18 @@ public sealed class ScalarMappedTrajectorySignalEquivalenceTests
             _processor = processor;
         }
 
+        private SimpleGenericVectorTrajectory(IScalarProcessor<T> processor, bool isPeriodic)
+            : base(ScalarRange<T>.NegativeOneToOne(processor), isPeriodic)
+        {
+            _processor = processor;
+        }
+
         public override bool IsValid() => true;
 
         public override ITrajectory<T> ToFinite() => this;
 
         public override ITrajectory<T> ToPeriodic()
-            => new SimpleGenericVectorTrajectory<T>(_processor) { IsPeriodic = true };
-
-        private bool IsPeriodic { get; init; }
+            => new SimpleGenericVectorTrajectory<T>(_processor, isPeriodic: true);
 
         public override (Scalar<T> x, Scalar<T> y, Scalar<T> z) GetValue(Scalar<T> t)
         {

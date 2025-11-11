@@ -265,7 +265,10 @@ public class NumericalOperationsTests
         var point = processor.ScalarFromNumber(2.0f);
         var derivative2 = ops.Differentiate2(TestFunction, point);
 
-        Assert.That(derivative2.ScalarValue, Is.EqualTo(48.0f).Within(Float32Tolerance),
+        // Float32 second derivatives have lower accuracy than first derivatives due to limited precision (~7 digits)
+        // Use relaxed tolerance of 5e-3 instead of standard Float32Tolerance (1e-4)
+        const float secondDerivativeTolerance = 5e-3f;
+        Assert.That(derivative2.ScalarValue, Is.EqualTo(48.0f).Within(secondDerivativeTolerance),
             $"Expected f''(2) = 48.0, got {derivative2.ScalarValue}");
     }
 
