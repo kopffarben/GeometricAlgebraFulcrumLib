@@ -517,9 +517,9 @@ public class CatmullRomSplinePath2DEquivalenceTests
         );
 
         // Act & Assert
-        // Closed spline wraps around
-        Assert.That(genericSpline.ControlPointCount, Is.EqualTo(6),
-            "Closed spline should have 4 + 2 for wrapping");
+        // Closed spline: 4 input → +1 wrap first → +2 control points = 7 total
+        Assert.That(genericSpline.ControlPointCount, Is.EqualTo(7),
+            "Closed spline should have 4 + 1 (wrap) + 2 (control points)");
         Assert.That(genericSpline.IsClosed, Is.True, "IsClosed should be true");
     }
 
