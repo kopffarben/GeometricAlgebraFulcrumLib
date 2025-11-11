@@ -5,7 +5,7 @@
 **Status:** ✅ Phase 1 Quick Win Optimizations COMPLETE | Ready for Phase 2 Migration
 **Nächster Schritt:** Phase 2 - Thin Wrapper Migration (Performance-Gains garantiert!)
 **Erstellt:** 2025-10-23 (Komplette Neustrukturierung basierend auf aktuellen API-Daten)
-**Letzte Aktualisierung:** 2025-11-05 (Test-Fixes: +19 tests passing, 2432/2493 total - 97.6% pass rate)
+**Letzte Aktualisierung:** 2025-11-05 (Test-Fixes: +16 tests passing, 2454/2493 total - 98.44% pass rate)
 **Geschätzte Dauer (Phase 1):** 6-8 Wochen → **Tatsächlich: ~20 Stunden** (97% schneller!)
 **Nächste Phase:** Phase 2 - Thin Wrapper Migration (1-2 Wochen geschätzt)
 **LOC-Reduktion (erwartet):** ~78,500 Zeilen
@@ -158,52 +158,53 @@ var dy = ops.Differentiate(t => GetPointY(t.ScalarValue), tScalar);
 
 **Strategie:** Systematische Behebung aller Test-Failures vor Phase 2 Migration.
 
-**Status:** ✅ **19 Tests fixed** - 2432/2493 passing (97.6% pass rate, 36 failures remaining)
+**Status:** ✅ **16 Tests fixed** - 2454/2493 passing (98.44% pass rate, 14 failures remaining)
 
 ### Session Progress (2025-11-05):
 
 **Test Results:**
-- **Start:** 2413 passing, 55 failing
-- **Jetzt:** 2432 passing, 36 failing
-- **Fortschritt:** +19 tests fixed ✅
+- **Start:** 2438 passing, 30 failing
+- **Jetzt:** 2454 passing, 14 failing
+- **Fortschritt:** +16 tests fixed ✅
+- **Pass Rate:** 97.92% → 98.44% (+0.52%)
 
-**Bug-Kategorien Fixed:**
+**Bug-Kategorien Fixed (3 Commits):**
 
-1. **IComparable Constraint Issues (6 tests)** ✅
-   - Problem: `Scalar<T>.Min()/Max()` requires IComparable but Scalar<T> doesn't implement it
-   - Lösung: Replace LINQ Min()/Max() with Aggregate() using comparison operators
-   - Dateien: `PlusPath2D.cs`, `TimesPath2D.cs` (lines 117-120)
-   - Commits: 1b97ac3b
+1. **aec0f601 - AngouriMath Parse-Fehler (9 tests)** ✅
+   - Problem: Variable names with double underscores (`__diff_var__`, `__int_var__`) caused parser token recognition error
+   - Root Cause: AngouriMath parser cannot handle double underscores in variable names
+   - Lösung: Replaced all double-underscore variable names with simple "x" in Differentiate, Differentiate2, Integrate methods
+   - Dateien: `AngouriMathNumericalOperations.cs` (lines 39, 70, 105)
 
-2. **Float64Scalar Type Mismatch (9 tests)** ✅
-   - Problem: NUnit comparing `Float64Scalar` with `double` in assertions
-   - Lösung: Add `.ScalarValue` extraction to Float64 side of comparisons
-   - Dateien: `CatmullRomSplinePath2DEquivalenceTests.cs` (multiple assertions)
-   - Commits: 1b97ac3b, bfb0f892
+2. **658aea25 - VGa2D Pseudoscalar Type Bug (5 tests)** ✅
+   - Problem: TypeInitializationException - HigherKVector requires grade ≥ 3, but 2D pseudoscalar is grade 2 (bivector)
+   - Root Cause: Used `HigherKVectorTerm` for 2D pseudoscalar creation, but HigherKVector constructor checks `if (grade < 3) throw`
+   - Lösung: Changed type from `XGaHigherKVector<T>` to `XGaKVector<T>`, changed factory method to `KVectorTerm` (auto-dispatches based on grade)
+   - Dateien: `RGaEuclideanGeometrySpace.cs` (Float64 + Generic<T> versions, lines 17-21 and 35)
 
-3. **CatmullRom Edge Case Handling (4 tests)** ✅
-   - Problem: Debug.Assert failures in degenerate cases (single-point splines, boundary conditions)
-   - Lösung: Add safety checks before all Debug.Assert statements
-   - Implementation: Fallback to numerical differentiation for derivatives, constant value for GetValue
-   - Dateien: `CatmullRomSplinePath2D.cs` (GetValue, GetPointX/Y, GetDerivative1/2Value)
-   - Commits: bfb0f892
+3. **6e4a3bc5 - CatmullRomSplinePath2D Edge Cases (2 tests)** ✅
+   - Problem: Debug.Assert failure at line 135 - Division by zero when tRange = 0
+   - Root Cause: Single-point or coincident-point splines have zero parameter range
+   - Lösung: Added `IsNotNearZero()` check before normalization; degenerate case sets all knots to zero
+   - Dateien: `CatmullRomSplinePath2D.cs` (Generic<T> version, lines 129-147)
 
-**Remaining 36 Test Failures:**
+**Remaining 14 Test Failures:**
 
 Kategorisiert nach Typ:
-- **CatmullRom** (9 tests): 3 Path2D + 6 scalar splines (single-knot edge cases)
-- **AngouriMath** (9 tests): Symbolic differentiation/integration
-- **VGa2D** (5 tests): Vector geometric algebra
-- **Signal/Harmonic** (6 tests): Signal processing tests
-- **Other Trajectories** (6 tests): AffineMapped, Bezier3, etc.
-- **Misc** (1 test): TestArbitraryNormal_Diagonal
+- **CatmullRom2D** (1 test): Closed spline control point count (expects 6, got 7)
+- **Float32 operations** (1 test): Type-specific operation issue
+- **AffineMapped signals/paths** (3 tests): Generic<T> vs Float64 issues
+- **HarmonicSignal** (5 tests): Signal processing tests
+- **Path2D tests** (2 tests): Other trajectory tests
+- **Misc** (2 tests): Other pre-existing bugs
 
 **Next Actions:**
-1. Fix remaining CatmullRom tests (3 Path2D tests: ControlPointCount + 2 single-knot)
-2. Fix CatmullRom scalar spline tests (6 tests)
-3. Address AngouriMath backend issues (9 tests)
-4. Fix VGa2D and Signal tests (11 tests)
-5. Address remaining trajectory tests (7 tests)
+1. Fix CatmullRom2D closed spline control point count (1 test)
+2. Fix Float32 operations (1 test)
+3. Fix AffineMapped signals/paths (3 tests)
+4. Fix HarmonicSignal tests (5 tests)
+5. Fix remaining Path2D tests (2 tests)
+6. Fix misc tests (2 tests)
 
 **Target:** 100% test pass rate before Phase 2 Migration begins.
 
