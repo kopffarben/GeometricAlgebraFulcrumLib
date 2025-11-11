@@ -130,7 +130,8 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Px)
         {
-            var x1 = 1d / (x + 1d);
+            var one = scalarProcessor.One;
+            var x1 = one / (x + one);
             var yz = -y * z * x1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
@@ -140,12 +141,12 @@ public sealed class SquareMatrix3<T> :
                 Scalar20 = z,
 
                 Scalar01 = -y,
-                Scalar11 = 1 - y * y * x1,
+                Scalar11 = one - y * y * x1,
                 Scalar21 = yz,
 
                 Scalar02 = -z,
                 Scalar12 = yz,
-                Scalar22 = 1 - z * z * x1
+                Scalar22 = one - z * z * x1
             };
 
             //Debug.Assert((matrix.Transpose() * unitVector).IsAlmostVector(Tuple3D.E1));
@@ -155,7 +156,8 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Nx)
         {
-            var x1 = 1d / (x - 1d);
+            var one = scalarProcessor.One;
+            var x1 = one / (x - one);
             var yz = y * z * x1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
@@ -165,12 +167,12 @@ public sealed class SquareMatrix3<T> :
                 Scalar20 = -z,
 
                 Scalar01 = y,
-                Scalar11 = 1 + y * y * x1,
+                Scalar11 = one + y * y * x1,
                 Scalar21 = yz,
 
                 Scalar02 = z,
                 Scalar12 = yz,
-                Scalar22 = 1 + z * z * x1
+                Scalar22 = one + z * z * x1
             };
 
             //Debug.Assert((matrix.Transpose() * unitVector).IsAlmostVector(Tuple3D.NegativeE1));
@@ -180,12 +182,13 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Py)
         {
-            var y1 = 1d / (y + 1d);
+            var one = scalarProcessor.One;
+            var y1 = one / (y + one);
             var xz = -x * z * y1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
             {
-                Scalar00 = 1 - x * x * y1,
+                Scalar00 = one - x * x * y1,
                 Scalar10 = -x,
                 Scalar20 = xz,
 
@@ -195,7 +198,7 @@ public sealed class SquareMatrix3<T> :
 
                 Scalar02 = xz,
                 Scalar12 = -z,
-                Scalar22 = 1 - z * z * y1
+                Scalar22 = one - z * z * y1
             };
 
             //Debug.Assert((matrix.Transpose() * unitVector).IsAlmostVector(Tuple3D.E2));
@@ -205,12 +208,13 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Ny)
         {
-            var y1 = 1d / (y - 1d);
+            var one = scalarProcessor.One;
+            var y1 = one / (y - one);
             var xz = x * z * y1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
             {
-                Scalar00 = 1 + x * x * y1,
+                Scalar00 = one + x * x * y1,
                 Scalar10 = x,
                 Scalar20 = xz,
 
@@ -220,7 +224,7 @@ public sealed class SquareMatrix3<T> :
 
                 Scalar02 = xz,
                 Scalar12 = z,
-                Scalar22 = 1 + z * z * y1
+                Scalar22 = one + z * z * y1
             };
 
             //Debug.Assert((matrix.Transpose() * unitVector).IsAlmostVector(Tuple3D.NegativeE2));
@@ -230,17 +234,18 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Pz)
         {
-            var z1 = 1d / (z + 1d);
+            var one = scalarProcessor.One;
+            var z1 = one / (z + one);
             var xy = -x * y * z1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
             {
-                Scalar00 = 1 - x * x * z1,
+                Scalar00 = one - x * x * z1,
                 Scalar10 = xy,
                 Scalar20 = -x,
 
                 Scalar01 = xy,
-                Scalar11 = 1 - y * y * z1,
+                Scalar11 = one - y * y * z1,
                 Scalar21 = -y,
 
                 Scalar02 = x,
@@ -255,17 +260,18 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Nz)
         {
-            var z1 = 1d / (z - 1d);
+            var one = scalarProcessor.One;
+            var z1 = one / (z - one);
             var xy = x * y * z1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
             {
-                Scalar00 = 1 + x * x * z1,
+                Scalar00 = one + x * x * z1,
                 Scalar10 = xy,
                 Scalar20 = x,
 
                 Scalar01 = xy,
-                Scalar11 = 1 + y * y * z1,
+                Scalar11 = one + y * y * z1,
                 Scalar21 = y,
 
                 Scalar02 = -x,
@@ -293,7 +299,8 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Px)
         {
-            var x1 = 1d / (x + 1d);
+            var one = scalarProcessor.One;
+            var x1 = one / (x + one);
             var yz = -y * z * x1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
@@ -303,12 +310,12 @@ public sealed class SquareMatrix3<T> :
                 Scalar02 = z,
 
                 Scalar10 = -y,
-                Scalar11 = 1 - y * y * x1,
+                Scalar11 = one - y * y * x1,
                 Scalar12 = yz,
 
                 Scalar20 = -z,
                 Scalar21 = yz,
-                Scalar22 = 1 - z * z * x1
+                Scalar22 = one - z * z * x1
             };
 
             //Debug.Assert((matrix * unitVector).IsAlmostVector(Tuple3D.E1));
@@ -318,7 +325,8 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Nx)
         {
-            var x1 = 1d / (x - 1d);
+            var one = scalarProcessor.One;
+            var x1 = one / (x - one);
             var yz = y * z * x1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
@@ -328,12 +336,12 @@ public sealed class SquareMatrix3<T> :
                 Scalar02 = -z,
 
                 Scalar10 = y,
-                Scalar11 = 1 + y * y * x1,
+                Scalar11 = one + y * y * x1,
                 Scalar12 = yz,
 
                 Scalar20 = z,
                 Scalar21 = yz,
-                Scalar22 = 1 + z * z * x1
+                Scalar22 = one + z * z * x1
             };
 
             //Debug.Assert((matrix * unitVector).IsAlmostVector(Tuple3D.NegativeE1));
@@ -343,12 +351,13 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Py)
         {
-            var y1 = 1d / (y + 1d);
+            var one = scalarProcessor.One;
+            var y1 = one / (y + one);
             var xz = -x * z * y1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
             {
-                Scalar00 = 1 - x * x * y1,
+                Scalar00 = one - x * x * y1,
                 Scalar01 = -x,
                 Scalar02 = xz,
 
@@ -358,7 +367,7 @@ public sealed class SquareMatrix3<T> :
 
                 Scalar20 = xz,
                 Scalar21 = -z,
-                Scalar22 = 1 - z * z * y1
+                Scalar22 = one - z * z * y1
             };
 
             //Debug.Assert((matrix * unitVector).IsAlmostVector(Tuple3D.E2));
@@ -368,12 +377,13 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Ny)
         {
-            var y1 = 1d / (y - 1d);
+            var one = scalarProcessor.One;
+            var y1 = one / (y - one);
             var xz = x * z * y1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
             {
-                Scalar00 = 1 + x * x * y1,
+                Scalar00 = one + x * x * y1,
                 Scalar01 = x,
                 Scalar02 = xz,
 
@@ -383,7 +393,7 @@ public sealed class SquareMatrix3<T> :
 
                 Scalar20 = xz,
                 Scalar21 = z,
-                Scalar22 = 1 + z * z * y1
+                Scalar22 = one + z * z * y1
             };
 
             //Debug.Assert((matrix * unitVector).IsAlmostVector(Tuple3D.NegativeE2));
@@ -393,17 +403,18 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Pz)
         {
-            var z1 = 1d / (z + 1d);
+            var one = scalarProcessor.One;
+            var z1 = one / (z + one);
             var xy = -x * y * z1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
             {
-                Scalar00 = 1d - x * x * z1,
+                Scalar00 = one - x * x * z1,
                 Scalar01 = xy,
                 Scalar02 = -x,
 
                 Scalar10 = xy,
-                Scalar11 = 1d - y * y * z1,
+                Scalar11 = one - y * y * z1,
                 Scalar12 = -y,
 
                 Scalar20 = x,
@@ -418,17 +429,18 @@ public sealed class SquareMatrix3<T> :
 
         if (axis == LinBasisVector.Nz)
         {
-            var z1 = 1d / (z - 1d);
+            var one = scalarProcessor.One;
+            var z1 = one / (z - one);
             var xy = x * y * z1;
 
             var matrix = new SquareMatrix3<T>(scalarProcessor)
             {
-                Scalar00 = 1 + x * x * z1,
+                Scalar00 = one + x * x * z1,
                 Scalar01 = xy,
                 Scalar02 = x,
 
                 Scalar10 = xy,
-                Scalar11 = 1 + y * y * z1,
+                Scalar11 = one + y * y * z1,
                 Scalar12 = y,
 
                 Scalar20 = -x,

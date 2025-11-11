@@ -60,10 +60,10 @@ public static class LinVector3DComponentUtils
         var absY = vector.Item2.Abs();
         var absZ = vector.Item3.Abs();
 
-        if (absX > absY)
-            return absX > absZ ? 0 : 2;
+        if (absX >= absY)
+            return absX >= absZ ? 0 : 2;
 
-        return absY > absZ ? 1 : 2;
+        return absY >= absZ ? 1 : 2;
     }
 
     /// <summary>

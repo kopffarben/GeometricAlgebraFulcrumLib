@@ -55,7 +55,8 @@
       "Bash(if:*)",
       "Bash(then:*)",
       "Bash(else:*)",
-      "Bash(SimpleHarmonicPath2D.cs.tmp)"
+      "Bash(SimpleHarmonicPath2D.cs.tmp)",
+      "WebFetch(domain:en.wikipedia.org)"
     ]
   },
   "enabledMcpjsonServers": [
