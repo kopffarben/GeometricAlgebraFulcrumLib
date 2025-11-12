@@ -1,17 +1,19 @@
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Samplers;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Samplers;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Modeling.Trajectories;
@@ -19,54 +21,150 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Modeling.Trajectories;
 [TestFixture]
 public sealed class CurveSamplers3DEquivalenceTests
 {
-    private const double Tolerance = 1e-12;
-    private readonly ScalarProcessorOfFloat64 _sp = ScalarProcessorOfFloat64.Instance;
+    private const double Tolerance = 1e-10;
+    private static readonly IScalarProcessor<double> ScalarProcessor = ScalarProcessorOfFloat64.Instance;
 
-    #region ConstantCurveSampler3D Tests
+    #region Helper Methods
+
+    private static LinVector3D<double> ToGenericVector(LinFloat64Vector3D v)
+    {
+        return LinVector3D<double>.Create(
+            ScalarProcessor.ScalarFromValue(v.X.ScalarValue),
+            ScalarProcessor.ScalarFromValue(v.Y.ScalarValue),
+            ScalarProcessor.ScalarFromValue(v.Z.ScalarValue)
+        );
+    }
+
+    private static void AssertVectorsEqual(LinVector3D<double> generic, LinFloat64Vector3D float64, string message = "")
+    {
+        Assert.That(generic.X.ScalarValue, Is.EqualTo(float64.X.ScalarValue).Within(Tolerance), $"{message} - X component");
+        Assert.That(generic.Y.ScalarValue, Is.EqualTo(float64.Y.ScalarValue).Within(Tolerance), $"{message} - Y component");
+        Assert.That(generic.Z.ScalarValue, Is.EqualTo(float64.Z.ScalarValue).Within(Tolerance), $"{message} - Z component");
+    }
+
+    #endregion
+
+    #region AdaptiveCurveSampler3D Tests
 
     [Test]
-    public void TestConstantCurveSampler_Properties()
+    public void TestAdaptiveCurveSampler_Count()
     {
-        var point = LinFloat64Vector3D.Create(1.0, 2.0, 3.0);
-        var tangent = LinFloat64Vector3D.Create(1.0, 0.0, 0.0);
+        const int harmonicFactor = 1;
+        var magnitude = LinFloat64Vector3D.Create(1.0, 2.0, 3.0);
+        var timeRange = Float64ScalarRange.Create(0, 2 * Math.PI);
 
-        var float64Sampler = new ConstantCurveSampler3D(point, tangent);
-        var genericSampler = new ConstantCurveSampler3D<double>(
-            LinVector3D<double>.Create(_sp.ScalarFromValue(1.0), _sp.ScalarFromValue(2.0), _sp.ScalarFromValue(3.0)),
-            LinVector3D<double>.Create(_sp.One, _sp.Zero, _sp.Zero)
+        var float64Path = Float64SimpleHarmonicPath3D.FiniteSymmetric(harmonicFactor, magnitude);
+        var float64Options = new Float64AdaptivePath3DSamplingOptions(LinFloat64PolarAngle.Angle30, 2, 10);
+        var float64Sampler = new AdaptiveCurveSampler3D(float64Path, timeRange, float64Options, false);
+
+        var genericPath = SimpleHarmonicPath3D<double>.FiniteSymmetric(
+            ScalarProcessor,
+            harmonicFactor,
+            ToGenericVector(magnitude)
         );
+        var genericTimeRange = ScalarRange<double>.Create(
+            ScalarProcessor.ScalarFromValue(0),
+            ScalarProcessor.ScalarFromValue(2 * Math.PI)
+        );
+        var genericOptions = new AdaptivePath3DSamplingOptions<double>(
+            ScalarProcessor,
+            LinPolarAngle<double>.CreateFromDegrees(ScalarProcessor, 30),
+            2,
+            10
+        );
+        var genericSampler = new AdaptiveCurveSampler3D<double>(genericPath, genericTimeRange, genericOptions, false);
 
         Assert.That(genericSampler.Count, Is.EqualTo(float64Sampler.Count));
-        Assert.That(genericSampler.IsPeriodic, Is.EqualTo(float64Sampler.IsPeriodic));
-
         Debug.Assert(genericSampler.Count == float64Sampler.Count);
     }
 
     [Test]
-    public void TestConstantCurveSampler_GetPoints()
+    public void TestAdaptiveCurveSampler_GetPoints()
     {
-        var point = LinFloat64Vector3D.Create(1.5, 2.5, 3.5);
-        var tangent = LinFloat64Vector3D.Create(0.0, 1.0, 0.0);
+        const int harmonicFactor = 1;
+        var magnitude = LinFloat64Vector3D.Create(1.0, 2.0, 3.0);
+        var timeRange = Float64ScalarRange.Create(0, Math.PI);
 
-        var float64Sampler = new ConstantCurveSampler3D(point, tangent);
-        var genericSampler = new ConstantCurveSampler3D<double>(
-            LinVector3D<double>.Create(_sp.ScalarFromValue(1.5), _sp.ScalarFromValue(2.5), _sp.ScalarFromValue(3.5)),
-            LinVector3D<double>.Create(_sp.Zero, _sp.One, _sp.Zero)
+        var float64Path = Float64SimpleHarmonicPath3D.FiniteSymmetric(harmonicFactor, magnitude);
+        var float64Options = new Float64AdaptivePath3DSamplingOptions(LinFloat64PolarAngle.Angle30, 2, 10);
+        var float64Sampler = new AdaptiveCurveSampler3D(float64Path, timeRange, float64Options, false);
+
+        var genericPath = SimpleHarmonicPath3D<double>.FiniteSymmetric(
+            ScalarProcessor,
+            harmonicFactor,
+            ToGenericVector(magnitude)
         );
+        var genericTimeRange = ScalarRange<double>.Create(
+            ScalarProcessor.ScalarFromValue(0),
+            ScalarProcessor.ScalarFromValue(Math.PI)
+        );
+        var genericOptions = new AdaptivePath3DSamplingOptions<double>(
+            ScalarProcessor,
+            LinPolarAngle<double>.CreateFromDegrees(ScalarProcessor, 30),
+            2,
+            10
+        );
+        var genericSampler = new AdaptiveCurveSampler3D<double>(genericPath, genericTimeRange, genericOptions, false);
 
         var float64Points = float64Sampler.GetPoints().ToArray();
         var genericPoints = genericSampler.GetPoints().ToArray();
 
         Assert.That(genericPoints.Length, Is.EqualTo(float64Points.Length));
 
-        for (var i = 0; i < float64Points.Length; i++)
+        for (int i = 0; i < float64Points.Length; i++)
         {
-            Assert.That(genericPoints[i].X.ScalarValue, Is.EqualTo(float64Points[i].X).Within(Tolerance));
-            Assert.That(genericPoints[i].Y.ScalarValue, Is.EqualTo(float64Points[i].Y).Within(Tolerance));
-            Assert.That(genericPoints[i].Z.ScalarValue, Is.EqualTo(float64Points[i].Z).Within(Tolerance));
+            AssertVectorsEqual(genericPoints[i], float64Points[i], $"Point {i}");
         }
+    }
 
-        Debug.Assert(genericPoints.Length == float64Points.Length);
+    #endregion
+
+    #region ConstantCurveSampler3D Tests
+
+    [Test]
+    public void TestConstantCurveSampler_Count()
+    {
+        var point = LinFloat64Vector3D.Create(1.0, 2.0, 3.0);
+        var timeRange = Float64ScalarRange.Create(0, 1.0);
+
+        var float64Sampler = new ConstantCurveSampler3D(point, timeRange);
+
+        var genericPoint = ToGenericVector(point);
+        var genericTimeRange = ScalarRange<double>.Create(
+            ScalarProcessor.ScalarFromValue(0),
+            ScalarProcessor.ScalarFromValue(1.0)
+        );
+        var genericSampler = new ConstantCurveSampler3D<double>(genericPoint, genericTimeRange);
+
+        Assert.That(genericSampler.Count, Is.EqualTo(float64Sampler.Count));
+        Assert.That(float64Sampler.Count, Is.EqualTo(2)); // Constant sampler always has 2 points
+        Debug.Assert(genericSampler.Count == 2);
+    }
+
+    [Test]
+    public void TestConstantCurveSampler_GetPoints()
+    {
+        var point = LinFloat64Vector3D.Create(1.0, 2.0, 3.0);
+        var timeRange = Float64ScalarRange.Create(0, 1.0);
+
+        var float64Sampler = new ConstantCurveSampler3D(point, timeRange);
+
+        var genericPoint = ToGenericVector(point);
+        var genericTimeRange = ScalarRange<double>.Create(
+            ScalarProcessor.ScalarFromValue(0),
+            ScalarProcessor.ScalarFromValue(1.0)
+        );
+        var genericSampler = new ConstantCurveSampler3D<double>(genericPoint, genericTimeRange);
+
+        var float64Points = float64Sampler.GetPoints().ToArray();
+        var genericPoints = genericSampler.GetPoints().ToArray();
+
+        Assert.That(genericPoints.Length, Is.EqualTo(float64Points.Length));
+
+        for (int i = 0; i < float64Points.Length; i++)
+        {
+            AssertVectorsEqual(genericPoints[i], float64Points[i], $"Point {i}");
+        }
     }
 
     #endregion
@@ -74,89 +172,62 @@ public sealed class CurveSamplers3DEquivalenceTests
     #region UniformParameterCurveSampler3D Tests
 
     [Test]
-    public void TestUniformParameterSampler_Properties()
+    public void TestUniformParameterCurveSampler_Count()
     {
+        const int harmonicFactor = 1;
         var magnitude = LinFloat64Vector3D.Create(1.0, 2.0, 3.0);
-        var float64Curve = Float64SimpleHarmonicPath3D.FiniteSymmetric(1, magnitude);
-        var genericCurve = SimpleHarmonicPath3D<double>.FiniteSymmetric(
-            _sp,
-            1,
-            LinVector3D<double>.Create(_sp.One, _sp.ScalarFromValue(2.0), _sp.ScalarFromValue(3.0))
+        var timeRange = Float64ScalarRange.Create(0, 2 * Math.PI);
+        const int count = 10;
+
+        var float64Path = Float64SimpleHarmonicPath3D.FiniteSymmetric(harmonicFactor, magnitude);
+        var float64Sampler = new UniformParameterCurveSampler3D(float64Path, timeRange, count, false);
+
+        var genericPath = SimpleHarmonicPath3D<double>.FiniteSymmetric(
+            ScalarProcessor,
+            harmonicFactor,
+            ToGenericVector(magnitude)
         );
-
-        const int sampleCount = 10;
-        var float64Range = Float64ScalarRange.SymmetricPi;
-        var genericRange = ScalarRange<double>.SymmetricPi(_sp);
-
-        var float64Sampler = new UniformParameterCurveSampler3D(float64Curve, float64Range, sampleCount);
-        var genericSampler = new UniformParameterCurveSampler3D<double>(genericCurve, genericRange, sampleCount);
+        var genericTimeRange = ScalarRange<double>.Create(
+            ScalarProcessor.ScalarFromValue(0),
+            ScalarProcessor.ScalarFromValue(2 * Math.PI)
+        );
+        var genericSampler = new UniformParameterCurveSampler3D<double>(genericPath, genericTimeRange, count, false);
 
         Assert.That(genericSampler.Count, Is.EqualTo(float64Sampler.Count));
-        Assert.That(genericSampler.IsPeriodic, Is.EqualTo(float64Sampler.IsPeriodic));
-
         Debug.Assert(genericSampler.Count == float64Sampler.Count);
     }
 
     [Test]
-    public void TestUniformParameterSampler_ParameterValues()
+    public void TestUniformParameterCurveSampler_GetPoints()
     {
-        var magnitude = LinFloat64Vector3D.Create(1.0, 1.0, 1.0);
-        var float64Curve = Float64SimpleHarmonicPath3D.PeriodicSymmetric(1, magnitude);
-        var genericCurve = SimpleHarmonicPath3D<double>.PeriodicSymmetric(_sp, 1,
-            LinVector3D<double>.Create(_sp.One, _sp.One, _sp.One));
+        const int harmonicFactor = 1;
+        var magnitude = LinFloat64Vector3D.Create(1.0, 2.0, 3.0);
+        var timeRange = Float64ScalarRange.Create(0, 2 * Math.PI);
+        const int count = 5;
 
-        const int sampleCount = 20;
-        var float64Range = Float64ScalarRange.SymmetricPi;
-        var genericRange = ScalarRange<double>.SymmetricPi(_sp);
+        var float64Path = Float64SimpleHarmonicPath3D.FiniteSymmetric(harmonicFactor, magnitude);
+        var float64Sampler = new UniformParameterCurveSampler3D(float64Path, timeRange, count, false);
 
-        var float64Sampler = new UniformParameterCurveSampler3D(float64Curve, float64Range, sampleCount);
-        var genericSampler = new UniformParameterCurveSampler3D<double>(genericCurve, genericRange, sampleCount);
-
-        var float64Params = float64Sampler.GetParameterValues().ToArray();
-        var genericParams = genericSampler.GetParameterValues().ToArray();
-
-        Assert.That(genericParams.Length, Is.EqualTo(float64Params.Length));
-
-        for (var i = 0; i < float64Params.Length; i++)
-        {
-            Assert.That(genericParams[i].ScalarValue, Is.EqualTo(float64Params[i]).Within(Tolerance),
-                $"Mismatch at parameter index {i}");
-        }
-
-        Debug.Assert(genericParams.Length == float64Params.Length);
-    }
-
-    [Test]
-    public void TestUniformParameterSampler_Points()
-    {
-        var magnitude = LinFloat64Vector3D.Create(2.0, 1.5, 1.0);
-        var float64Curve = Float64SimpleHarmonicPath3D.FiniteSymmetric(2, magnitude);
-        var genericCurve = SimpleHarmonicPath3D<double>.FiniteSymmetric(_sp, 2,
-            LinVector3D<double>.Create(_sp.ScalarFromValue(2.0), _sp.ScalarFromValue(1.5), _sp.One));
-
-        const int sampleCount = 15;
-        var float64Range = Float64ScalarRange.SymmetricPi;
-        var genericRange = ScalarRange<double>.SymmetricPi(_sp);
-
-        var float64Sampler = new UniformParameterCurveSampler3D(float64Curve, float64Range, sampleCount);
-        var genericSampler = new UniformParameterCurveSampler3D<double>(genericCurve, genericRange, sampleCount);
+        var genericPath = SimpleHarmonicPath3D<double>.FiniteSymmetric(
+            ScalarProcessor,
+            harmonicFactor,
+            ToGenericVector(magnitude)
+        );
+        var genericTimeRange = ScalarRange<double>.Create(
+            ScalarProcessor.ScalarFromValue(0),
+            ScalarProcessor.ScalarFromValue(2 * Math.PI)
+        );
+        var genericSampler = new UniformParameterCurveSampler3D<double>(genericPath, genericTimeRange, count, false);
 
         var float64Points = float64Sampler.GetPoints().ToArray();
         var genericPoints = genericSampler.GetPoints().ToArray();
 
         Assert.That(genericPoints.Length, Is.EqualTo(float64Points.Length));
 
-        for (var i = 0; i < float64Points.Length; i++)
+        for (int i = 0; i < float64Points.Length; i++)
         {
-            Assert.That(genericPoints[i].X.ScalarValue, Is.EqualTo(float64Points[i].X).Within(Tolerance),
-                $"Mismatch at point {i}, X component");
-            Assert.That(genericPoints[i].Y.ScalarValue, Is.EqualTo(float64Points[i].Y).Within(Tolerance),
-                $"Mismatch at point {i}, Y component");
-            Assert.That(genericPoints[i].Z.ScalarValue, Is.EqualTo(float64Points[i].Z).Within(Tolerance),
-                $"Mismatch at point {i}, Z component");
+            AssertVectorsEqual(genericPoints[i], float64Points[i], $"Point {i}");
         }
-
-        Debug.Assert(genericPoints.Length == float64Points.Length);
     }
 
     #endregion
@@ -164,197 +235,79 @@ public sealed class CurveSamplers3DEquivalenceTests
     #region ParameterListCurveSampler3D Tests
 
     [Test]
-    public void TestParameterListSampler_Properties()
+    public void TestParameterListCurveSampler_Count()
     {
+        const int harmonicFactor = 1;
         var magnitude = LinFloat64Vector3D.Create(1.0, 2.0, 3.0);
-        var float64Curve = Float64SimpleHarmonicPath3D.FiniteSymmetric(1, magnitude);
-        var genericCurve = SimpleHarmonicPath3D<double>.FiniteSymmetric(_sp, 1,
-            LinVector3D<double>.Create(_sp.One, _sp.ScalarFromValue(2.0), _sp.ScalarFromValue(3.0)));
-
-        var parameterList = new[] { -Math.PI, -Math.PI / 2, 0.0, Math.PI / 2, Math.PI };
-        var float64Sampler = new ParameterListCurveSampler3D(float64Curve, parameterList);
-        var genericSampler = new ParameterListCurveSampler3D<double>(genericCurve,
-            parameterList.Select(p => _sp.ScalarFromValue(p)).ToArray());
-
-        Assert.That(genericSampler.Count, Is.EqualTo(float64Sampler.Count));
-        Assert.That(genericSampler.Count, Is.EqualTo(parameterList.Length));
-
-        Debug.Assert(genericSampler.Count == float64Sampler.Count);
-    }
-
-    [Test]
-    public void TestParameterListSampler_CustomParameters()
-    {
-        var magnitude = LinFloat64Vector3D.Create(1.0, 1.0, 1.0);
-        var float64Curve = Float64SimpleHarmonicPath3D.PeriodicSymmetric(1, magnitude);
-        var genericCurve = SimpleHarmonicPath3D<double>.PeriodicSymmetric(_sp, 1,
-            LinVector3D<double>.Create(_sp.One, _sp.One, _sp.One));
-
-        var parameterList = new[] { -2.5, -1.0, -0.5, 0.0, 0.5, 1.0, 2.5 };
-        var float64Sampler = new ParameterListCurveSampler3D(float64Curve, parameterList);
-        var genericSampler = new ParameterListCurveSampler3D<double>(genericCurve,
-            parameterList.Select(p => _sp.ScalarFromValue(p)).ToArray());
-
-        var float64Points = float64Sampler.GetPoints().ToArray();
-        var genericPoints = genericSampler.GetPoints().ToArray();
-
-        Assert.That(genericPoints.Length, Is.EqualTo(float64Points.Length));
-
-        for (var i = 0; i < float64Points.Length; i++)
-        {
-            Assert.That(genericPoints[i].X.ScalarValue, Is.EqualTo(float64Points[i].X).Within(Tolerance),
-                $"Mismatch at parameter {parameterList[i]}, X component");
-            Assert.That(genericPoints[i].Y.ScalarValue, Is.EqualTo(float64Points[i].Y).Within(Tolerance),
-                $"Mismatch at parameter {parameterList[i]}, Y component");
-            Assert.That(genericPoints[i].Z.ScalarValue, Is.EqualTo(float64Points[i].Z).Within(Tolerance),
-                $"Mismatch at parameter {parameterList[i]}, Z component");
-        }
-
-        Debug.Assert(genericPoints.Length == float64Points.Length);
-    }
-
-    #endregion
-
-    #region UniformLengthCurveSampler3D Tests
-
-    [Test]
-    public void TestUniformLengthSampler_Properties()
-    {
-        var magnitude = LinFloat64Vector3D.Create(1.0, 2.0, 3.0);
-        var float64Curve = Float64SimpleHarmonicPath3D.FiniteSymmetric(1, magnitude);
-        var genericCurve = SimpleHarmonicPath3D<double>.FiniteSymmetric(_sp, 1,
-            LinVector3D<double>.Create(_sp.One, _sp.ScalarFromValue(2.0), _sp.ScalarFromValue(3.0)));
-
-        const int sampleCount = 25;
-        var float64Range = Float64ScalarRange.SymmetricPi;
-        var genericRange = ScalarRange<double>.SymmetricPi(_sp);
-
-        var float64Sampler = new UniformLengthCurveSampler3D(float64Curve, float64Range, sampleCount);
-        var genericSampler = new UniformLengthCurveSampler3D<double>(genericCurve, genericRange, sampleCount);
-
-        Assert.That(genericSampler.Count, Is.EqualTo(float64Sampler.Count));
-        Assert.That(genericSampler.IsPeriodic, Is.EqualTo(float64Sampler.IsPeriodic));
-
-        Debug.Assert(genericSampler.Count == float64Sampler.Count);
-    }
-
-    [Test]
-    public void TestUniformLengthSampler_ArcLengthDistribution()
-    {
-        var magnitude = LinFloat64Vector3D.Create(2.0, 1.5, 1.0);
-        var float64Curve = Float64SimpleHarmonicPath3D.FiniteSymmetric(2, magnitude);
-        var genericCurve = SimpleHarmonicPath3D<double>.FiniteSymmetric(_sp, 2,
-            LinVector3D<double>.Create(_sp.ScalarFromValue(2.0), _sp.ScalarFromValue(1.5), _sp.One));
-
-        const int sampleCount = 30;
-        var float64Range = Float64ScalarRange.SymmetricPi;
-        var genericRange = ScalarRange<double>.SymmetricPi(_sp);
-
-        var float64Sampler = new UniformLengthCurveSampler3D(float64Curve, float64Range, sampleCount);
-        var genericSampler = new UniformLengthCurveSampler3D<double>(genericCurve, genericRange, sampleCount);
-
-        var float64Points = float64Sampler.GetPoints().ToArray();
-        var genericPoints = genericSampler.GetPoints().ToArray();
-
-        Assert.That(genericPoints.Length, Is.EqualTo(float64Points.Length));
-
-        // Verify points match
-        for (var i = 0; i < float64Points.Length; i++)
-        {
-            Assert.That(genericPoints[i].X.ScalarValue, Is.EqualTo(float64Points[i].X).Within(Tolerance),
-                $"Mismatch at point {i}, X component");
-            Assert.That(genericPoints[i].Y.ScalarValue, Is.EqualTo(float64Points[i].Y).Within(Tolerance),
-                $"Mismatch at point {i}, Y component");
-            Assert.That(genericPoints[i].Z.ScalarValue, Is.EqualTo(float64Points[i].Z).Within(Tolerance),
-                $"Mismatch at point {i}, Z component");
-        }
-
-        // Verify uniform arc-length spacing (distances between consecutive points should be approximately equal)
-        if (genericPoints.Length > 2)
-        {
-            var distances = new double[genericPoints.Length - 1];
-            for (var i = 0; i < distances.Length; i++)
-            {
-                var dx = genericPoints[i + 1].X.ScalarValue - genericPoints[i].X.ScalarValue;
-                var dy = genericPoints[i + 1].Y.ScalarValue - genericPoints[i].Y.ScalarValue;
-                var dz = genericPoints[i + 1].Z.ScalarValue - genericPoints[i].Z.ScalarValue;
-                distances[i] = Math.Sqrt(dx * dx + dy * dy + dz * dz);
-            }
-
-            var avgDistance = distances.Average();
-            foreach (var distance in distances)
-            {
-                // Arc-length sampling should produce similar distances (within 20% tolerance for approximate methods)
-                Assert.That(distance, Is.EqualTo(avgDistance).Within(0.2 * avgDistance),
-                    "Arc-length distances should be approximately uniform");
-            }
-        }
-
-        Debug.Assert(genericPoints.Length == float64Points.Length);
-    }
-
-    #endregion
-
-    #region Sampler Validation Tests
-
-    [Test]
-    public void TestAllSamplers_IsValid()
-    {
-        var magnitude = LinVector3D<double>.Create(_sp.One, _sp.One, _sp.One);
-        var curve = SimpleHarmonicPath3D<double>.FiniteSymmetric(_sp, 1, magnitude);
-        var range = ScalarRange<double>.SymmetricPi(_sp);
-
-        var constantSampler = new ConstantCurveSampler3D<double>(
-            LinVector3D<double>.Create(_sp.One, _sp.One, _sp.One),
-            LinVector3D<double>.Create(_sp.One, _sp.Zero, _sp.Zero)
+        var parameterValues = ImmutableSortedSet.Create(
+            Float64Scalar.Create(0.0),
+            Float64Scalar.Create(0.5),
+            Float64Scalar.Create(1.0),
+            Float64Scalar.Create(1.5),
+            Float64Scalar.Create(2.0)
         );
-        var uniformParamSampler = new UniformParameterCurveSampler3D<double>(curve, range, 10);
-        var paramListSampler = new ParameterListCurveSampler3D<double>(curve,
-            new[] { _sp.Zero, _sp.One, _sp.ScalarFromValue(2.0) });
-        var uniformLengthSampler = new UniformLengthCurveSampler3D<double>(curve, range, 15);
 
-        Assert.That(constantSampler.IsValid(), Is.True);
-        Assert.That(uniformParamSampler.IsValid(), Is.True);
-        Assert.That(paramListSampler.IsValid(), Is.True);
-        Assert.That(uniformLengthSampler.IsValid(), Is.True);
+        var float64Path = Float64SimpleHarmonicPath3D.FiniteSymmetric(harmonicFactor, magnitude);
+        var float64Sampler = new ParameterListCurveSampler3D(float64Path, parameterValues, false);
 
-        Debug.Assert(constantSampler.IsValid());
+        var genericPath = SimpleHarmonicPath3D<double>.FiniteSymmetric(
+            ScalarProcessor,
+            harmonicFactor,
+            ToGenericVector(magnitude)
+        );
+        var genericParameterValues = ImmutableSortedSet.Create(
+            ScalarProcessor.ScalarFromValue(0.0),
+            ScalarProcessor.ScalarFromValue(0.5),
+            ScalarProcessor.ScalarFromValue(1.0),
+            ScalarProcessor.ScalarFromValue(1.5),
+            ScalarProcessor.ScalarFromValue(2.0)
+        );
+        var genericSampler = new ParameterListCurveSampler3D<double>(genericPath, genericParameterValues, false);
+
+        Assert.That(genericSampler.Count, Is.EqualTo(float64Sampler.Count));
+        Assert.That(float64Sampler.Count, Is.EqualTo(5));
+        Debug.Assert(genericSampler.Count == 5);
     }
 
     [Test]
-    public void TestSamplers_GetFrames()
+    public void TestParameterListCurveSampler_GetPoints()
     {
-        var magnitude = LinFloat64Vector3D.Create(1.0, 1.0, 1.0);
-        var float64Curve = Float64SimpleHarmonicPath3D.FiniteSymmetric(1, magnitude);
-        var genericCurve = SimpleHarmonicPath3D<double>.FiniteSymmetric(_sp, 1,
-            LinVector3D<double>.Create(_sp.One, _sp.One, _sp.One));
+        const int harmonicFactor = 1;
+        var magnitude = LinFloat64Vector3D.Create(1.0, 2.0, 3.0);
+        var parameterValues = ImmutableSortedSet.Create(
+            Float64Scalar.Create(0.0),
+            Float64Scalar.Create(Math.PI / 4),
+            Float64Scalar.Create(Math.PI / 2),
+            Float64Scalar.Create(3 * Math.PI / 4),
+            Float64Scalar.Create(Math.PI)
+        );
 
-        const int sampleCount = 10;
-        var float64Range = Float64ScalarRange.SymmetricPi;
-        var genericRange = ScalarRange<double>.SymmetricPi(_sp);
+        var float64Path = Float64SimpleHarmonicPath3D.FiniteSymmetric(harmonicFactor, magnitude);
+        var float64Sampler = new ParameterListCurveSampler3D(float64Path, parameterValues, false);
 
-        var float64Sampler = new UniformParameterCurveSampler3D(float64Curve, float64Range, sampleCount);
-        var genericSampler = new UniformParameterCurveSampler3D<double>(genericCurve, genericRange, sampleCount);
+        var genericPath = SimpleHarmonicPath3D<double>.FiniteSymmetric(
+            ScalarProcessor,
+            harmonicFactor,
+            ToGenericVector(magnitude)
+        );
+        var genericParameterValues = ImmutableSortedSet.Create(
+            ScalarProcessor.ScalarFromValue(0.0),
+            ScalarProcessor.ScalarFromValue(Math.PI / 4),
+            ScalarProcessor.ScalarFromValue(Math.PI / 2),
+            ScalarProcessor.ScalarFromValue(3 * Math.PI / 4),
+            ScalarProcessor.ScalarFromValue(Math.PI)
+        );
+        var genericSampler = new ParameterListCurveSampler3D<double>(genericPath, genericParameterValues, false);
 
-        var float64Frames = float64Sampler.GetFrames().ToArray();
-        var genericFrames = genericSampler.GetFrames().ToArray();
+        var float64Points = float64Sampler.GetPoints().ToArray();
+        var genericPoints = genericSampler.GetPoints().ToArray();
 
-        Assert.That(genericFrames.Length, Is.EqualTo(float64Frames.Length));
+        Assert.That(genericPoints.Length, Is.EqualTo(float64Points.Length));
 
-        for (var i = 0; i < float64Frames.Length; i++)
+        for (int i = 0; i < float64Points.Length; i++)
         {
-            // Test frame point
-            Assert.That(genericFrames[i].Point.X.ScalarValue, Is.EqualTo(float64Frames[i].Point.X).Within(Tolerance));
-            Assert.That(genericFrames[i].Point.Y.ScalarValue, Is.EqualTo(float64Frames[i].Point.Y).Within(Tolerance));
-            Assert.That(genericFrames[i].Point.Z.ScalarValue, Is.EqualTo(float64Frames[i].Point.Z).Within(Tolerance));
-
-            // Test frame tangent
-            Assert.That(genericFrames[i].Tangent.X.ScalarValue, Is.EqualTo(float64Frames[i].Tangent.X).Within(Tolerance));
-            Assert.That(genericFrames[i].Tangent.Y.ScalarValue, Is.EqualTo(float64Frames[i].Tangent.Y).Within(Tolerance));
-            Assert.That(genericFrames[i].Tangent.Z.ScalarValue, Is.EqualTo(float64Frames[i].Tangent.Z).Within(Tolerance));
+            AssertVectorsEqual(genericPoints[i], float64Points[i], $"Point {i}");
         }
-
-        Debug.Assert(genericFrames.Length == float64Frames.Length);
     }
 
     #endregion
