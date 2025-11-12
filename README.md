@@ -144,6 +144,12 @@ For more examples, visit the [Examples Documentation](https://kopffarben.github.
 
 ## Documentation Sections
 
+### Quick Links
+
+- **[FAQ (English)](FAQ.en.md)** | **[FAQ (Deutsch)](FAQ.de.md)** - Frequently asked questions about building, testing, and AI assistance
+
+### Full Documentation
+
 Visit [https://kopffarben.github.io/GeometricAlgebraFulcrumLib/](https://kopffarben.github.io/GeometricAlgebraFulcrumLib/) for:
 
 - **[Getting Started](https://kopffarben.github.io/GeometricAlgebraFulcrumLib/getting-started.en.html)** - Installation and first steps
