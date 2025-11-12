@@ -138,7 +138,7 @@ public sealed class MetaExpressionToCSharpFloat64Converter :
             case "Log":
                 return SteExpression.CreateFunction(
                     "Math.Log",
-                    argumentsArray.Length == 1 ? argumentsArray : argumentsArray.Reverse()
+                    argumentsArray.Length == 1 ? argumentsArray : argumentsArray.AsEnumerable().Reverse().ToArray()
                 );
 
             case "Log10":

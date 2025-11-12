@@ -119,7 +119,7 @@ public sealed class MetaExpressionToCSharpScalarProcessorConverter :
             case "Log":
                 return SteExpression.CreateFunction(
                     $"{ScalarProcessorVariableName}.Log",
-                    argumentsArray.Length == 1 ? argumentsArray : argumentsArray.Reverse()
+                    argumentsArray.Length == 1 ? argumentsArray : argumentsArray.AsEnumerable().Reverse().ToArray()
                 );
 
             case "Log10":

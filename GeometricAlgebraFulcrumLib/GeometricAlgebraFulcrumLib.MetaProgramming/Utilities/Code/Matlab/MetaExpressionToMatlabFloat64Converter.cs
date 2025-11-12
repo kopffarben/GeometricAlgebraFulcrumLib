@@ -138,7 +138,7 @@ public sealed class MetaExpressionToMatlabFloat64Converter :
             case "Log":
                 return SteExpression.CreateFunction(
                     "log",
-                    argumentsArray.Length == 1 ? argumentsArray : argumentsArray.Reverse()
+                    argumentsArray.Length == 1 ? argumentsArray : argumentsArray.AsEnumerable().Reverse().ToArray()
                 );
 
             case "Log10":

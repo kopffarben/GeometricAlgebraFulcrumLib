@@ -134,7 +134,7 @@ public sealed class MetaExpressionToExcelConverter :
             case "Log":
                 return SteExpression.CreateFunction(
                     argumentsArray.Length == 1 ? "LN" : "LOG",
-                    argumentsArray.Length == 1 ? argumentsArray : argumentsArray.Reverse()
+                    argumentsArray.Length == 1 ? argumentsArray : argumentsArray.AsEnumerable().Reverse().ToArray()
                 );
 
             case "Log10":
