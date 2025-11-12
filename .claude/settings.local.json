@@ -56,7 +56,9 @@
       "Bash(then:*)",
       "Bash(else:*)",
       "Bash(SimpleHarmonicPath2D.cs.tmp)",
-      "WebFetch(domain:en.wikipedia.org)"
+      "WebFetch(domain:en.wikipedia.org)",
+      "Bash(/dev/null)",
+      "Bash(move \"D:\\_MBOX\\_CODE\\GA-FUL-main\\GeometricAlgebraFulcrumLib\\GeometricAlgebraFulcrumLib.Modeling\\Trajectories\\Vectors3D\\Generic\\Samplers\\build_samplers.txt\" \"D:\\_MBOX\\_CODE\\GA-FUL-main\\DEDUPLICATION_ROADMAP\\SAMPLERS_IMPLEMENTATION_STATUS.md\")"
     ]
   },
   "enabledMcpjsonServers": [

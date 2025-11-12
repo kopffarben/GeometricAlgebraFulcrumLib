@@ -15,7 +15,7 @@
    ↓
 6. ✅ STELLE SICHER alle Tests passing (100% Pass Rate!)
    ↓
-7. ✅ Update DEDUPLICATION_ROADMAP/PHASE_3_DEDUPLICATION_TASKS.md und DEDUPLICATION_ROADMAP/DEDUPLICATION_ROADMAP.md
+7. ✅ Update Dokumentation im Ordner DEDUPLICATION_ROADMAP
    ↓
 8. ✅ NUR DANN Git Commit
    ↓

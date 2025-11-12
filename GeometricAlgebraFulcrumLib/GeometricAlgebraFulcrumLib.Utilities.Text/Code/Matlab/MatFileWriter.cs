@@ -656,7 +656,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Text.Code.Matlab
                 writer.Write((byte)0x78);
                 writer.Write((byte)0x9c);
                 compressedStream.CopyTo(writer.BaseStream);
-                writer.Write(BitConverter.GetBytes(crc).Reverse().ToArray());
+                var crcBytes = BitConverter.GetBytes(crc);
+                Array.Reverse(crcBytes);
+                writer.Write(crcBytes);
             }
         }
     }
