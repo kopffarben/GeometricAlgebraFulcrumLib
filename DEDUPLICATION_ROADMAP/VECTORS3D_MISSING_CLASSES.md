@@ -1,9 +1,9 @@
 # Vectors3D Generic<T> Implementation Status
 
-**Date:** 2025-11-12
+**Date:** 2025-11-13
 **Phase:** 3A - Trajectories Vectors3D
-**Current Coverage:** 16/22 classes (73%)
-**Status:** Samplers, Adaptive System & Roulette COMPLETE ✅
+**Current Coverage:** 18/22 classes (82%)
+**Status:** Samplers, Adaptive System, Roulette, Composer Utilities & Adaptive Arc-Length COMPLETE ✅
 
 ---
 
@@ -14,15 +14,38 @@
 | **Basic** | 9 | 9 | ✅ COMPLETE | - |
 | **Bezier** | 6 | 6 | ✅ COMPLETE | - |
 | **Circles** | 5 | 5 | ✅ COMPLETE | - |
-| **Composers** | 2 | 1 | 1 missing | P1 |
-| **Mapped** | 9 | 5 | 4 missing | P2 |
+| **Composers** | 2 | 2 | ✅ COMPLETE | - |
+| **Mapped** | 9 | 6 | 3 missing | P3 |
 | **Adaptive** | 9 | **9** | ✅ **COMPLETE** | - |
 | **Samplers** | 6 | **6** | ✅ **COMPLETE** | - |
 | **Base Classes** | 6 | 9 | ✅ COMPLETE | - |
 
-**Total:** 53 Float64 files, **49 Generic files** (16 new + 33 existing), **6 remaining**
+**Total:** 53 Float64 files, **50 Generic files** (18 updated/new + 32 existing), **4 remaining**
 
 **Progress:** 15/22 classes implemented this session (68% → 100% for targeted categories)
+
+---
+
+## ✅ Completed This Session (2025-11-13)
+
+### Composer Utilities (Path3DComposerUtils<T>) - 100% API Parity
+- Finished porting everything from `Float64Path3DComposerUtils`: scalar/bivector lifts, Bezier/Catmull/Circle builders, math-curve helpers, adaptive factories, distance/off-set/plane helpers, and roulette plumbing.
+- Kept Generic<T> idioms (ScalarRange, scalar processors) so every overload now works for `double`, `float`, and symbolic processors without fallback hacks.
+- Added affine mapping helper that mirrors the Float64 `IFloat64AffineMap3D` pathway via delegates.
+- Ensured all numerical helpers reuse derivative fallbacks to avoid duplicating logic already contained in `ParametricPath3D<T>`.
+
+### Regression Tests
+- New `Path3DComposerUtilsEquivalenceTests` suite (13 tests) compares Generic<double> vs Float64 for scalar lifts, 2D/3D mappings, Bezier/Circle/Math curves, offsets, distances, midpoints, medians, and plane normals.
+- Tests executed with  
+  ``$DOTNET_ROOT/dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/GeometricAlgebraFulcrumLib.UnitTests.csproj --filter Path3DComposer``  
+  ✅ All targeted tests passed (existing Magick.NET NU1901-NU1903 advisories remain from upstream packages).
+
+### AdaptiveArcLengthPath3D<T> (new Generic class)
+- Implemented a full Generic<T> wrapper around any `ParametricPath3D<T>` using the adaptive sampling infrastructure—mirrors `Float64AdaptiveArcLengthPath3D` API.
+- Added default sampling profile (5° angle, min level 3, max level 16) and overload taking custom `AdaptivePath3DSamplingOptions<T>`.
+- Forward all point/derivative/frame requests to the base path while using `AdaptivePath3D<T>` for consistent length ↔ time conversions.
+- New regression suite `AdaptiveArcLengthPath3DEquivalenceTests` (line/circle cases, default & custom options) compares Generic<double> vs Float64; executed via  
+  ``$DOTNET_ROOT/dotnet test ... --filter AdaptiveArcLengthPath3D`` ✅ (same upstream NU1901-NU1903 warnings only).
 
 ---
 
@@ -119,121 +142,73 @@ Generic has MORE base classes than Float64:
 
 ---
 
-## ⏳ Remaining Classes (6 total)
+## ⏳ Remaining Classes (3 total)
 
-### 1. Composers (1 class missing) - P1
+### Mapped Paths (all P3 priorities)
 
-**Missing:**
-1. **Path3DComposerUtils (full version)** (Float64Path3DComposerUtils.cs)
-   - Priority: P1
-   - Description: Full utility methods for path composition
-   - Complexity: LOW-MEDIUM
-   - Estimated Time: 3-5 hours
-   - Note: Partial implementation exists (AdaptivePath3D creation)
-
-**Already in Generic:**
-- ✅ SimpleHarmonicPath3DComposer
-- ✅ Path3DComposerUtils (partial - AdaptivePath3D creation only)
-
----
-
-### 2. Mapped Paths (4 classes missing) - P2
-
-**Missing:**
-1. **AdaptiveArcLengthPath3D** (Float64AdaptiveArcLengthPath3D.cs)
-   - Priority: P2
-   - Description: Arc-length parameterized path with adaptive sampling
-   - Complexity: HIGH
-   - Dependencies: ✅ Adaptive system (complete!)
-   - Estimated Time: 6-8 hours
-
-2. **RotatedNormalsArcLengthPath3D** (Float64RotatedNormalsArcLengthPath3D.cs)
-   - Priority: P3
-   - Description: Arc-length path with rotated normal frames
-   - Complexity: MEDIUM-HIGH
+1. **RotatedNormalsArcLengthPath3D** (Float64RotatedNormalsArcLengthPath3D.cs)  
+   - Arc-length path with rotated normal frames  
+   - Complexity: MEDIUM-HIGH  
    - Estimated Time: 5-7 hours
 
-3. **RotatedNormalsPath3D** (Float64RotatedNormalsPath3D.cs)
-   - Priority: P3
-   - Description: Path with rotated normal frames
-   - Complexity: MEDIUM
+2. **RotatedNormalsPath3D** (Float64RotatedNormalsPath3D.cs)  
+   - Path with rotated normal frames  
+   - Complexity: MEDIUM  
    - Estimated Time: 4-6 hours
 
-4. **RouletteMappedPath3D** (Float64RouletteMappedPath3D.cs)
-   - Priority: P3
-   - Description: Roulette curve with mapping transformations
-   - Complexity: MEDIUM-HIGH
-   - Dependencies: RoulettePath3D (not yet implemented)
+3. **RouletteMappedPath3D** (Float64RouletteMappedPath3D.cs)  
+   - Roulette curve with mapping transformations  
+   - Complexity: MEDIUM-HIGH  
+   - Dependencies: RoulettePath3D (done)  
    - Estimated Time: 5-7 hours
 
-**Already in Generic:**
-- ✅ AffineMappedPath3D
-- ✅ AffineMappedTimePath3D
-- ✅ MappedTrajectoryPath3D
-- ✅ PlusPath3D
-- ✅ TimesPath3D
+**Already in Generic:** AffineMappedPath3D, AffineMappedTimePath3D, MappedTrajectoryPath3D, PlusPath3D, TimesPath3D, **AdaptiveArcLengthPath3D** ✅
 
 ---
 
 ## 📊 Priority Breakdown
 
-### P1 - High Priority (Composer utilities, ~5-7 hours)
-**Essential for plumbing:**
-1. Expand `Path3DComposerUtils<T>` beyond adaptive helpers (Bezier, circle, roulette-mapped builders)
-2. Keep docs/tests in sync for new helpers
+### P1 - High Priority (Composer utilities) ✅ COMPLETE
+- `Path3DComposerUtils<T>` now mirrors the Float64 helper surface (Bezier, circles, Catmull-Rom, mapped/offset/distance helpers, roulette factories).
+- Regression suite `Path3DComposerUtilsEquivalenceTests` keeps API parity locked; no further action required unless Float64 helpers grow.
 
-**Rationale:** Composer utilities unblock downstream modeling layers that currently rely on Float64 wrappers.
+### P3 - Specialized Features (3 classes, ~14-18 hours total)
+- RotatedNormalsPath3D (MEDIUM, 4-6h)
+- RotatedNormalsArcLengthPath3D (MEDIUM-HIGH, 5-7h)
+- RouletteMappedPath3D (MEDIUM-HIGH, 5-7h)
 
-### P2 - Medium Priority (1 class, ~6-8 hours)
-**Important for advanced features:**
-- AdaptiveArcLengthPath3D (dependencies now complete!)
-
-**Rationale:** Advanced arc-length parameterization with adaptive sampling.
-
-### P3 - Low Priority (3 classes, ~14-20 hours)
-**Nice-to-have specialized features:**
-- RotatedNormalsPath3D
-- RotatedNormalsArcLengthPath3D
-- RouletteMappedPath3D
-
-**Rationale:** Specialized use cases, not commonly needed.
+**Rationale:** These are niche modelling helpers (frame rotations + roulette transforms). They can be sequenced after verifying AdaptiveArcLengthPath3D in downstream apps.
 
 ---
 
 ## 🎯 Recommended Implementation Order
 
-### Batch 1: Complete P1 Essentials (~1 week)
-**Time:** ~7-11 hours
-1. Verify LineSegmentPath3D exists in Generic
-2. Complete Path3DComposerUtils<T> (full utility set)
-3. RoulettePath3D<T> (if commonly used)
+### Batch 1 (P1 essentials) – ✅ COMPLETE
+1. Verify LineSegmentPath3D<T> (already present)
+2. Finish Path3DComposerUtils<T> (full utility surface)
+3. RoulettePath3D<T> plumbing/tests
 
-### Batch 2: Implement P2 Advanced Feature (~1 week)
-**Time:** ~6-8 hours
-1. AdaptiveArcLengthPath3D<T> (all dependencies now complete!)
+### Batch 2 (P2 advanced) – ✅ COMPLETE (2025-11-13)
+1. AdaptiveArcLengthPath3D<T> + regression tests
 
-### Batch 3: Implement P3 Specialized Features (~2-3 weeks)
-**Time:** ~14-20 hours
+### Batch 3 (current focus) – P3 specialized mapped classes (~2-3 weeks)
 1. RotatedNormalsPath3D<T>
 2. RotatedNormalsArcLengthPath3D<T>
-3. RouletteMappedPath3D<T> (requires RoulettePath3D)
+3. RouletteMappedPath3D<T> (depends on RoulettePath3D<T>, now done)
 
 ---
 
 ## 📈 Revised Timeline
 
 **Original Estimate:** 20 classes, ~9-10 weeks
-**Actual Progress:** 15 classes complete (68%), 7 remaining (32%)
+**Actual Progress:** 18 classes complete (82%), 4 remaining (18%)
 
 **Remaining Estimates:**
-- **P1 (Essential):** 1 week (~7-11 hours)
-- **P2 (Important):** 1 week (~6-8 hours)
-- **P3 (Optional):** 2-3 weeks (~14-20 hours)
+- **P1 (Essential):** ✅ Complete (Path3DComposerUtils<T>)
+- **P2 (Important):** ✅ Complete (AdaptiveArcLengthPath3D<T>)
+- **P3 (Optional/Specialized):** 2-3 weeks (~14-18 hours total)
 
-**Total for P1+P2:** ~2 weeks (~13-19 hours)
-**Total if including P3:** ~4-5 weeks (~27-39 hours)
-
-**Achievement:** **~55 hours saved** by completing 15 classes in this session!
+**Achievement:** Cleared the composer backlog and delivered AdaptiveArcLengthPath3D<T> + equivalence tests, keeping API parity with Float64 while shrinking the TODO list to three specialized mapped classes.
 
 ---
 
@@ -246,9 +221,10 @@ Generic has MORE base classes than Float64:
 5. ✅ ~~Verify LineSegmentPath3D~~ - **DONE (Generic already in tree)**
 6. ✅ ~~Implement RoulettePath3D<T>~~ - **DONE**
 7. ✅ ~~Add initial Path3DComposerUtils helpers~~ - **DONE (2D lifts + roulette factory)**
-8. **Extend Path3DComposerUtils<T>** - Add Bezier/circle helpers + roulette-mapped utilities
-9. **Write more tests** - Expand coverage for composer helpers (Roulette equivalence added)
-10. **Begin Batch 2** - Start with AdaptiveArcLengthPath3D
+8. ✅ ~~Extend Path3DComposerUtils<T>~~ - **DONE (full Float64 parity + docs on 2025-11-13)**
+9. ✅ ~~Write more tests~~ - **DONE (`Path3DComposerUtilsEquivalenceTests` added + passing)**
+10. ✅ ~~Begin Batch 2~~ - **AdaptiveArcLengthPath3D<T> implemented + tested**
+11. **Tackle Batch 3** - RotatedNormalsPath3D / RotatedNormalsArcLengthPath3D / RouletteMappedPath3D (P3)
 
 ---
 
@@ -273,13 +249,26 @@ Generic has MORE base classes than Float64:
 - ✅ COMPILATION_FIXES_2025-11-12.md created
 - ✅ Session completion documented
 
+## 🏆 Session Achievements (2025-11-13)
+
+### Code & Tests
+- Finished **Path3DComposerUtils<T>** by porting the remaining Float64 helpers (Bezier/Circle/Catmull builders, math-curve utilities, distance/offset/plane helpers, roulette mapping).
+- Implemented **AdaptiveArcLengthPath3D<T>** using the Generic adaptive tree to mirror Float64 arc-length reparameterization.
+- Added **two regression suites**: `Path3DComposerUtilsEquivalenceTests` (13 cases) and `AdaptiveArcLengthPath3DEquivalenceTests` (default + custom sampling). Both run via targeted `dotnet test --filter ...` commands (existing NU1901/2/3 warnings only).
+
+### Documentation
+- Updated STATUS + ROADMAP metrics (18/22 classes = 82% coverage) and recorded the new regression suites.
+- Trimmed the "Remaining Classes" section to the three specialized mapped types left in Batch 3.
+
 ### Progress
 - **From:** 0/22 classes (0%)
-- **To:** 16/22 classes (73%)
-- **Remaining:** 6 classes (27%)
-- **Time saved:** ~60 hours from original estimates!
+- **After Samplers/Adaptive:** 16/22 classes (73%)
+- **After Composer utilities:** 17/22 classes (77%)
+- **After AdaptiveArcLengthPath3D<T>:** 18/22 classes (82%)
+- **Remaining:** 4 classes (18%) — all mapped-specialty work
+- **Time saved:** ~60 hours vs. original estimates (Phase 3A pacing holding strong!)
 
 ---
 
-**Last Updated:** 2025-11-12
+**Last Updated:** 2025-11-13
 **Maintained By:** GA-FUL Deduplication Team
