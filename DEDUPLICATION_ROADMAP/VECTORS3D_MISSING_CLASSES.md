@@ -2,8 +2,8 @@
 
 **Date:** 2025-11-13
 **Phase:** 3A - Trajectories Vectors3D
-**Current Coverage:** 19/22 classes (86%)
-**Status:** Samplers, Adaptive System, Roulette, Composer Utilities, Adaptive Arc-Length & Rotated Normals COMPLETE ✅
+**Current Coverage:** 22/22 classes (100%)
+**Status:** All targeted Vectors3D classes complete (samplers, adaptive system, roulette, composers, rotated normals, arc-length, mapped) ✅
 
 ---
 
@@ -15,12 +15,12 @@
 | **Bezier** | 6 | 6 | ✅ COMPLETE | - |
 | **Circles** | 5 | 5 | ✅ COMPLETE | - |
 | **Composers** | 2 | 2 | ✅ COMPLETE | - |
-| **Mapped** | 9 | 7 | 2 missing | P3 |
+| **Mapped** | 9 | 9 | ✅ COMPLETE | - |
 | **Adaptive** | 9 | **9** | ✅ **COMPLETE** | - |
 | **Samplers** | 6 | **6** | ✅ **COMPLETE** | - |
 | **Base Classes** | 6 | 9 | ✅ COMPLETE | - |
 
-**Total:** 53 Float64 files, **51 Generic files** (19 updated/new + 32 existing), **3 remaining**
+**Total:** 53 Float64 files, **53 Generic files** (22 updated/new + 31 existing), **0 remaining**
 
 **Progress:** 15/22 classes implemented this session (68% → 100% for targeted categories)
 
@@ -46,6 +46,11 @@
 - Forward all point/derivative/frame requests to the base path while using `AdaptivePath3D<T>` for consistent length ↔ time conversions.
 - New regression suite `AdaptiveArcLengthPath3DEquivalenceTests` (line/circle cases, default & custom options) compares Generic<double> vs Float64; executed via  
   ``$DOTNET_ROOT/dotnet test ... --filter AdaptiveArcLengthPath3D`` ✅ (same upstream NU1901-NU1903 warnings only).
+
+### RotatedNormals + Roulette Mapping (Generic<T>)
+- Added `LinPolarAngleTimeSignal<T>`, `RotatedNormalsPath3D<T>` und `RotatedNormalsArcLengthPath3D<T>` inklusive Regressionstests.
+- Implementierte `RouletteAffineMap3D<T>` (Quaternion- und SquareMatrix4-Support) sowie `RouletteMappedPath3D<T>` + `ArcLengthPath3DUtils.GetRouletteMappedCurve`.
+- Regression: `RotatedNormalsPath3DEquivalenceTests` (Konstant + Funktionswinkel) und `RouletteMappedPath3DEquivalenceTests` (`dotnet test ... --filter RotatedNormalsPath3D` bzw. `--filter RouletteMappedPath3D`).
 
 ### RotatedNormalsPath3D<T> + Angle Infrastructure
 - Introduced `LinPolarAngleTimeSignal<T>` (delegate-backed) so any Generic path can consume time-varying polar angles just like Float64.
@@ -147,83 +152,34 @@ Generic has MORE base classes than Float64:
 
 ---
 
-## ⏳ Remaining Classes (2 total)
+## ⏳ Remaining Klassen
 
-### Mapped Paths (all P3 priorities)
-
-1. **RotatedNormalsArcLengthPath3D** (Float64RotatedNormalsArcLengthPath3D.cs)  
-   - Arc-length path with rotated normal frames  
-   - Complexity: MEDIUM-HIGH  
-   - Estimated Time: 5-7 hours
-
-2. **RouletteMappedPath3D** (Float64RouletteMappedPath3D.cs)  
-   - Roulette curve with mapping transformations  
-   - Complexity: MEDIUM-HIGH  
-   - Dependencies: RoulettePath3D (done)  
-   - Estimated Time: 5-7 hours
-
-**Already in Generic:** AffineMappedPath3D, AffineMappedTimePath3D, MappedTrajectoryPath3D, PlusPath3D, TimesPath3D, **AdaptiveArcLengthPath3D**, **RotatedNormalsPath3D** ✅
+Keine – sämtliche 22 Zielklassen im Vectors3D-Modul sind generisch verfügbar.
 
 ---
 
 ## 📊 Priority Breakdown
 
-### P1 - High Priority (Composer utilities) ✅ COMPLETE
-- `Path3DComposerUtils<T>` now mirrors the Float64 helper surface (Bezier, circles, Catmull-Rom, mapped/offset/distance helpers, roulette factories).
-- Regression suite `Path3DComposerUtilsEquivalenceTests` keeps API parity locked; no further action required unless Float64 helpers grow.
-
-### P3 - Specialized Features (3 classes, ~14-18 hours total)
-- RotatedNormalsPath3D (MEDIUM, 4-6h)
-- RotatedNormalsArcLengthPath3D (MEDIUM-HIGH, 5-7h)
-- RouletteMappedPath3D (MEDIUM-HIGH, 5-7h)
-
-**Rationale:** These are niche modelling helpers (frame rotations + roulette transforms). They can be sequenced after verifying AdaptiveArcLengthPath3D in downstream apps.
+Alle Prioritäten (P1–P3) abgearbeitet; keine offenen Items.
 
 ---
 
 ## 🎯 Recommended Implementation Order
 
-### Batch 1 (P1 essentials) – ✅ COMPLETE
-1. Verify LineSegmentPath3D<T> (already present)
-2. Finish Path3DComposerUtils<T> (full utility surface)
-3. RoulettePath3D<T> plumbing/tests
-
-### Batch 2 (P2 advanced) – ✅ COMPLETE (2025-11-13)
-1. AdaptiveArcLengthPath3D<T> + regression tests
-
-### Batch 3 (current focus) – P3 specialized mapped classes (~2-3 weeks)
-1. RotatedNormalsArcLengthPath3D<T>
-2. RouletteMappedPath3D<T> (depends on RoulettePath3D<T>, now done)
+Abgeschlossen – Batch 1 bis Batch 3 umgesetzt.
 
 ---
 
 ## 📈 Revised Timeline
 
-**Original Estimate:** 20 classes, ~9-10 weeks
-**Actual Progress:** 18 classes complete (82%), 4 remaining (18%)
-
-**Remaining Estimates:**
-- **P1 (Essential):** ✅ Complete (Path3DComposerUtils<T>)
-- **P2 (Important):** ✅ Complete (AdaptiveArcLengthPath3D<T>)
-- **P3 (Optional/Specialized):** 2-3 weeks (~14-18 hours total)
-
-**Achievement:** Cleared the composer backlog and delivered AdaptiveArcLengthPath3D<T> + equivalence tests, keeping API parity with Float64 while shrinking the TODO list to three specialized mapped classes.
+**Original Estimate:** 20 Klassen, ~9-10 Wochen
+**Actual:** 22 Klassen fertig (100%); Zusatzarbeit (Roulette/Rotated Normals) blieb innerhalb des P3-Budgets.
 
 ---
 
 ## 🔍 Next Steps
 
-1. ✅ ~~Implement all Samplers~~ - **COMPLETE!**
-2. ✅ ~~Implement Adaptive System~~ - **COMPLETE!**
-3. ✅ ~~Fix all compilation errors~~ - **COMPLETE!**
-4. ✅ ~~Create equivalence tests~~ - **COMPLETE!**
-5. ✅ ~~Verify LineSegmentPath3D~~ - **DONE (Generic already in tree)**
-6. ✅ ~~Implement RoulettePath3D<T>~~ - **DONE**
-7. ✅ ~~Add initial Path3DComposerUtils helpers~~ - **DONE (2D lifts + roulette factory)**
-8. ✅ ~~Extend Path3DComposerUtils<T>~~ - **DONE (full Float64 parity + docs on 2025-11-13)**
-9. ✅ ~~Write more tests~~ - **DONE (`Path3DComposerUtilsEquivalenceTests` added + passing)**
-10. ✅ ~~Begin Batch 2~~ - **AdaptiveArcLengthPath3D<T> implemented + tested**
-11. **Tackle Batch 3** - RotatedNormalsPath3D / RotatedNormalsArcLengthPath3D / RouletteMappedPath3D (P3)
+Projektziel für Vectors3D erreicht; nächste Phase kann sich auf die übrigen Module (z. B. Signals) konzentrieren.
 
 ---
 
@@ -261,11 +217,10 @@ Generic has MORE base classes than Float64:
 
 ### Progress
 - **From:** 0/22 classes (0%)
-- **After Samplers/Adaptive:** 16/22 classes (73%)
-- **After Composer utilities:** 17/22 classes (77%)
-- **After AdaptiveArcLengthPath3D<T>:** 18/22 classes (82%)
-- **Remaining:** 4 classes (18%) — all mapped-specialty work
-- **Time saved:** ~60 hours vs. original estimates (Phase 3A pacing holding strong!)
+- **Nach Samplers/Adaptive:** 16/22 Klassen (73%)
+- **Nach Composer-Utilities & RotatedNormals:** 19/22 Klassen (86%)
+- **Nach RouletteMappedPath3D:** **22/22 Klassen (100%)** – Vectors3D-Phase fertig 🎉
+- **Zeitersparnis:** ~60 Stunden ggü. ursprünglichen Annahmen; Tempo weiter stabil.
 
 ---
 
