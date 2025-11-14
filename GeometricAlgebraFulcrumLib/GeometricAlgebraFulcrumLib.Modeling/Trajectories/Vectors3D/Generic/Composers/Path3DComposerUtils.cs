@@ -18,6 +18,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Circles
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Mapped;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space4D.Curves.CatmullRom;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Composers;
 
@@ -256,14 +257,14 @@ public static class Path3DComposerUtils
         T radius,
         int rotationCount = 1)
     {
-        return normalAxis switch
+        return (normalAxis.Index, normalAxis.IsNegative) switch
         {
-            LinBasisVector.Px => YzCirclePath3D<T>.Create(scalarProcessor, radius, rotationCount),
-            LinBasisVector.Nx => YzCirclePath3D<T>.Create(scalarProcessor, radius, -rotationCount),
-            LinBasisVector.Py => ZxCirclePath3D<T>.Create(scalarProcessor, radius, rotationCount),
-            LinBasisVector.Ny => ZxCirclePath3D<T>.Create(scalarProcessor, radius, -rotationCount),
-            LinBasisVector.Pz => XyCirclePath3D<T>.Create(scalarProcessor, radius, rotationCount),
-            LinBasisVector.Nz => XyCirclePath3D<T>.Create(scalarProcessor, radius, -rotationCount),
+            (0, false) => YzCirclePath3D<T>.Create(scalarProcessor, radius, rotationCount),
+            (0, true) => YzCirclePath3D<T>.Create(scalarProcessor, radius, -rotationCount),
+            (1, false) => ZxCirclePath3D<T>.Create(scalarProcessor, radius, rotationCount),
+            (1, true) => ZxCirclePath3D<T>.Create(scalarProcessor, radius, -rotationCount),
+            (2, false) => XyCirclePath3D<T>.Create(scalarProcessor, radius, rotationCount),
+            (2, true) => XyCirclePath3D<T>.Create(scalarProcessor, radius, -rotationCount),
             _ => throw new ArgumentOutOfRangeException(nameof(normalAxis))
         };
     }

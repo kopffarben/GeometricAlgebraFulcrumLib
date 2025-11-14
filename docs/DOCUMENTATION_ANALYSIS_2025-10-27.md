@@ -153,7 +153,7 @@ var vector = processor.CreateVector(1, 2, 3);
 - [ ] Add performance comparison section
 - [ ] Add note to Float64 example about Generic<T> alternative
 - [ ] Update code coverage to 52%
-- [ ] Add links to `GENERIC_VS_SPECIALIZED_PERFORMANCE.md`
+- [ ] Add links to `docs/performance/GENERIC_VS_SPECIALIZED_PERFORMANCE.md`
 
 #### getting-started.en.md & getting-started.de.md
 - [ ] Add "Performance Considerations" section at top
@@ -385,11 +385,11 @@ public XGaProcessor<T> CreateProcessor<T>(IScalarProcessor<T> scalarProcessor)
 ## References
 
 ### Internal Documentation
-- `GENERIC_VS_SPECIALIZED_PERFORMANCE.md`: Complete performance analysis
-- `SP_OPTIMIZATION_ANALYSIS.md`: Scalar Product Phase 1 & 2D details
-- `LCP_OPTIMIZATION_ANALYSIS.md`: Lcp/Rcp Phase 2D optimization
-- `PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md`: Benchmark methodology
-- `CLAUDE.md`: Project instructions and conventions
+- `docs/performance/GENERIC_VS_SPECIALIZED_PERFORMANCE.md`: Complete performance analysis
+- `docs/performance/SP_OPTIMIZATION_ANALYSIS.md`: Scalar Product Phase 1 & 2D details
+- `docs/performance/LCP_OPTIMIZATION_ANALYSIS.md`: Lcp/Rcp Phase 2D optimization
+- `docs/performance/PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md`: Benchmark methodology
+- `docs/guides/DEVELOPMENT_GUIDE.md`: Project instructions and conventions
 
 ### Source Files Analyzed
 - `GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebra/XGaMetric.cs`

@@ -9,6 +9,13 @@ A unified, generic C# library for geometric algebra computations using any kind 
 [![C#](https://img.shields.io/badge/C%23-12-green.svg)](https://docs.microsoft.com/en-us/dotnet/csharp/)
 [![License](https://img.shields.io/badge/License-Check%20LICENSE%20file-yellow.svg)](LICENSE)
 
+> **Status (2025-11-14):**  
+> `DOTNET_ROOT="$(pwd)/.dotnet8" DOTNET_SYSTEM_GLOBALIZATION_CULTURE=de-DE DOTNET_SYSTEM_GLOBALIZATION_UI_CULTURE=de-DE \`
+> `$DOTNET_ROOT/dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/GeometricAlgebraFulcrumLib.UnitTests.csproj -c Release`
+> builds successfully but **24 tests currently fail** (rotor equivalence, adaptive sampler counts,
+> CGA trajectory parity, and Linux-specific text/file-name helpers). See
+> `docs/status/ISSUES_TO_FIX.md` for the full breakdown.
+
 ## 📖 Documentation
 
 **Complete documentation is available at:**
@@ -184,35 +191,41 @@ DOI: [10.3390/math12142272](https://doi.org/10.3390/math12142272)
 
 ## Testing & Quality
 
-### Test Coverage
+### Current Status (2025-11-14)
 
-**Current Status (2025-10-23)**: 🎉 **PERFECT! ALL TESTS PASSING!** 🎉
-- **Total Tests**: 1153
-- **Pass Rate**: **97.92%** (1129 passing)
-- **Failing Tests**: **0** ✅✅✅
-- **Code Coverage**: ~52%
-- **Recent Additions**: Equivalence Tests (102/102 passing ✅)
-- **Recent Fixes**: P0 GetBivector + P1 Cp/Acp + P2 Grade/Test-Order/Storage + P3 Debug ✅
+- `DOTNET_ROOT="$(pwd)/.dotnet8" DOTNET_SYSTEM_GLOBALIZATION_CULTURE=de-DE DOTNET_SYSTEM_GLOBALIZATION_UI_CULTURE=de-DE \`
+  `$DOTNET_ROOT/dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/GeometricAlgebraFulcrumLib.UnitTests.csproj -c Release`
+  completes the build but reports **24 failing tests**:
+  - **Pure rotor regression suite (8 tests)** – `CreatePureRotor` now throws
+    `ArgumentException` when the random source/target vectors aren’t orthogonal,
+    so every assertion in `RotorsTests.cs` short-circuits.
+  - **Adaptive curve sampler parity (2 tests)** – the generic sampler yields one
+    fewer node than the Float64 sampler (`CurveSamplers3DEquivalenceTests.cs`).
+  - **CGA trajectory equivalence (4 tests)** – adaptive arc-length, rotated
+    normals, and roulette paths no longer match their Float64 baselines.
+  - **String formatting helpers (6 tests)** – `StringBuilderExtensionsTests`
+    still expect decimal commas (`"1,5"`) while the implementation uses
+    invariant formatting, even when the culture is set to `de-DE`.
+  - **Filename/path sanitizers (3 tests)** – Linux allows `<` and `>` in file
+    names, so the `StringUtilsTests` Windows assumptions fail.
+- Expect further warning noise from the generated Three.js object factories and
+  the `Magick.NET`/`ImageSharp` advisories; see
+  `docs/status/KNOWN_ISSUES_AND_SOLUTIONS.md`.
 
-### Test Suites
+### Coverage Priorities
 
-| Component | Tests | Pass Rate | Status |
-|-----------|-------|-----------|--------|
-| Algebra Operations | 133 | **100%** 🎯 | ✅ **Perfect!** (Cp/Acp fixed) |
-| **Equivalence Tests** | **102** | **100%** 🎯 | ✅ **NEW!** (Float64 vs Generic<T>) |
-| Linear Maps | 121 | 100% | ✅ Excellent |
-| AutoDiff | 69 | 100% | ✅ Excellent |
-| Modeling (CGa/PGA) | 507 | 91% | ✅ Good |
-| Utilities | 295 | 99.7% | ✅ Excellent |
-| Processing | 19 | **74%** ⬆️ | ✅ **Improved!** (+7 tests) |
-| Storage | ~16 | **100%** 🎯 | ✅ **Perfect!** (+15 tests total) |
+- Focus on fixing the modeling equivalence suite, then re-enable full test runs.
+- Track incremental progress in `docs/status/TODO_TEST_COVERAGE.md`.
+- Update `GeometricAlgebraFulcrumLib.UnitTests/README.md` with real pass/fail
+  numbers once the suite compiles again.
 
-### Documentation
+### Reference Documents
 
-For detailed test coverage information and issue tracking:
-- **[TODO_TEST_COVERAGE.md](TODO_TEST_COVERAGE.md)** - Comprehensive test coverage plan
-- **[ISSUES_TO_FIX.md](ISSUES_TO_FIX.md)** - Known issues and fixes (0 failing! ✅, 24 skipped)
-- **[DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)** - Complete documentation map
+- `DOCUMENTATION_INDEX.md` — entry point for every doc set.
+- `docs/status/ISSUES_TO_FIX.md` — live issue tracker.
+- `docs/status/TODO_TEST_COVERAGE.md` — current coverage roadmap.
+- `docs/status/KNOWN_ISSUES_AND_SOLUTIONS.md` — warnings and accepted
+  workarounds.
 
 ---
 

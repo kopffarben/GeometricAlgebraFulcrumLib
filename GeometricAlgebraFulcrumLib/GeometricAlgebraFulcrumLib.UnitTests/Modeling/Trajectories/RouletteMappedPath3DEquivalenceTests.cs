@@ -1,10 +1,13 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Circles;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Mapped;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Circles;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Mapped;
@@ -26,11 +29,11 @@ public sealed class RouletteMappedPath3DEquivalenceTests
         return LinVector3D<double>.Create(ScalarProcessor, x, y, z);
     }
 
-    private static void AssertVectorsAreEqual(LinFloat64Vector3D expected, LinVector3D<double> actual, string context)
+    private static void AssertVectorsAreEqual(ILinFloat64Vector3D expected, LinVector3D<double> actual, string context)
     {
-        Assert.That(actual.X.ScalarValue, Is.EqualTo(expected.X).Within(Tolerance), $"{context} X");
-        Assert.That(actual.Y.ScalarValue, Is.EqualTo(expected.Y).Within(Tolerance), $"{context} Y");
-        Assert.That(actual.Z.ScalarValue, Is.EqualTo(expected.Z).Within(Tolerance), $"{context} Z");
+        Assert.That(actual.X.ScalarValue, Is.EqualTo(expected.X.ScalarValue).Within(Tolerance), $"{context} X");
+        Assert.That(actual.Y.ScalarValue, Is.EqualTo(expected.Y.ScalarValue).Within(Tolerance), $"{context} Y");
+        Assert.That(actual.Z.ScalarValue, Is.EqualTo(expected.Z.ScalarValue).Within(Tolerance), $"{context} Z");
     }
 
     private static void AssertFramesAreEqual(Float64Path3DLocalFrame expected, ParametricPath3DLocalFrame<double> actual, string context)
@@ -83,15 +86,16 @@ public sealed class RouletteMappedPath3DEquivalenceTests
             AssertVectorsAreEqual(floatPath.GetDerivative2Value(t), genericPath.GetDerivative2Value(scalarT), $"Derivative2 t={t}");
             AssertFramesAreEqual(floatPath.GetFrame(t), genericPath.GetFrame(scalarT), $"Frame t={t}");
 
-            var floatLength = floatPath.TimeToLength(t);
+            var floatLength = floatPath.TimeToLength(t).ScalarValue;
             var genericLength = genericPath.TimeToLength(scalarT).ScalarValue;
             Assert.That(genericLength, Is.EqualTo(floatLength).Within(Tolerance), $"TimeToLength t={t}");
         }
 
-        var lengths = new[] { 0.0, floatPath.GetLength() / 2.0, floatPath.GetLength() };
+        var floatPathLength = floatPath.GetLength().ScalarValue;
+        var lengths = new[] { 0.0, floatPathLength / 2.0, floatPathLength };
         foreach (var length in lengths)
         {
-            var floatTime = floatPath.LengthToTime(length);
+            var floatTime = floatPath.LengthToTime(length).ScalarValue;
             var genericTime = genericPath.LengthToTime(ScalarProcessor.Scalar(length)).ScalarValue;
             Assert.That(genericTime, Is.EqualTo(floatTime).Within(Tolerance), $"LengthToTime length={length}");
         }

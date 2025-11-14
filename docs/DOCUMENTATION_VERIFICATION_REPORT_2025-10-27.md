@@ -146,7 +146,7 @@ All 13 failures are **PRE-EXISTING** library bugs/limitations:
 - `PureRotor_RotatesSourceToTarget`
 - `PureRotor_RotorCondition_RTimesReverseEqualsOne`
 
-**Cause**: `CreatePureRotor` fails with antiparallel vectors (known issue documented in CLAUDE.md)
+**Cause**: `CreatePureRotor` fails with antiparallel vectors (documented in `docs/guides/DEVELOPMENT_GUIDE.md`)
 
 #### 2. VGa2D Tests (5 failures)
 - `VGa2D_BasisVectors_ShouldMatch`

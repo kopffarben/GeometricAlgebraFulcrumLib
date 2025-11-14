@@ -61,9 +61,9 @@ public sealed class RoulettePath3DEquivalenceTests
             var genericPoint = rouletteGeneric.GetValue(ScalarProcessor.ScalarFromNumber(sample));
             var floatPoint = rouletteFloat.GetValue(sample);
 
-            Assert.That(genericPoint.X.ScalarValue, Is.EqualTo(floatPoint.X).Within(Tolerance));
-            Assert.That(genericPoint.Y.ScalarValue, Is.EqualTo(floatPoint.Y).Within(Tolerance));
-            Assert.That(genericPoint.Z.ScalarValue, Is.EqualTo(floatPoint.Z).Within(Tolerance));
+            Assert.That(genericPoint.X.ScalarValue, Is.EqualTo(floatPoint.X.ScalarValue).Within(Tolerance));
+            Assert.That(genericPoint.Y.ScalarValue, Is.EqualTo(floatPoint.Y.ScalarValue).Within(Tolerance));
+            Assert.That(genericPoint.Z.ScalarValue, Is.EqualTo(floatPoint.Z.ScalarValue).Within(Tolerance));
         }
     }
 }

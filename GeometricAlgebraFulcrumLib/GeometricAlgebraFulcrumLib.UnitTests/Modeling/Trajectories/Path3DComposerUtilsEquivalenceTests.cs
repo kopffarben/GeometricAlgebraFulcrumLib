@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Generic.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
@@ -42,17 +43,17 @@ public sealed class Path3DComposerUtilsEquivalenceTests
         return ScalarProcessor.Scalar(value);
     }
 
-    private static void AssertVectorsAreEqual(LinFloat64Vector3D expected, LinVector3D<double> actual, string context)
+    private static void AssertVectorsAreEqual(ILinFloat64Vector3D expected, LinVector3D<double> actual, string context)
     {
-        Assert.That(actual.X.ScalarValue, Is.EqualTo(expected.X).Within(Tolerance), $"{context} X");
-        Assert.That(actual.Y.ScalarValue, Is.EqualTo(expected.Y).Within(Tolerance), $"{context} Y");
-        Assert.That(actual.Z.ScalarValue, Is.EqualTo(expected.Z).Within(Tolerance), $"{context} Z");
+        Assert.That(actual.X.ScalarValue, Is.EqualTo(expected.X.ScalarValue).Within(Tolerance), $"{context} X");
+        Assert.That(actual.Y.ScalarValue, Is.EqualTo(expected.Y.ScalarValue).Within(Tolerance), $"{context} Y");
+        Assert.That(actual.Z.ScalarValue, Is.EqualTo(expected.Z.ScalarValue).Within(Tolerance), $"{context} Z");
     }
 
     private static void AssertVectorsAreEqual(LinFloat64Vector2D expected, LinVector2D<double> actual, string context)
     {
-        Assert.That(actual.X.ScalarValue, Is.EqualTo(expected.X).Within(Tolerance), $"{context} X");
-        Assert.That(actual.Y.ScalarValue, Is.EqualTo(expected.Y).Within(Tolerance), $"{context} Y");
+        Assert.That(actual.X.ScalarValue, Is.EqualTo(expected.X.ScalarValue).Within(Tolerance), $"{context} X");
+        Assert.That(actual.Y.ScalarValue, Is.EqualTo(expected.Y.ScalarValue).Within(Tolerance), $"{context} Y");
     }
 
     private static void AssertScalarsAreEqual(double expected, Scalar<double> actual, string context)
@@ -106,7 +107,7 @@ public sealed class Path3DComposerUtilsEquivalenceTests
 
         var floatCurve = Float64Path3DComposerUtils.ToParametricCurve3D(
             floatPath,
-            v => LinFloat64Vector3D.Create(v.X, v.Y, 1.0)
+            v => LinFloat64Vector3D.Create(v.X.ScalarValue, v.Y.ScalarValue, 1.0)
         );
 
         var genericCurve = Path3DComposerUtils.ToParametricCurve3D(
@@ -161,7 +162,11 @@ public sealed class Path3DComposerUtilsEquivalenceTests
 
         var floatCurve = Float64Path3DComposerUtils.ToParametricCurve3D(
             floatPath,
-            v => LinFloat64Vector3D.Create(2 * v.X + 1, 3 * v.Y - 2, v.Z + 5)
+            v => LinFloat64Vector3D.Create(
+                2 * v.X.ScalarValue + 1,
+                3 * v.Y.ScalarValue - 2,
+                v.Z.ScalarValue + 5
+            )
         );
 
         var genericCurve = Path3DComposerUtils.ToParametricCurve3D(

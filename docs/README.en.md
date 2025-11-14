@@ -175,7 +175,7 @@ For more details, see the [Project Structure Documentation](project-structure.en
 | Modeling (CGa/PGA) | 507 | 91% |
 | Utilities | 295 | 99.7% |
 
-See [ISSUES_TO_FIX.md](https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/ISSUES_TO_FIX.md) for details.
+See [ISSUES_TO_FIX.md](https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/docs/status/ISSUES_TO_FIX.md) for details.
 
 ---
 

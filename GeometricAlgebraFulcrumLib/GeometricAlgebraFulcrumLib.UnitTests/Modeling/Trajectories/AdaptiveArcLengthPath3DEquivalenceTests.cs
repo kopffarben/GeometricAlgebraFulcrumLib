@@ -8,6 +8,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Circles;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Mapped;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Basic;
@@ -36,11 +37,11 @@ public sealed class AdaptiveArcLengthPath3DEquivalenceTests
         return ScalarProcessor.Scalar(value);
     }
 
-    private static void AssertVectorsAreEqual(LinFloat64Vector3D expected, LinVector3D<double> actual, string context)
+    private static void AssertVectorsAreEqual(ILinFloat64Vector3D expected, LinVector3D<double> actual, string context)
     {
-        Assert.That(actual.X.ScalarValue, Is.EqualTo(expected.X).Within(Tolerance), $"{context} X");
-        Assert.That(actual.Y.ScalarValue, Is.EqualTo(expected.Y).Within(Tolerance), $"{context} Y");
-        Assert.That(actual.Z.ScalarValue, Is.EqualTo(expected.Z).Within(Tolerance), $"{context} Z");
+        Assert.That(actual.X.ScalarValue, Is.EqualTo(expected.X.ScalarValue).Within(Tolerance), $"{context} X");
+        Assert.That(actual.Y.ScalarValue, Is.EqualTo(expected.Y.ScalarValue).Within(Tolerance), $"{context} Y");
+        Assert.That(actual.Z.ScalarValue, Is.EqualTo(expected.Z.ScalarValue).Within(Tolerance), $"{context} Z");
     }
 
     private static void AssertFramesAreEqual(Float64Path3DLocalFrame expected, ParametricPath3DLocalFrame<double> actual, string context)
@@ -66,7 +67,7 @@ public sealed class AdaptiveArcLengthPath3DEquivalenceTests
         var floatArc = Float64AdaptiveArcLengthPath3D.Create(floatBase);
         var genericArc = AdaptiveArcLengthPath3D<double>.Create(genericBase);
 
-        Assert.That(genericArc.GetLength().ScalarValue, Is.EqualTo(floatArc.GetLength()).Within(Tolerance), "Length");
+        Assert.That(genericArc.GetLength().ScalarValue, Is.EqualTo(floatArc.GetLength().ScalarValue).Within(Tolerance), "Length");
 
         foreach (var t in SampleParameters)
         {
@@ -76,21 +77,17 @@ public sealed class AdaptiveArcLengthPath3DEquivalenceTests
             AssertVectorsAreEqual(floatArc.GetDerivative2Value(t), genericArc.GetDerivative2Value(scalarT), $"Derivative2 t={t}");
             AssertFramesAreEqual(floatArc.GetFrame(t), genericArc.GetFrame(scalarT), $"Frame t={t}");
 
-            var floatLength = floatArc.TimeToLength(t);
+            var floatLength = floatArc.TimeToLength(t).ScalarValue;
             var genericLength = genericArc.TimeToLength(scalarT).ScalarValue;
             Assert.That(genericLength, Is.EqualTo(floatLength).Within(Tolerance), $"TimeToLength t={t}");
         }
 
-        var lengthsToTest = new[]
-        {
-            0.0,
-            floatArc.GetLength() / 2.0,
-            floatArc.GetLength()
-        };
+        var floatArcLength = floatArc.GetLength().ScalarValue;
+        var lengthsToTest = new[] { 0.0, floatArcLength / 2.0, floatArcLength };
 
         foreach (var length in lengthsToTest)
         {
-            var floatTime = floatArc.LengthToTime(length);
+            var floatTime = floatArc.LengthToTime(length).ScalarValue;
             var genericTime = genericArc.LengthToTime(CreateScalar(length)).ScalarValue;
             Assert.That(genericTime, Is.EqualTo(floatTime).Within(Tolerance), $"LengthToTime length={length}");
         }
@@ -123,7 +120,7 @@ public sealed class AdaptiveArcLengthPath3DEquivalenceTests
         var floatArc = Float64AdaptiveArcLengthPath3D.Create(floatCircle, floatOptions);
         var genericArc = AdaptiveArcLengthPath3D<double>.Create(genericCircle, genericOptions);
 
-        Assert.That(genericArc.GetLength().ScalarValue, Is.EqualTo(floatArc.GetLength()).Within(Tolerance), "Length");
+        Assert.That(genericArc.GetLength().ScalarValue, Is.EqualTo(floatArc.GetLength().ScalarValue).Within(Tolerance), "Length");
 
         foreach (var t in SampleParameters)
         {
@@ -133,21 +130,17 @@ public sealed class AdaptiveArcLengthPath3DEquivalenceTests
             AssertVectorsAreEqual(floatArc.GetDerivative2Value(t), genericArc.GetDerivative2Value(scalarT), $"Derivative2 t={t}");
             AssertFramesAreEqual(floatArc.GetFrame(t), genericArc.GetFrame(scalarT), $"Frame t={t}");
 
-            var floatLength = floatArc.TimeToLength(t);
+            var floatLength = floatArc.TimeToLength(t).ScalarValue;
             var genericLength = genericArc.TimeToLength(scalarT).ScalarValue;
             Assert.That(genericLength, Is.EqualTo(floatLength).Within(Tolerance), $"TimeToLength t={t}");
         }
 
-        var lengthsToTest = new[]
-        {
-            0.0,
-            floatArc.GetLength() / 3.0,
-            floatArc.GetLength()
-        };
+        var floatArcLength = floatArc.GetLength().ScalarValue;
+        var lengthsToTest = new[] { 0.0, floatArcLength / 3.0, floatArcLength };
 
         foreach (var length in lengthsToTest)
         {
-            var floatTime = floatArc.LengthToTime(length);
+            var floatTime = floatArc.LengthToTime(length).ScalarValue;
             var genericTime = genericArc.LengthToTime(CreateScalar(length)).ScalarValue;
             Assert.That(genericTime, Is.EqualTo(floatTime).Within(Tolerance), $"LengthToTime length={length}");
         }
