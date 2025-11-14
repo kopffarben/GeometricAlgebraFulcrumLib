@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -126,6 +127,20 @@ public sealed class ParametricPath3DLocalFrame<T>
         var newNormal2 = matrix * Normal2;
 
         return new Pair<LinVector3D<T>>(newNormal1, newNormal2);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ParametricPath3DLocalFrame<T> RotateNormalsBy(LinPolarAngle<T> angle)
+    {
+        var quaternion = LinQuaternion<T>.CreateFromAxisAngle(Tangent, angle);
+
+        return ParametricPath3DLocalFrame<T>.Create(
+            TimeValue,
+            Point,
+            Tangent,
+            quaternion.RotateVector(Normal1),
+            quaternion.RotateVector(Normal2)
+        );
     }
 
 

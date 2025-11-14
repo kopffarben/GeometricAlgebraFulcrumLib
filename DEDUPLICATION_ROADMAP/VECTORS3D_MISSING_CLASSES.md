@@ -2,8 +2,8 @@
 
 **Date:** 2025-11-13
 **Phase:** 3A - Trajectories Vectors3D
-**Current Coverage:** 18/22 classes (82%)
-**Status:** Samplers, Adaptive System, Roulette, Composer Utilities & Adaptive Arc-Length COMPLETE ✅
+**Current Coverage:** 19/22 classes (86%)
+**Status:** Samplers, Adaptive System, Roulette, Composer Utilities, Adaptive Arc-Length & Rotated Normals COMPLETE ✅
 
 ---
 
@@ -15,12 +15,12 @@
 | **Bezier** | 6 | 6 | ✅ COMPLETE | - |
 | **Circles** | 5 | 5 | ✅ COMPLETE | - |
 | **Composers** | 2 | 2 | ✅ COMPLETE | - |
-| **Mapped** | 9 | 6 | 3 missing | P3 |
+| **Mapped** | 9 | 7 | 2 missing | P3 |
 | **Adaptive** | 9 | **9** | ✅ **COMPLETE** | - |
 | **Samplers** | 6 | **6** | ✅ **COMPLETE** | - |
 | **Base Classes** | 6 | 9 | ✅ COMPLETE | - |
 
-**Total:** 53 Float64 files, **50 Generic files** (18 updated/new + 32 existing), **4 remaining**
+**Total:** 53 Float64 files, **51 Generic files** (19 updated/new + 32 existing), **3 remaining**
 
 **Progress:** 15/22 classes implemented this session (68% → 100% for targeted categories)
 
@@ -46,6 +46,11 @@
 - Forward all point/derivative/frame requests to the base path while using `AdaptivePath3D<T>` for consistent length ↔ time conversions.
 - New regression suite `AdaptiveArcLengthPath3DEquivalenceTests` (line/circle cases, default & custom options) compares Generic<double> vs Float64; executed via  
   ``$DOTNET_ROOT/dotnet test ... --filter AdaptiveArcLengthPath3D`` ✅ (same upstream NU1901-NU1903 warnings only).
+
+### RotatedNormalsPath3D<T> + Angle Infrastructure
+- Introduced `LinPolarAngleTimeSignal<T>` (delegate-backed) so any Generic path can consume time-varying polar angles just like Float64.
+- Added `RotatedNormalsPath3D<T>` + `Path3DUtils.RotateNormals` overloads (angle constant/function/signal) with new frame helper `ParametricPath3DLocalFrame.RotateNormalsBy`.
+- Regression suite `RotatedNormalsPath3DEquivalenceTests` validates constant + functional angle inputs (`dotnet test ... --filter RotatedNormalsPath3D` ✅).
 
 ---
 
@@ -142,7 +147,7 @@ Generic has MORE base classes than Float64:
 
 ---
 
-## ⏳ Remaining Classes (3 total)
+## ⏳ Remaining Classes (2 total)
 
 ### Mapped Paths (all P3 priorities)
 
@@ -151,18 +156,13 @@ Generic has MORE base classes than Float64:
    - Complexity: MEDIUM-HIGH  
    - Estimated Time: 5-7 hours
 
-2. **RotatedNormalsPath3D** (Float64RotatedNormalsPath3D.cs)  
-   - Path with rotated normal frames  
-   - Complexity: MEDIUM  
-   - Estimated Time: 4-6 hours
-
-3. **RouletteMappedPath3D** (Float64RouletteMappedPath3D.cs)  
+2. **RouletteMappedPath3D** (Float64RouletteMappedPath3D.cs)  
    - Roulette curve with mapping transformations  
    - Complexity: MEDIUM-HIGH  
    - Dependencies: RoulettePath3D (done)  
    - Estimated Time: 5-7 hours
 
-**Already in Generic:** AffineMappedPath3D, AffineMappedTimePath3D, MappedTrajectoryPath3D, PlusPath3D, TimesPath3D, **AdaptiveArcLengthPath3D** ✅
+**Already in Generic:** AffineMappedPath3D, AffineMappedTimePath3D, MappedTrajectoryPath3D, PlusPath3D, TimesPath3D, **AdaptiveArcLengthPath3D**, **RotatedNormalsPath3D** ✅
 
 ---
 
@@ -192,9 +192,8 @@ Generic has MORE base classes than Float64:
 1. AdaptiveArcLengthPath3D<T> + regression tests
 
 ### Batch 3 (current focus) – P3 specialized mapped classes (~2-3 weeks)
-1. RotatedNormalsPath3D<T>
-2. RotatedNormalsArcLengthPath3D<T>
-3. RouletteMappedPath3D<T> (depends on RoulettePath3D<T>, now done)
+1. RotatedNormalsArcLengthPath3D<T>
+2. RouletteMappedPath3D<T> (depends on RoulettePath3D<T>, now done)
 
 ---
 
