@@ -1,4 +1,6 @@
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Adaptive;
@@ -47,13 +49,17 @@ public sealed class AdaptivePath3DBranch<T> :
 
     internal AdaptivePath3DNode<T> GenerateTree(AdaptivePath3DSamplingOptions<T> options)
     {
-        // TODO: Implement SetMinimizedRotationNormals and SetSimpleRotationNormals for Generic<T>
-        // These methods update Frame1 normals based on Frame0 to minimize rotation
-        // For now, skip this optimization - frames use their original normals
-        // if (ParentTree.FrameSamplingMethod == ParametricCurveLocalFrameSamplingMethod.MinimizedRotation)
-        //     Frame1.SetMinimizedRotationNormals(Frame0);
-        // else
-        //     Frame1.SetSimpleRotationNormals(Frame0);
+        if (typeof(T) == typeof(double))
+        {
+            ApplyFloat64NormalUpdate();
+        }
+        else
+        {
+            if (ParentTree.FrameSamplingMethod == ParametricCurveLocalFrameSamplingMethod.MinimizedRotation)
+                Frame1.SetMinimizedRotationNormals(Frame0);
+            else
+                Frame1.SetSimpleRotationNormals(Frame0);
+        }
 
 
         var continueSubdivision =
@@ -72,6 +78,60 @@ public sealed class AdaptivePath3DBranch<T> :
         // Stop subdivision and replace this branch with a leaf node
         return ParentTree.AddLeafNode(
             new AdaptivePath3DLeaf<T>(ParentBranch!, IsRightChild)
+        );
+    }
+
+    private void ApplyFloat64NormalUpdate()
+    {
+        var floatFrame0 = ToFloat64Frame(Frame0);
+        var floatFrame1 = ToFloat64Frame(Frame1);
+
+        if (ParentTree.FrameSamplingMethod == ParametricCurveLocalFrameSamplingMethod.MinimizedRotation)
+            floatFrame1.SetMinimizedRotationNormals(floatFrame0);
+        else
+            floatFrame1.SetSimpleRotationNormals(floatFrame0);
+
+        Frame1.UpdateNormals(
+            ToGenericVector(floatFrame1.Normal1, Frame1.Point.ScalarProcessor),
+            ToGenericVector(floatFrame1.Normal2, Frame1.Point.ScalarProcessor)
+        );
+    }
+
+    private static Float64Path3DLocalFrame ToFloat64Frame(ParametricPath3DLocalFrame<T> frame)
+    {
+        return Float64Path3DLocalFrame.Create(
+            frame.TimeValue.ScalarValue,
+            LinFloat64Vector3D.Create(
+                frame.Point.X.ScalarValue,
+                frame.Point.Y.ScalarValue,
+                frame.Point.Z.ScalarValue
+            ),
+            LinFloat64Vector3D.Create(
+                frame.Tangent.X.ScalarValue,
+                frame.Tangent.Y.ScalarValue,
+                frame.Tangent.Z.ScalarValue
+            ),
+            new Pair<LinFloat64Vector3D>(
+                LinFloat64Vector3D.Create(
+                    frame.Normal1.X.ScalarValue,
+                    frame.Normal1.Y.ScalarValue,
+                    frame.Normal1.Z.ScalarValue
+                ),
+                LinFloat64Vector3D.Create(
+                    frame.Normal2.X.ScalarValue,
+                    frame.Normal2.Y.ScalarValue,
+                    frame.Normal2.Z.ScalarValue
+                )
+            )
+        );
+    }
+
+    private static LinVector3D<T> ToGenericVector(LinFloat64Vector3D vector, IScalarProcessor<T> scalarProcessor)
+    {
+        return LinVector3D<T>.Create(
+            scalarProcessor.ScalarFromValue(vector.X.ScalarValue),
+            scalarProcessor.ScalarFromValue(vector.Y.ScalarValue),
+            scalarProcessor.ScalarFromValue(vector.Z.ScalarValue)
         );
     }
 

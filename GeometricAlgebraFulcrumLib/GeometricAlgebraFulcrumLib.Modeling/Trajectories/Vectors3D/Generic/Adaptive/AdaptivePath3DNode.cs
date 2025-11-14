@@ -228,35 +228,88 @@ public abstract class AdaptivePath3DNode<T> :
 
     public bool HasNearEdgeFrames(AdaptivePath3DSamplingOptions<T> options)
     {
+        if (typeof(T) == typeof(double))
+            return HasNearEdgeFramesFloat64(options);
+
         var sp = Frame0.TimeValue.ScalarProcessor;
 
-        var parameterDistanceMax = options.MaxEdgeFramesParameterDistance;
-        var parameterDistance = sp.Subtract(Frame1.TimeValue.ScalarValue, Frame0.TimeValue.ScalarValue);
-        var absParameterDistance = sp.IsNegative<T>(parameterDistance.ScalarValue)
-            ? sp.Negative(parameterDistance.ScalarValue)
-            : parameterDistance;
+        var parameterDistanceMax = sp.ToFloat64(options.MaxEdgeFramesParameterDistance.ScalarValue);
+        var parameterDistance = Math.Abs(
+            sp.ToFloat64(Frame1.TimeValue.ScalarValue) -
+            sp.ToFloat64(Frame0.TimeValue.ScalarValue)
+        );
 
-        if (sp.IsZeroOrPositive<T>(sp.Subtract(parameterDistanceMax.ScalarValue, absParameterDistance.ScalarValue).ScalarValue))
+        if (parameterDistance <= parameterDistanceMax)
             return true;
 
-        var pointDistanceMax = options.MaxEdgeFramesDistance;
-        var pointDistance = (Frame1.Point - Frame0.Point).Norm();
-        if (sp.IsZeroOrPositive<T>(sp.Subtract(pointDistanceMax.ScalarValue, pointDistance.ScalarValue).ScalarValue))
+        var pointDistanceMax = sp.ToFloat64(options.MaxEdgeFramesDistance.ScalarValue);
+        var pointDistance = sp.ToFloat64((Frame1.Point - Frame0.Point).Norm().ScalarValue);
+        if (pointDistance <= pointDistanceMax)
             return true;
 
-        var angleMax = options.MaxEdgeFramesAngle.RadiansValue;
+        var angleMax = sp.ToFloat64(options.MaxEdgeFramesAngle.RadiansValue);
 
-        var angle = Frame0.Normal1.GetAngle(Frame1.Normal1).RadiansValue;
-        if (sp.IsPositive<T>(sp.Subtract(angle, angleMax).ScalarValue))
-            return false;
+        var angle = sp.ToFloat64(Frame0.Normal1.GetAngle(Frame1.Normal1).RadiansValue);
+        if (angle > angleMax) return false;
 
-        angle = Frame0.Normal2.GetAngle(Frame1.Normal2).RadiansValue;
-        if (sp.IsPositive<T>(sp.Subtract(angle, angleMax).ScalarValue))
-            return false;
+        angle = sp.ToFloat64(Frame0.Normal2.GetAngle(Frame1.Normal2).RadiansValue);
+        if (angle > angleMax) return false;
 
-        angle = Frame0.Tangent.GetAngle(Frame1.Tangent).RadiansValue;
-        if (sp.IsPositive<T>(sp.Subtract(angle, angleMax).ScalarValue))
-            return false;
+        angle = sp.ToFloat64(Frame0.Tangent.GetAngle(Frame1.Tangent).RadiansValue);
+        if (angle > angleMax) return false;
+
+        return true;
+    }
+
+    private bool HasNearEdgeFramesFloat64(AdaptivePath3DSamplingOptions<T> options)
+    {
+        static double ToFloat(Scalar<T> value)
+        {
+            var processor = value.ScalarProcessor;
+            return processor.ToFloat64(value.ScalarValue);
+        }
+
+        static double VectorAngle(LinVector3D<T> v1, LinVector3D<T> v2)
+        {
+            var x1 = ToFloat(v1.X);
+            var y1 = ToFloat(v1.Y);
+            var z1 = ToFloat(v1.Z);
+
+            var x2 = ToFloat(v2.X);
+            var y2 = ToFloat(v2.Y);
+            var z2 = ToFloat(v2.Z);
+
+            var dot = x1 * x2 + y1 * y2 + z1 * z2;
+            var len1 = Math.Sqrt(x1 * x1 + y1 * y1 + z1 * z1);
+            var len2 = Math.Sqrt(x2 * x2 + y2 * y2 + z2 * z2);
+
+            var cos = Math.Clamp(dot / (len1 * len2), -1d, 1d);
+            return Math.Acos(cos);
+        }
+
+        var parameterDistanceMax = ToFloat(options.MaxEdgeFramesParameterDistance);
+        var parameterDistance = Math.Abs(ToFloat(Frame1.TimeValue) - ToFloat(Frame0.TimeValue));
+        if (parameterDistance <= parameterDistanceMax)
+            return true;
+
+        var pointDistanceMax = ToFloat(options.MaxEdgeFramesDistance);
+        var dx = ToFloat(Frame1.Point.X) - ToFloat(Frame0.Point.X);
+        var dy = ToFloat(Frame1.Point.Y) - ToFloat(Frame0.Point.Y);
+        var dz = ToFloat(Frame1.Point.Z) - ToFloat(Frame0.Point.Z);
+        var pointDistance = Math.Sqrt(dx * dx + dy * dy + dz * dz);
+        if (pointDistance <= pointDistanceMax)
+            return true;
+
+        var angleMax = ToFloat(options.MaxEdgeFramesAngle.RadiansValue);
+
+        var angle = VectorAngle(Frame0.Normal1, Frame1.Normal1);
+        if (angle > angleMax) return false;
+
+        angle = VectorAngle(Frame0.Normal2, Frame1.Normal2);
+        if (angle > angleMax) return false;
+
+        angle = VectorAngle(Frame0.Tangent, Frame1.Tangent);
+        if (angle > angleMax) return false;
 
         return true;
     }

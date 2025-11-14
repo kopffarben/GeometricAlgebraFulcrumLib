@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
@@ -23,6 +25,8 @@ public sealed class CurveSamplers3DEquivalenceTests
 {
     private const double Tolerance = 1e-10;
     private static readonly IScalarProcessor<double> ScalarProcessor = ScalarProcessorOfFloat64.Instance;
+    private static readonly IComparer<Scalar<double>> ScalarValueComparer =
+        Comparer<Scalar<double>>.Create((a, b) => a.ScalarValue.CompareTo(b.ScalarValue));
 
     #region Helper Methods
 
@@ -41,6 +45,7 @@ public sealed class CurveSamplers3DEquivalenceTests
         Assert.That(generic.Y.ScalarValue, Is.EqualTo(float64.Y.ScalarValue).Within(Tolerance), $"{message} - Y component");
         Assert.That(generic.Z.ScalarValue, Is.EqualTo(float64.Z.ScalarValue).Within(Tolerance), $"{message} - Z component");
     }
+
 
     #endregion
 
@@ -106,8 +111,8 @@ public sealed class CurveSamplers3DEquivalenceTests
         );
         var genericSampler = new AdaptiveCurveSampler3D<double>(genericPath, genericTimeRange, genericOptions, false);
 
-        var float64Points = float64Sampler.GetPoints().ToArray();
-        var genericPoints = genericSampler.GetPoints().ToArray();
+        var float64Points = float64Sampler.GetFrames().Select(f => f.Point).ToArray();
+        var genericPoints = genericSampler.GetFrames().Select(f => f.Point).ToArray();
 
         Assert.That(genericPoints.Length, Is.EqualTo(float64Points.Length));
 
@@ -256,6 +261,7 @@ public sealed class CurveSamplers3DEquivalenceTests
             ToGenericVector(magnitude)
         );
         var genericParameterValues = ImmutableSortedSet.Create(
+            ScalarValueComparer,
             ScalarProcessor.ScalarFromValue(0.0),
             ScalarProcessor.ScalarFromValue(0.5),
             ScalarProcessor.ScalarFromValue(1.0),
@@ -291,6 +297,7 @@ public sealed class CurveSamplers3DEquivalenceTests
             ToGenericVector(magnitude)
         );
         var genericParameterValues = ImmutableSortedSet.Create(
+            ScalarValueComparer,
             ScalarProcessor.ScalarFromValue(0.0),
             ScalarProcessor.ScalarFromValue(Math.PI / 4),
             ScalarProcessor.ScalarFromValue(Math.PI / 2),
