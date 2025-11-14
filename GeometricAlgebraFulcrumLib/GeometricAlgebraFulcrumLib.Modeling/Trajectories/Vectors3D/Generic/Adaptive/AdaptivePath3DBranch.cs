@@ -1,7 +1,9 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Generic.Adaptive;
 
@@ -99,39 +101,40 @@ public sealed class AdaptivePath3DBranch<T> :
 
     private static Float64Path3DLocalFrame ToFloat64Frame(ParametricPath3DLocalFrame<T> frame)
     {
+        var scalarProcessor = frame.Point.ScalarProcessor;
+
+        double ToDouble(Scalar<T> value)
+        {
+            return scalarProcessor.ToFloat64(value.ScalarValue);
+        }
+
+        LinFloat64Vector3D ToFloatVector(LinVector3D<T> vector)
+        {
+            return LinFloat64Vector3D.Create(
+                ToDouble(vector.X),
+                ToDouble(vector.Y),
+                ToDouble(vector.Z)
+            );
+        }
+
         return Float64Path3DLocalFrame.Create(
-            frame.TimeValue.ScalarValue,
-            LinFloat64Vector3D.Create(
-                frame.Point.X.ScalarValue,
-                frame.Point.Y.ScalarValue,
-                frame.Point.Z.ScalarValue
-            ),
-            LinFloat64Vector3D.Create(
-                frame.Tangent.X.ScalarValue,
-                frame.Tangent.Y.ScalarValue,
-                frame.Tangent.Z.ScalarValue
-            ),
-            new Pair<LinFloat64Vector3D>(
-                LinFloat64Vector3D.Create(
-                    frame.Normal1.X.ScalarValue,
-                    frame.Normal1.Y.ScalarValue,
-                    frame.Normal1.Z.ScalarValue
-                ),
-                LinFloat64Vector3D.Create(
-                    frame.Normal2.X.ScalarValue,
-                    frame.Normal2.Y.ScalarValue,
-                    frame.Normal2.Z.ScalarValue
-                )
+            ToDouble(frame.TimeValue),
+            ToFloatVector(frame.Point),
+            ToFloatVector(frame.Tangent),
+            new Pair<ILinFloat64Vector3D>(
+                ToFloatVector(frame.Normal1),
+                ToFloatVector(frame.Normal2)
             )
         );
     }
 
-    private static LinVector3D<T> ToGenericVector(LinFloat64Vector3D vector, IScalarProcessor<T> scalarProcessor)
+    private static LinVector3D<T> ToGenericVector(ILinFloat64Vector3D vector, IScalarProcessor<T> scalarProcessor)
     {
         return LinVector3D<T>.Create(
-            scalarProcessor.ScalarFromValue(vector.X.ScalarValue),
-            scalarProcessor.ScalarFromValue(vector.Y.ScalarValue),
-            scalarProcessor.ScalarFromValue(vector.Z.ScalarValue)
+            scalarProcessor,
+            vector.X.ScalarValue,
+            vector.Y.ScalarValue,
+            vector.Z.ScalarValue
         );
     }
 
