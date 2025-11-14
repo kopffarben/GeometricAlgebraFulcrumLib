@@ -1,49 +1,53 @@
-# Windows Environment Notes
+# Development Environment Notes
 
-This project is developed on Windows. Here are important notes about working in this environment:
+This repository is routinely exercised inside Bash shells (Git Bash, WSL, or a
+Linux terminal), but many contributors still work on Windows. The notes below
+aim to keep both workflows aligned.
 
 ## Command Line
-Use **PowerShell** or **Command Prompt** for terminal operations. PowerShell is recommended as it supports both Unix-like and Windows commands.
+- **Preferred shell**: Bash (Git Bash, WSL, or any Unix-like shell). All
+  automation/scripts are written with POSIX-style commands in mind.
+- **Alternative**: PowerShell or Command Prompt also work; PowerShell accepts
+  both Unix-like and Win32 commands if you already have it in muscle memory.
 
 ## Path Separators
-- Windows uses backslash `\` as path separator
-- PowerShell accepts both `\` and `/`
-- When specifying paths in code, use forward slash `/` or `Path.Combine()` for cross-platform compatibility
+- Bash + .NET tooling handle `/` everywhere. Use `/` in documentation,
+  scripts, and code (`Path.Combine` in C#) for portability.
+- Windows APIs also accept `\`, but avoiding it keeps instructions consistent.
 
 ## Common Commands
-### PowerShell (supports both syntaxes)
-```powershell
+### Bash / Git Bash / WSL
+```bash
 # Directory navigation
 cd <directory>
 pwd
 
 # List files
-dir
-ls  # PowerShell also supports this
+ls -lah
 
 # View file contents
-type <file>
-cat <file>  # PowerShell also supports this
+cat <file>
 
-# Find files
+# Find files / search
+find . -name "*.cs"
+rg "pattern" src/
+```
+
+### PowerShell
+```powershell
+cd <directory>
+pwd
+dir    # or ls
+type <file>    # or cat <file>
 Get-ChildItem -Recurse -Filter "*.cs"
-
-# Search in files (like grep)
 Select-String -Path "*.cs" -Pattern "pattern"
 ```
 
-### Command Prompt
+### Command Prompt (limited but available)
 ```cmd
-# Directory navigation
 cd <directory>
-
-# List files
 dir
-
-# View file contents
 type <file>
-
-# Find files
 dir /s *.cs
 ```
 
@@ -74,9 +78,9 @@ dir /s *.cs
 - Excellent for .NET development
 
 ## Git on Windows
-- Use Git Bash, PowerShell, or Command Prompt
-- Configure line endings:
-  ```
+- Prefer Git Bash/WSL for scripting parity.
+- Configure line endings if you frequently switch OSes:
+  ```powershell
   git config --global core.autocrlf true
   ```
 
@@ -92,14 +96,14 @@ $env:VARIABLE_NAME = "value"
 [Environment]::SetEnvironmentVariable("VARIABLE_NAME", "value", "User")
 ```
 
-## .NET CLI on Windows
-All standard dotnet commands work the same:
-```powershell
-dotnet --version
-dotnet build
-dotnet test
-dotnet run
+## .NET CLI
+All standard `dotnet` commands behave the same on Bash, PowerShell, or CMD. In
+cross-platform instructions we default to:
+```bash
+DOTNET_ROOT="$(pwd)/.dotnet8"
+$DOTNET_ROOT/dotnet restore …
 ```
+When using PowerShell, set the same variables via `$env:DOTNET_ROOT`.
 
 ## Performance Considerations
 - Windows Defender or antivirus may slow builds

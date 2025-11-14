@@ -1,101 +1,110 @@
-# Suggested Commands for Development
+# Suggested Commands for Development (Bash-first)
 
-## Windows System Commands
-Since this project is developed on Windows, use PowerShell or Command Prompt for these operations:
-- `dir` or `ls`: List directory contents (PowerShell supports both)
-- `cd <path>`: Change directory
-- `type <file>` or `cat <file>`: Display file contents (PowerShell supports both)
-- `git <command>`: Git operations
+The repository automation expects a Unix-like shell (Git Bash, WSL, Linux, or
+macOS Terminal). Equivalent PowerShell commands are noted where it makes sense.
+All `dotnet` commands are identical across shells; only the syntax for setting
+environment variables differs.
+
+## Common shell commands
+- `ls -lah` / `dir`: list files
+- `cd <path>`: change directory
+- `cat <file>` / `type <file>`: display file contents
+- `rg <pattern>` / `Select-String`: search in files
+- `find . -name "*.cs"` / `Get-ChildItem -Recurse -Filter "*.cs"`
 
 ## Building the Project
 
+All samples use Bash; replace `export VAR=value` with `$env:VAR="value"` in
+PowerShell if needed.
+
 ### Build entire solution
-```powershell
-dotnet build GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln
+```bash
+DOTNET_ROOT="$(pwd)/.dotnet8"
+$DOTNET_ROOT/dotnet build GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln
 ```
 
 ### Build specific project
-```powershell
-dotnet build GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebraFulcrumLib.Algebra.csproj
+```bash
+$DOTNET_ROOT/dotnet build GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Algebra/GeometricAlgebraFulcrumLib.Algebra.csproj
 ```
 
 ### Build for Release
-```powershell
-dotnet build GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln --configuration Release
+```bash
+$DOTNET_ROOT/dotnet build GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln --configuration Release
 ```
 
 ### Build for specific platform
-```powershell
-dotnet build GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln --configuration Debug --arch x64
+```bash
+$DOTNET_ROOT/dotnet build GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln --configuration Debug --arch x64
 ```
 
 ## Testing
 
 ### Run all tests
-```powershell
-dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln
+```bash
+$DOTNET_ROOT/dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln
 ```
 
 ### Run tests for specific project
-```powershell
-dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/GeometricAlgebraFulcrumLib.UnitTests.csproj
+```bash
+$DOTNET_ROOT/dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/GeometricAlgebraFulcrumLib.UnitTests.csproj
 ```
 
 ### Run tests with verbose output
-```powershell
-dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln --verbosity normal
+```bash
+$DOTNET_ROOT/dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln --verbosity normal
 ```
 
 ### Run specific test
-```powershell
-dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/GeometricAlgebraFulcrumLib.UnitTests.csproj --filter "FullyQualifiedName~BasisBladeTests"
+```bash
+$DOTNET_ROOT/dotnet test GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.UnitTests/GeometricAlgebraFulcrumLib.UnitTests.csproj --filter "FullyQualifiedName~BasisBladeTests"
 ```
 
 ## Running Applications
 
 ### Run specific application project
-```powershell
-dotnet run --project GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Applications/GeometricAlgebraFulcrumLib.Applications.csproj
+```bash
+$DOTNET_ROOT/dotnet run --project GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Applications/GeometricAlgebraFulcrumLib.Applications.csproj
 ```
 
 ### Run with arguments
-```powershell
-dotnet run --project <project-path> -- <arguments>
+```bash
+$DOTNET_ROOT/dotnet run --project <project-path> -- <arguments>
 ```
 
 ## Cleaning and Restoring
 
 ### Clean build artifacts
-```powershell
-dotnet clean GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln
+```bash
+$DOTNET_ROOT/dotnet clean GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln
 ```
 
 ### Restore NuGet packages
-```powershell
-dotnet restore GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln
+```bash
+$DOTNET_ROOT/dotnet restore GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln
 ```
 
 ## Publishing
 
 ### Publish solution
-```powershell
-dotnet publish GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln --configuration Release
+```bash
+$DOTNET_ROOT/dotnet publish GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.sln --configuration Release
 ```
 
 ## Git Operations
 
 ### Check status
-```powershell
+```bash
 git status
 ```
 
 ### View recent commits
-```powershell
+```bash
 git log --oneline -10
 ```
 
 ### Create a commit
-```powershell
+```bash
 git add .
 git commit -m "Your commit message"
 ```
@@ -103,8 +112,8 @@ git commit -m "Your commit message"
 ## Benchmarking
 
 ### Run benchmarks
-```powershell
-dotnet run --project GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Benchmarks/GeometricAlgebraFulcrumLib.Benchmarks.csproj --configuration Release
+```bash
+$DOTNET_ROOT/dotnet run --project GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Benchmarks/GeometricAlgebraFulcrumLib.Benchmarks.csproj --configuration Release
 ```
 
 ## VS Code Tasks
@@ -116,6 +125,6 @@ The project includes VS Code tasks in `.vscode/tasks.json`:
 Run these from VS Code's Task Runner (Ctrl+Shift+B).
 
 ## Notes
-- **No Linting/Formatting Tools Configured**: The project does not appear to have explicit linting or formatting tools configured. Use Visual Studio or Rider's built-in formatting (Ctrl+K, Ctrl+D) or configure tools like dotnet-format if needed.
-- **Platform**: Commands assume Windows environment with PowerShell or Command Prompt
-- **Path Separator**: Use backslash `\` on Windows or forward slash `/` (PowerShell handles both)
+- **No Linting/Formatting Tools Configured**: Use your IDE formatter (VS, Rider, VS Code) or add `dotnet format` locally.
+- **Platform**: Commands assume a Bash-style shell. Swap `export VAR=value` for `$env:VAR="value"` if you prefer PowerShell.
+- **Path Separator**: Stick to `/` in commands and code for portability.
