@@ -300,7 +300,7 @@ public abstract class AdaptivePath3DNode<T> :
         if (pointDistance <= pointDistanceMax)
             return true;
 
-        var angleMax = ToFloat(options.MaxEdgeFramesAngle.RadiansValue);
+        var angleMax = ToFloat(options.MaxEdgeFramesAngle.Radians);
 
         var angle = VectorAngle(Frame0.Normal1, Frame1.Normal1);
         if (angle > angleMax) return false;
