@@ -78,7 +78,7 @@ GA-FUL-main/
 ├── GeometricAlgebraFulcrumLib.Visualizations/
 ├── README.md
 ├── LICENSE
-└── CLAUDE.md                   # Instructions for Claude Code
+└── docs/guides/DEVELOPMENT_GUIDE.md    # Condensed architecture + agent guide
 ```
 
 ## Build Configurations

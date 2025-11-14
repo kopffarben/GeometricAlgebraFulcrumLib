@@ -67,7 +67,7 @@ Generic<T> implementations now **outperform** Float64-specialized code:
 1. Read [STATUS.md](STATUS.md) to understand what's done
 2. Check [ROADMAP.md](ROADMAP.md) for available tasks
 3. Review [ARCHITECTURE.md](ARCHITECTURE.md) for code patterns
-4. See [CLAUDE.md](../CLAUDE.md) for full architectural overview
+4. See [DEVELOPMENT_GUIDE.md](../docs/guides/DEVELOPMENT_GUIDE.md) for the condensed architectural overview
 
 ### Key Principles
 - **Generic-First:** All new code uses Generic<T>, Float64 is deprecated

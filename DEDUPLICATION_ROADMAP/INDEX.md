@@ -113,9 +113,9 @@ DEDUPLICATION_ROADMAP/
 ## 🔗 Related Documentation
 
 ### In Main Repository
-- `/CLAUDE.md` - Claude Code instructions
-- `/TODO_TEST_COVERAGE.md` - Test strategy
-- `/PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md` - Performance guide
+- `/docs/guides/DEVELOPMENT_GUIDE.md` - Agent + architecture instructions
+- `/docs/status/TODO_TEST_COVERAGE.md` - Test strategy
+- `/docs/performance/PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md` - Performance guide
 
 ### In Code
 - Source: `GeometricAlgebraFulcrumLib.Modeling/Trajectories/Vectors3D/Generic/`

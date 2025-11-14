@@ -48,7 +48,7 @@
 1. **Finalize Adaptive Assertions:** Adaptive sampler still drops the `t≈1.79169` corner, leading to fewer frames (54 vs 55). Inspect `AdaptivePath3DNode.HasNearEdgeFrames` tolerances and frame-normal rotation to align with Float64 output, then re-enable the two failing assertions.  
 2. **Add Failure Fixtures:** Create negative tests for invalid parameter lists (unsorted, duplicates) to match Float64 guard clauses.  
 3. **Docs Sync:** Reference this file from `INDEX.md` (done) and cross-link from `ADAPTIVE_SYSTEM_ROADMAP.md` when tree APIs change.  
-4. **Benchmarks:** Capture BenchmarkDotNet runs comparing sampler throughput before/after fast-path optimizations; append summary to `PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md`.
+4. **Benchmarks:** Capture BenchmarkDotNet runs comparing sampler throughput before/after fast-path optimizations; append summary to `docs/performance/PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md`.
 
 ---
 

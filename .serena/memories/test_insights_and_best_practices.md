@@ -156,8 +156,8 @@ Always test:
 ### 7. Test Documentation
 
 **Primary References**:
-- `ISSUES_TO_FIX.md` - All bugs with priority levels (0 failing!)
-- `TODO_TEST_COVERAGE.md` - Coverage plan (2000+ lines)
+- `docs/status/ISSUES_TO_FIX.md` - All bugs with priority levels (build blockers)
+- `docs/status/TODO_TEST_COVERAGE.md` - Coverage plan (trimmed from 2000+ lines)
 - `DOCUMENTATION_INDEX.md` - Doc registry
 - `UnitTests/KNOWN_ISSUES.md` - Library limitations
 
@@ -188,14 +188,14 @@ Always test:
 ### 10. Continuous Improvement
 
 **When adding new tests**:
-1. Check ISSUES_TO_FIX.md for known problems
-2. Review TODO_TEST_COVERAGE.md for priority areas
+1. Check `docs/status/ISSUES_TO_FIX.md` for known problems
+2. Review `docs/status/TODO_TEST_COVERAGE.md` for priority areas
 3. Follow existing test patterns
 4. Add descriptive comments
 5. Update documentation when finding bugs
 
 **When fixing bugs**:
 1. Add regression test first
-2. Document the bug in ISSUES_TO_FIX.md
-3. Update CLAUDE.md if it's a common pitfall
+2. Document the bug in `docs/status/ISSUES_TO_FIX.md`
+3. Update `docs/guides/DEVELOPMENT_GUIDE.md` if it's a common pitfall
 4. Update serena memories with learnings

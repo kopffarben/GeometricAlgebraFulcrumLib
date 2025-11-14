@@ -244,7 +244,7 @@
 
 **Achievement:** Through systematic bug fixes across multiple sessions (2025-11-05 and 2025-11-11), we successfully resolved all test failures in the codebase.
 
-**Historical Tracking:** See [ISSUES_TO_FIX.md](../ISSUES_TO_FIX.md) for archived issues
+**Historical Tracking:** See [ISSUES_TO_FIX.md](../docs/status/ISSUES_TO_FIX.md) for active issues and archive pointers
 
 ---
 

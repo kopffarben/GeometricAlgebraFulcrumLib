@@ -644,9 +644,9 @@ GeometricAlgebraFulcrumLib/
 - [docs/specifications/NUMERICAL_OPERATIONS.md](../../docs/specifications/NUMERICAL_OPERATIONS.md) - Detailed technical spec
 
 ### Key Files
-- [CLAUDE.md](../CLAUDE.md) - Full architectural overview for Claude Code
-- [ISSUES_TO_FIX.md](../ISSUES_TO_FIX.md) - Known issues tracking
-- [PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md](../PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md) - Benchmarking guide
+- [DEVELOPMENT_GUIDE.md](../docs/guides/DEVELOPMENT_GUIDE.md) - Condensed architectural overview for agents
+- [ISSUES_TO_FIX.md](../docs/status/ISSUES_TO_FIX.md) - Known issues tracking
+- [PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md](../docs/performance/PERFORMANCE_BENCHMARK_RECOMMENDATIONS.md) - Benchmarking guide
 
 ### External Resources
 - GA-FUL Documentation: https://kopffarben.github.io/GeometricAlgebraFulcrumLib/

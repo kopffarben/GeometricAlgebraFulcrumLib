@@ -31,7 +31,7 @@ Ahmad H. Eid (ga.computing.eg@gmail.com)
 - **Pass Rate**: 97.92% (1129 passing, 0 failing, 24 skipped)
 - **Test Coverage**: ~50% (growing rapidly)
 - **Critical Bugs Fixed**: 10+ (GetBivector, Cp/Acp products, Grade Involution, etc.)
-- **Documentation**: ISSUES_TO_FIX.md, TODO_TEST_COVERAGE.md, DOCUMENTATION_INDEX.md
+- **Documentation**: `docs/status/ISSUES_TO_FIX.md`, `docs/status/TODO_TEST_COVERAGE.md`, `DOCUMENTATION_INDEX.md`
 
 **Test Suites:**
 - Algebra: 133 tests (100% passing)
@@ -45,8 +45,8 @@ Complete documentation available at: https://kopffarben.github.io/GeometricAlgeb
 Available in both English and German.
 
 **Key Documentation Files:**
-- `CLAUDE.md` - Development guide for Claude Code (includes test learnings)
+- `docs/guides/DEVELOPMENT_GUIDE.md` - Development guide for agents (includes test learnings)
 - `README.md` - Project overview and quick start
-- `ISSUES_TO_FIX.md` - Known issues and bug tracking
-- `TODO_TEST_COVERAGE.md` - Test coverage plan and statistics
+- `docs/status/ISSUES_TO_FIX.md` - Known issues and bug tracking
+- `docs/status/TODO_TEST_COVERAGE.md` - Test coverage plan and statistics
 - `DOCUMENTATION_INDEX.md` - Central documentation registry
