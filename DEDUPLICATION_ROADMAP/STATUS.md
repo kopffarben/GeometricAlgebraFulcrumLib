@@ -186,8 +186,8 @@
 
 **Test Results:**
 - 8 tests created (CurveSamplers3DEquivalenceTests.cs)
-- 4/8 passing (50% - expected for adaptive algorithm differences)
-- 4/8 failing due to adaptive sampling count differences (not bugs)
+- 6/8 passing (Uniform, Constant, ParameterList samplers now fully green after ImmutableSortedSet comparer fix)
+- 2/8 failing (Adaptive sampler mismatch: Float64 emits 55 frames vs Generic 54, missing the `t≈1.79169` corner despite double-specific normal propagation)
 
 **Git Commits:**
 - Commit 94d17ad8: "fix(MetaProgramming): Resolve Array.Reverse ambiguity"

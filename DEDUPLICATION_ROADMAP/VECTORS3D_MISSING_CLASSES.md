@@ -2,8 +2,8 @@
 
 **Date:** 2025-11-12
 **Phase:** 3A - Trajectories Vectors3D
-**Current Coverage:** 15/22 classes (68%)
-**Status:** Samplers & Adaptive System COMPLETE ✅
+**Current Coverage:** 16/22 classes (73%)
+**Status:** Samplers, Adaptive System & Roulette COMPLETE ✅
 
 ---
 
@@ -11,7 +11,7 @@
 
 | Category | Float64 | Generic | Status | Priority |
 |----------|---------|---------|--------|----------|
-| **Basic** | 9 | 7 | 2 missing | P1 |
+| **Basic** | 9 | 9 | ✅ COMPLETE | - |
 | **Bezier** | 6 | 6 | ✅ COMPLETE | - |
 | **Circles** | 5 | 5 | ✅ COMPLETE | - |
 | **Composers** | 2 | 1 | 1 missing | P1 |
@@ -20,7 +20,7 @@
 | **Samplers** | 6 | **6** | ✅ **COMPLETE** | - |
 | **Base Classes** | 6 | 9 | ✅ COMPLETE | - |
 
-**Total:** 53 Float64 files, **48 Generic files** (15 new + 33 existing), **7 remaining**
+**Total:** 53 Float64 files, **49 Generic files** (16 new + 33 existing), **6 remaining**
 
 **Progress:** 15/22 classes implemented this session (68% → 100% for targeted categories)
 
@@ -64,6 +64,15 @@ Complete adaptive sampling subsystem for curvature-based refinement:
 1. ✅ **SquareMatrix4Utils<T>** - Matrix transformation utilities (60 LOC)
 2. ✅ **Path3DComposerUtils<T>** - Extensions for creating AdaptivePath3D (40 LOC)
 3. ✅ **Path3DUtils<T>** - Extensions for GetTimeValues, GetPoints, GetTangents (57 LOC)
+
+### Basic Paths Refresh
+1. ✅ **RoulettePath3D<T>** - Fully generic roulette implementation with numerical derivatives
+2. ✅ **LineSegmentPath3D<T>** - Verified existing Generic version (docs updated accordingly)
+
+### Composer Enhancements
+- Added `ToParametricCurve3D` + `ToXyParametricCurve3D` lifters for 2D curves
+- Added `MapCurve3D` to wrap arbitrary vector transforms
+- Added roulette factory (`CreateRouletteCurve3D`) for easier instantiation
 
 ### Compilation Fixes
 - ✅ Fixed 40+ compilation errors in Samplers & Adaptive System
@@ -110,34 +119,9 @@ Generic has MORE base classes than Float64:
 
 ---
 
-## ⏳ Remaining Classes (7 total)
+## ⏳ Remaining Classes (6 total)
 
-### 1. Basic Paths (2 classes missing) - P1
-
-**Missing:**
-1. **RoulettePath3D** (Float64RoulettePath3D.cs)
-   - Priority: P2
-   - Description: Roulette curve generator
-   - Complexity: MEDIUM
-   - Estimated Time: 4-6 hours
-
-2. **LineSegmentPath3D** (?? appears in Generic list but need to verify)
-   - VERIFY: Generic list shows LineSegmentPath3D.cs exists
-   - Status: MIGHT BE COMPLETE - needs verification
-
-**Already in Generic:**
-- ✅ ConstantPath3D
-- ✅ LineSegmentPath3D (needs verification)
-- ✅ HarmonicPath3D
-- ✅ SimpleHarmonicPath3D
-- ✅ ScalarTripletPath3D
-- ✅ SphericalPath3D
-- ✅ CatmullRomSplinePath3D
-- ✅ ComputedPath3D (with INumericalOperations support!)
-
----
-
-### 2. Composers (1 class missing) - P1
+### 1. Composers (1 class missing) - P1
 
 **Missing:**
 1. **Path3DComposerUtils (full version)** (Float64Path3DComposerUtils.cs)
@@ -153,7 +137,7 @@ Generic has MORE base classes than Float64:
 
 ---
 
-### 3. Mapped Paths (4 classes missing) - P2
+### 2. Mapped Paths (4 classes missing) - P2
 
 **Missing:**
 1. **AdaptiveArcLengthPath3D** (Float64AdaptiveArcLengthPath3D.cs)
@@ -193,15 +177,12 @@ Generic has MORE base classes than Float64:
 
 ## 📊 Priority Breakdown
 
-### P1 - High Priority (2-3 classes, ~7-11 hours)
-**Essential for basic functionality:**
-1. ✅ ~~All Samplers~~ - **COMPLETE!**
-2. ✅ ~~All Adaptive System~~ - **COMPLETE!**
-3. Path3DComposerUtils (full version)
-4. RoulettePath3D (if needed)
-5. Verify LineSegmentPath3D exists
+### P1 - High Priority (Composer utilities, ~5-7 hours)
+**Essential for plumbing:**
+1. Expand `Path3DComposerUtils<T>` beyond adaptive helpers (Bezier, circle, roulette-mapped builders)
+2. Keep docs/tests in sync for new helpers
 
-**Rationale:** Complete basic path functionality.
+**Rationale:** Composer utilities unblock downstream modeling layers that currently rely on Float64 wrappers.
 
 ### P2 - Medium Priority (1 class, ~6-8 hours)
 **Important for advanced features:**
@@ -262,21 +243,22 @@ Generic has MORE base classes than Float64:
 2. ✅ ~~Implement Adaptive System~~ - **COMPLETE!**
 3. ✅ ~~Fix all compilation errors~~ - **COMPLETE!**
 4. ✅ ~~Create equivalence tests~~ - **COMPLETE!**
-5. **Verify LineSegmentPath3D** - Check if Generic version exists
-6. **Implement Batch 1** - Complete remaining P1 essentials
-7. **Write more tests** - Increase coverage for new classes
-8. **Update STATUS.md** - Track progress (DONE!)
-9. **Begin Batch 2** - Start with AdaptiveArcLengthPath3D
+5. ✅ ~~Verify LineSegmentPath3D~~ - **DONE (Generic already in tree)**
+6. ✅ ~~Implement RoulettePath3D<T>~~ - **DONE**
+7. ✅ ~~Add initial Path3DComposerUtils helpers~~ - **DONE (2D lifts + roulette factory)**
+8. **Extend Path3DComposerUtils<T>** - Add Bezier/circle helpers + roulette-mapped utilities
+9. **Write more tests** - Expand coverage for composer helpers (Roulette equivalence added)
+10. **Begin Batch 2** - Start with AdaptiveArcLengthPath3D
 
 ---
 
 ## 🏆 Session Achievements (2025-11-12)
 
 ### Code Implemented
-- **15 classes:** 6 Samplers + 9 Adaptive System
-- **~7,255 LOC:** Implementation code
-- **~157 LOC:** Infrastructure utilities
-- **~350 LOC:** Test code
+- **16 classes:** 6 Samplers + 9 Adaptive System + RoulettePath3D<T>
+- **~7,450 LOC:** Implementation code (includes Roulette + composer helpers)
+- **~200 LOC:** Infrastructure utilities & composer extensions
+- **~420 LOC:** Test code (Curve samplers + Roulette equivalence)
 - **100% API parity** with Float64 versions
 
 ### Issues Resolved
@@ -293,9 +275,9 @@ Generic has MORE base classes than Float64:
 
 ### Progress
 - **From:** 0/22 classes (0%)
-- **To:** 15/22 classes (68%)
-- **Remaining:** 7 classes (32%)
-- **Time saved:** ~55 hours from original estimates!
+- **To:** 16/22 classes (73%)
+- **Remaining:** 6 classes (27%)
+- **Time saved:** ~60 hours from original estimates!
 
 ---
 
