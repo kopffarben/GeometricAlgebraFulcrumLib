@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Numerics;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
@@ -13,6 +14,22 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Utilities.Text;
 [TestFixture]
 public class StringBuilderExtensionsTests
 {
+    private CultureInfo _originalCulture;
+
+    [SetUp]
+    public void SetUp()
+    {
+        // Set the current culture to German for these tests
+        _originalCulture = CultureInfo.CurrentCulture;
+        CultureInfo.CurrentCulture = new CultureInfo("de-DE");
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        // Restore the original culture
+        CultureInfo.CurrentCulture = _originalCulture;
+    }
     #region Append Complex with Format Tests
 
     [Test]
