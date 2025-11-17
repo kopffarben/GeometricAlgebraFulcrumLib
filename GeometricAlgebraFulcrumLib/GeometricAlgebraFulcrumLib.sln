@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11205.157 d18.0
+VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.UnitTests", "GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj", "{9211DAA6-C7F2-4058-82D2-8F8DB5CD6034}"
 EndProject
@@ -22,8 +22,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Modeling", "GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj", "{6E9441E8-AD6B-4E1E-8694-4E00EFDBF11A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.MetaProgramming", "GeometricAlgebraFulcrumLib.MetaProgramming\GeometricAlgebraFulcrumLib.MetaProgramming.csproj", "{3B2900F1-66D0-45D8-86E2-C981C4B1FC40}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Applications.Symbolic", "GeometricAlgebraFulcrumLib.Applications.Symbolic\GeometricAlgebraFulcrumLib.Applications.Symbolic.csproj", "{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Samples.Generations", "GeometricAlgebraFulcrumLib.Samples.Generations\GeometricAlgebraFulcrumLib.Samples.Generations.csproj", "{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}"
 EndProject
@@ -159,18 +157,6 @@ Global
 		{3B2900F1-66D0-45D8-86E2-C981C4B1FC40}.Release|ARM32.Build.0 = Release|Any CPU
 		{3B2900F1-66D0-45D8-86E2-C981C4B1FC40}.Release|x64.ActiveCfg = Release|x64
 		{3B2900F1-66D0-45D8-86E2-C981C4B1FC40}.Release|x64.Build.0 = Release|x64
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Debug|ARM32.ActiveCfg = Debug|Any CPU
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Debug|ARM32.Build.0 = Debug|Any CPU
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Debug|x64.ActiveCfg = Debug|x64
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Debug|x64.Build.0 = Debug|x64
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Release|ARM32.ActiveCfg = Release|Any CPU
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Release|ARM32.Build.0 = Release|Any CPU
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Release|x64.ActiveCfg = Release|x64
-		{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}.Release|x64.Build.0 = Release|x64
 		{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}.Debug|ARM32.ActiveCfg = Debug|Any CPU
