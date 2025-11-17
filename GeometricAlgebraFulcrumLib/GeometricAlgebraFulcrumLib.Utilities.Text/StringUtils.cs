@@ -598,13 +598,15 @@ public static class StringUtils
     public static string ToValidFileName(this string text, char replaceChar = '-')
     {
         var invalidChars =
-            Path.GetInvalidFileNameChars().ToArray();
+            Path.GetInvalidFileNameChars()
+                .Union(new[] { '<', '>', ':', '"', '|', '?', '*' })
+                .ToArray();
 
         var composer = new StringBuilder(text);
 
         for (var i = 0; i < composer.Length; i++)
             if (invalidChars.Contains(composer[i]))
-                composer[i] = '_';
+                composer[i] = replaceChar;
 
         return composer.ToString();
     }
@@ -614,6 +616,7 @@ public static class StringUtils
         var invalidChars =
             Path.GetInvalidPathChars()
                 .Concat(Path.GetInvalidFileNameChars())
+                .Union(new[] { '<', '>', ':', '"', '|', '?', '*' })
                 .Distinct()
                 .ToArray();
 
@@ -621,7 +624,7 @@ public static class StringUtils
 
         for (var i = 0; i < composer.Length; i++)
             if (invalidChars.Contains(composer[i]))
-                composer[i] = '_';
+                composer[i] = replaceChar;
 
         return composer.ToString();
     }
